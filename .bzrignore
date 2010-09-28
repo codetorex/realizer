@@ -16,3 +16,5 @@ DebugStatic
 ./lib/
 ./design.eap
 ./ipch
+*.gz
+Makefile
