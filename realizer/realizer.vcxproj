@@ -106,9 +106,12 @@
     <ClInclude Include="clinux.h" />
     <ClInclude Include="crenderwindow.h" />
     <ClInclude Include="cwindows.h" />
+    <ClInclude Include="gevent.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="crenderwindow.cpp" />
+    <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="realizer.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">false</CompileAsManaged>

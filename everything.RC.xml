@@ -44,7 +44,7 @@
 		</project>
 		<project name="..\..\raise\raise\raise.vcxproj">
 			<EnableRemoteCompiler>True</EnableRemoteCompiler>
-			<CFlags>-m64</CFlags>
+			<CFlags>-m64 -DM64 </CFlags>
 			<HostPath>~/Desktop/Projects/realizer/raise/</HostPath>
 			<ProjectPath>C:\Library\Projects\raise\raise\</ProjectPath>
 			<ScriptSource />
@@ -72,9 +72,32 @@
 				</configuration>
 			</configurations>
 		</project>
+		<project name="examples\demo_realizer\demo_realizer.vcxproj">
+			<EnableRemoteCompiler>False</EnableRemoteCompiler>
+			<CFlags>-m64 -fPIC</CFlags>
+			<HostPath />
+			<ProjectPath>C:\Library\Projects\realizer\src\examples\demo_realizer\</ProjectPath>
+			<ScriptSource />
+			<configurations>
+				<configuration name="Debug">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>demo_realizer.exe</Target>
+					<CFlags>  -W  -O0 -fexceptions -g  -fno-inline  -DWIN32 -D_DEBUG -D_WINDOWS </CFlags>
+				</configuration>
+				<configuration name="Release">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>demo_realizer.exe</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -DWIN32 -DNDEBUG -D_WINDOWS </CFlags>
+				</configuration>
+			</configurations>
+		</project>
 		<project name="..\..\raise\test\test.vcxproj">
 			<EnableRemoteCompiler>True</EnableRemoteCompiler>
-			<CFlags>-m64</CFlags>
+			<CFlags>-m64  -DM64 </CFlags>
 			<HostPath>~/Desktop/Projects/realizer/raisetest/</HostPath>
 			<ProjectPath>C:\Library\Projects\raise\test\</ProjectPath>
 			<ScriptSource />

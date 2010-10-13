@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Core">
       <UniqueIdentifier>{cc9325b6-28d9-4450-a607-1d5d67d35507}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{633b31ab-d37a-4939-9335-e7d1a5dea8d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -30,6 +33,9 @@
     <ClInclude Include="clinux.h">
       <Filter>Source Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="gevent.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -37,6 +43,12 @@
     </ClCompile>
     <ClCompile Include="realizer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cwindows.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="crenderwindow.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

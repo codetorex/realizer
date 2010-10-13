@@ -2,13 +2,14 @@
 #ifndef CRENDERWINDOW_H
 #define CRENDERWINDOW_H
 
-//class Event;
+class EventArgs;
+
 class RDLL RenderWindow
 {
 public:
 	bool vFullScreen;
 
-	//TList3 EventListeners;
+	TArray<EventListener*> EventListeners;
 
 	virtual bool CreateRenderWindow(int _width,int _height,char* _title,bool fullscr = false,int bits=24) = 0;
 	virtual void DestroyRenderWindow() = 0;
@@ -20,7 +21,7 @@ public:
 
 	virtual void SetCursorPosition(int left,int top) = 0; ///< Relative to viewport.
 
-	//virtual void SendEvent(Event* evnt);
+	virtual void SendEvent(EventArgs* evnt);
 };
 
 
