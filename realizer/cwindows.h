@@ -4,8 +4,10 @@
 #define CWIN32RENDERWINDOW_H
 #ifdef WIN32
 
+#include <tstring.h>
 #include "crenderwindow.h"
 #include "tlinkedlist.h"
+
 
 
 class RDLL CWin32RenderWindow: public RenderWindow
@@ -15,11 +17,11 @@ public:
 	HWND		hWnd;
 	HINSTANCE	hInstance;
 
-	bool CreateRenderWindow(int _width,int _height,char* _title,bool fullscr = false,int bits=24);
-	void DestroyRenderWindow();
+	bool Create(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24);
+	void Destroy();
 
-	void ChangeTitle(char* newtitle) {};
-	void DoEvents(){};
+	void ChangeTitle(ch16* newtitle) {};
+	bool DoEvents();
 
 	void ShowMouseCursor(bool visible){};
 
@@ -28,6 +30,8 @@ public:
 
 	int ProcessEvent(UINT uMsg,WPARAM wParam, LPARAM lParam);
 	static int DummyWndProc(HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lParam);
+
+	//virtual bool InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24) = 0;
 };
 
 

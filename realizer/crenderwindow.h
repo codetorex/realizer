@@ -2,26 +2,35 @@
 #ifndef CRENDERWINDOW_H
 #define CRENDERWINDOW_H
 
+#include <raisetypes.h>
+#include <tarray.h>
+#include <tstring.h>
+
+#include "gevent.h"
+#include "cviewport.h"
+
 class EventArgs;
 
-class RDLL RenderWindow
+class RenderWindow: public Viewport
 {
 public:
 	bool vFullScreen;
 
 	TArray<EventListener*> EventListeners;
 
-	virtual bool CreateRenderWindow(int _width,int _height,char* _title,bool fullscr = false,int bits=24) = 0;
-	virtual void DestroyRenderWindow() = 0;
+	virtual bool Create(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24) = 0;
+	virtual void Destroy() = 0;
 
-	virtual void ChangeTitle(char* newtitle) = 0;
-	virtual void DoEvents() = 0;
+	virtual void ChangeTitle(ch16* newtitle) = 0;
+	virtual bool DoEvents() = 0;
 
 	virtual void ShowMouseCursor(bool visible) = 0;
 
 	virtual void SetCursorPosition(int left,int top) = 0; ///< Relative to viewport.
 
 	virtual void SendEvent(EventArgs* evnt);
+
+	virtual bool InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24) = 0;
 };
 
 

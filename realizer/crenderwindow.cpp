@@ -6,11 +6,10 @@
 
 void RenderWindow::SendEvent( EventArgs* evnt )
 {
-	EventListener* curlistener =  (EventListener*)EventListeners.FirstItem;
-	while(curlistener)
+	// TODO: implement and do with iterator?
+	for (int i=0;i<EventListeners.Count;i++)
 	{
-		curlistener->OnEvent(evnt);
-		curlistener = (EventListener*)curlistener->NextItem;
+		EventListeners[i]->OnEvent(evnt);
 	}
 }
 

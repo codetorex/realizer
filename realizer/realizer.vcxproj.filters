@@ -16,8 +16,20 @@
     <Filter Include="Source Files\Core">
       <UniqueIdentifier>{cc9325b6-28d9-4450-a607-1d5d67d35507}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\UI">
+    <Filter Include="Source Files\Visual">
+      <UniqueIdentifier>{a518ec6b-6848-42df-9b85-96d6e31dcbb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\Material System">
+      <UniqueIdentifier>{3279a779-9d68-4531-ad36-97a74cb1689b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\RendererDX9">
+      <UniqueIdentifier>{2efe5f7e-77f8-4104-9723-ecbb351954c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\GUI">
       <UniqueIdentifier>{633b31ab-d37a-4939-9335-e7d1a5dea8d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{78a70caa-587f-4209-932a-d422b4020644}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +46,37 @@
       <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="gevent.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\Visual\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cviewport.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="realizertypes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vrendererdx9.h">
+      <Filter>Source Files\Visual\RendererDX9</Filter>
+    </ClInclude>
+    <ClInclude Include="vtexture.h">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClInclude>
+    <ClInclude Include="vrenderer.h">
+      <Filter>Source Files\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="cresource.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cengine.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="chooks.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cinput.h">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="vtexturemanager.h">
+      <Filter>Source Files\Visual\Material System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +90,12 @@
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="crenderwindow.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="vrendererdx9.cpp">
+      <Filter>Source Files\Visual\RendererDX9</Filter>
+    </ClCompile>
+    <ClCompile Include="cengine.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>

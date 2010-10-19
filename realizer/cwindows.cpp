@@ -5,7 +5,7 @@
 
 #ifdef WIN32
 
-bool CWin32RenderWindow::CreateRenderWindow( int _width,int _height,char* _title,bool fullscr,int bits )
+bool CWin32RenderWindow::Create( int _width,int _height,ch16* _title,bool fullscr,int bits )
 {
 	SetViewportSize(_width,_height);
 
@@ -32,14 +32,14 @@ bool CWin32RenderWindow::CreateRenderWindow( int _width,int _height,char* _title
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW); // Load mouse cursor.
 	wc.hbrBackground = NULL;                  // Background color.
 	wc.lpszMenuName = NULL;                   // Menu.
-	wc.lpszClassName = "Realizer";            // Name of the window class.
+	wc.lpszClassName = L"Realizer";            // Name of the window class.
 	wc.hIconSm = LoadIcon(NULL, IDI_WINLOGO);// Minimized window icon.
 
 	if(!RegisterClassEx(&wc)) return false;
 
 	// Create the window.
 	hWnd = CreateWindowEx(NULL,                                       // The extended style.
-		"Realizer",                                 // Window class.
+		L"Realizer",                                 // Window class.
 		_title,     // Window name.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE |         // Window style.
 		WS_SYSMENU |WS_CLIPCHILDREN |              // Window style.
@@ -56,7 +56,7 @@ bool CWin32RenderWindow::CreateRenderWindow( int _width,int _height,char* _title
 
 	if (!(hDC=GetDC(hWnd)))							
 	{
-		DestroyRenderWindow();						
+		Destroy();						
 		return false;								
 	}
 
@@ -66,7 +66,7 @@ bool CWin32RenderWindow::CreateRenderWindow( int _width,int _height,char* _title
 	return true;
 }
 
-void CWin32RenderWindow::DestroyRenderWindow()
+void CWin32RenderWindow::Destroy()
 {
 	if (hDC && !ReleaseDC(hWnd,hDC))				
 	{
@@ -79,7 +79,7 @@ void CWin32RenderWindow::DestroyRenderWindow()
 		hWnd=NULL;									
 	}
 
-	if (!UnregisterClass("Realizer",hInstance))		
+	if (!UnregisterClass(L"Realizer",hInstance))		
 	{
 		//MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
 		hInstance=NULL;							
@@ -133,13 +133,13 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
-	case WM_CLOSE :
-		nEvent.Type = Event::Closed;
+	/*case WM_CLOSE :
+		nEvent.Type = EventArgs::Closed;
 		SendEvent(&nEvent);
 		break;
 
 	case WM_KEYDOWN:
-		nEvent.Type = Event::KeyPressed;
+		nEvent.Type = EventArgs::KeyPressed;
 		nEvent.Key.Code = wParam;
 		nEvent.Key.Alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
 		nEvent.Key.Control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
@@ -148,7 +148,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;						
 
 	case WM_KEYUP:
-		nEvent.Type = Event::KeyReleased;
+		nEvent.Type = EventArgs::KeyReleased;
 		nEvent.Key.Code = wParam;
 		nEvent.Key.Alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
 		nEvent.Key.Control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
@@ -157,13 +157,13 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;							
 
 	case WM_CHAR:
-		nEvent.Type = Event::KeyChar;
+		nEvent.Type = EventArgs::KeyChar;
 		nEvent.TextData.Unicode = wParam;
 		SendEvent(&nEvent);
 		break;							
 
 	case WM_LBUTTONDOWN:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = Mouse::Left;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -175,7 +175,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_LBUTTONUP:
-		nEvent.Type = Event::MouseReleased;
+		nEvent.Type = EventArgs::MouseReleased;
 		nEvent.MouseButton.Button = Mouse::Left;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -183,7 +183,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_RBUTTONDOWN:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = Mouse::Right;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -191,7 +191,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_RBUTTONUP:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = Mouse::Right;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -199,7 +199,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_MBUTTONDOWN:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = Mouse::Middle;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -207,7 +207,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_MBUTTONUP:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = Mouse::Middle;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -215,7 +215,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_XBUTTONDOWN:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = HIWORD(wParam) == XBUTTON1 ? Mouse::XButton1 : Mouse::XButton2;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -223,7 +223,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_XBUTTONUP:
-		nEvent.Type = Event::MousePressed;
+		nEvent.Type = EventArgs::MousePressed;
 		nEvent.MouseButton.Button = HIWORD(wParam) == XBUTTON1 ? Mouse::XButton1 : Mouse::XButton2;
 		nEvent.MouseButton.X = LOWORD(lParam);
 		nEvent.MouseButton.Y = HIWORD(lParam);
@@ -231,7 +231,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_MOUSEMOVE:
-		nEvent.Type = Event::MouseMoved;
+		nEvent.Type = EventArgs::MouseMoved;
 		nEvent.MouseMove.X = LOWORD(lParam);
 		nEvent.MouseMove.Y = HIWORD(lParam);
 		SendEvent(&nEvent);
@@ -239,10 +239,10 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 
 
 	case WM_MOUSEWHEEL:
-		nEvent.Type = Event::MouseWheelMoved;
+		nEvent.Type = EventArgs::MouseWheelMoved;
 		nEvent.MouseWheel.Delta = (int)wParam / 120;
 		SendEvent(&nEvent);
-		break;
+		break;*/
 
 	case WM_SIZE:							
 		//			Engine.ResizeScene(LOWORD(lParam),HIWORD(lParam));  
@@ -255,5 +255,17 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 	return 1;
 }
 
+bool CWin32RenderWindow::DoEvents()
+{
+	MSG msg;
+
+	while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)){
+		if(msg.message==WM_QUIT)
+			return false;
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return true;
+}
 
 #endif

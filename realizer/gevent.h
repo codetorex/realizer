@@ -14,124 +14,126 @@
 
 class GObject;
 
+class EventArgs
+{
+public:
+	int type;
+};
 
-// NEAR TOTAL COPY OF SFML
-// THANKS "Laurent Gomila" I WILL NOT FORGET YOU
 
-
-	namespace Mouse
+struct MouseButtons
+{
+	enum TButtons
 	{
-		enum Button
-		{
-			Left,
-			Right,
-			Middle,
-			XButton1,
-			XButton2,
-		};
+		None,
+		Left,
+		Right,
+		Middle,
+		XButton1,
+		XButton2,
+	};
+};
+
+struct Joystick
+{
+	enum TAxis
+	{
+		AxisX,
+		AxisY,
+		AxisZ,
+		AxisR,
+		AxisU,
+		AxisV,
+		AxisPOV,
+	};
+};
+
+
+class MouseEventArgs: public EventArgs
+{
+public:
+	MouseEventArgs(int _x,int _y,int _delta,int _button)
+	{
+		x = _x;
+		y = _y;
+		delta = _delta;
+		button = _button;
 	}
 
+	int x;
+	int y;
+	int delta;
+	int button;
+};
 
-	namespace Joy
+
+/*class EventArgs
+{
+public:
+	enum EventType
 	{
-		enum Axis
-		{
-			gAxisX,
-			gAxisY,
-			gAxisZ,
-			gAxisR,
-			gAxisU,
-			gAxisV,
-			gAxisPOV,
-		};
-	}
-
-	class EventArgs
-	{
-	public:
-
-		struct MouseButtonEvent 
-		{
-			int X;
-			int Y;
-			bool Inside;
-			Mouse::Button Button;
-		};
-
-		struct MouseMoveEvent
-		{
-			int X;
-			int Y;
-		};
-
-		struct MouseWheelEvent
-		{
-			int Delta;
-		};
-
-		struct TextEvent
-		{
-			dword Unicode;
-		};
-
-		struct KeyEvent
-		{
-			int Code;
-			bool Alt;
-			bool Control;
-			bool Shift;
-		};
-
-		struct JoyMoveEvent
-		{
-			dword JoystickID;
-			Joy::Axis Axis;
-			float Position;
-		};
-
-		struct JoyButtonEvent
-		{
-			dword JoystickID;
-			dword Button;
-		};
-
-		enum EventType
-		{
-			MousePressed,
-			MouseReleased,
-			MouseWheelMoved,
-			MouseMoved,
-			MouseLeft,
-			KeyPressed,
-			KeyReleased,
-			KeyChar,
-			GotFocus,
-			LostFocus,
-			JoyPressed,
-			JoyReleased,
-			JoyMoved,
-			Closed,
-		};
-
-		EventType Type;
-		union
-		{
-			MouseButtonEvent	MouseButton;
-			MouseMoveEvent		MouseMove;
-			MouseWheelEvent		MouseWheel;
-			TextEvent			TextData;
-			KeyEvent			Key;
-			JoyMoveEvent		JoyMove;
-			JoyButtonEvent		JoyButton;
-		};
-
+		MousePressed,
+		MouseReleased,
+		MouseWheelMoved,
+		MouseMoved,
+		MouseLeft,
+		KeyPressed,
+		KeyReleased,
+		KeyChar,
+		GotFocus,
+		LostFocus,
+		JoyPressed,
+		JoyReleased,
+		JoyMoved,
+		Closed,
 	};
 
-	class RDLL EventListener
+	int e_type;
+
+	union
 	{
-	public:
-		virtual void OnEvent(EventArgs* evnt) = 0;
+		struct m  
+		{
+			int x; // used by mouse events
+			int y; // used by mouse events
+			bool inside; // used by mouse events
+			union
+			{
+				int button; // used by mouse
+				int delta; // used by mouse wheel
+			};
+		};
+
+		dword t_unicode; // used in text writing event
+
+		struct
+		{
+			int k_code; // used by key events
+			bool k_alt; // used by key events
+			bool k_ctrl; // used by key events
+			bool k_shft; // used by key events
+		};
+
+		struct
+		{
+			dword	j_id;
+			int		j_axis;
+			union
+			{
+				float	j_pos;
+				dword	j_button;
+			};
+			
+		};
 	};
+
+};*/
+
+class RDLL EventListener
+{
+public:
+	virtual void OnEvent(EventArgs* evnt) = 0;
+};
 
 
 /*union EData
@@ -200,28 +202,46 @@ public:
 class RDLL GDispatch
 {
 public:
-	void dispatch(GEventOLD* data){Call(data);}
+	inline void dispatch(EventArgs* data){Call(data);}
 
 private:
-	virtual void Call(GEventOLD*) = 0;
+	virtual void Call(EventArgs*) = 0;
 };
 
 template <class T>
 class GClassDispatch: public GDispatch
 {
 public:
-	typedef void (T::*mfunc)(GEventOLD*);
+	typedef void (T::*mfunc)(EventArgs*);
 	GClassDispatch(T* obje,mfunc memfn) : mobj(obje), mobjfnc(memfn) {};
 	
-	void Call(GEventOLD* mevent){((mobj)->*mobjfnc)(mevent);}
+	inline void Call(EventArgs* mevent){((mobj)->*mobjfnc)(mevent);}
 
 private:
 	T*		mobj;
 	mfunc	mobjfnc;
-};	
+};
+
+class RDLL GEvent
+{
+public:
+	TArray<GDispatch*> dispatchers;
+
+	GEvent& operator += (GDispatch& evnt)
+	{
+		dispatchers.Add(&evnt);
+		return *this;
+	}
+
+	GEvent& operator -= (GDispatch& evnt)
+	{
+		dispatchers.Remove(&evnt);
+		return *this;
+	}
+};
 
 template <class T>
-inline GDispatch* EventHandler(T* obj, void (T::*memFn)(GEventOLD*))
+inline GDispatch* EventHandler(T* obj, void (T::*memFn)(EventArgs*))
 { 
 	return (GDispatch*)(new GClassDispatch<T>(obj,memFn));
 };
@@ -237,7 +257,7 @@ inline GDispatch* EventHandler(T* obj, void (T::*memFn)(GEventOLD*))
 	- maybe compiler compability, only tested on vc++ 6.0 sp4
 	- multi inheritance class maybe not supported, but not tested yet
 */
-inline void InvokeMember(void* pcls,void* fnc,GEventOLD* dt)	// fastest possible member call by hack. fast as normal call.
+inline void InvokeMember(void* pcls,void* fnc,EventArgs* dt)	// fastest possible member call by hack. fast as normal call.
 {
 	_asm
 	{
@@ -247,6 +267,6 @@ inline void InvokeMember(void* pcls,void* fnc,GEventOLD* dt)	// fastest possible
 	}
 }
 
-typedef void (*EFNC)(GEventOLD* gev); // Event Function Definition GIGA ELECTRON VOLT
+typedef void (*EFNC)(EventArgs* gev); // Event Function Definition GIGA ELECTRON VOLT
 
 #endif

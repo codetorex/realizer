@@ -56,6 +56,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../bin/</OutDir>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Library\Projects\raise\raise;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,13 +105,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cengine.h" />
+    <ClInclude Include="chooks.h" />
+    <ClInclude Include="cinput.h" />
     <ClInclude Include="clinux.h" />
     <ClInclude Include="crenderwindow.h" />
+    <ClInclude Include="cresource.h" />
+    <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
     <ClInclude Include="gevent.h" />
+    <ClInclude Include="realizertypes.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="vrenderer.h" />
+    <ClInclude Include="vrendererdx9.h" />
+    <ClInclude Include="vtexture.h" />
+    <ClInclude Include="vtexturemanager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cengine.cpp" />
     <ClCompile Include="crenderwindow.cpp" />
     <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="realizer.cpp">
@@ -128,6 +141,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="vrendererdx9.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
