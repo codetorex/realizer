@@ -5,12 +5,12 @@
 #ifdef WIN32
 
 #include <tstring.h>
-#include "crenderwindow.h"
+#include "cdisplaydevice.h"
 #include "tlinkedlist.h"
 
 
 
-class RDLL CWin32RenderWindow: public RenderWindow
+class RDLL CWin32RenderWindow: public DisplayDevice
 {
 public:
 	HDC			hDC;

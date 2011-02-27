@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "vrendererdx9.h"
+#include "vtexture.h"
+#include "vvertexbuffer.h"
 
 
 bool VRendererDX9::InitializeRenderer( int _width,int _height,ch16* _title,bool fullscr,int bits )
@@ -120,13 +122,15 @@ bool VRendererDX9::InitializeDirect3D()
 	// Disable culling.  This will render the front and back of the triangles.
 	D3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	InitializeFormats();
+
 	return true;
 }
 
 rtex VRendererDX9::LoadTextureFromBitmap( TBitmap* bmp, bool automipmap /*= true*/ )
 {
 	LPDIRECT3DTEXTURE9 rt;
-	D3DFORMAT texfmt = BitmapToD3DFormat(bmp->format);
+	D3DFORMAT texfmt = (D3DFORMAT)((VTextureFormat*)bmp->format)->FormatDescriptor; //BitmapToD3DFormat(bmp->format);
 	DWORD usg = 0;
 
 	if (automipmap)
@@ -141,49 +145,76 @@ rtex VRendererDX9::LoadTextureFromBitmap( TBitmap* bmp, bool automipmap /*= true
 	return (rtex)rt;
 }
 
-
-
-D3DFORMAT VRendererDX9::BitmapToD3DFormat( dword bmpFormat )
+void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
 {
-	TBitmapFormat fmt(bmpFormat);
+	IDirect3DSurface9 *texturesurface = (IDirect3DSurface9*)surf;
+	D3DLOCKED_RECT lockedrect;
+	texturesurface->LockRect(&lockedrect,NULL,0);
 
-	switch(fmt.chn.value)
-	{
-	case FRGB:
-		switch ( fmt.typ )
-		{
-		case btyp::t8bit:
-			switch ( fmt.ordering )
-			{
-			case bord::rgba: return D3DFMT_R8G8B8;
-			}
-		}
-		break;
+	byte* pdata = (byte*)lockedrect.pBits; // because it generally return 4 byte data
+	byte* bmpdata = bmp->data;
 
-	case FRGBA:
-		switch( fmt.typ )
-		{
-		case btyp::t8bit:
-			switch ( fmt.ordering)
-			{
-			case bord::argb: return D3DFMT_A8R8G8B8;
-			case bord::abgr: return D3DFMT_A8B8G8R8;
-			}
-			break;
-		case btyp::tfloat:
-			switch ( fmt.ordering )
-			{
-			case bord::abgr: return D3DFMT_A32B32G32R32F;
-			}
-			break;
-		}
-		break;
-	}
+	// TODO: Check format is capable with d3d device
 
-	throw "Not supported";
+	memcpy(pdata,bmpdata, bmp->pixels * bmp->format->BytesPerItem);
+
+	texturesurface->UnlockRect();
+	texturesurface->Release();
 }
 
 void VRendererDX9::UpdateTextureFromBitmap( rtex tx, TBitmap* bmp )
 {
+	LPDIRECT3DTEXTURE9 rt = (LPDIRECT3DTEXTURE9)tx;
+	IDirect3DSurface9 *texturesurface;
+	rt->GetSurfaceLevel(0,&texturesurface);
 
+	LoadSurfaceFromBitmap(texturesurface,bmp);
+}
+
+void VRendererDX9::InitializeFormats()
+{
+	VTextureFormats k;
+	k.Initialize();
+
+	
+	((VTextureFormat*)VTextureFormats::fARGB)->Supported(D3DFMT_A8R8G8B8);
+	((VTextureFormat*)VTextureFormats::fABGR)->Supported(D3DFMT_A8B8G8R8);
+	((VTextureFormat*)VTextureFormats::fRGBA)->UnSupported(VTextureFormats::fARGB);
+	((VTextureFormat*)VTextureFormats::fBGRA)->UnSupported(VTextureFormats::fABGR);
+	((VTextureFormat*)VTextureFormats::fRGB)->Supported(D3DFMT_R8G8B8);
+	((VTextureFormat*)VTextureFormats::fBGR)->UnSupported(VTextureFormats::fRGB);
+
+	VVertexBufferChannels l;
+	l.Initialize();
+
+	VVertexBufferFormats::Textured2DFormat = new VVertexBufferFormat("2DTEX1","POSRHWT0",D3DFVF_XYZRHW | D3DFVF_TEX0);
+
+}
+
+void VRendererDX9::CreateVertexBuffer( VVertexBuffer* buffer, int capacity )
+{
+	VVertexBufferFormat* bfmt = ((VVertexBufferFormat*)(buffer->BufferFormat));
+	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = NULL;
+	D3DDevice->CreateVertexBuffer(capacity,0,bfmt->FormatDescriptor,D3DPOOL_DEFAULT,&g_pVertexBuffer, NULL);
+	buffer->BufferObject = g_pVertexBuffer;
+}
+
+void VRendererDX9::DeleteVertexBuffer( VVertexBuffer* buffer )
+{
+	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = (LPDIRECT3DVERTEXBUFFER9)buffer->BufferObject;
+	g_pVertexBuffer->Release();
+}
+
+void VRendererDX9::LockVertexBuffer( VVertexBuffer* buffer, int offset, int length )
+{
+	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = (LPDIRECT3DVERTEXBUFFER9)buffer->BufferObject;
+	void* k;
+	g_pVertexBuffer->Lock(offset,length,&k,NULL);
+	buffer->Buffer = (byte*)k;
+}
+
+void VRendererDX9::UnlockVertexBuffer( VVertexBuffer* buffer )
+{
+	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = (LPDIRECT3DVERTEXBUFFER9)buffer->BufferObject;
+	g_pVertexBuffer->Unlock();
 }

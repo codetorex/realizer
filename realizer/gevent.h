@@ -20,20 +20,6 @@ public:
 	int type;
 };
 
-
-struct MouseButtons
-{
-	enum TButtons
-	{
-		None,
-		Left,
-		Right,
-		Middle,
-		XButton1,
-		XButton2,
-	};
-};
-
 struct Joystick
 {
 	enum TAxis

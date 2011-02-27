@@ -9,14 +9,13 @@
 #include "gevent.h"
 #include "cviewport.h"
 
-class EventArgs;
 
-class RenderWindow: public Viewport
+class REngine;
+
+class DisplayDevice: public Viewport
 {
 public:
 	bool vFullScreen;
-
-	TArray<EventListener*> EventListeners;
 
 	virtual bool Create(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24) = 0;
 	virtual void Destroy() = 0;
@@ -27,8 +26,6 @@ public:
 	virtual void ShowMouseCursor(bool visible) = 0;
 
 	virtual void SetCursorPosition(int left,int top) = 0; ///< Relative to viewport.
-
-	virtual void SendEvent(EventArgs* evnt);
 
 	virtual bool InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24) = 0;
 };

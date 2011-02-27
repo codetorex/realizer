@@ -6,6 +6,7 @@
 #include "tbitmap.h"
 #include "cwindows.h" // this renderer is windows only
 
+
 // Clear Bit Definitions
 #define RL_COLOR_BUFFER		D3DCLEAR_TARGET
 #define RL_ZBUFFER			D3DCLEAR_ZBUFFER
@@ -42,6 +43,11 @@ typedef RenderTargetObject rrto;
 typedef void* RendererFont; // renderer font typedef
 typedef RendererFont rfnt;  // must defined in every renderer!
 
+typedef void* RendererVertexBuffer;
+typedef RendererVertexBuffer rvbf;  // must defined in every renderer!
+
+class VVertexBuffer;
+
 class RDLL VRendererDX9: public CWin32RenderWindow
 {
 public:
@@ -54,7 +60,9 @@ private:
 	D3DFORMAT BitmapToD3DFormat(dword bmpFormat);
 
 public:
-	bool	InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr,int bits);
+
+	static void InitializeFormats();
+	bool InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr,int bits);
 
 	inline void Clear(dword flags, dword color)
 	{
@@ -88,11 +96,22 @@ public:
 		return (void*)rt;
 	}
 
+	inline void DeleteTexture(rtex txtr)
+	{
+		((LPDIRECT3DTEXTURE9)txtr)->Release();
+	}
+
+	void CreateVertexBuffer(VVertexBuffer* buffer, int capacity);
+	void DeleteVertexBuffer(VVertexBuffer* buffer);
+	void LockVertexBuffer(VVertexBuffer* buffer, int offset, int length);
+	void UnlockVertexBuffer(VVertexBuffer* buffer);
+
 	rtex LoadTextureFromBitmap(TBitmap* bmp, bool automipmap = true);
 	void UpdateTextureFromBitmap(rtex tx, TBitmap* bmp);
+	
+// Functions that shouldn't be needed to implemented by other drivers
+private:
 	void LoadSurfaceFromBitmap( void* surf, TBitmap* bmp);
-
 };
-
 
 #endif

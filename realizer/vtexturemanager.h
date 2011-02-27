@@ -2,12 +2,18 @@
 #ifndef VTEXTUREMANAGER_H
 #define VTEXTUREMANAGER_H
 
+#include "realizertypes.h"
+#include "tarray.h"
+#include "tstring.h"
+
 class VTexture;
+class TBitmap;
 
 class RDLL VTextureManager: public TArray<VTexture*>
 {
 public:
-	VTexture* LoadTexture(str8& path, bool keepBitmap = false);
+	TBitmap* LoadToBitmap(const str8& path);
+	VTexture* LoadTexture(const str8& path, bool keepBitmap = false);
 };
 
 

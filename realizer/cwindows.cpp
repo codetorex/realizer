@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "cwindows.h"
 #include "gevent.h"
+#include "cengine.h"
 
 #ifdef WIN32
 
@@ -110,7 +111,6 @@ int CWin32RenderWindow::DummyWndProc( HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM
 
 int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 {
-	EventArgs nEvent;
 	switch (uMsg)								
 	{
 	case WM_ACTIVATE:						
@@ -136,38 +136,25 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 	/*case WM_CLOSE :
 		nEvent.Type = EventArgs::Closed;
 		SendEvent(&nEvent);
-		break;
+		break;*/
 
+
+	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
-		nEvent.Type = EventArgs::KeyPressed;
-		nEvent.Key.Code = wParam;
-		nEvent.Key.Alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
-		nEvent.Key.Control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
-		nEvent.Key.Shift   = HIWORD(GetAsyncKeyState(VK_SHIFT))   != 0;
-		SendEvent(&nEvent);
+		Engine.Inputs.Keyboard.KeyDown(wParam);
 		break;						
 
+	case WM_SYSKEYUP:
 	case WM_KEYUP:
-		nEvent.Type = EventArgs::KeyReleased;
-		nEvent.Key.Code = wParam;
-		nEvent.Key.Alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
-		nEvent.Key.Control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
-		nEvent.Key.Shift   = HIWORD(GetAsyncKeyState(VK_SHIFT))   != 0;
-		SendEvent(&nEvent);
+		Engine.Inputs.Keyboard.KeyUp(wParam);
 		break;							
 
 	case WM_CHAR:
-		nEvent.Type = EventArgs::KeyChar;
-		nEvent.TextData.Unicode = wParam;
-		SendEvent(&nEvent);
+		Engine.Inputs.Keyboard.KeyUnicode(wParam);
 		break;							
 
 	case WM_LBUTTONDOWN:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = Mouse::Left;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),MouseButtons::Left);
 		break;
 
 	case WM_LBUTTONDBLCLK:
@@ -175,74 +162,41 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_LBUTTONUP:
-		nEvent.Type = EventArgs::MouseReleased;
-		nEvent.MouseButton.Button = Mouse::Left;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),MouseButtons::Left);
 		break;
 
 	case WM_RBUTTONDOWN:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = Mouse::Right;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),MouseButtons::Right);
 		break;
 
 	case WM_RBUTTONUP:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = Mouse::Right;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),MouseButtons::Right);
 		break;
 
 	case WM_MBUTTONDOWN:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = Mouse::Middle;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),MouseButtons::Middle);
 		break;
 
 	case WM_MBUTTONUP:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = Mouse::Middle;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),MouseButtons::Middle);
 		break;
 
 	case WM_XBUTTONDOWN:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = HIWORD(wParam) == XBUTTON1 ? Mouse::XButton1 : Mouse::XButton2;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam) == XBUTTON1 ? MouseButtons::XButton1 : MouseButtons::XButton2);
 		break;
 
 	case WM_XBUTTONUP:
-		nEvent.Type = EventArgs::MousePressed;
-		nEvent.MouseButton.Button = HIWORD(wParam) == XBUTTON1 ? Mouse::XButton1 : Mouse::XButton2;
-		nEvent.MouseButton.X = LOWORD(lParam);
-		nEvent.MouseButton.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam) == XBUTTON1 ? MouseButtons::XButton1 : MouseButtons::XButton2);
 		break;
 
 	case WM_MOUSEMOVE:
-		nEvent.Type = EventArgs::MouseMoved;
-		nEvent.MouseMove.X = LOWORD(lParam);
-		nEvent.MouseMove.Y = HIWORD(lParam);
-		SendEvent(&nEvent);
+		Engine.Inputs.Mouse.MouseMove(LOWORD(lParam),HIWORD(lParam));
 		break;
 
 
 	case WM_MOUSEWHEEL:
-		nEvent.Type = EventArgs::MouseWheelMoved;
-		nEvent.MouseWheel.Delta = (int)wParam / 120;
-		SendEvent(&nEvent);
-		break;*/
+		Engine.Inputs.Mouse.MouseWheel(LOWORD(lParam),HIWORD(lParam),(int)wParam / 120);
+		break;
 
 	case WM_SIZE:							
 		//			Engine.ResizeScene(LOWORD(lParam),HIWORD(lParam));  

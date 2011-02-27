@@ -109,21 +109,31 @@
     <ClInclude Include="chooks.h" />
     <ClInclude Include="cinput.h" />
     <ClInclude Include="clinux.h" />
-    <ClInclude Include="crenderwindow.h" />
+    <ClInclude Include="cdisplaydevice.h" />
     <ClInclude Include="cresource.h" />
     <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
+    <ClInclude Include="gentity.h" />
     <ClInclude Include="gevent.h" />
+    <ClInclude Include="realizer.h" />
     <ClInclude Include="realizertypes.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="tfilesystem.h" />
+    <ClInclude Include="tfoldermount.h" />
+    <ClInclude Include="tmount.h" />
     <ClInclude Include="vrenderer.h" />
     <ClInclude Include="vrendererdx9.h" />
+    <ClInclude Include="vscenemanager.h" />
+    <ClInclude Include="vstructuresdx9.h" />
     <ClInclude Include="vtexture.h" />
+    <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
+    <ClInclude Include="vvertexbuffer.h" />
+    <ClInclude Include="vvertexbufferformat.h" />
+    <ClInclude Include="vvertexstream.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cengine.cpp" />
-    <ClCompile Include="crenderwindow.cpp" />
     <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="realizer.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -141,7 +151,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="tfilesystem.cpp" />
+    <ClCompile Include="tmount.cpp" />
     <ClCompile Include="vrendererdx9.cpp" />
+    <ClCompile Include="vtexture.cpp" />
+    <ClCompile Include="vtextureformats.cpp" />
+    <ClCompile Include="vtexturemanager.cpp" />
+    <ClCompile Include="vvertexbuffer.cpp" />
+    <ClCompile Include="vvertexbufferformat.cpp" />
+    <ClCompile Include="vvertexstream.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

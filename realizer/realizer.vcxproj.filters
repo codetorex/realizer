@@ -31,13 +31,28 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{78a70caa-587f-4209-932a-d422b4020644}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{aa779be0-95b2-4fef-be98-f0536726d704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\Scene">
+      <UniqueIdentifier>{89a69471-45f9-4ad1-ad46-9d1fcdd806e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{fac6c169-4164-4f29-a720-15828b9af870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\IO">
+      <UniqueIdentifier>{296c0f7b-ed2a-4663-9acd-9d884a32ac31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Console">
+      <UniqueIdentifier>{6e6861f6-d505-420e-a621-673def5bee86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\Model">
+      <UniqueIdentifier>{afef5612-82cb-4157-bdb0-504de3a8eda0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="crenderwindow.h">
-      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="cwindows.h">
       <Filter>Source Files\Core</Filter>
@@ -50,9 +65,6 @@
     </ClInclude>
     <ClInclude Include="cviewport.h">
       <Filter>Source Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="realizertypes.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="vrendererdx9.h">
       <Filter>Source Files\Visual\RendererDX9</Filter>
@@ -78,6 +90,45 @@
     <ClInclude Include="vtexturemanager.h">
       <Filter>Source Files\Visual\Material System</Filter>
     </ClInclude>
+    <ClInclude Include="gentity.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="realizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="realizertypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vscenemanager.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="cdisplaydevice.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="tfilesystem.h">
+      <Filter>Source Files\Tools\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="tmount.h">
+      <Filter>Source Files\Tools\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="tfoldermount.h">
+      <Filter>Source Files\Tools\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="vvertexstream.h">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="vtextureformats.h">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClInclude>
+    <ClInclude Include="vvertexbuffer.h">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="vvertexbufferformat.h">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="vstructuresdx9.h">
+      <Filter>Source Files\Visual\RendererDX9</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -89,14 +140,35 @@
     <ClCompile Include="cwindows.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="crenderwindow.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="vrendererdx9.cpp">
       <Filter>Source Files\Visual\RendererDX9</Filter>
     </ClCompile>
     <ClCompile Include="cengine.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="tfilesystem.cpp">
+      <Filter>Source Files\Tools\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="tmount.cpp">
+      <Filter>Source Files\Tools\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="vvertexstream.cpp">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="vtexture.cpp">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClCompile>
+    <ClCompile Include="vtextureformats.cpp">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClCompile>
+    <ClCompile Include="vtexturemanager.cpp">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClCompile>
+    <ClCompile Include="vvertexbufferformat.cpp">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="vvertexbuffer.cpp">
+      <Filter>Source Files\Visual\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

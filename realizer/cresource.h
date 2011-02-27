@@ -1,7 +1,7 @@
 #ifndef CRESOURCE_H
 #define CRESOURCE_H
 
-#include "cengine.h"
+class REngine;
 
 class Resource
 {
@@ -16,7 +16,7 @@ public:
 		MESH,
 	};
 
-	REngine*		engine;
+	//REngine*		engine;
 	ResourceTypes	resourceType;
 };
 
