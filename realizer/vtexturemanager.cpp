@@ -14,7 +14,7 @@ TBitmap* VTextureManager::LoadToBitmap(const str8& path)
 
 	if (path.EndsWith("bmp"))
 	{
-		Loader->loadbmp(fs,true,true);
+		Loader->loadbmp(fs,false,true);
 	}
 
 	delete fs;
@@ -26,7 +26,7 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 {
 	TBitmap* Loader = LoadToBitmap(path);
 
-	VTextureFormat* BitmapFormat = (VTextureFormat*)Loader->format;
+	VTextureFormat* BitmapFormat = (VTextureFormat*)Loader->BufferFormat;
 
 	if (!BitmapFormat->IsSupported)
 	{
@@ -35,7 +35,7 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 			throw Exception("Bitmap is in not supported format");
 		}
 
-		Loader->convert( BitmapFormat->FallbackFormat );
+		Loader->Convert( BitmapFormat->FallbackFormat );
 	}
 
 	VTexture* LoadedTexture = new VTexture();
@@ -43,7 +43,7 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 	LoadedTexture->height = Loader->height;
 	LoadedTexture->path = path;
 	LoadedTexture->pathHash = str8::GetHash(path);
-	LoadedTexture->format = Loader->format;
+	LoadedTexture->format = Loader->BufferFormat;
 	LoadedTexture->bitmap = Loader;
 
 	LoadedTexture->CreateTexture();
@@ -55,4 +55,10 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 	}
 
 	return LoadedTexture;
+}
+
+void VTextureManager::ReleaseTexture( VTexture* texture )
+{
+	Remove(texture);
+	delete texture;
 }

@@ -1,7 +1,9 @@
 #ifndef VVERTEXBUFFERFORMAT_H
 #define VVERTEXBUFFERFORMAT_H
 
+
 #include <tflexiblebuffer.h>
+#include "realizertypes.h"
 
 class VVertexBufferChannels
 {
@@ -58,7 +60,7 @@ public:
 class VVertexBufferFormats
 {
 public:
-	static VVertexBufferFormat* Textured2DFormat; // should be initialized by renderer
+	static VVertexBufferFormat* Textured1; // should be initialized by renderer
 };
 
 

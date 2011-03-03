@@ -25,6 +25,11 @@ public:
 
 	void Initialize(int width,int height, string title, bool fullscreen = false,int bits = 24);
 	void Run();
+
+	inline void Release(VTexture** res)
+	{
+		Textures.ReleaseTexture(res);
+	}
 };
 
 extern REngine Engine;

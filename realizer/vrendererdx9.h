@@ -5,48 +5,8 @@
 #include "tstring.h"
 #include "tbitmap.h"
 #include "cwindows.h" // this renderer is windows only
-
-
-// Clear Bit Definitions
-#define RL_COLOR_BUFFER		D3DCLEAR_TARGET
-#define RL_ZBUFFER			D3DCLEAR_ZBUFFER
-
-#define RL_SRCALPHA			D3DBLEND_SRCALPHA
-#define RL_INVSRCALPHA		D3DBLEND_INVSRCALPHA
-
-#define RL_CUBE_PX			0	// RIGHT
-#define RL_CUBE_NX			1	// LEFT
-#define RL_CUBE_PY			2	// TOP
-#define RL_CUBE_NY			3	// BOTTOM
-#define RL_CUBE_PZ			4	// FRONT
-#define RL_CUBE_NZ			5	// BACK
-
-#define RL_CULL_CCW			D3DCULL_CCW
-#define RL_CULL_CW			D3DCULL_CW
-#define RL_CULL_NONE		D3DCULL_NONE
-
-#define	RL_MAGFILTER		D3DSAMP_MAGFILTER
-#define RL_MINFILTER		D3DSAMP_MINFILTER
-#define RL_MIPFILTER		D3DSAMP_MIPFILTER
-
-#define RL_DISABLEFILTER	D3DTEXF_NONE	// just for mipmap			
-#define RL_POINTFILTER		D3DTEXF_POINT
-#define RL_LINEARFILTER		D3DTEXF_LINEAR
-#define RL_ANISOTROPIC		D3DTEXF_ANISOTROPIC
-
-typedef void* RendererTexture; // renderer texture type
-typedef RendererTexture rtex; // note: rtex must be defined in every renderer!
-
-typedef void* RenderTargetObject;
-typedef RenderTargetObject rrto;
-
-typedef void* RendererFont; // renderer font typedef
-typedef RendererFont rfnt;  // must defined in every renderer!
-
-typedef void* RendererVertexBuffer;
-typedef RendererVertexBuffer rvbf;  // must defined in every renderer!
-
-class VVertexBuffer;
+#include "vvertexstream.h"
+#include "mmatrix.h"
 
 class RDLL VRendererDX9: public CWin32RenderWindow
 {
@@ -93,18 +53,96 @@ public:
 	{
 		LPDIRECT3DTEXTURE9 rt;
 		D3DXCreateTextureFromFileA(D3DDevice,filepath,&rt);
-		return (void*)rt;
+		return rt;
 	}
 
 	inline void DeleteTexture(rtex txtr)
 	{
-		((LPDIRECT3DTEXTURE9)txtr)->Release();
+		txtr->Release();
 	}
 
-	void CreateVertexBuffer(VVertexBuffer* buffer, int capacity);
-	void DeleteVertexBuffer(VVertexBuffer* buffer);
-	void LockVertexBuffer(VVertexBuffer* buffer, int offset, int length);
-	void UnlockVertexBuffer(VVertexBuffer* buffer);
+	inline void SetTexture(int stage,rtex txtr)
+	{
+		D3DDevice->SetTexture(stage,txtr);
+	}
+
+	inline void SetTextureFilter(int stage, int filterType, int value)
+	{
+		D3DDevice->SetSamplerState(stage,(D3DSAMPLERSTATETYPE)filterType,value);
+	}
+
+	inline void EnableTexturing(int stage)
+	{
+		D3DDevice->SetTextureStageState(stage,D3DTSS_COLOROP, D3DTOP_MODULATE);
+	}
+
+	inline void DisableTexturing(int stage)
+	{
+		D3DDevice->SetTextureStageState(stage, D3DTSS_COLOROP, D3DTOP_DISABLE);
+	}
+
+	inline void RenderVertexBuffer(VVertexBuffer* buffer)
+	{
+		D3DDevice->SetStreamSource(0,buffer->BufferObject,0,buffer->BufferFormat->BytesPerItem);
+		D3DDevice->SetFVF(((VVertexBufferFormat*)buffer->BufferFormat)->FormatDescriptor);
+		D3DDevice->DrawPrimitive((D3DPRIMITIVETYPE)buffer->MeshType,0,buffer->PrimitiveCount);
+	}
+
+	inline void CreateVertexBuffer(VVertexBuffer* buffer, int capacity)
+	{
+		VVertexBufferFormat* bfmt = ((VVertexBufferFormat*)(buffer->BufferFormat));
+		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = NULL;
+		D3DDevice->CreateVertexBuffer(capacity,0,bfmt->FormatDescriptor,D3DPOOL_DEFAULT,&g_pVertexBuffer, NULL);
+		buffer->BufferObject = g_pVertexBuffer;
+	}
+
+	inline void DeleteVertexBuffer(VVertexBuffer* buffer)
+	{
+		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = buffer->BufferObject;
+		g_pVertexBuffer->Release();
+	}
+
+	inline void LockVertexBuffer(VVertexBuffer* buffer, int offset, int length)
+	{
+		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = buffer->BufferObject;
+		void* k;
+		g_pVertexBuffer->Lock(offset,length,&k,NULL);
+		buffer->Buffer = (byte*)k;
+	}
+
+	inline void UnlockVertexBuffer(VVertexBuffer* buffer)
+	{
+		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = buffer->BufferObject;
+		g_pVertexBuffer->Unlock();
+	}
+
+	inline void SetProjection(const mat4& matrix)
+	{
+		D3DDevice->SetTransform(D3DTS_PROJECTION,(D3DXMATRIX*)&matrix);
+	}
+
+	inline void SetDepthTest(bool enabled)
+	{
+		D3DDevice->SetRenderState(D3DRS_ZENABLE,enabled);
+	}
+
+	/**
+	* Enables 2D rendering mode, thats good for rendering hud, gui and on screen stuff.
+	*/
+	inline void Enter2D()
+	{
+		MProjectionMatrix mOrtho;
+		mOrtho.OrthoOffCenterR(0,(float)vWidth,0,(float)vHeight,0.0f,1.0f);
+		SetProjection(mOrtho);
+		SetDepthTest(false);
+		// save old projection ,view and world matrices
+	}
+
+	inline void Exit2D()
+	{
+		// restore old projection, view and world matrices
+		// set depth test back?
+	}
 
 	rtex LoadTextureFromBitmap(TBitmap* bmp, bool automipmap = true);
 	void UpdateTextureFromBitmap(rtex tx, TBitmap* bmp);
@@ -113,5 +151,7 @@ public:
 private:
 	void LoadSurfaceFromBitmap( void* surf, TBitmap* bmp);
 };
+
+
 
 #endif

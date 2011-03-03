@@ -126,7 +126,7 @@
     <ClInclude Include="vvertexbufferformat.h">
       <Filter>Source Files\Visual\Model</Filter>
     </ClInclude>
-    <ClInclude Include="vstructuresdx9.h">
+    <ClInclude Include="vtypesdx9.h">
       <Filter>Source Files\Visual\RendererDX9</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,5 +170,13 @@
     <ClCompile Include="vvertexbuffer.cpp">
       <Filter>Source Files\Visual\Model</Filter>
     </ClCompile>
+    <ClCompile Include="vtextureconverters.cpp">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vrenderertypes.h">
+      <Filter>Source Files\Visual</Filter>
+    </None>
   </ItemGroup>
 </Project>

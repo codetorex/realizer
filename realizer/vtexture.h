@@ -22,15 +22,14 @@ public:
 
 	TBufferFormat* format;
 
-	VTexture()
+	VTexture();
+	~VTexture()
 	{
-		pathHash = 0;
-		bitmap = 0;
-		texID = 0;
-		width = 0;
-		height = 0;
+		if (texID != 0)
+			DeleteTexture();
 
-		resourceType = Resource::TEXTURE;
+		if (bitmap != 0)
+			delete bitmap;
 	}
 
 	inline void CreateTexture()
@@ -61,6 +60,11 @@ public:
 			throw Exception("No bitmap present");
 
 		Engine.Renderer.UpdateTextureFromBitmap(this->texID,this->bitmap);
+	}
+
+	inline void SetTexture(int stage = 0)
+	{
+		Engine.Renderer.SetTexture(stage,texID);
 	}
 };
 

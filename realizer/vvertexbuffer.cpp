@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "cengine.h"
 #include "vvertexbuffer.h"
 
 
@@ -27,4 +28,43 @@ void VVertexBuffer::CreateVertexBuffer( int cap )
 		MemoryDriver::Copy(Buffer,dataPtr, oldUsed * BufferFormat->BytesPerItem);
 		delete [] dataPtr;
 	}
+}
+
+void VVertexBuffer::DeleteVertexBuffer()
+{
+	if (BufferObject == 0)
+		throw Exception("Not created");
+
+	if (Locked)
+	{
+		UnlockBuffer();
+	}
+
+	Engine.Renderer.DeleteVertexBuffer(this);
+}
+
+void VVertexBuffer::LockBuffer()
+{
+	if (BufferObject == 0)
+		throw Exception("Not created");
+
+	Engine.Renderer.LockVertexBuffer(this,0,Capacity);
+	Indicator = Buffer;
+	Locked = true;
+}
+
+void VVertexBuffer::UnlockBuffer()
+{
+	if (BufferObject == 0)
+		throw Exception("Not created");
+
+	Engine.Renderer.UnlockVertexBuffer(this);
+	Locked = false;
+
+	PrimitiveCount = GetPrimCount();
+}
+
+void VVertexBuffer::Render()
+{
+	Engine.Renderer.RenderVertexBuffer(this);
 }

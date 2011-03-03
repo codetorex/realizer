@@ -7,6 +7,7 @@ TFormatElement* VTextureChannels::cDepth32 = 0;
 TFormatElement* VTextureChannels::cDepth24 = 0;
 TFormatElement* VTextureChannels::cDepth16 = 0;
 TFormatElement* VTextureChannels::cStencil = 0;
+TFormatElement* VTextureChannels::cUnused = 0;
 TFormatElement* VTextureChannels::cRedf = 0;
 TFormatElement* VTextureChannels::cGreenf = 0;
 TFormatElement* VTextureChannels::cBluef = 0;
@@ -30,6 +31,8 @@ void VTextureChannels::CreateExtendedChannels()
 	cDepth16 = new TFormatElement("Depth (short)","D16",tc_short);
 	cStencil = new TFormatElement("Stencil (byte)","S8",tc_byte);
 
+	cUnused = new TFormatElement ("Unused (byte)","X8",tc_byte);
+
 	cRedf    = new TFormatElement("Red (float)","RF",tc_float);
 	cGreenf  = new TFormatElement("Green (float)","GF",tc_float);
 	cBluef   = new TFormatElement("Blue (float)","BF",tc_float);
@@ -48,6 +51,7 @@ void VTextureChannels::CreateExtendedChannels()
 	BitmapChannelRegistry->Add(cDepth24);
 	BitmapChannelRegistry->Add(cDepth16);
 	BitmapChannelRegistry->Add(cStencil);
+	BitmapChannelRegistry->Add(cUnused);
 	BitmapChannelRegistry->Add(cRedf);
 	BitmapChannelRegistry->Add(cGreenf);
 	BitmapChannelRegistry->Add(cBluef);
@@ -59,6 +63,9 @@ void VTextureChannels::CreateExtendedChannels()
 	BitmapChannelRegistry->Add(cLuminance);
 	BitmapChannelRegistry->Add(cCompressedStream);
 }
+
+VTextureFormat* VTextureFormats::fXRGB = 0;
+VTextureFormat* VTextureFormats::fXBGR = 0;
 
 VTextureFormat* VTextureFormats::fABGR16 = 0;
 VTextureFormat* VTextureFormats::fDXT1 = 0;
@@ -98,6 +105,9 @@ void VTextureFormats::CreateExtendedFormats()
 	fBGR          = VTextureFormat::CreateFormat("BGR","B8G8R8");
 
 	//Initialize Extended Formats
+	fXRGB		  = new VTextureFormat("XRGB","X8R8G8B8");
+	fXBGR		  = new VTextureFormat("XBGR","X8B8G8R8");
+
 	fABGR16       = new VTextureFormat("ABGR16","A16B16G16R16");
 	fDXT1         = new VTextureFormat("DXT1","STREAM");
 	fDXT3         = new VTextureFormat("DXT3","STREAM");
@@ -119,6 +129,8 @@ void VTextureFormats::CreateExtendedFormats()
 	BitmapFormatRegistry->Add(fRGB);
 	BitmapFormatRegistry->Add(fBGR);
 
+	BitmapFormatRegistry->Add((TBufferFormat*)fXRGB);
+	BitmapFormatRegistry->Add((TBufferFormat*)fXBGR);
 	BitmapFormatRegistry->Add((TBufferFormat*)fABGR16);
 	BitmapFormatRegistry->Add((TBufferFormat*)fDXT1);
 	BitmapFormatRegistry->Add((TBufferFormat*)fDXT3);

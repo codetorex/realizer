@@ -130,7 +130,7 @@ bool VRendererDX9::InitializeDirect3D()
 rtex VRendererDX9::LoadTextureFromBitmap( TBitmap* bmp, bool automipmap /*= true*/ )
 {
 	LPDIRECT3DTEXTURE9 rt;
-	D3DFORMAT texfmt = (D3DFORMAT)((VTextureFormat*)bmp->format)->FormatDescriptor; //BitmapToD3DFormat(bmp->format);
+	D3DFORMAT texfmt = (D3DFORMAT)((VTextureFormat*)bmp->BufferFormat)->FormatDescriptor; //BitmapToD3DFormat(bmp->format);
 	DWORD usg = 0;
 
 	if (automipmap)
@@ -141,8 +141,8 @@ rtex VRendererDX9::LoadTextureFromBitmap( TBitmap* bmp, bool automipmap /*= true
 	D3DXCreateTexture(D3DDevice,bmp->width,bmp->height,0,usg,texfmt,D3DPOOL_MANAGED,&rt);
 
 	//bmp->texID = (void*)rt; // small fix before calling func.
-	UpdateTextureFromBitmap((rtex)rt,bmp); // we can use this function instead YAY!
-	return (rtex)rt;
+	UpdateTextureFromBitmap(rt,bmp); // we can use this function instead YAY!
+	return rt;
 }
 
 void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
@@ -152,11 +152,22 @@ void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
 	texturesurface->LockRect(&lockedrect,NULL,0);
 
 	byte* pdata = (byte*)lockedrect.pBits; // because it generally return 4 byte data
-	byte* bmpdata = bmp->data;
+	byte* bmpdata = bmp->Buffer;
 
 	// TODO: Check format is capable with d3d device
 
-	memcpy(pdata,bmpdata, bmp->pixels * bmp->format->BytesPerItem);
+	int pix = bmp->pixels;
+
+	/*while(pix--)
+	{
+		*(dword*)pdata = *(dword*)bmpdata;
+		pdata+=4;
+		bmpdata+=4;
+	}*/
+
+	//memset(pdata,128,pix * 4);
+
+	memcpy(pdata,bmpdata, bmp->pixels * bmp->BufferFormat->BytesPerItem);
 
 	texturesurface->UnlockRect();
 	texturesurface->Release();
@@ -164,9 +175,8 @@ void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
 
 void VRendererDX9::UpdateTextureFromBitmap( rtex tx, TBitmap* bmp )
 {
-	LPDIRECT3DTEXTURE9 rt = (LPDIRECT3DTEXTURE9)tx;
 	IDirect3DSurface9 *texturesurface;
-	rt->GetSurfaceLevel(0,&texturesurface);
+	tx->GetSurfaceLevel(0,&texturesurface);
 
 	LoadSurfaceFromBitmap(texturesurface,bmp);
 }
@@ -176,45 +186,20 @@ void VRendererDX9::InitializeFormats()
 	VTextureFormats k;
 	k.Initialize();
 
-	
+	// TODO: test for RGB is supported, if not set it to fallback
+
 	((VTextureFormat*)VTextureFormats::fARGB)->Supported(D3DFMT_A8R8G8B8);
 	((VTextureFormat*)VTextureFormats::fABGR)->Supported(D3DFMT_A8B8G8R8);
+	((VTextureFormat*)VTextureFormats::fXRGB)->Supported(D3DFMT_X8R8G8B8);
+	((VTextureFormat*)VTextureFormats::fXBGR)->Supported(D3DFMT_X8B8G8R8);
 	((VTextureFormat*)VTextureFormats::fRGBA)->UnSupported(VTextureFormats::fARGB);
 	((VTextureFormat*)VTextureFormats::fBGRA)->UnSupported(VTextureFormats::fABGR);
-	((VTextureFormat*)VTextureFormats::fRGB)->Supported(D3DFMT_R8G8B8);
-	((VTextureFormat*)VTextureFormats::fBGR)->UnSupported(VTextureFormats::fRGB);
+	((VTextureFormat*)VTextureFormats::fRGB)->UnSupported(VTextureFormats::fXRGB);
+	((VTextureFormat*)VTextureFormats::fBGR)->UnSupported(VTextureFormats::fXRGB);
 
 	VVertexBufferChannels l;
 	l.Initialize();
 
-	VVertexBufferFormats::Textured2DFormat = new VVertexBufferFormat("2DTEX1","POSRHWT0",D3DFVF_XYZRHW | D3DFVF_TEX0);
+	VVertexBufferFormats::Textured1 = new VVertexBufferFormat("2DTEX1","POST0",D3DFVF_XYZ | D3DFVF_TEX1);
 
-}
-
-void VRendererDX9::CreateVertexBuffer( VVertexBuffer* buffer, int capacity )
-{
-	VVertexBufferFormat* bfmt = ((VVertexBufferFormat*)(buffer->BufferFormat));
-	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = NULL;
-	D3DDevice->CreateVertexBuffer(capacity,0,bfmt->FormatDescriptor,D3DPOOL_DEFAULT,&g_pVertexBuffer, NULL);
-	buffer->BufferObject = g_pVertexBuffer;
-}
-
-void VRendererDX9::DeleteVertexBuffer( VVertexBuffer* buffer )
-{
-	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = (LPDIRECT3DVERTEXBUFFER9)buffer->BufferObject;
-	g_pVertexBuffer->Release();
-}
-
-void VRendererDX9::LockVertexBuffer( VVertexBuffer* buffer, int offset, int length )
-{
-	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = (LPDIRECT3DVERTEXBUFFER9)buffer->BufferObject;
-	void* k;
-	g_pVertexBuffer->Lock(offset,length,&k,NULL);
-	buffer->Buffer = (byte*)k;
-}
-
-void VRendererDX9::UnlockVertexBuffer( VVertexBuffer* buffer )
-{
-	LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = (LPDIRECT3DVERTEXBUFFER9)buffer->BufferObject;
-	g_pVertexBuffer->Unlock();
 }

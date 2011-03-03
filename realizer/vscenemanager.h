@@ -52,6 +52,10 @@ public:
 		}
 	}
 
+	inline void Update()
+	{
+		ActiveScene->Update();
+	}
 
 	inline void Render()
 	{

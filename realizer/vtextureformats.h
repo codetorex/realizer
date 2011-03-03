@@ -47,6 +47,8 @@ public:
 
 	static TFormatElement* cStencil;
 
+	static TFormatElement* cUnused;
+
 	static TFormatElement* cRedf;
 	static TFormatElement* cGreenf;
 	static TFormatElement* cBluef;
@@ -76,6 +78,9 @@ public:
 class VTextureFormats: public TBitmapFormats
 {
 public:
+	static VTextureFormat* fXRGB;
+	static VTextureFormat* fXBGR;
+
 	static VTextureFormat* fABGR16; // each component is short
 	static VTextureFormat* fDXT1;
 	static VTextureFormat* fDXT3;
@@ -91,10 +96,12 @@ public:
 	static VTextureFormat* fABGR32F;
 
 	void CreateExtendedFormats();
+	void CreateExtendedConverters();
 
 	void Initialize()
 	{
 		CreateExtendedFormats();
+		CreateExtendedConverters();
 	}
 };
 

@@ -27,7 +27,7 @@ TFormatElement* VVertexBufferChannels::Color = 0; // ARGB order in dX
 
 TArray<TFormatElement*>* VVertexBufferChannels::VBChannelRegistry = 0; // ARGB order in dX
 
-VVertexBufferFormat* VVertexBufferFormats::Textured2DFormat = 0;
+VVertexBufferFormat* VVertexBufferFormats::Textured1 = 0;
 
 void VVertexBufferChannels::Initialize()
 {

@@ -3,7 +3,7 @@
 
 #include "realizertypes.h"
 #include "cengine.h"
-
+#include "vtexture.h"
 
 
 

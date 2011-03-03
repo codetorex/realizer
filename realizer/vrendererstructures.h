@@ -1,0 +1,6 @@
+#ifndef VRENDERERSTRUCTURES_H
+#define VRENDERERSTRUCTURES_H
+
+
+
+#endif

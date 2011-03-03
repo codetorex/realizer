@@ -124,10 +124,10 @@
     <ClInclude Include="vrenderer.h" />
     <ClInclude Include="vrendererdx9.h" />
     <ClInclude Include="vscenemanager.h" />
-    <ClInclude Include="vstructuresdx9.h" />
     <ClInclude Include="vtexture.h" />
     <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
+    <ClInclude Include="vtypesdx9.h" />
     <ClInclude Include="vvertexbuffer.h" />
     <ClInclude Include="vvertexbufferformat.h" />
     <ClInclude Include="vvertexstream.h" />
@@ -155,11 +155,15 @@
     <ClCompile Include="tmount.cpp" />
     <ClCompile Include="vrendererdx9.cpp" />
     <ClCompile Include="vtexture.cpp" />
+    <ClCompile Include="vtextureconverters.cpp" />
     <ClCompile Include="vtextureformats.cpp" />
     <ClCompile Include="vtexturemanager.cpp" />
     <ClCompile Include="vvertexbuffer.cpp" />
     <ClCompile Include="vvertexbufferformat.cpp" />
     <ClCompile Include="vvertexstream.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vrenderertypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,20 +1,27 @@
 #ifndef VVERTEXBUFFER_H
 #define VVERTEXBUFFER_H
 
-
-#include "cengine.h"
 #include "vvertexbufferformat.h"
+
+
+// TODO: make these guys enum
+
+
 
 class VVertexBuffer: public TFlexibleBuffer
 {
 public:
-	bool Locked;
-	rvbf BufferObject;
+	bool	Locked;
+	rvbf	BufferObject;
+	int		MeshType;
+	dword	PrimitiveCount;
 
-	VVertexBuffer(VVertexBufferFormat* _format, int _capacity)
+	VVertexBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType)
 	{
 		Capacity = _capacity;
 		BufferFormat = _format;
+		MeshType = _meshType;
+		PrimitiveCount = 0;
 
 		BufferObject = 0;
 		Locked = false;
@@ -28,41 +35,32 @@ public:
 	/**
 	* Deallocates memory on GPU.
 	*/
-	void DeleteVertexBuffer()
-	{
-		if (BufferObject == 0)
-			throw Exception("Not created");
-
-		if (Locked)
-		{
-			UnlockBuffer();
-		}
-
-		Engine.Renderer.DeleteVertexBuffer(this);
-	}
+	void DeleteVertexBuffer();
 
 	/**
 	* Makes GPU memory writable.
 	*/
-	inline void LockBuffer()
-	{
-		if (BufferObject == 0)
-			throw Exception("Not created");
+	void LockBuffer();
 
-		Engine.Renderer.LockVertexBuffer(this,0,Capacity);
-		Locked = true;
-	}
+	void Render();
 
 	/**
 	* Commits writes and unlocks buffer makes it usable for rendering.
 	*/
-	inline void UnlockBuffer()
-	{
-		if (BufferObject == 0)
-			throw Exception("Not created");
+	void UnlockBuffer();
 
-		Engine.Renderer.UnlockVertexBuffer(this);
-		Locked = false;
+	inline int GetPrimCount() // todo: move this to correct stuff
+	{
+		switch (MeshType)
+		{
+		case RL_TRIANGLELIST: return Used/3;
+		case RL_TRIANGLESTRIP: return Used-2;
+		case RL_POINTLIST: return Used;
+		case RL_LINELIST: return Used/2;
+		case RL_LINESTRIP: return Used-1;
+		case RL_TRIANGLEFAN: return Used-2;
+		}
+		return -1;
 	}
 
 };
