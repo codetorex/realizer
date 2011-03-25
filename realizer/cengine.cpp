@@ -13,9 +13,12 @@ void REngine::Run()
 {
 	running = true;
 
+	Time.Begining();
+	Draw.Initialize();
 	while( running )
 	{
 		Renderer.DoEvents();
-		Scenes.Render();
+		Scenes.Run();
+		Time.TimePassed();
 	}
 }

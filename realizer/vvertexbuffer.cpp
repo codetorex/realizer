@@ -20,8 +20,10 @@ void VVertexBuffer::CreateVertexBuffer( int cap )
 		Free();
 	}
 
-	Engine.Renderer.CreateVertexBuffer(this,cap * BufferFormat->BytesPerItem);
 	Capacity = cap;
+	CapacityByte = BufferFormat->BytesPerItem * Capacity;
+	Engine.Renderer.CreateVertexBuffer(this,CapacityByte);
+	
 
 	if (dataPtr != 0)
 	{
@@ -41,15 +43,19 @@ void VVertexBuffer::DeleteVertexBuffer()
 	}
 
 	Engine.Renderer.DeleteVertexBuffer(this);
+	BufferObject = 0;
 }
 
-void VVertexBuffer::LockBuffer()
+
+
+void VVertexBuffer::LockBuffer(int offset,int length)
 {
 	if (BufferObject == 0)
 		throw Exception("Not created");
 
-	Engine.Renderer.LockVertexBuffer(this,0,Capacity);
+	Engine.Renderer.LockVertexBuffer(this,offset,length);
 	Indicator = Buffer;
+	Used = 0;
 	Locked = true;
 }
 

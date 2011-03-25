@@ -6,9 +6,11 @@
 #include "cresource.h"
 #include "cengine.h"
 #include "vtextureformats.h"
+#include "mvector2.h"
+#include "trange.h"
 
 
-class RDLL VTexture: public Resource
+class RDLL VTexture: public Resource, public TRange
 {
 public:
 	dword		pathHash;
@@ -17,12 +19,24 @@ public:
 	TBitmap*	bitmap;
 	rtex		texID;
 
-	int			width;
-	int			height;
-
 	TBufferFormat* format;
 
 	VTexture();
+
+	VTexture(TBitmap* source)
+	{
+		Width = source->Width;
+		Height = source->Height;
+
+		format = source->BufferFormat;
+		bitmap = source;
+
+		pathHash = 0;
+		texID = 0;
+
+		resourceType = Resource::TEXTURE;
+	}
+
 	~VTexture()
 	{
 		if (texID != 0)

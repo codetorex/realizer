@@ -61,6 +61,7 @@ class VVertexBufferFormats
 {
 public:
 	static VVertexBufferFormat* Textured1; // should be initialized by renderer
+	static VVertexBufferFormat* ColoredTextured1;
 };
 
 

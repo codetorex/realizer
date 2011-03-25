@@ -100,6 +100,7 @@ public:
 	{
 		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = buffer->BufferObject;
 		g_pVertexBuffer->Release();
+
 	}
 
 	inline void LockVertexBuffer(VVertexBuffer* buffer, int offset, int length)
@@ -126,6 +127,11 @@ public:
 		D3DDevice->SetRenderState(D3DRS_ZENABLE,enabled);
 	}
 
+	inline void SetWorld(const mat4& matrix)
+	{
+		D3DDevice->SetTransform(D3DTS_WORLD,(D3DXMATRIX*)&matrix);
+	}
+
 	/**
 	* Enables 2D rendering mode, thats good for rendering hud, gui and on screen stuff.
 	*/
@@ -142,6 +148,18 @@ public:
 	{
 		// restore old projection, view and world matrices
 		// set depth test back?
+	}
+
+	inline void EnableBlending(dword src = RL_SRCALPHA,dword dst = RL_INVSRCALPHA)
+	{
+		D3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+		D3DDevice->SetRenderState( D3DRS_SRCBLEND, src );
+		D3DDevice->SetRenderState( D3DRS_DESTBLEND, dst );
+	}
+
+	inline void DisableBlending()
+	{
+		D3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	}
 
 	rtex LoadTextureFromBitmap(TBitmap* bmp, bool automipmap = true);

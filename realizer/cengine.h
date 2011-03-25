@@ -6,6 +6,9 @@
 #include "cinput.h"
 #include "vscenemanager.h"
 #include "tfilesystem.h"
+#include "ctiming.h"
+#include "vdraw.h"
+#include "vgui.h"
 
 /**
 * Main Realizer engine block.
@@ -15,11 +18,21 @@ class RDLL REngine
 public:
 	bool running;
 
+	REngine()
+	{
+		GUI.Parent = this;
+	}
+
 	VRenderer			Renderer;
 	VTextureManager		Textures;
 	CInputManager		Inputs;
 	VSceneManager		Scenes;
 	TFileSystem			FileSystem;
+	CTiming				Time;
+	VDraw				Draw; // a vbo for rendering 2d, makes less creation of VBO's for small renderings
+	VGUI				GUI;
+
+	//TPluginManager	Plugins;
 
 	//CHookManager		Hooks;
 

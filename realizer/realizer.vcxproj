@@ -108,25 +108,42 @@
     <ClInclude Include="cengine.h" />
     <ClInclude Include="chooks.h" />
     <ClInclude Include="cinput.h" />
+    <ClInclude Include="cinputenums.h" />
+    <ClInclude Include="cinputinterface.h" />
+    <ClInclude Include="cinputmapped.h" />
     <ClInclude Include="clinux.h" />
     <ClInclude Include="cdisplaydevice.h" />
     <ClInclude Include="cresource.h" />
+    <ClInclude Include="ctiming.h" />
     <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
+    <ClInclude Include="gcontainer.h" />
     <ClInclude Include="gentity.h" />
+    <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
+    <ClInclude Include="gfont.h" />
+    <ClInclude Include="gobject.h" />
+    <ClInclude Include="gquad.h" />
+    <ClInclude Include="gschemedskin.h" />
+    <ClInclude Include="gschemedskinbuilder.h" />
+    <ClInclude Include="gskin.h" />
+    <ClInclude Include="gwindow.h" />
     <ClInclude Include="realizer.h" />
     <ClInclude Include="realizertypes.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="tfilesystem.h" />
     <ClInclude Include="tfoldermount.h" />
     <ClInclude Include="tmount.h" />
+    <ClInclude Include="vdraw.h" />
+    <ClInclude Include="vgui.h" />
     <ClInclude Include="vrenderer.h" />
     <ClInclude Include="vrendererdx9.h" />
+    <ClInclude Include="vscene.h" />
     <ClInclude Include="vscenemanager.h" />
     <ClInclude Include="vtexture.h" />
     <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
+    <ClInclude Include="vtexturepart.h" />
     <ClInclude Include="vtypesdx9.h" />
     <ClInclude Include="vvertexbuffer.h" />
     <ClInclude Include="vvertexbufferformat.h" />
@@ -135,6 +152,11 @@
   <ItemGroup>
     <ClCompile Include="cengine.cpp" />
     <ClCompile Include="cwindows.cpp" />
+    <ClCompile Include="gobject.cpp" />
+    <ClCompile Include="gquad.cpp" />
+    <ClCompile Include="gschemedskin.cpp" />
+    <ClCompile Include="gschemedskinbuilder.cpp" />
+    <ClCompile Include="gwindow.cpp" />
     <ClCompile Include="realizer.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">false</CompileAsManaged>
@@ -153,16 +175,20 @@
     </ClCompile>
     <ClCompile Include="tfilesystem.cpp" />
     <ClCompile Include="tmount.cpp" />
+    <ClCompile Include="vdraw.cpp" />
+    <ClCompile Include="vgui.cpp" />
     <ClCompile Include="vrendererdx9.cpp" />
     <ClCompile Include="vtexture.cpp" />
     <ClCompile Include="vtextureconverters.cpp" />
     <ClCompile Include="vtextureformats.cpp" />
     <ClCompile Include="vtexturemanager.cpp" />
+    <ClCompile Include="vtexturepart.cpp" />
     <ClCompile Include="vvertexbuffer.cpp" />
     <ClCompile Include="vvertexbufferformat.cpp" />
     <ClCompile Include="vvertexstream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="important.txt" />
     <None Include="vrenderertypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

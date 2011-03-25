@@ -16,8 +16,17 @@ TBitmap* VTextureManager::LoadToBitmap(const str8& path)
 	{
 		Loader->loadbmp(fs,false,true);
 	}
+	else if (path.EndsWith("tga"))
+	{
+		Loader->loadtga(fs,false,true);
+	}
+	else
+	{
+		// TODO: code texture loading plugin system... and implement it here.
+		throw Exception("Texture loading plugin system is not coded yet");
+	}
 
-	delete fs;
+	// delete fs; Remains of old system.
 	return Loader;
 }
 
@@ -38,15 +47,9 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 		Loader->Convert( BitmapFormat->FallbackFormat );
 	}
 
-	VTexture* LoadedTexture = new VTexture();
-	LoadedTexture->width = Loader->width;
-	LoadedTexture->height = Loader->height;
+	VTexture* LoadedTexture = CreateTexture(Loader);
 	LoadedTexture->path = path;
 	LoadedTexture->pathHash = str8::GetHash(path);
-	LoadedTexture->format = Loader->BufferFormat;
-	LoadedTexture->bitmap = Loader;
-
-	LoadedTexture->CreateTexture();
 
 	if (!keepBitmap)
 	{
@@ -54,6 +57,7 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 		LoadedTexture->bitmap = 0;
 	}
 
+	// Texture was added to list in CreateTexture function call.
 	return LoadedTexture;
 }
 
@@ -61,4 +65,12 @@ void VTextureManager::ReleaseTexture( VTexture* texture )
 {
 	Remove(texture);
 	delete texture;
+}
+
+VTexture* VTextureManager::CreateTexture( TBitmap* source )
+{
+	VTexture* createdTexture = new VTexture(source);
+	createdTexture->CreateTexture();
+	Add(createdTexture);
+	return createdTexture;
 }

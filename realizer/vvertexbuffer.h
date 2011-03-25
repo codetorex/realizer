@@ -16,15 +16,45 @@ public:
 	int		MeshType;
 	dword	PrimitiveCount;
 
-	VVertexBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType)
+	VVertexBuffer()
+	{
+
+	}
+
+	~VVertexBuffer()
+	{
+		if (BufferObject)
+		{
+			if (Locked)
+			{
+				UnlockBuffer();
+			}
+			DeleteVertexBuffer();
+			Buffer = 0;
+		}
+	}
+
+	VVertexBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType,bool makeitReady = false)
+	{
+		InitializeBuffer(_format,_capacity,_meshType,makeitReady);
+	}
+
+	void InitializeBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType,bool makeitReady = false)
 	{
 		Capacity = _capacity;
 		BufferFormat = _format;
+		CapacityByte = BufferFormat->BytesPerItem * Capacity;
 		MeshType = _meshType;
 		PrimitiveCount = 0;
 
 		BufferObject = 0;
 		Locked = false;
+
+		if (makeitReady)
+		{
+			CreateVertexBuffer(Capacity);
+			LockBuffer();
+		}
 	}
 
 	/**
@@ -40,7 +70,13 @@ public:
 	/**
 	* Makes GPU memory writable.
 	*/
-	void LockBuffer();
+	void LockBuffer(int offset,int length);
+	
+	inline void LockBuffer()
+	{
+		LockBuffer(0,Capacity);
+	}
+	
 
 	void Render();
 

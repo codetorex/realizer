@@ -138,7 +138,7 @@ rtex VRendererDX9::LoadTextureFromBitmap( TBitmap* bmp, bool automipmap /*= true
 		usg |= D3DUSAGE_AUTOGENMIPMAP;
 	}
 
-	D3DXCreateTexture(D3DDevice,bmp->width,bmp->height,0,usg,texfmt,D3DPOOL_MANAGED,&rt);
+	D3DXCreateTexture(D3DDevice,bmp->Width,bmp->Height,0,usg,texfmt,D3DPOOL_MANAGED,&rt);
 
 	//bmp->texID = (void*)rt; // small fix before calling func.
 	UpdateTextureFromBitmap(rt,bmp); // we can use this function instead YAY!
@@ -201,5 +201,5 @@ void VRendererDX9::InitializeFormats()
 	l.Initialize();
 
 	VVertexBufferFormats::Textured1 = new VVertexBufferFormat("2DTEX1","POST0",D3DFVF_XYZ | D3DFVF_TEX1);
-
+	VVertexBufferFormats::ColoredTextured1 = new VVertexBufferFormat("2DCLRTEX1","POSCLRT0",D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 }

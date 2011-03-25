@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "vtextureformats.h"
 
-class TBitmapConverterBGRtoXRGB: public TBufferFormatConverter
+class TBitmapConverterBGRtoXRGB: public TBufferFormatGenericConverter
 {
 public:
 	TBitmapConverterBGRtoXRGB()
@@ -10,19 +10,9 @@ public:
 		DestinationFormat = VTextureFormats::fXRGB;
 	}
 
-	void Convert(TFlexibleBuffer* srcBuffer)
+	void DoConversion(byte* src, byte* dst,int pixelCount)
 	{
-		TBitmap* bmp = (TBitmap*)srcBuffer;
-		byte* srcData = srcBuffer->Buffer;
-		byte* src = srcData;
-
-		dword newSize = DestinationFormat->BytesPerItem * bmp->pixels;
-		byte* dstData = new byte [newSize];
-		byte* dst = dstData;
-		
-
-		int curpixel = bmp->pixels;
-		while(curpixel--)
+		while(pixelCount--)
 		{
 			dst[0] = src[0];
 			dst[1] = src[1];
@@ -31,13 +21,10 @@ public:
 			dst += 4;
 			src += 3;
 		}
-		srcBuffer->BufferFormat = DestinationFormat;
-		srcBuffer->ExchangeBuffer(dstData,newSize);
 	}
 };
 
-
-class TBitmapConverteRGBtoXRGB: public TBufferFormatConverter
+class TBitmapConverteRGBtoXRGB: public TBufferFormatGenericConverter
 {
 public:
 	TBitmapConverteRGBtoXRGB()
@@ -46,18 +33,9 @@ public:
 		DestinationFormat = VTextureFormats::fXRGB;
 	}
 
-	void Convert(TFlexibleBuffer* srcBuffer)
+	void DoConversion(byte* src, byte* dst,int pixelCount)
 	{
-		TBitmap* bmp = (TBitmap*)srcBuffer;
-		byte* srcData = srcBuffer->Buffer;
-		byte* src = srcData;
-
-		dword newSize = DestinationFormat->BytesPerItem * bmp->pixels;
-		byte* dstData = new byte [newSize];
-		byte* dst = dstData;
-		
-		int curpixel = bmp->pixels;
-		while(curpixel--)
+		while(pixelCount--)
 		{
 			dst[0] = src[2];
 			dst[1] = src[1];
@@ -66,9 +44,6 @@ public:
 			dst += 4;
 			src += 3;
 		}
-
-		srcBuffer->BufferFormat = DestinationFormat;
-		srcBuffer->ExchangeBuffer(dstData,newSize);
 	}
 };
 

@@ -1,0 +1,256 @@
+#include "stdafx.h"
+#include "gschemedskinbuilder.h"
+#include "cengine.h"
+
+
+void GSchemedSkinBuilder::Begin( int w,int h )
+{
+	SkinBitmap = new TBitmap(w,h,TBitmapFormats::fARGB);
+	Pack = new TPackedRectangle(w,h);
+	Skin = new GSchemedSkin();
+}
+
+GSchemedSkin* GSchemedSkinBuilder::Finish()
+{
+	Skin->SkinTexture = Engine.Textures.CreateTexture(SkinBitmap);
+	
+	TStream* fs = Engine.FileSystem.Open("outputSKIN.bmp",fm_Write);
+	SkinBitmap->savebmp(fs);
+
+	return Skin;
+}
+
+int GSchemeClass::GetInt( const str8& key, int defaultValue = 0 )
+{
+	TKeyValuePair<str8*>* kp = Variables.Get(key);
+	if (kp == 0)
+	{
+		return defaultValue;
+	}
+	return kp->value->ParseInt();
+}
+
+str8* GSchemeClass::GetValue(const str8& key)
+{
+	str8* rv = Variables.GetValue(key);
+	if (rv == NULL)
+	{
+		return &str8::Empty;
+	}
+	return rv;
+}
+
+str8* GSchemeClass::GetMustValue( const str8& key )
+{
+	str8* rv = Variables.GetValue(key);
+	if (rv == NULL)
+	{
+		throw Exception("Value not found");
+	}
+	return rv;
+}
+
+GSchemeClass* GSchemeFile::GetClass( const str8& className )
+{
+	TINIClass* inicls = Classes.GetValue(className);
+	return (GSchemeClass*)inicls;
+}
+
+void GSchemeLayer::LoadLayer( GSchemeClass* cls )
+{
+	ImagePath = cls->GetMustValue("Image");
+	LeftMargin = cls->GetInt("LeftWidth");
+	RightMargin = cls->GetInt("RightWidth");
+	TopMargin = cls->GetInt("TopHeight");
+	BottomMargin = cls->GetInt("BottomHeight");
+	PaintStyle = UseMargins;
+	Tiling = (GSchemeTile)cls->GetInt("Tile");
+}
+
+void GSchemeText::LoadTextLayer( GSchemeClass* cls )
+{
+	XAlign = (GSchemeTextXAlign)cls->GetInt("TextHorzAlignNormal");
+	XAlignPressed = (GSchemeTextXAlign)cls->GetInt("TextHorzAlignPressed");
+	YAlign = (GSchemeTextXAlign)cls->GetInt("TextVertAlignNormal");
+	YAlignPressed = (GSchemeTextXAlign)cls->GetInt("TextVertAlignPressed");
+
+	TextAlpha = cls->GetInt("TextAlpha",255);
+	TextAlphaInactive = cls->GetInt("TextAlphaInactive",150);
+
+	NormalColor = cls->GetInt("NormalColour",-1);
+	PressedColor = cls->GetInt("PressedColour",-1);
+	DisabledColor = cls->GetInt("DisabledColour",-1);
+	FocusColor = cls->GetInt("FocusColour",-1);
+	DefaultColor = cls->GetInt("DefaultColour",-1);
+
+	NormalFont = cls->GetInt("NormalFont",-1);
+	PressedFont = cls->GetInt("PressedFont",-1);
+	DisabledFont = cls->GetInt("DisabledFont",-1);
+	FocusFont = cls->GetInt("FocusFont",-1);
+	DefaultFont = cls->GetInt("DefaultFont",-1);
+
+	ContentLeft = cls->GetInt("ContentLeft",0);
+	ContentRight = cls->GetInt("ContentRight",0);
+	ContentTop = cls->GetInt("ContentTop",0);
+	ContentBottom = cls->GetInt("ContentBottom",0);
+}
+
+GSchemeLayer GSchemeFile::GetLayer( const str8& className )
+{
+	GSchemeLayer lyr;
+	GSchemeClass* cls = GetClass(className);
+	if (cls == 0)
+	{
+		throw Exception("Class not found");
+	}
+	lyr.LoadLayer(cls);
+	return lyr;
+}
+
+GSchemeText GSchemeFile::GetTextLayer( const str8& className )
+{
+	GSchemeText lyr;
+	GSchemeClass* cls = GetClass(className);
+	if (cls == 0)
+	{
+		throw Exception("Class not found");
+	}
+	lyr.LoadLayer(cls);
+	lyr.LoadTextLayer(cls);
+	return lyr;
+}
+
+void GSchemedSkinBuilder::LoadFromScheme( const str8& filePath, bool usePerPixel )
+{
+	TStream* SchemeStream = Engine.FileSystem.Open(filePath,fm_Read);
+	Scheme = (GSchemeFile*) new TINIParser(SchemeStream);
+	Scheme->Parse(); // this guy closes and deletes the stream so don't need to be closed later
+
+	// TODO: do lots of stuff here
+	
+	// Lets load window images
+	if ( !Scheme->ContainsClass("WindowFrame.TopPerPixel") && usePerPixel )
+	{
+		usePerPixel = false;
+	}
+
+	if (usePerPixel)
+	{
+		LoadWindowTop(Scheme->GetTextLayer("WindowFrame.TopPerPixel"));
+		LoadWindowBottom(Scheme->GetLayer("WindowFrame.BottomPerPixel"));
+		LoadWindowLeft(Scheme->GetLayer("WindowFrame.LeftPerPixel"));
+		LoadWindowRight(Scheme->GetLayer("WindowFrame.RightPerPixel"));
+	}
+	else
+	{
+
+	}
+
+	
+}
+
+void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int halfHeight = sub->Height/2;
+
+	if (borderData.IsHorizontal())
+	{
+		Skin->WindowQuad[0].TopLeft.InitializeRelative(SkinBitmap,sub,0,0,borderData.LeftMargin,halfHeight);
+		Skin->WindowQuad[0].Top.InitializeRelative(SkinBitmap,sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
+		Skin->WindowQuad[0].TopRight.InitializeRelative(SkinBitmap,sub, sub->Width - borderData.RightMargin,0,borderData.RightMargin,halfHeight);
+
+		Skin->WindowQuad[1].TopLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopLeft,0,halfHeight);
+		Skin->WindowQuad[1].Top.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Top,0,halfHeight);
+		Skin->WindowQuad[1].TopRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopRight,0,halfHeight);
+	}
+	else
+	{
+		Skin->WindowQuad[0].Top.InitializeRelative(SkinBitmap,sub,0,0,sub->Width,halfHeight);
+		Skin->WindowQuad[1].Top.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Top,0,halfHeight);
+	}
+}
+
+void GSchemedSkinBuilder::LoadWindowBottom( const GSchemeLayer& borderData )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int halfHeight = sub->Height/2;
+	if (borderData.IsHorizontal())
+	{
+		Skin->WindowQuad[0].BottomLeft.InitializeRelative(SkinBitmap,sub,0,0,borderData.LeftMargin,halfHeight);
+		Skin->WindowQuad[0].Bottom.InitializeRelative(SkinBitmap,sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
+		Skin->WindowQuad[0].BottomRight.InitializeRelative(SkinBitmap,sub, sub->Width - borderData.RightMargin,0,borderData.RightMargin,halfHeight);
+
+		Skin->WindowQuad[1].BottomLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomLeft,0,halfHeight);
+		Skin->WindowQuad[1].Bottom.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Bottom,0,halfHeight);
+		Skin->WindowQuad[1].BottomRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomRight,0,halfHeight);
+	}
+	else
+	{
+		Skin->WindowQuad[0].Bottom.InitializeRelative(SkinBitmap,sub,0,0,sub->Width,halfHeight);
+		Skin->WindowQuad[1].Bottom.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Bottom,0,halfHeight);
+	}
+}
+
+void GSchemedSkinBuilder::LoadWindowLeft( const GSchemeLayer& borderData )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int halfWidth = sub->Width/2;
+	if (borderData.IsVertical())
+	{
+		Skin->WindowQuad[0].TopLeft.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,borderData.TopMargin);
+		Skin->WindowQuad[0].Left.InitializeRelative(SkinBitmap,sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
+		Skin->WindowQuad[0].BottomLeft.InitializeRelative(SkinBitmap,sub,0,sub->Height-borderData.BottomMargin,halfWidth,borderData.BottomMargin);
+
+		Skin->WindowQuad[1].TopLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopLeft,halfWidth,0);
+		Skin->WindowQuad[1].Left.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Left,halfWidth,0);
+		Skin->WindowQuad[1].BottomLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomLeft,halfWidth,0);
+	}
+	else
+	{
+		Skin->WindowQuad[0].Left.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,sub->Height);
+		Skin->WindowQuad[1].Left.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Left,halfWidth,0);
+	}
+}
+
+void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int halfWidth = sub->Width/2;
+	if (borderData.IsVertical())
+	{
+		Skin->WindowQuad[0].TopRight.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,borderData.TopMargin);
+		Skin->WindowQuad[0].Right.InitializeRelative(SkinBitmap,sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
+		Skin->WindowQuad[0].BottomRight.InitializeRelative(SkinBitmap,sub,0,sub->Height-borderData.BottomMargin,halfWidth,borderData.BottomMargin);
+
+		Skin->WindowQuad[1].TopRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopRight,halfWidth,0);
+		Skin->WindowQuad[1].Right.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Right,halfWidth,0);
+		Skin->WindowQuad[1].BottomRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomRight,halfWidth,0);
+	}
+	else
+	{
+		Skin->WindowQuad[0].Right.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,sub->Height);
+		Skin->WindowQuad[1].Right.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Right,halfWidth,0);
+	}
+}
+
+VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
+{
+	TRectangleNode* node = Pack->Insert(bmp);
+	if (node == 0)
+	{
+		throw Exception("Texture is not big enough, implement multi texture method");
+	}
+
+	SkinBitmap->Copy(bmp,node);
+	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
+	return tpart;
+}

@@ -1,19 +1,8 @@
 #ifndef VSCENEMANAGER_H
 #define VSCENEMANAGER_H
 
-#include "tstring.h"
 #include "tarray.h"
-
-class VScene
-{
-public:
-	string SceneName;
-
-	virtual void Render() = 0;
-	virtual void Update() = 0;
-	virtual void Initialize() = 0;
-	virtual void Finalize() = 0;
-};
+#include "vscene.h"
 
 class VSceneManager
 {
@@ -61,6 +50,12 @@ public:
 	{
 		// TODO: check for is any active scene?
 		ActiveScene->Render();
+	}
+
+	inline void Run()
+	{
+		Update();
+		Render();
 	}
 };
 

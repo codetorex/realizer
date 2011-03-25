@@ -14,6 +14,8 @@ class RDLL VTextureManager: public TArray<VTexture*>
 public:
 	TBitmap* LoadToBitmap(const str8& path);
 	VTexture* LoadTexture(const str8& path, bool keepBitmap = false);
+	VTexture* CreateTexture(TBitmap* source);
+
 	void ReleaseTexture(VTexture* texture);
 	
 	inline void ReleaseTexture(VTexture** texture)

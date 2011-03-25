@@ -1,0 +1,9 @@
+About texture format conversions
+-----------------------------------------------
+* Currently texture format converters named ARGB are actually stored in memory B G R A if you read
+sequently because GPU takes them as DWORD's and which is endianness is getting diffrent?
+......
+..........
+...........
+
+* Do we need to do something about it?
