@@ -45,6 +45,13 @@ public:
 		Initialize(range,source->X + xOffset,source->Y + yOffset,source->Width,source->Height);
 	}
 
+	inline void Initialize(VTexturePart* othr)
+	{
+		TopLeftCoord = othr->TopLeftCoord;
+		BottomRightCoord = othr->BottomRightCoord;
+		SetFrom(othr);
+	}
+
 	inline void Draw(float x,float y,dword color)
 	{
 		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
@@ -65,11 +72,27 @@ public:
 		DrawScaled(x,y,w,h,Engine.Draw.DefaultDiffuse);
 	}
 
-	void DrawCropped(float x,float y, float w,float h);
-	void DrawCropped(float x,float y, float w,float h,dword color);
 
-	void DrawTiled(float x,float y, float w,float h);
-	void DrawTiled(float x,float y, float w,float h,dword color);
+	void DrawCropped(float x,float y, float w,float h,dword color)
+	{
+
+	}
+
+	inline void DrawCropped(float x,float y, float w,float h)
+	{
+		DrawCropped(x,y,w,h,Engine.Draw.DefaultDiffuse);
+	}
+
+
+	void DrawTiled(float x,float y, float w,float h,dword color)
+	{
+
+	}
+
+	inline void DrawTiled(float x,float y, float w,float h)
+	{
+		DrawTiled(x,y,w,h,Engine.Draw.DefaultDiffuse);
+	}
 };
 
 class VTexturePartDefined: public VTexturePart
@@ -84,7 +107,7 @@ public:
 
 	VTexturePartDefined()
 	{
-
+		SetPartType(Scaled);
 	}
 
 

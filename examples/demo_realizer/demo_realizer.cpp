@@ -8,6 +8,8 @@
 
 
 #include "gschemedskinbuilder.h"
+#include "gwindow.h"
+#include "gbutton.h"
 
 class IntroScene: public VScene
 {
@@ -21,10 +23,20 @@ public:
 	float newY;
 	float CurAng;
 
+	void tstBut_Clicked()
+	{
+		MessageBoxA(0,"Hello!","Realizer",MB_OK);
+	}
+
 	void Render()
 	{
 		Engine.Renderer.Clear(RL_COLOR_BUFFER | RL_ZBUFFER, 0xFF888888);
 		Engine.Renderer.BeginScene();
+
+		Engine.Renderer.D3DDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1 );
+
+		Engine.Renderer.EnableBlending();
+		Engine.Renderer.EnableTextureAlphaVertexColorAlpha(0);
 
 		mat4 trans;
 		trans.Translate(newX,newY,0);
@@ -32,19 +44,21 @@ public:
 
 		Engine.Renderer.Enter2D();
 
-		Engine.Renderer.SetWorld(trans);
+		//Engine.Renderer.SetWorld(trans);
 		
-		Engine.Renderer.EnableBlending();
+		Engine.Draw.SetTexture(TestTGATexture);
+		Engine.Draw.DrawQuad(0,0,TestTGATexture->Width,TestTGATexture->Height,0,0,1,1);
 
-		Engine.Draw.SetTexture(TestTexture->texID);
-		Engine.Draw.DrawQuad(-128,-128,0,0,0,0,1,1);
+		//Engine.Draw.SetTexture(TestTexture->texID);
+		/*Engine.Draw.DrawQuad(-128,-128,0,0,0,0,1,1);
 		Engine.Draw.DrawQuad(128,128,192,192,0,0,1,1);
 
-		Engine.Draw.SetTexture(TestTGATexture->texID);
-		Engine.Draw.DrawQuad(0,0,TestTGATexture->Width,TestTGATexture->Height,0,0,1,1);
-		Engine.Draw.Flush();
+		*/
+		
 
 		//TestMesh->Render();
+		Engine.GUI.Render();
+		Engine.Draw.Flush();
 
 		Engine.Renderer.Exit2D();
 
@@ -72,19 +86,26 @@ public:
 		SceneName = L"Intro Scene";
 		// Load resources here
 		TestTexture = Engine.Textures.LoadTexture("test.bmp");
-		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/sp_buttons_hover.tga");
+		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/but_close.tga");
 
-		GSkin* winSkin;
 
 		GSchemedSkinBuilder gsb;
 		gsb.Begin(1024,1024);
 		gsb.LoadFromScheme("Acrylic 7/Acrylic 7.uis");
 		GSchemedSkin* result = gsb.Finish();
 
-		winSkin = result;
-		
-		Engine.GUI.Skins.Add(winSkin);
+		Engine.GUI.EnableGUI(result);
 
+		GWindow* testWin = new GWindow();
+		testWin->SetSize(100,100,300,200);
+
+		GButton* testBut = new GButton();
+		testBut->SetSize(50,50,100,27);
+		testBut->Clicked += GetHandler(this, &IntroScene::tstBut_Clicked);
+		
+
+		Engine.GUI.Desktop->AddChild(testWin);
+		testWin->AddChild(testBut);
 
 		/*TestMesh = new VVertexStream(VVertexBufferFormats::Textured1,4,RL_TRIANGLELIST,true);
 		TestMesh->Add2DQuad1Tex(0,0,128,128,0.0f,0.0f,1.0f,1.0f);
@@ -93,6 +114,8 @@ public:
 		CurAng = 0;
 	}
 
+	// TODO: we can automatize it with SceneManager, like it activates resourcePool that holds what resource created when
+	// and on finalize it just empties the pool.
 	void Finalize()
 	{
 		Engine.Release(&TestTexture);

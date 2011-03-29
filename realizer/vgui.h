@@ -12,9 +12,12 @@ public:
 	TArray< GSkin* > Skins;
 	TArray< GFont* > Fonts;
 
-
-	bool EventScissor;
-	TRegion Scissor;
+	VGUI()
+	{
+//		EventScissor = false;
+		Desktop = 0;
+		Focused = 0;
+	}
 
 	int X;
 	int Y;
@@ -26,9 +29,11 @@ public:
 	GObject* Focused;
 
 	void ActivateDesktop(GObject* newDesktop);
+
 	GObject* CreateDesktop(bool activate)
 	{
 		GObject* newDesktop = new GObject();
+		newDesktop->Master = this;
 		if (activate)
 		{
 			ActivateDesktop(newDesktop);
@@ -40,16 +45,6 @@ public:
 	{
 		X = x;
 		Y = y;
-		
-		/*GObject* obj = Desktop->FindObject(x,y);
-		if (!obj->MouseInside)
-		{
-			obj->MouseEnter();
-			obj->MouseInside = true;
-		}
-
-
-		obj->MouseMove(x - obj->X,y - obj->Y);*/
 	}
 
 	void MouseDown(int x,int y, int button)
@@ -58,9 +53,12 @@ public:
 		Y = y;
 		ButtonState[button] = true;
 
-		GObject* obj = Desktop->FindObject(x,y);
-		obj->SetFocus();
-		obj->MouseDown(x - obj->ScreenRegion.X, y - obj->ScreenRegion.Y, button);
+		GObject* obj = Desktop->FindObject();
+		if (obj)
+		{
+			obj->SetFocus();
+			obj->MouseDown(x - obj->ScreenRegion.X, y - obj->ScreenRegion.Y, button);
+		}
 	}
 
 	void MouseUp(int x,int y, int button)
@@ -70,29 +68,17 @@ public:
 		ButtonState[button] = false;
 
 		Focused->MouseUp(x - Focused->ScreenRegion.X,y - Focused->ScreenRegion.Y,button);
-
-		/*GObject* obj = Desktop->FindObject(x,y);
-		obj->MouseDown(x - obj->X, y - obj->Y, button);*/
-		
-		/*GObject* pobj = (GObject*)Focused->Parent;
-		if (pobj == 0)
-		{
-			pobj = Desktop;
-		}
-
-		int rx = x - pobj->ScreenRegion.X;
-		int ry = y - pobj->ScreenRegion.Y;
-
-		if (Focused->IsInside(rx,ry))
-		{
-			Focused->MouseUp(rx-Focused->X,ry-Focused->Y,button);
-		}*/
 	}
 
 	void MouseWheel(int x,int y,int delta)
 	{
-		GObject* obj = Desktop->FindObject(x,y);
-		obj->MouseWheel(x - obj->ScreenRegion.X,y - obj->ScreenRegion.Y,delta);
+		X = x;
+		Y = y;
+		GObject* obj = Desktop->FindObject();
+		if (obj)
+		{
+			obj->MouseWheel(x - obj->ScreenRegion.X,y - obj->ScreenRegion.Y,delta);
+		}
 	}
 
 	void KeyDown(int KeyID)
@@ -110,6 +96,10 @@ public:
 		Focused->KeyPress(keyChar);
 	}
 
+	/*
+	bool EventScissor;
+	TRegion Scissor;
+	
 	inline void EnableEventScissor(int _x,int _y,int _w,int _h)
 	{
 		Scissor.SetSize(_x,_y,_w,_h);
@@ -125,16 +115,31 @@ public:
 	{
 		if (!EventScissor) return true;
 		return Scissor.IsInside(x,y);
-	}
+	}*/
 
-	void EnableGUI(); // add as
+	/**
+	* Activates this as MouseObserver and KeyboardObserver.
+	* @param defSkin if desktopObj is going to be created, this param will be its skin
+	* @param desktopObj activates this desktop, if 0 then checks if no desktop then creates new and activates it.
+	*/
+	void EnableGUI(GSkin* defSkin = 0,GObject* desktopObj = 0);
+
+	/**
+	* Removes this from MouseObservation and KeyboardObservation.
+	*/
 	void DisableGUI();
 
 	inline void Render()
 	{
 		Desktop->MouseInside = true;
 		Desktop->Update();
-		Desktop->DeliverMove();
+
+		GObject* obj = Desktop->FindObject();
+		if (obj)
+		{
+			obj->MouseMove(X - obj->ScreenRegion.X, Y - obj->ScreenRegion.Y);
+		}
+
 		Desktop->Render();
 	}
 };

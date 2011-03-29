@@ -9,6 +9,11 @@
 class GScalableQuadParted
 {
 public:
+	GScalableQuadParted()
+	{
+		CenterColor = 0xFFFFFFFF;
+	}
+
 	// Static Corners
 	VTexturePart TopLeft;
 	VTexturePart TopRight;
@@ -22,6 +27,8 @@ public:
 	VTexturePartDefined Bottom;
 	VTexturePartDefined Center;
 
+	dword CenterColor;
+
 	void Render(GObject* obj);
 };
 
@@ -32,7 +39,6 @@ public:
 class GScalableQuad
 {
 public:
-
 	float TextureCoords[8];
 
 	int LeftMargin;
@@ -40,18 +46,13 @@ public:
 	int TopMargin;
 	int BottomMargin;
 
-	GScalableQuad()
-	{
-
-	}
-
 	/**
 	* Calculates texture coordinates
 	* BorderSizes should be set before calling this.
 	* @param tx texture pointer to be referenced
 	* @param rect texture rect that this quad going to be use
 	*/
-	void Initialize(VTexture* tx, const TRegion& rect);
+	void Initialize(TRange* textureRange, const TRegion& rect);
 
 	/**
 	* Rotates texture coordinates, so resulting image will be look like rotated.

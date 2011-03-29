@@ -38,7 +38,7 @@ GObject* GObject::FindObject( int x,int y )
 		return 0;
 	}
 
-	if (!IsInside(x,y))
+	if (!ScreenRegion.IsInside(x,y))
 	{
 		return 0;
 	}
@@ -47,7 +47,7 @@ GObject* GObject::FindObject( int x,int y )
 	int i = ItemCount;
 	while(i--)
 	{
-		GObject* found = curObj->FindObject(x - curObj->X, y - curObj->Y);
+		GObject* found = curObj->FindObject(x , y ); // hmm was tried relative finding like x - X
 		if (found) return found;
 		curObj = curObj->PrevItem;
 	}
@@ -97,7 +97,7 @@ void GObject::Update()
 	}
 }
 
-bool GObject::DeliverMove()
+/*bool GObject::DeliverMove()
 {
 	GObject* p = (GObject*)Parent;
 	if (p->MouseInside)
@@ -158,5 +158,65 @@ bool GObject::DeliverMove()
 	}
 
 	return false;
-}
+}*/
 
+GObject* GObject::FindObject()
+{
+	GObject* p = (GObject*)Parent;
+	if (p->MouseInside)
+	{
+		if (ScreenRegion.IsInside(Master->X,Master->Y))
+		{
+			MouseInside = true;
+		}
+		else
+		{
+			if (MouseInside)
+			{
+				MouseEntered = false;
+				MouseExit();
+			}
+			MouseInside = false;
+		}
+	}
+	else
+	{
+		if (MouseInside)
+		{
+			MouseEntered = false;
+			MouseExit();
+		}
+		MouseInside = false;
+	}
+
+	GObject* subResult = 0;
+	GObject* curObj = LastItem;
+	while(curObj)
+	{
+		if (curObj->Visible)
+		{
+			subResult = curObj->FindObject();
+			if (subResult)
+			{
+				return subResult;
+			}
+		}
+		curObj = curObj->PrevItem;
+	}
+
+	if (!subResult)
+	{
+		if (MouseInside)
+		{
+			if (!MouseEntered)
+			{
+				MouseEntered = true;
+				MouseEnter();
+			}
+			// else?
+			return this;
+		}
+	}
+
+	return 0;
+}

@@ -2,14 +2,13 @@
 #define VDRAW_H
 
 #include "vvertexstream.h"
-#include <tcolor.h>
+
+class VTexture;
 
 class VDraw: public VVertexStream
 {
 public:
-	rtex CurrentTexture;
-
-	TColor32 DefaultDiffuse;
+	VTexture* CurrentTexture;
 
 	/**
 	* Initializes and creates the VBO. Should be called after engine initialization.
@@ -19,10 +18,9 @@ public:
 		InitializeBuffer(VVertexBufferFormats::ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
 		CreateVertexBuffer(Capacity);
 		LockBuffer();
-		DefaultDiffuse = TColor32(255,255,255,255); // default to white color
 	}
 
-	void SetTexture(rtex NewTexture);
+	void SetTexture(VTexture* NewTexture);
 
 	inline void NoTexture()
 	{
@@ -39,6 +37,14 @@ public:
 	void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, dword color)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
+	}
+
+	/**
+	* Enables alpha blending for texture and vertex color channel
+	*/
+	void SetDrawingState()
+	{
+
 	}
 };
 

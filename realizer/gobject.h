@@ -70,7 +70,7 @@ public:
 	str8	Tooltip;
 	dword	ClassID;
 
-	virtual void Initialize() {};
+	virtual void Initialize() { Layout(); };
 	virtual void Update();
 	virtual void Render();
 	virtual void Layout() {}; // done when resize happens
@@ -82,6 +82,8 @@ public:
 	inline void AddChild(GObject* obj)
 	{
 		Add(obj);
+		obj->Master = Master;
+		obj->Skin = Skin;
 		obj->Initialize();
 	}
 
@@ -95,10 +97,15 @@ public:
 	void SetMouseInside(bool inside);
 	
 	/**
-	* Recursively delivers mouse movement events.
-	* And checks for mouse inside for all elements.
+	* Checks for mouse enter and exit events.
+	* Optimizes with using mouseInside information.
+	* Takes parameters from Master VGUI.
 	*/
-	bool DeliverMove();
+	GObject* FindObject();
+
+	/**
+	* Doesnt have any relation with VGUI. Only for tool and design usage.
+	*/
 	GObject* FindObject(int x,int y);
 };
 

@@ -2,6 +2,7 @@
 #define VVERTEXSTREAM_H
 
 #include <mvector3.h>
+#include <tcolor.h>
 #include "vvertexbuffer.h"
 #include "cresource.h"
 
@@ -9,21 +10,26 @@ class VVertexStream: public VVertexBuffer
 {
 public:
 	vec3 PreTranslation;
-
+	TColor32 DefaultDiffuse;
 
 	VVertexStream()
 	{
-
+		DefaultDiffuse = TColor32(255,255,255,255); // default to white color
 	}
 
 	VVertexStream(VVertexBufferFormat* _format, int _capacity,int _meshType, bool makeitReady = false): VVertexBuffer(_format,_capacity,_meshType,makeitReady)
 	{
-
+		DefaultDiffuse = TColor32(255,255,255,255); // default to white color
 	}
 
 	void PreTranslate(float x,float y,float z)
 	{
-		PreTranslation = vec3(x,y,z);
+		PreTranslation.set(x,y,z);
+	}
+
+	void PreTranslate()
+	{
+		PreTranslation.set(0.0f,0.0f,0.0f);
 	}
 
 	void AddTranslatedVector3(float x,float y,float z)
@@ -95,6 +101,11 @@ public:
 		Add2DVertexColor1Tex(x0,y0,tu0,tv0,color);
 		Add2DVertexColor1Tex(x1,y0,tu1,tv0,color);	
 		Add2DVertexColor1Tex(x1,y1,tu1,tv1,color);
+	}
+
+	inline void Add2DQuadColor1Tex(float x0,float y0,float x1,float y1, float tu0,float tv0,float tu1,float tv1)
+	{
+		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1, DefaultDiffuse.GetARGB() );
 	}
 };
 

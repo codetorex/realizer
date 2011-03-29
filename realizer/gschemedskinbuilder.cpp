@@ -50,6 +50,37 @@ str8* GSchemeClass::GetMustValue( const str8& key )
 	return rv;
 }
 
+TColor32 GSchemeClass::GetColor( const str8& key )
+{
+	str8* val = GetValueOrNull(key);
+	if (val == NULL)
+	{
+		return TColor32(255,255,255);
+	}
+
+	int nStart = 0;
+	int nLength = 0;
+	int cRed = val->ParseInt(nStart,&nLength);
+	if (nLength == 0)
+	{
+		return TColor32(255,255,255);
+	}
+	nStart += nLength+1;
+	int cGreen = val->ParseInt(nStart,&nLength);
+	if (nLength == 0)
+	{
+		return TColor32(255,255,255);
+	}
+	nStart += nLength+1;
+	int cBlue = val->ParseInt(nStart);
+	if (nLength == 0)
+	{
+		return TColor32(255,255,255);
+	}
+
+	return TColor32(cRed,cGreen,cBlue);
+}
+
 GSchemeClass* GSchemeFile::GetClass( const str8& className )
 {
 	TINIClass* inicls = Classes.GetValue(className);
@@ -65,6 +96,14 @@ void GSchemeLayer::LoadLayer( GSchemeClass* cls )
 	BottomMargin = cls->GetInt("BottomHeight");
 	PaintStyle = UseMargins;
 	Tiling = (GSchemeTile)cls->GetInt("Tile");
+}
+
+void GSchemeLayer::CopyTo( GScalableQuad* qd ) const
+{
+	qd->LeftMargin = LeftMargin;
+	qd->TopMargin = TopMargin;
+	qd->RightMargin = RightMargin;
+	qd->BottomMargin = BottomMargin;
 }
 
 void GSchemeText::LoadTextLayer( GSchemeClass* cls )
@@ -134,29 +173,48 @@ void GSchemedSkinBuilder::LoadFromScheme( const str8& filePath, bool usePerPixel
 		usePerPixel = false;
 	}
 
+	// This optimization allows rendering "just" color things easily without changing texture.
+	dword white = 0xFFFFFFFF;
+	TRectangleNode* whiteNode = Pack->Insert(16,16);
+	SkinBitmap->DrawRectangle(whiteNode->X,whiteNode->Y,16,16,(byte*)&white);
+	VTexturePart* whitePart = new VTexturePart( SkinBitmap, whiteNode );
+	Skin->WhitePart = *whitePart;
+
+	if ( Scheme->ContainsClass("Colours"))
+	{
+		GSchemeClass* colorClass = Scheme->GetClass("Colours");
+		Colors.LoadColors(colorClass);
+	}
+
 	if (usePerPixel)
 	{
-		LoadWindowTop(Scheme->GetTextLayer("WindowFrame.TopPerPixel"));
-		LoadWindowBottom(Scheme->GetLayer("WindowFrame.BottomPerPixel"));
-		LoadWindowLeft(Scheme->GetLayer("WindowFrame.LeftPerPixel"));
-		LoadWindowRight(Scheme->GetLayer("WindowFrame.RightPerPixel"));
+		LoadWindowTop(Scheme->GetTextLayer("WindowFrame.TopPerPixel"),true);
+		LoadWindowBottom(Scheme->GetLayer("WindowFrame.BottomPerPixel"),true);
+		LoadWindowLeft(Scheme->GetLayer("WindowFrame.LeftPerPixel"),false);
+		LoadWindowRight(Scheme->GetLayer("WindowFrame.RightPerPixel"),false);
 	}
 	else
 	{
 
 	}
 
-	
+	Skin->WindowQuad[0].Center.Initialize(whitePart);
+	Skin->WindowQuad[0].CenterColor = Colors.ButtonFace.GetARGB();
+	Skin->WindowQuad[1].Center.Initialize(whitePart);
+	Skin->WindowQuad[1].CenterColor = Colors.ButtonFace.GetARGB();
+	Skin->ButtonFaceWindowBackgroundColor = Colors.ButtonFace;
+
+	LoadButtons(Scheme->GetTextLayer("Buttons"));
 }
 
-void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData )
+void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData, bool corners )
 {
 	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
 	VTexturePart* sub = InsertImage(image);
 
 	int halfHeight = sub->Height/2;
 
-	if (borderData.IsHorizontal())
+	if (corners)
 	{
 		Skin->WindowQuad[0].TopLeft.InitializeRelative(SkinBitmap,sub,0,0,borderData.LeftMargin,halfHeight);
 		Skin->WindowQuad[0].Top.InitializeRelative(SkinBitmap,sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
@@ -171,15 +229,17 @@ void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData )
 		Skin->WindowQuad[0].Top.InitializeRelative(SkinBitmap,sub,0,0,sub->Width,halfHeight);
 		Skin->WindowQuad[1].Top.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Top,0,halfHeight);
 	}
+
+	delete image;
 }
 
-void GSchemedSkinBuilder::LoadWindowBottom( const GSchemeLayer& borderData )
+void GSchemedSkinBuilder::LoadWindowBottom( const GSchemeLayer& borderData , bool corners)
 {
 	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
 	VTexturePart* sub = InsertImage(image);
 
 	int halfHeight = sub->Height/2;
-	if (borderData.IsHorizontal())
+	if (corners)
 	{
 		Skin->WindowQuad[0].BottomLeft.InitializeRelative(SkinBitmap,sub,0,0,borderData.LeftMargin,halfHeight);
 		Skin->WindowQuad[0].Bottom.InitializeRelative(SkinBitmap,sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
@@ -194,15 +254,17 @@ void GSchemedSkinBuilder::LoadWindowBottom( const GSchemeLayer& borderData )
 		Skin->WindowQuad[0].Bottom.InitializeRelative(SkinBitmap,sub,0,0,sub->Width,halfHeight);
 		Skin->WindowQuad[1].Bottom.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Bottom,0,halfHeight);
 	}
+
+	delete image;
 }
 
-void GSchemedSkinBuilder::LoadWindowLeft( const GSchemeLayer& borderData )
+void GSchemedSkinBuilder::LoadWindowLeft( const GSchemeLayer& borderData, bool corners )
 {
 	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
 	VTexturePart* sub = InsertImage(image);
 
 	int halfWidth = sub->Width/2;
-	if (borderData.IsVertical())
+	if (corners)
 	{
 		Skin->WindowQuad[0].TopLeft.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,borderData.TopMargin);
 		Skin->WindowQuad[0].Left.InitializeRelative(SkinBitmap,sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
@@ -217,15 +279,17 @@ void GSchemedSkinBuilder::LoadWindowLeft( const GSchemeLayer& borderData )
 		Skin->WindowQuad[0].Left.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,sub->Height);
 		Skin->WindowQuad[1].Left.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Left,halfWidth,0);
 	}
+
+	delete image;
 }
 
-void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData )
+void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData , bool corners)
 {
 	TBitmap* image = Engine.Textures.LoadToBitmap(*borderData.ImagePath);
 	VTexturePart* sub = InsertImage(image);
 
 	int halfWidth = sub->Width/2;
-	if (borderData.IsVertical())
+	if (corners)
 	{
 		Skin->WindowQuad[0].TopRight.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,borderData.TopMargin);
 		Skin->WindowQuad[0].Right.InitializeRelative(SkinBitmap,sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
@@ -240,6 +304,26 @@ void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData )
 		Skin->WindowQuad[0].Right.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,sub->Height);
 		Skin->WindowQuad[1].Right.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Right,halfWidth,0);
 	}
+
+	delete image;
+}
+
+void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*buttonData.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int partWidth = sub->Width / 5; // there is 5 different pictures
+	TRegion tmpRegion = *sub;
+	tmpRegion.SetWidth(partWidth);
+	for (int i=0;i<5;i++)
+	{
+		buttonData.CopyTo(&Skin->ButtonQuad[i]);
+		Skin->ButtonQuad[i].Initialize(SkinBitmap, tmpRegion);
+		tmpRegion.SetLeftRelative(partWidth); // increment x of region
+	}
+
+	delete image;
 }
 
 VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
@@ -253,4 +337,40 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 	SkinBitmap->Copy(bmp,node);
 	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
 	return tpart;
+}
+
+
+void GSchemeColors::LoadColors( GSchemeClass* cls )
+{
+	Scrollbar             = cls->GetColor("Scrollbar");
+	ActiveTitle           = cls->GetColor("ActiveTitle");
+	InactiveTitle         = cls->GetColor("InactiveTitle");
+	Menu                  = cls->GetColor("Menu");
+	Window                = cls->GetColor("Window");
+	MenuText              = cls->GetColor("MenuText");
+	WindowText            = cls->GetColor("WindowText");
+	TitleText             = cls->GetColor("TitleText");
+	ActiveBorder          = cls->GetColor("ActiveBorder");
+	InactiveBorder        = cls->GetColor("InactiveBorder");
+	AppWorkSpace          = cls->GetColor("AppWorkSpace");
+	Hilight               = cls->GetColor("Hilight");
+	HilightText           = cls->GetColor("HilightText");
+	ButtonFace            = cls->GetColor("ButtonFace");
+	ButtonShadow          = cls->GetColor("ButtonShadow");
+	GrayText              = cls->GetColor("GrayText");
+	ButtonText            = cls->GetColor("ButtonText");
+	InactiveTitleText     = cls->GetColor("InactiveTitleText");
+	ButtonHilight         = cls->GetColor("ButtonHilight");
+	ButtonDkShadow        = cls->GetColor("ButtonDkShadow");
+	ButtonLight           = cls->GetColor("ButtonLight");
+	InfoText              = cls->GetColor("InfoText");
+	InfoWindow            = cls->GetColor("InfoWindow");
+	ButtonAlternateFace   = cls->GetColor("ButtonAlternateFace");
+	HotTrackingColor      = cls->GetColor("HotTrackingColor");
+	GradientActiveTitle   = cls->GetColor("GradientActiveTitle");
+	GradientInactiveTitle = cls->GetColor("GradientInactiveTitle");
+	MenuHilight           = cls->GetColor("MenuHilight");
+	MenuBar               = cls->GetColor("MenuBar");
+	Background            = cls->GetColor("Background");
+	WindowFrame           = cls->GetColor("WindowFrame");
 }

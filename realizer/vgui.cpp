@@ -8,15 +8,34 @@ void VGUI::ActivateDesktop(GObject* newDesktop)
 	newDesktop->Master = this;
 	Focused = Desktop;
 	Desktop->Parent = Desktop;
-	Desktop->X = 0;
-	Desktop->Y = 0;
-	Desktop->Width = Engine.Renderer.vWidth;
-	Desktop->Height = Engine.Renderer.vHeight;
+	Desktop->SetSize(0,0,Engine.Renderer.vWidth,Engine.Renderer.vHeight);
 }
 
-void VGUI::EnableGUI()
+void VGUI::EnableGUI(GSkin* defSkin,GObject* desktopObj)
 {
+	if (desktopObj == 0)
+	{
+		if (Desktop == 0)
+		{
+			desktopObj = CreateDesktop(true);
+		}
+	}
+	else
+	{
+		ActivateDesktop(desktopObj);
+	}
+
+	if (defSkin != 0)
+	{
+		desktopObj->Skin = defSkin;
+	}
+	
 	Engine.Inputs.Mouse.Attach(this);
 	Engine.Inputs.Keyboard.Attach(this);
 }
 
+void VGUI::DisableGUI()
+{
+	Engine.Inputs.Mouse.Detach(this);
+	Engine.Inputs.Keyboard.Detach(this);
+}

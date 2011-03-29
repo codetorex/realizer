@@ -6,14 +6,22 @@
 
 
 #include "gwindow.h"
+#include "gbutton.h"
 
 
-void GSchemedSkin::RenderWindow( GWindow* window )
+void GSchemedSkin::RenderWindow( GObject* window )
 {
-	WindowQuad->Render((GObject*)window);
+	Engine.Draw.SetTexture(SkinTexture);
+	WindowQuad[0].Render(window);
 }
 
 void GSchemedSkin::LayoutWindow( GWindow* window )
 {
+	window->TitleBar->SetSize(0,0,window->Width,WindowQuad->Top.Height);
+}
 
+void GSchemedSkin::RenderButton( GButton* button )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	ButtonQuad[button->GraphicState].Render(button);
 }

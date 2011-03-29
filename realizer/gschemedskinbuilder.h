@@ -18,10 +18,22 @@ public:
 	*/
 	str8* GetValue(const str8& key);
 
+	
+	inline str8* GetValueOrNull(const str8& key)
+	{
+		str8* rv = Variables.GetValue(key);
+		return rv;
+	}
+
 	/**
 	* Throws exception if key not found.
 	*/
 	str8* GetMustValue(const str8& key);
+
+	/**
+	* Returns color, if not found, returns white.
+	*/
+	TColor32 GetColor(const str8& key);
 };
 
 class GSchemeLayer
@@ -64,6 +76,7 @@ public:
 		return ((LeftMargin + RightMargin) > 0);
 	}
 
+	void CopyTo(GScalableQuad* qd) const;
 	void LoadLayer(GSchemeClass* cls);
 };
 
@@ -117,6 +130,47 @@ public:
 	void LoadTextLayer(GSchemeClass* cls);
 };
 
+/**
+* Used for holding system color info of skin.
+*/
+class GSchemeColors
+{
+public:
+	TColor32 Scrollbar;
+	TColor32 ActiveTitle;
+	TColor32 InactiveTitle;
+	TColor32 Menu;
+	TColor32 Window;
+	TColor32 MenuText;
+	TColor32 WindowText;
+	TColor32 TitleText;
+	TColor32 ActiveBorder;
+	TColor32 InactiveBorder;
+	TColor32 AppWorkSpace;
+	TColor32 Hilight;
+	TColor32 HilightText;
+	TColor32 ButtonFace;
+	TColor32 ButtonShadow;
+	TColor32 GrayText;
+	TColor32 ButtonText;
+	TColor32 InactiveTitleText;
+	TColor32 ButtonHilight;
+	TColor32 ButtonDkShadow;
+	TColor32 ButtonLight;
+	TColor32 InfoText;
+	TColor32 InfoWindow;
+	TColor32 ButtonAlternateFace;
+	TColor32 HotTrackingColor;
+	TColor32 GradientActiveTitle;
+	TColor32 GradientInactiveTitle;
+	TColor32 MenuHilight;
+	TColor32 MenuBar;
+	TColor32 Background;
+	TColor32 WindowFrame;
+
+	void LoadColors(GSchemeClass* cls);
+};
+
 class GSchemeFile: public TINIParser
 {
 public:
@@ -137,6 +191,7 @@ private:
 	GFont* BaseFont;
 
 	GSchemeFile* Scheme;
+	GSchemeColors Colors;
 
 public:
 
@@ -145,10 +200,13 @@ public:
 
 	VTexturePart* InsertImage(TBitmap* bmp);
 
-	void LoadWindowTop   (const GSchemeText& borderData);
-	void LoadWindowBottom(const GSchemeLayer& borderData);
-	void LoadWindowLeft  (const GSchemeLayer& borderData);
-	void LoadWindowRight (const GSchemeLayer& borderData);
+	void LoadWindowTop   (const GSchemeText& borderData, bool corners);
+	void LoadWindowBottom(const GSchemeLayer& borderData, bool corners);
+	void LoadWindowLeft  (const GSchemeLayer& borderData, bool corners);
+	void LoadWindowRight (const GSchemeLayer& borderData, bool corners);
+
+	void LoadButtons     (const GSchemeText& buttonData);
+
 
 
 	void LoadFromScheme(const str8& filePath, bool usePerPixel = true);

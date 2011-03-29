@@ -117,7 +117,7 @@
     <ClInclude Include="ctiming.h" />
     <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
-    <ClInclude Include="gcontainer.h" />
+    <ClInclude Include="gbutton.h" />
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="cengine.cpp" />
     <ClCompile Include="cwindows.cpp" />
+    <ClCompile Include="gbutton.cpp" />
     <ClCompile Include="gobject.cpp" />
     <ClCompile Include="gquad.cpp" />
     <ClCompile Include="gschemedskin.cpp" />

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "cengine.h"
 #include "vdraw.h"
+#include "vtexture.h"
 
 void VDraw::Flush()
 {
@@ -16,7 +16,7 @@ void VDraw::Flush()
 	}
 }
 
-void VDraw::SetTexture( rtex NewTexture )
+void VDraw::SetTexture( VTexture* NewTexture )
 {
 	if (CurrentTexture == NewTexture)
 	{
@@ -24,6 +24,6 @@ void VDraw::SetTexture( rtex NewTexture )
 	}
 
 	Flush();
-	Engine.Renderer.SetTexture(0,NewTexture);
+	Engine.Renderer.SetTexture(0,NewTexture->texID);
 	CurrentTexture = NewTexture;
 }

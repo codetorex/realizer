@@ -71,9 +71,26 @@ public:
 		D3DDevice->SetSamplerState(stage,(D3DSAMPLERSTATETYPE)filterType,value);
 	}
 
+	/*inline void SetTextureState(int stage, int stateType, int value)
+	{
+
+	}*/
+
 	inline void EnableTexturing(int stage)
 	{
 		D3DDevice->SetTextureStageState(stage,D3DTSS_COLOROP, D3DTOP_MODULATE);
+	}
+
+	inline void EnableTextureAlphaVertexColorAlpha(int stage)
+	{
+		D3DDevice->SetTextureStageState(stage, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		/*
+		Basically
+		Direct3D.TextureState(0).ColorOperation = Direct3D.TextureOperation.Modulate
+		Direct3D.TextureState(0).ColorArgument1 = Direct3D.TextureArgument.TextureColor
+		Direct3D.TextureState(0).ColorArgument2 = Direct3D.TextureArgument.Diffuse
+		Direct3D.TextureState(0).AlphaOperation = Direct3D.TextureOperation.Modulate
+		*/
 	}
 
 	inline void DisableTexturing(int stage)

@@ -24,8 +24,13 @@ public:
 	GFont* BaseFont;
 	TColor32 DefaultFontColor;
 
+	VTexturePart WhitePart;
+
 	GScalableQuadParted WindowQuad[2]; // 0= Active, 1= Inactive
-	TColor32 WindowBackgroundColor;
+	TColor32 ButtonFaceWindowBackgroundColor;
+
+	GScalableQuad ButtonQuad[5]; // 0 = Normal, 1 = Pressed, 2 = Disabled, 3 = Mouse Over, 4 = Focus & Default
+
 
 	void SaveSkin(const str8& path);
 	void LoadSkin(const str8& path);
@@ -33,9 +38,10 @@ public:
 public:
 
 	// Implementation
-	void RenderWindow(GWindow* window);
-
+	void RenderWindow(GObject* window);
 	void LayoutWindow(GWindow* window);
+
+	void RenderButton(GButton* button);
 };
 
 

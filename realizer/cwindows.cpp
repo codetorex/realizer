@@ -17,6 +17,8 @@ bool CWin32RenderWindow::Create( int _width,int _height,ch16* _title,bool fullsc
 	WindowRect.top=(long)0;			
 	WindowRect.bottom=(long)_height;
 
+	/*vWidth = _width;
+	vHeight = _height;*/
 	vFullScreen = fullscr;
 	vColorDepth = bits;
 
@@ -63,6 +65,16 @@ bool CWin32RenderWindow::Create( int _width,int _height,ch16* _title,bool fullsc
 
 	ShowWindow(hWnd, SW_SHOW);    // Show the window.
 	UpdateWindow(hWnd);           // Update its display.
+
+
+	// Now fix the client view
+	RECT clRect,wRect;
+	int diffW,diffH;
+	GetClientRect(hWnd,&clRect);
+	GetWindowRect(hWnd,&wRect);
+	diffW = (wRect.right - wRect.left) - clRect.right;
+	diffH = (wRect.bottom - wRect.top) - clRect.bottom;
+	MoveWindow(hWnd,wRect.left,wRect.top,_width + diffW,_height + diffH,TRUE);
 
 	return true;
 }

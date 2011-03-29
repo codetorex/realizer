@@ -156,9 +156,6 @@
     <ClInclude Include="genums.h">
       <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClInclude>
-    <ClInclude Include="gcontainer.h">
-      <Filter>Source Files\Visual\GUI\Base</Filter>
-    </ClInclude>
     <ClInclude Include="gskin.h">
       <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClInclude>
@@ -191,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="gschemedskinbuilder.h">
       <Filter>Source Files\Visual\GUI\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="gbutton.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="vgui.cpp">
       <Filter>Source Files\Visual\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gbutton.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

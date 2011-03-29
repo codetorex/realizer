@@ -122,7 +122,7 @@ public:
 		int i = Observers.Count;
 		while(i--)
 		{
-			Observers.Item[i]->MouseDown(_x,_y,_delta);
+			Observers.Item[i]->MouseWheel(_x,_y,_delta);
 		}
 	}
 };
