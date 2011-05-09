@@ -15,19 +15,19 @@ GSchemedSkin* GSchemedSkinBuilder::Finish()
 	Skin->SkinTexture = Engine.Textures.CreateTexture(SkinBitmap);
 	
 	TStream* fs = Engine.FileSystem.Open("outputSKIN.bmp",fm_Write);
-	SkinBitmap->savebmp(fs);
+	SkinBitmap->WriteBMP(fs);
 
 	return Skin;
 }
 
 int GSchemeClass::GetInt( const str8& key, int defaultValue = 0 )
 {
-	TKeyValuePair<str8*>* kp = Variables.Get(key);
+	THashKeyValue<str8*>* kp = Variables.Get(key);
 	if (kp == 0)
 	{
 		return defaultValue;
 	}
-	return kp->value->ParseInt();
+	return kp->Value->ParseInt();
 }
 
 str8* GSchemeClass::GetValue(const str8& key)
@@ -50,12 +50,12 @@ str8* GSchemeClass::GetMustValue( const str8& key )
 	return rv;
 }
 
-TColor32 GSchemeClass::GetColor( const str8& key )
+TColor32ARGB GSchemeClass::GetColor( const str8& key )
 {
 	str8* val = GetValueOrNull(key);
 	if (val == NULL)
 	{
-		return TColor32(255,255,255);
+		return TColor32ARGB(255,255,255);
 	}
 
 	int nStart = 0;
@@ -63,22 +63,22 @@ TColor32 GSchemeClass::GetColor( const str8& key )
 	int cRed = val->ParseInt(nStart,&nLength);
 	if (nLength == 0)
 	{
-		return TColor32(255,255,255);
+		return TColor32ARGB(255,255,255);
 	}
 	nStart += nLength+1;
 	int cGreen = val->ParseInt(nStart,&nLength);
 	if (nLength == 0)
 	{
-		return TColor32(255,255,255);
+		return TColor32ARGB(255,255,255);
 	}
 	nStart += nLength+1;
 	int cBlue = val->ParseInt(nStart);
 	if (nLength == 0)
 	{
-		return TColor32(255,255,255);
+		return TColor32ARGB(255,255,255);
 	}
 
-	return TColor32(cRed,cGreen,cBlue);
+	return TColor32ARGB(cRed,cGreen,cBlue);
 }
 
 GSchemeClass* GSchemeFile::GetClass( const str8& className )
@@ -89,11 +89,11 @@ GSchemeClass* GSchemeFile::GetClass( const str8& className )
 
 void GSchemeLayer::LoadLayer( GSchemeClass* cls )
 {
-	ImagePath = cls->GetMustValue("Image");
-	LeftMargin = cls->GetInt("LeftWidth");
-	RightMargin = cls->GetInt("RightWidth");
-	TopMargin = cls->GetInt("TopHeight");
-	BottomMargin = cls->GetInt("BottomHeight");
+	ImagePath = cls->GetMustValue("image");
+	LeftMargin = cls->GetInt("leftwidth");
+	RightMargin = cls->GetInt("rightwidth");
+	TopMargin = cls->GetInt("topheight");
+	BottomMargin = cls->GetInt("bottomheight");
 	PaintStyle = UseMargins;
 	Tiling = (GSchemeTile)cls->GetInt("Tile");
 }
@@ -108,30 +108,30 @@ void GSchemeLayer::CopyTo( GScalableQuad* qd ) const
 
 void GSchemeText::LoadTextLayer( GSchemeClass* cls )
 {
-	XAlign = (GSchemeTextXAlign)cls->GetInt("TextHorzAlignNormal");
-	XAlignPressed = (GSchemeTextXAlign)cls->GetInt("TextHorzAlignPressed");
-	YAlign = (GSchemeTextXAlign)cls->GetInt("TextVertAlignNormal");
-	YAlignPressed = (GSchemeTextXAlign)cls->GetInt("TextVertAlignPressed");
+	XAlign = (GSchemeTextXAlign)cls->GetInt("texthorzalignnormal");
+	XAlignPressed = (GSchemeTextXAlign)cls->GetInt("texthorzalignpressed");
+	YAlign = (GSchemeTextXAlign)cls->GetInt("textvertalignnormal");
+	YAlignPressed = (GSchemeTextXAlign)cls->GetInt("textvertalignpressed");
 
-	TextAlpha = cls->GetInt("TextAlpha",255);
-	TextAlphaInactive = cls->GetInt("TextAlphaInactive",150);
+	TextAlpha = cls->GetInt("textalpha",255);
+	TextAlphaInactive = cls->GetInt("textalphainactive",150);
 
-	NormalColor = cls->GetInt("NormalColour",-1);
-	PressedColor = cls->GetInt("PressedColour",-1);
-	DisabledColor = cls->GetInt("DisabledColour",-1);
-	FocusColor = cls->GetInt("FocusColour",-1);
-	DefaultColor = cls->GetInt("DefaultColour",-1);
+	NormalColor = cls->GetInt("normalcolour",-1);
+	PressedColor = cls->GetInt("pressedcolour",-1);
+	DisabledColor = cls->GetInt("disabledcolour",-1);
+	FocusColor = cls->GetInt("focuscolour",-1);
+	DefaultColor = cls->GetInt("defaultcolour",-1);
 
-	NormalFont = cls->GetInt("NormalFont",-1);
-	PressedFont = cls->GetInt("PressedFont",-1);
-	DisabledFont = cls->GetInt("DisabledFont",-1);
-	FocusFont = cls->GetInt("FocusFont",-1);
-	DefaultFont = cls->GetInt("DefaultFont",-1);
+	NormalFont = cls->GetInt("normalfont",-1);
+	PressedFont = cls->GetInt("pressedfont",-1);
+	DisabledFont = cls->GetInt("disabledfont",-1);
+	FocusFont = cls->GetInt("focusfont",-1);
+	DefaultFont = cls->GetInt("defaultfont",-1);
 
-	ContentLeft = cls->GetInt("ContentLeft",0);
-	ContentRight = cls->GetInt("ContentRight",0);
-	ContentTop = cls->GetInt("ContentTop",0);
-	ContentBottom = cls->GetInt("ContentBottom",0);
+	ContentLeft = cls->GetInt("contentleft",0);
+	ContentRight = cls->GetInt("contentright",0);
+	ContentTop = cls->GetInt("contenttop",0);
+	ContentBottom = cls->GetInt("contentbottom",0);
 }
 
 GSchemeLayer GSchemeFile::GetLayer( const str8& className )
@@ -159,16 +159,16 @@ GSchemeText GSchemeFile::GetTextLayer( const str8& className )
 	return lyr;
 }
 
-void GSchemedSkinBuilder::LoadFromScheme( const str8& filePath, bool usePerPixel )
+void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 {
-	TStream* SchemeStream = Engine.FileSystem.Open(filePath,fm_Read);
-	Scheme = (GSchemeFile*) new TINIParser(SchemeStream);
+	Scheme = (GSchemeFile*) new TINIParser(srcStream);
+	Scheme->LowerCaseKeys = true;
 	Scheme->Parse(); // this guy closes and deletes the stream so don't need to be closed later
 
 	// TODO: do lots of stuff here
 	
 	// Lets load window images
-	if ( !Scheme->ContainsClass("WindowFrame.TopPerPixel") && usePerPixel )
+	if ( !Scheme->ContainsClass("windowframe.topperpixel") && usePerPixel )
 	{
 		usePerPixel = false;
 	}
@@ -180,18 +180,18 @@ void GSchemedSkinBuilder::LoadFromScheme( const str8& filePath, bool usePerPixel
 	VTexturePart* whitePart = new VTexturePart( SkinBitmap, whiteNode );
 	Skin->WhitePart = *whitePart;
 
-	if ( Scheme->ContainsClass("Colours"))
+	if ( Scheme->ContainsClass("colours"))
 	{
-		GSchemeClass* colorClass = Scheme->GetClass("Colours");
+		GSchemeClass* colorClass = Scheme->GetClass("colours");
 		Colors.LoadColors(colorClass);
 	}
 
 	if (usePerPixel)
 	{
-		LoadWindowTop(Scheme->GetTextLayer("WindowFrame.TopPerPixel"),true);
-		LoadWindowBottom(Scheme->GetLayer("WindowFrame.BottomPerPixel"),true);
-		LoadWindowLeft(Scheme->GetLayer("WindowFrame.LeftPerPixel"),false);
-		LoadWindowRight(Scheme->GetLayer("WindowFrame.RightPerPixel"),false);
+		LoadWindowTop(Scheme->GetTextLayer("windowframe.topperpixel"),true);
+		LoadWindowBottom(Scheme->GetLayer("windowframe.bottomperpixel"),true);
+		LoadWindowLeft(Scheme->GetLayer("windowframe.leftperpixel"),false);
+		LoadWindowRight(Scheme->GetLayer("windowframe.rightperpixel"),false);
 	}
 	else
 	{
@@ -199,12 +199,15 @@ void GSchemedSkinBuilder::LoadFromScheme( const str8& filePath, bool usePerPixel
 	}
 
 	Skin->WindowQuad[0].Center.Initialize(whitePart);
-	Skin->WindowQuad[0].CenterColor = Colors.ButtonFace.GetARGB();
+	Skin->WindowQuad[0].CenterColor = Colors.ButtonFace;
 	Skin->WindowQuad[1].Center.Initialize(whitePart);
-	Skin->WindowQuad[1].CenterColor = Colors.ButtonFace.GetARGB();
+	Skin->WindowQuad[1].CenterColor = Colors.ButtonFace;
 	Skin->ButtonFaceWindowBackgroundColor = Colors.ButtonFace;
 
-	LoadButtons(Scheme->GetTextLayer("Buttons"));
+	LoadButtons(Scheme->GetTextLayer("buttons"));
+
+	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
+	// TODO: lower case stuff of classes, implement it to TINIParser
 }
 
 void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData, bool corners )
@@ -314,8 +317,9 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 	VTexturePart* sub = InsertImage(image);
 
 	int partWidth = sub->Width / 5; // there is 5 different pictures
-	TRegion tmpRegion = *sub;
-	tmpRegion.SetWidth(partWidth);
+	TRegion tmpRegion;
+	tmpRegion.SetFrom( sub );
+	tmpRegion.SetWidth( partWidth );
 	for (int i=0;i<5;i++)
 	{
 		buttonData.CopyTo(&Skin->ButtonQuad[i]);
@@ -342,35 +346,35 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 
 void GSchemeColors::LoadColors( GSchemeClass* cls )
 {
-	Scrollbar             = cls->GetColor("Scrollbar");
-	ActiveTitle           = cls->GetColor("ActiveTitle");
-	InactiveTitle         = cls->GetColor("InactiveTitle");
-	Menu                  = cls->GetColor("Menu");
-	Window                = cls->GetColor("Window");
-	MenuText              = cls->GetColor("MenuText");
-	WindowText            = cls->GetColor("WindowText");
-	TitleText             = cls->GetColor("TitleText");
-	ActiveBorder          = cls->GetColor("ActiveBorder");
-	InactiveBorder        = cls->GetColor("InactiveBorder");
-	AppWorkSpace          = cls->GetColor("AppWorkSpace");
-	Hilight               = cls->GetColor("Hilight");
-	HilightText           = cls->GetColor("HilightText");
-	ButtonFace            = cls->GetColor("ButtonFace");
-	ButtonShadow          = cls->GetColor("ButtonShadow");
-	GrayText              = cls->GetColor("GrayText");
-	ButtonText            = cls->GetColor("ButtonText");
-	InactiveTitleText     = cls->GetColor("InactiveTitleText");
-	ButtonHilight         = cls->GetColor("ButtonHilight");
-	ButtonDkShadow        = cls->GetColor("ButtonDkShadow");
-	ButtonLight           = cls->GetColor("ButtonLight");
-	InfoText              = cls->GetColor("InfoText");
-	InfoWindow            = cls->GetColor("InfoWindow");
-	ButtonAlternateFace   = cls->GetColor("ButtonAlternateFace");
-	HotTrackingColor      = cls->GetColor("HotTrackingColor");
-	GradientActiveTitle   = cls->GetColor("GradientActiveTitle");
-	GradientInactiveTitle = cls->GetColor("GradientInactiveTitle");
-	MenuHilight           = cls->GetColor("MenuHilight");
-	MenuBar               = cls->GetColor("MenuBar");
-	Background            = cls->GetColor("Background");
-	WindowFrame           = cls->GetColor("WindowFrame");
+	Scrollbar             = cls->GetColor("scrollbar");
+	ActiveTitle           = cls->GetColor("activetitle");
+	InactiveTitle         = cls->GetColor("inactivetitle");
+	Menu                  = cls->GetColor("menu");
+	Window                = cls->GetColor("window");
+	MenuText              = cls->GetColor("menutext");
+	WindowText            = cls->GetColor("windowtext");
+	TitleText             = cls->GetColor("titletext");
+	ActiveBorder          = cls->GetColor("activeborder");
+	InactiveBorder        = cls->GetColor("inactiveborder");
+	AppWorkSpace          = cls->GetColor("appworkspace");
+	Hilight               = cls->GetColor("hilight");
+	HilightText           = cls->GetColor("hilighttext");
+	ButtonFace            = cls->GetColor("buttonface");
+	ButtonShadow          = cls->GetColor("buttonshadow");
+	GrayText              = cls->GetColor("graytext");
+	ButtonText            = cls->GetColor("buttontext");
+	InactiveTitleText     = cls->GetColor("inactivetitletext");
+	ButtonHilight         = cls->GetColor("buttonhilight");
+	ButtonDkShadow        = cls->GetColor("buttondkshadow");
+	ButtonLight           = cls->GetColor("buttonlight");
+	InfoText              = cls->GetColor("infotext");
+	InfoWindow            = cls->GetColor("infowindow");
+	ButtonAlternateFace   = cls->GetColor("buttonalternateface");
+	HotTrackingColor      = cls->GetColor("hottrackingcolor");
+	GradientActiveTitle   = cls->GetColor("gradientactivetitle");
+	GradientInactiveTitle = cls->GetColor("gradientinactivetitle");
+	MenuHilight           = cls->GetColor("menuhilight");
+	MenuBar               = cls->GetColor("menubar");
+	Background            = cls->GetColor("background");
+	WindowFrame           = cls->GetColor("windowframe");
 }

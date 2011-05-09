@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "tfilesystem.h"
 #include "tfoldermount.h"
+#include "tmemorystream.h"
 
 TStream* TFileSystem::Open( const str8& path,FileMode mode )
 {
@@ -55,3 +56,23 @@ TMount* TFileSystem::MountSystemFolder( const str8& folderPath,dword permission 
 	Mount(FMount);
 	return FMount;
 }
+
+TBuffer* TFileSystem::Load( const str8& path )
+{
+	TStream* file = Open(path,fm_Read);
+	int length = file->Length();
+	TBuffer* result = new TBuffer(length);
+	file->Read(result->Data,1,length);
+	file->Close();
+	return result;
+}
+
+TMemoryStream* TFileSystem::LoadOpen( const str8& path )
+{
+	TBuffer* file = Load(path);
+	TMemoryStream* result = new TMemoryStream(file);
+	file->Data = 0;
+	delete file;
+	return result;
+}
+

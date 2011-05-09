@@ -2,37 +2,37 @@
 #define VVERTEXBUFFERFORMAT_H
 
 
-#include <tflexiblebuffer.h>
+#include <tcompositebuffer.h>
 #include "realizertypes.h"
 
 class VVertexBufferChannels
 {
 public:
-	static TFormatElement* PosX; // positional X
-	static TFormatElement* PosY;
-	static TFormatElement* PosZ;
-	static TFormatElement* PosRHW; // WTF?
+	static TCompositionPrimitive* PosX; // positional X
+	static TCompositionPrimitive* PosY;
+	static TCompositionPrimitive* PosZ;
+	static TCompositionPrimitive* PosRHW; // WTF?
 
-	static TFormatElement* NX; // normal
-	static TFormatElement* NY;
-	static TFormatElement* NZ;
+	static TCompositionPrimitive* NX; // normal
+	static TCompositionPrimitive* NY;
+	static TCompositionPrimitive* NZ;
 
-	static TFormatElement* TU; // texture x
-	static TFormatElement* TV; // texture y
+	static TCompositionPrimitive* TU; // texture x
+	static TCompositionPrimitive* TV; // texture y
 
-	static TFormatElement* Position;
-	static TFormatElement* Normal;
-	static TFormatElement* TexCoord0;
-	static TFormatElement* TexCoord1;
-	static TFormatElement* TexCoord2;
-	static TFormatElement* TexCoord3;
-	static TFormatElement* TexCoord4;
-	static TFormatElement* TexCoord5;
-	static TFormatElement* TexCoord6;
-	static TFormatElement* Color; // ARGB order in dX
+	static TCompositionPrimitive* Position;
+	static TCompositionPrimitive* Normal;
+	static TCompositionPrimitive* TexCoord0;
+	static TCompositionPrimitive* TexCoord1;
+	static TCompositionPrimitive* TexCoord2;
+	static TCompositionPrimitive* TexCoord3;
+	static TCompositionPrimitive* TexCoord4;
+	static TCompositionPrimitive* TexCoord5;
+	static TCompositionPrimitive* TexCoord6;
+	static TCompositionPrimitive* Color; // ARGB order in dX
 
 
-	static TArray<TFormatElement*>* VBChannelRegistry; // vertex buffer channel registry
+	static TArray<TCompositionPrimitive*>* VBChannelRegistry; // vertex buffer channel registry
 
 	void Initialize();
 };

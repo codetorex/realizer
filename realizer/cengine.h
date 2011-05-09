@@ -29,12 +29,14 @@ public:
 	VSceneManager		Scenes;
 	TFileSystem			FileSystem;
 	CTiming				Time;
-	VDraw				Draw; // a vbo for rendering 2d, makes less creation of VBO's for small renderings
+	VDraw				Draw; // a vbo for rendering 2d, makes less creation of VBO's for small renderings.
 	VGUI				GUI;
 
 	//TPluginManager	Plugins;
-
+	//NNetworkManager	Network;
 	//CHookManager		Hooks;
+
+	//Mesh, model, shader, material managers?
 
 	void Initialize(int width,int height, string title, bool fullscreen = false,int bits = 24);
 	void Run();

@@ -1,4 +1,4 @@
-// demo_realizer.cpp : Defines the entry point for the application.
+﻿// demo_realizer.cpp : Defines the entry point for the application.
 //
 
 #include "stdafx.h"
@@ -10,6 +10,7 @@
 #include "gschemedskinbuilder.h"
 #include "gwindow.h"
 #include "gbutton.h"
+#include "gfont.h"
 
 class IntroScene: public VScene
 {
@@ -19,17 +20,34 @@ public:
 
 	VVertexStream* TestMesh;
 
+	GSchemedSkin* SkinTest;
+	GFont* FontTest;
+
 	float newX;
 	float newY;
 	float CurAng;
 
-	void tstBut_Clicked()
+	int frame;
+	int fps;
+	int lastOlcum;
+
+	str16 TestString;
+
+	void tstBut_Click()
 	{
 		MessageBoxA(0,"Hello!","Realizer",MB_OK);
 	}
 
 	void Render()
 	{
+		if (Engine.Time.TickCount - lastOlcum > 1000)
+		{
+			fps = frame;
+			frame = 0;
+			lastOlcum = Engine.Time.TickCount;
+		}
+		frame++;
+
 		Engine.Renderer.Clear(RL_COLOR_BUFFER | RL_ZBUFFER, 0xFF888888);
 		Engine.Renderer.BeginScene();
 
@@ -60,6 +78,9 @@ public:
 		Engine.GUI.Render();
 		Engine.Draw.Flush();
 
+		TestString.Format(L"Current frame per second (FPS): %i",fps);
+		FontTest->Render(TestString,30,30, 0xFFFFFFFF,THA_LEFT,TVA_BOTTOM);
+
 		Engine.Renderer.Exit2D();
 
 		Engine.Renderer.EndScene();
@@ -83,29 +104,32 @@ public:
 
 	void Initialize()
 	{
+		TestString.Allocate(512);
+
+		lastOlcum = 0;
+
 		SceneName = L"Intro Scene";
 		// Load resources here
 		TestTexture = Engine.Textures.LoadTexture("test.bmp");
 		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/but_close.tga");
 
-
-		GSchemedSkinBuilder gsb;
-		gsb.Begin(1024,1024);
-		gsb.LoadFromScheme("Acrylic 7/Acrylic 7.uis");
-		GSchemedSkin* result = gsb.Finish();
-
-		Engine.GUI.EnableGUI(result);
+		SkinTest = (GSchemedSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
+		Engine.GUI.EnableGUI(SkinTest);
 
 		GWindow* testWin = new GWindow();
 		testWin->SetSize(100,100,300,200);
+		testWin->Caption = L"Testing Window";
 
 		GButton* testBut = new GButton();
 		testBut->SetSize(50,50,100,27);
-		testBut->Clicked += GetHandler(this, &IntroScene::tstBut_Clicked);
+		testBut->Caption = L"Testing Button";
+		testBut->Click += GetHandler(this, &IntroScene::tstBut_Click);
 		
-
 		Engine.GUI.Desktop->AddChild(testWin);
 		testWin->AddChild(testBut);
+
+		//FontTest = Engine.GUI.Fonts.LoadFont("dina_12.fnt");
+		FontTest = Engine.GUI.Fonts.LoadFont("segoe_11.fnt");
 
 		/*TestMesh = new VVertexStream(VVertexBufferFormats::Textured1,4,RL_TRIANGLELIST,true);
 		TestMesh->Add2DQuad1Tex(0,0,128,128,0.0f,0.0f,1.0f,1.0f);
@@ -126,10 +150,10 @@ public:
 str8 MatrixToString(mat4& src)
 {
 	str8 result(1024);
-	result += str8::Format("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._11,src._12,src._13,src._14);
-	result += str8::Format("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._21,src._22,src._23,src._24);
-	result += str8::Format("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._31,src._32,src._33,src._34);
-	result += str8::Format("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._41,src._42,src._43,src._44);
+	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._11,src._12,src._13,src._14);
+	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._21,src._22,src._23,src._24);
+	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._31,src._32,src._33,src._34);
+	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._41,src._42,src._43,src._44);
 	return result;
 }
 

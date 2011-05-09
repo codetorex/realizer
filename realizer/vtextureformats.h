@@ -41,27 +41,27 @@ class VTextureChannels: public TBitmapChannels
 public:
 	static bool ExtensionsInitialized;
 
-	static TFormatElement* cDepth32;
-	static TFormatElement* cDepth24;
-	static TFormatElement* cDepth16;
+	static TCompositionPrimitive* cDepth32;
+	static TCompositionPrimitive* cDepth24;
+	static TCompositionPrimitive* cDepth16;
 
-	static TFormatElement* cStencil;
+	static TCompositionPrimitive* cStencil;
 
-	static TFormatElement* cUnused;
+	static TCompositionPrimitive* cUnused;
 
-	static TFormatElement* cRedf;
-	static TFormatElement* cGreenf;
-	static TFormatElement* cBluef;
-	static TFormatElement* cAlphaf;
+	static TCompositionPrimitive* cRedf;
+	static TCompositionPrimitive* cGreenf;
+	static TCompositionPrimitive* cBluef;
+	static TCompositionPrimitive* cAlphaf;
 
-	static TFormatElement* cReds;
-	static TFormatElement* cGreens;
-	static TFormatElement* cBlues;
-	static TFormatElement* cAlphas;
+	static TCompositionPrimitive* cReds;
+	static TCompositionPrimitive* cGreens;
+	static TCompositionPrimitive* cBlues;
+	static TCompositionPrimitive* cAlphas;
 
-	static TFormatElement* cLuminance;
+	static TCompositionPrimitive* cLuminance;
 
-	static TFormatElement* cCompressedStream;
+	static TCompositionPrimitive* cCompressedStream;
 
 	void CreateExtendedChannels();
 

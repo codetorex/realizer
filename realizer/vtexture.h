@@ -34,7 +34,7 @@ public:
 		pathHash = 0;
 		texID = 0;
 
-		resourceType = Resource::TEXTURE;
+		ResourceType = Resource::TEXTURE;
 	}
 
 	~VTexture()

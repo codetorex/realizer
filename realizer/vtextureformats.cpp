@@ -3,21 +3,21 @@
 
 bool VTextureChannels::ExtensionsInitialized = false;
 
-TFormatElement* VTextureChannels::cDepth32 = 0;
-TFormatElement* VTextureChannels::cDepth24 = 0;
-TFormatElement* VTextureChannels::cDepth16 = 0;
-TFormatElement* VTextureChannels::cStencil = 0;
-TFormatElement* VTextureChannels::cUnused = 0;
-TFormatElement* VTextureChannels::cRedf = 0;
-TFormatElement* VTextureChannels::cGreenf = 0;
-TFormatElement* VTextureChannels::cBluef = 0;
-TFormatElement* VTextureChannels::cAlphaf = 0;
-TFormatElement* VTextureChannels::cReds = 0;
-TFormatElement* VTextureChannels::cGreens = 0;
-TFormatElement* VTextureChannels::cBlues = 0;
-TFormatElement* VTextureChannels::cAlphas = 0;
-TFormatElement* VTextureChannels::cLuminance = 0;
-TFormatElement* VTextureChannels::cCompressedStream = 0;
+TCompositionPrimitive* VTextureChannels::cDepth32 = 0;
+TCompositionPrimitive* VTextureChannels::cDepth24 = 0;
+TCompositionPrimitive* VTextureChannels::cDepth16 = 0;
+TCompositionPrimitive* VTextureChannels::cStencil = 0;
+TCompositionPrimitive* VTextureChannels::cUnused = 0;
+TCompositionPrimitive* VTextureChannels::cRedf = 0;
+TCompositionPrimitive* VTextureChannels::cGreenf = 0;
+TCompositionPrimitive* VTextureChannels::cBluef = 0;
+TCompositionPrimitive* VTextureChannels::cAlphaf = 0;
+TCompositionPrimitive* VTextureChannels::cReds = 0;
+TCompositionPrimitive* VTextureChannels::cGreens = 0;
+TCompositionPrimitive* VTextureChannels::cBlues = 0;
+TCompositionPrimitive* VTextureChannels::cAlphas = 0;
+TCompositionPrimitive* VTextureChannels::cLuminance = 0;
+TCompositionPrimitive* VTextureChannels::cCompressedStream = 0;
 
 void VTextureChannels::CreateExtendedChannels()
 {
@@ -26,26 +26,26 @@ void VTextureChannels::CreateExtendedChannels()
 		throw Exception("There is no bitmap channel registry");
 	}
 
-	cDepth32 = new TFormatElement("Depth (float)","D32",tc_float);
-	cDepth24 = new TFormatElement("Depth (24-bit float)","D24",tc_float24);
-	cDepth16 = new TFormatElement("Depth (short)","D16",tc_short);
-	cStencil = new TFormatElement("Stencil (byte)","S8",tc_byte);
+	cDepth32 = new TCompositionPrimitive("Depth (float)","D32",tc_float);
+	cDepth24 = new TCompositionPrimitive("Depth (24-bit float)","D24",tc_float24);
+	cDepth16 = new TCompositionPrimitive("Depth (short)","D16",tc_short);
+	cStencil = new TCompositionPrimitive("Stencil (byte)","S8",tc_byte);
 
-	cUnused = new TFormatElement ("Unused (byte)","X8",tc_byte);
+	cUnused = new TCompositionPrimitive ("Unused (byte)","X8",tc_byte);
 
-	cRedf    = new TFormatElement("Red (float)","RF",tc_float);
-	cGreenf  = new TFormatElement("Green (float)","GF",tc_float);
-	cBluef   = new TFormatElement("Blue (float)","BF",tc_float);
-	cAlphaf  = new TFormatElement("Alpha (float)","AF",tc_float);
+	cRedf    = new TCompositionPrimitive("Red (float)","RF",tc_float);
+	cGreenf  = new TCompositionPrimitive("Green (float)","GF",tc_float);
+	cBluef   = new TCompositionPrimitive("Blue (float)","BF",tc_float);
+	cAlphaf  = new TCompositionPrimitive("Alpha (float)","AF",tc_float);
 
-	cReds    = new TFormatElement("Red (short)","R16",tc_short);
-	cGreens  = new TFormatElement("Green (short)","G16",tc_short);
-	cBlues   = new TFormatElement("Blue (short)","B16",tc_short);
-	cAlphas  = new TFormatElement("Alpha (short)","A16",tc_short);
+	cReds    = new TCompositionPrimitive("Red (short)","R16",tc_short);
+	cGreens  = new TCompositionPrimitive("Green (short)","G16",tc_short);
+	cBlues   = new TCompositionPrimitive("Blue (short)","B16",tc_short);
+	cAlphas  = new TCompositionPrimitive("Alpha (short)","A16",tc_short);
 
-	cLuminance = new TFormatElement("Luminance (byte)","L8",tc_byte);
+	cLuminance = new TCompositionPrimitive("Luminance (byte)","L8",tc_byte);
 
-	cCompressedStream = new TFormatElement("Compressed stream","STREAM",tc_notdefined);
+	cCompressedStream = new TCompositionPrimitive("Compressed stream","STREAM",tc_notdefined);
 
 	BitmapChannelRegistry->Add(cDepth32);
 	BitmapChannelRegistry->Add(cDepth24);

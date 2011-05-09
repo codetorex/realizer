@@ -8,12 +8,17 @@
 
 class VTexture;
 class TBitmap;
+class TStream;
 
 class RDLL VTextureManager: public TArray<VTexture*>
 {
 public:
 	TBitmap* LoadToBitmap(const str8& path);
+	TBitmap* LoadToBitmap(TStream* srcStream,bool closestream = true);
+
 	VTexture* LoadTexture(const str8& path, bool keepBitmap = false);
+	VTexture* LoadTexture(TStream* srcStream,bool closestream = true);
+
 	VTexture* CreateTexture(TBitmap* source);
 
 	void ReleaseTexture(VTexture* texture);

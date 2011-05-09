@@ -7,7 +7,7 @@
 
 class VTexture;
 
-class VTexturePart: public TRegion
+class VTexturePart: public TRectangle
 {
 public:
 	VTexturePart( TRange* range, int x,int y, int _width,int _height)
@@ -15,7 +15,7 @@ public:
 		Initialize(range,x,y,_width,_height);
 	}
 
-	VTexturePart( TRange* range, TRegion* reg)
+	VTexturePart( TRange* range, TRectangle* reg)
 	{
 		Initialize(range,reg->X,reg->Y,reg->Width,reg->Height);
 	}
@@ -30,9 +30,9 @@ public:
 
 	void Initialize(TRange* range, int x,int y, int _width,int _height)
 	{
-		SetSize(x,y,_width,_height);
+		SetRectangle(x,y,_width,_height);
 		TopLeftCoord = range->GetRatio((float)x,(float)y);
-		BottomRightCoord = range->GetRatio((float)Right,(float)Bottom);
+		BottomRightCoord = range->GetRatio((float)x+_width,(float)y+_height);
 	}
 
 	inline void InitializeRelative(TRange* range, TPosition* relation, int x,int y,int _width, int _height)
@@ -40,7 +40,7 @@ public:
 		Initialize(range,relation->X + x,relation->Y +y,_width,_height);
 	}
 
-	inline void InitializeOffset(TRange* range, TRegion* source, int xOffset, int yOffset )
+	inline void InitializeOffset(TRange* range, TRectangle* source, int xOffset, int yOffset )
 	{
 		Initialize(range,source->X + xOffset,source->Y + yOffset,source->Width,source->Height);
 	}
@@ -49,7 +49,7 @@ public:
 	{
 		TopLeftCoord = othr->TopLeftCoord;
 		BottomRightCoord = othr->BottomRightCoord;
-		SetFrom(othr);
+		SetRectangleFrom(othr);
 	}
 
 	inline void Draw(float x,float y,dword color)

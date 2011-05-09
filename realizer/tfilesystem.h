@@ -4,6 +4,9 @@
 
 #include "tmount.h"
 
+class TBuffer;
+class TMemoryStream;
+
 class TFileSystem
 {
 private:
@@ -37,9 +40,34 @@ public:
 		Mounts.Remove(mount);
 	}
 
+	/**
+	* Opens file as a stream.
+	*/
 	TStream*		Open(const str8& path,FileMode mode);
+
+	/**
+	* Loads file to memory and returns buffer object.
+	*/
+	TBuffer*		Load(const str8& path);
+
+	/**
+	* This stream is fully memory cached.
+	*/
+	TMemoryStream*	LoadOpen(const str8& path);
+
+	/**
+	* Gets file entry record.
+	*/
 	IFile*			GetFile(const str8& path);
+
+	/**
+	* Gets directory entry record.
+	*/
 	IDirectory*		GetDirectory(const str8& path);
+
+	/**
+	* Finds file in mounts, and returns mount which contains the file.
+	*/
 	TMount*			FindFileInMounts(const str8& path);
 };
 

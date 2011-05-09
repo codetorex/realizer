@@ -10,20 +10,19 @@ TBitmap* VTextureManager::LoadToBitmap(const str8& path)
 		throw Exception("File not found");
 	}
 
-	TBitmap* Loader = new TBitmap();
+	dword bitmapExtension = TPath::GetExtensionAsDword(path);
 
-	if (path.EndsWith("bmp"))
+	TBitmap* Loader = new TBitmap();
+	TBitmapReader* myReader = TBitmapReader::GetReader(bitmapExtension);
+
+	if (myReader != 0)
 	{
-		Loader->loadbmp(fs,false,true);
-	}
-	else if (path.EndsWith("tga"))
-	{
-		Loader->loadtga(fs,false,true);
+		myReader->ReadBitmap(Loader,fs);
+		fs->Close();
 	}
 	else
 	{
-		// TODO: code texture loading plugin system... and implement it here.
-		throw Exception("Texture loading plugin system is not coded yet");
+		throw Exception("This texture format is not supported");
 	}
 
 	// delete fs; Remains of old system.

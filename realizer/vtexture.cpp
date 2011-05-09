@@ -11,5 +11,5 @@ VTexture::VTexture()
 	Height = 0;
 	format = 0;
 
-	resourceType = Resource::TEXTURE;
+	ResourceType = Resource::TEXTURE;
 }

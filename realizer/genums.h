@@ -3,16 +3,16 @@
 
 enum TextVerticalAlign
 {
-	TVA_LEFT,
+	TVA_TOP,
 	TVA_CENTER,
-	TVA_RIGHT,
+	TVA_BOTTOM,
 };
 
 enum TextHorizontalAlign
 {
-	THA_TOP,
+	THA_LEFT,
 	THA_CENTER,
-	THA_BOTTOM,
+	THA_RIGHT,
 };
 
 enum DockType

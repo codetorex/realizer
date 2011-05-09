@@ -15,19 +15,19 @@ void VVertexBuffer::CreateVertexBuffer( int cap )
 
 	if (Used > 0)
 	{
-		dataPtr = Buffer;
-		Buffer = 0;
+		dataPtr = Data;
+		Data = 0;
 		Free();
 	}
 
-	Capacity = cap;
-	CapacityByte = BufferFormat->BytesPerItem * Capacity;
-	Engine.Renderer.CreateVertexBuffer(this,CapacityByte);
+	CapacityItem = cap;
+	Capacity = BufferFormat->BytesPerItem * CapacityItem;
+	Engine.Renderer.CreateVertexBuffer(this,Capacity);
 	
 
 	if (dataPtr != 0)
 	{
-		MemoryDriver::Copy(Buffer,dataPtr, oldUsed * BufferFormat->BytesPerItem);
+		MemoryDriver::Copy(Data,dataPtr, oldUsed * BufferFormat->BytesPerItem);
 		delete [] dataPtr;
 	}
 }
@@ -54,7 +54,7 @@ void VVertexBuffer::LockBuffer(int offset,int length)
 		throw Exception("Not created");
 
 	Engine.Renderer.LockVertexBuffer(this,offset,length);
-	Indicator = Buffer;
+	Index = 0;
 	Used = 0;
 	Locked = true;
 }

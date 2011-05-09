@@ -14,7 +14,7 @@ public:
 	void MouseUp(int x,int y,int button);
 	void MouseMove(int x,int y);
 
-	event<NoArgEvent> Clicked;
+	event<NoArgEvent> Click;
 
 	void Render();
 

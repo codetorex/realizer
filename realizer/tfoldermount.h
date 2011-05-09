@@ -19,7 +19,7 @@ public:
 
 	TFolderMount(const str8& path,dword permission)
 	{
-		TDirectory* td = new TDirectory(path);
+		TDirectoryInfo* td = new TDirectoryInfo(path);
 		MountRoot = td;
 		FullPath = td->FullPath;
 		PermissionFlags = permission;
@@ -35,7 +35,7 @@ public:
 	{
 		str8 tmpStr(1024); // TODO: write a better string allocation and dealloction algrotihms to make these temporary stuff better.
 		GetRelativePath(tmpStr,path);
-		TStream* result = TFileStream::Open(tmpStr,mode);
+		TStream* result = File::Open(tmpStr,mode);
 		return result;
 	}
 
@@ -59,7 +59,7 @@ public:
 	{
 		str8 tmpStr(1024);
 		GetRelativePath(tmpStr,path);
-		return TFile::Exists(tmpStr);
+		return TFileInfo::Exists(tmpStr);
 	}
 
 	bool CreateDir(const str8& path)
@@ -80,7 +80,7 @@ public:
 
 	IFile* GetFile(const str8& path)
 	{
-		TFile* file = new TFile(path);
+		TFileInfo* file = new TFileInfo(path);
 		return file;
 	}
 

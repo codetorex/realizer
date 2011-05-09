@@ -125,7 +125,7 @@ public:
 		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = buffer->BufferObject;
 		void* k;
 		g_pVertexBuffer->Lock(offset,length,&k,NULL);
-		buffer->Buffer = (byte*)k;
+		buffer->Data = (byte*)k;
 	}
 
 	inline void UnlockVertexBuffer(VVertexBuffer* buffer)

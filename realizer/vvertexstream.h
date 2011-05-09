@@ -34,11 +34,11 @@ public:
 
 	void AddTranslatedVector3(float x,float y,float z)
 	{
-		float* fp = (float*)Indicator;
+		float* fp = (float*)Index;
 		fp[0] = x + PreTranslation.x;
 		fp[1] = y + PreTranslation.y;
 		fp[2] = z + PreTranslation.z;
-		Indicator += 3 * 4;
+		Index += 3 * 4;
 	}
 
 
@@ -57,26 +57,26 @@ public:
 
 	void Add2DVertex1Tex(float x,float y,float u,float v)
 	{
-		float* fp = (float*)Indicator;
+		float* fp = (float*)Index;
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;
 		fp[3] = u;
 		fp[4] = v;
-		Indicator += 5 * sizeof(float);
+		Index += 5 * sizeof(float);
 		Used++;
 	}
 
 	void Add2DVertexColor1Tex(float x,float y,float u,float v, dword color)
 	{
-		float* fp = (float*)Indicator;
+		float* fp = (float*)Index;
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;
 		*(dword*)(&fp[3]) = color;
 		fp[4] = u;
 		fp[5] = v;
-		Indicator += 6 * sizeof(float);
+		Index += 6 * sizeof(float);
 		Used++;
 	}
 

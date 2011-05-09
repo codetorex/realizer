@@ -8,6 +8,7 @@ void VDraw::Flush()
 	{
 		UnlockBuffer();
 		Engine.Renderer.RenderVertexBuffer(this);
+		MeshType = RL_TRIANGLELIST;
 	}
 
 	if (!Locked)
@@ -24,6 +25,14 @@ void VDraw::SetTexture( VTexture* NewTexture )
 	}
 
 	Flush();
-	Engine.Renderer.SetTexture(0,NewTexture->texID);
+	if (NewTexture != 0)
+	{
+		Engine.Renderer.SetTexture(0,NewTexture->texID);
+	}
+	else
+	{
+		Engine.Renderer.SetTexture(0,0);
+	}
+	
 	CurrentTexture = NewTexture;
 }

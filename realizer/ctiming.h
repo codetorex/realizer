@@ -13,12 +13,15 @@ public:
 	
 	qword MeasureStart;
 	double MeasureFreq;
+
+	dword TickCount;
 	
 
 	inline void MeasureTime()
 	{
 		MeasureStart = TTimeDriver::HighPrecision();
 		MeasureFreq = (double)TTimeDriver::HighFrequency();
+		TickCount = TTimeDriver::TickCount();
 	}
 
 	void Begining()

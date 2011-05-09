@@ -4,17 +4,22 @@
 #include "gobject.h"
 #include "cinputinterface.h"
 
+#include "gskinmanager.h"
+#include "gfontmanager.h"
+
 class REngine;
 
 class VGUI: public IMouseObserver, public IKeyboardObserver
 {
-public:
-	TArray< GSkin* > Skins;
-	TArray< GFont* > Fonts;
+public:	
+	GFontManager Fonts;
+	GSkinManager Skins;
+
+	// A monospaced font, will be used for rendering of simple stuff.
+	GFont* ConsoleFont;
 
 	VGUI()
 	{
-//		EventScissor = false;
 		Desktop = 0;
 		Focused = 0;
 	}
@@ -95,27 +100,6 @@ public:
 	{
 		Focused->KeyPress(keyChar);
 	}
-
-	/*
-	bool EventScissor;
-	TRegion Scissor;
-	
-	inline void EnableEventScissor(int _x,int _y,int _w,int _h)
-	{
-		Scissor.SetSize(_x,_y,_w,_h);
-		EventScissor = true;
-	}
-
-	inline void DisableEventScissor()
-	{
-		EventScissor = false;
-	}
-
-	inline bool ScissorTest(int x,int y)
-	{
-		if (!EventScissor) return true;
-		return Scissor.IsInside(x,y);
-	}*/
 
 	/**
 	* Activates this as MouseObserver and KeyboardObserver.

@@ -152,11 +152,11 @@ void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
 	texturesurface->LockRect(&lockedrect,NULL,0);
 
 	byte* pdata = (byte*)lockedrect.pBits; // because it generally return 4 byte data
-	byte* bmpdata = bmp->Buffer;
+	byte* bmpdata = bmp->Data;
 
 	// TODO: Check format is capable with d3d device
 
-	int pix = bmp->pixels;
+	//int pix = bmp->PixelCount;
 
 	/*while(pix--)
 	{
@@ -167,7 +167,8 @@ void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
 
 	//memset(pdata,128,pix * 4);
 
-	memcpy(pdata,bmpdata, bmp->pixels * bmp->BufferFormat->BytesPerItem);
+	
+	MemoryDriver::Copy(pdata,bmpdata, bmp->PixelCount * bmp->BufferFormat->BytesPerItem);
 
 	texturesurface->UnlockRect();
 	texturesurface->Release();
@@ -202,4 +203,8 @@ void VRendererDX9::InitializeFormats()
 
 	VVertexBufferFormats::Textured1 = new VVertexBufferFormat("2DTEX1","POST0",D3DFVF_XYZ | D3DFVF_TEX1);
 	VVertexBufferFormats::ColoredTextured1 = new VVertexBufferFormat("2DCLRTEX1","POSCLRT0",D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+
+	TBitmapBMP::Install();
+	TBitmapTGA::Install();
+	TBitmapPNG::Install();
 }

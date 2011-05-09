@@ -58,8 +58,14 @@
     <Filter Include="Source Files\Visual\GUI\Components\Containers">
       <UniqueIdentifier>{ac8256ab-e687-4f4f-a795-70b187c7d254}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Visual\GUI\Skins">
+    <Filter Include="Source Files\Visual\GUI\Font">
+      <UniqueIdentifier>{7495b78e-ae11-4d78-a57c-7f49e42680fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\GUI\Skin">
       <UniqueIdentifier>{326f3a9a-7d09-4555-8e6e-92d04b1322ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Extensibility">
+      <UniqueIdentifier>{6be1595c-dfda-4c14-a223-1745cc27150a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +162,6 @@
     <ClInclude Include="genums.h">
       <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClInclude>
-    <ClInclude Include="gskin.h">
-      <Filter>Source Files\Visual\GUI\Base</Filter>
-    </ClInclude>
     <ClInclude Include="gwindow.h">
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClInclude>
@@ -175,10 +178,7 @@
       <Filter>Source Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="gschemedskin.h">
-      <Filter>Source Files\Visual\GUI\Skins</Filter>
-    </ClInclude>
-    <ClInclude Include="gfont.h">
-      <Filter>Source Files\Visual\GUI\Base</Filter>
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
     </ClInclude>
     <ClInclude Include="vtexturepart.h">
       <Filter>Source Files\Visual\Model</Filter>
@@ -187,10 +187,31 @@
       <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClInclude>
     <ClInclude Include="gschemedskinbuilder.h">
-      <Filter>Source Files\Visual\GUI\Skins</Filter>
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
     </ClInclude>
     <ClInclude Include="gbutton.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gfont.h">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="gskin.h">
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="gskinmanager.h">
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="gfontmanager.h">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="gfontloader.h">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="cextension.h">
+      <Filter>Source Files\Extensibility</Filter>
+    </ClInclude>
+    <ClInclude Include="gfontcache.h">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +264,7 @@
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClCompile>
     <ClCompile Include="gschemedskin.cpp">
-      <Filter>Source Files\Visual\GUI\Skins</Filter>
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
     </ClCompile>
     <ClCompile Include="vtexturepart.cpp">
       <Filter>Source Files\Visual\Model</Filter>
@@ -252,7 +273,7 @@
       <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClCompile>
     <ClCompile Include="gschemedskinbuilder.cpp">
-      <Filter>Source Files\Visual\GUI\Skins</Filter>
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
     </ClCompile>
     <ClCompile Include="gobject.cpp">
       <Filter>Source Files\Visual\GUI\Base</Filter>
@@ -262,6 +283,24 @@
     </ClCompile>
     <ClCompile Include="gbutton.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gfontmanager.cpp">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="gfont.cpp">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="gfontbmf.cpp">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="gskinmanager.cpp">
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="gfontloader.cpp">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="gfontcache.cpp">
+      <Filter>Source Files\Visual\GUI\Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
 
 
 
-class VVertexBuffer: public TFlexibleBuffer
+class VVertexBuffer: public TCompositeBuffer
 {
 public:
 	bool	Locked;
@@ -30,7 +30,7 @@ public:
 				UnlockBuffer();
 			}
 			DeleteVertexBuffer();
-			Buffer = 0;
+			Data = 0;
 		}
 	}
 
@@ -41,9 +41,9 @@ public:
 
 	void InitializeBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType,bool makeitReady = false)
 	{
-		Capacity = _capacity;
+		CapacityItem = _capacity;
 		BufferFormat = _format;
-		CapacityByte = BufferFormat->BytesPerItem * Capacity;
+		Capacity = BufferFormat->BytesPerItem * CapacityItem;
 		MeshType = _meshType;
 		PrimitiveCount = 0;
 
@@ -52,7 +52,7 @@ public:
 
 		if (makeitReady)
 		{
-			CreateVertexBuffer(Capacity);
+			CreateVertexBuffer(CapacityItem);
 			LockBuffer();
 		}
 	}
@@ -74,7 +74,7 @@ public:
 	
 	inline void LockBuffer()
 	{
-		LockBuffer(0,Capacity);
+		LockBuffer(0,CapacityItem);
 	}
 	
 

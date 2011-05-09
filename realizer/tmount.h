@@ -5,7 +5,8 @@
 #include "realizertypes.h"
 #include "tarray.h"
 #include "tstream.h"
-#include "tdirectory.h"
+#include "tdirectoryinfo.h"
+#include "tfile.h"
 
 class TMount
 {

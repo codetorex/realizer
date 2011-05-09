@@ -5,6 +5,11 @@
 
 class VTexture;
 
+
+/**
+* Uses preallocated space for easy rendering.
+* Should allow rendering on 3d space via world matrix modifications.
+*/
 class VDraw: public VVertexStream
 {
 public:
@@ -16,7 +21,7 @@ public:
 	void Initialize()
 	{
 		InitializeBuffer(VVertexBufferFormats::ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
-		CreateVertexBuffer(Capacity);
+		CreateVertexBuffer(CapacityItem);
 		LockBuffer();
 	}
 
@@ -37,6 +42,32 @@ public:
 	void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, dword color)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
+	}
+
+
+	// TODO: FORMAT THESE LINE DRAWING STUFF TO BETTER SPACE?
+
+	inline void DrawLine(float x0,float y0, float x1,float y1,dword color)
+	{
+		if (MeshType != RL_LINELIST)
+		{
+			Flush();
+			MeshType = RL_LINELIST; 
+		}
+
+		SetTexture(0);
+		Add2DVertexColor1Tex(x0,y0,0.0f,0.0f,color);
+		Add2DVertexColor1Tex(x1,y1,0.0f,0.0f,color);
+	}
+
+	void DrawRectangle(float x,float y,float width,float height,dword color)
+	{
+		float r = x + width;
+		float b = y + height;
+		DrawLine(x,y,r,y,color);
+		DrawLine(r,y,r,b,color);
+		DrawLine(r,b,x,b,color);
+		DrawLine(x,b,x,y,color);
 	}
 
 	/**

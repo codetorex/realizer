@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cengine.h" />
+    <ClInclude Include="cextension.h" />
     <ClInclude Include="chooks.h" />
     <ClInclude Include="cinput.h" />
     <ClInclude Include="cinputenums.h" />
@@ -122,6 +123,9 @@
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
     <ClInclude Include="gfont.h" />
+    <ClInclude Include="gfontcache.h" />
+    <ClInclude Include="gfontloader.h" />
+    <ClInclude Include="gfontmanager.h" />
     <ClInclude Include="gobject.h" />
     <ClInclude Include="gquad.h" />
     <ClInclude Include="gschemedskin.h" />
@@ -140,6 +144,7 @@
     <ClInclude Include="vrendererdx9.h" />
     <ClInclude Include="vscene.h" />
     <ClInclude Include="vscenemanager.h" />
+    <ClInclude Include="gskinmanager.h" />
     <ClInclude Include="vtexture.h" />
     <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
@@ -153,10 +158,16 @@
     <ClCompile Include="cengine.cpp" />
     <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="gbutton.cpp" />
+    <ClCompile Include="gfont.cpp" />
+    <ClCompile Include="gfontbmf.cpp" />
+    <ClCompile Include="gfontcache.cpp" />
+    <ClCompile Include="gfontloader.cpp" />
+    <ClCompile Include="gfontmanager.cpp" />
     <ClCompile Include="gobject.cpp" />
     <ClCompile Include="gquad.cpp" />
     <ClCompile Include="gschemedskin.cpp" />
     <ClCompile Include="gschemedskinbuilder.cpp" />
+    <ClCompile Include="gskinmanager.cpp" />
     <ClCompile Include="gwindow.cpp" />
     <ClCompile Include="realizer.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>

@@ -17,7 +17,7 @@ public:
 	};
 
 	//REngine*		engine;
-	ResourceTypes	resourceType;
+	ResourceTypes	ResourceType;
 };
 
 #endif

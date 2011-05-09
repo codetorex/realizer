@@ -40,7 +40,7 @@ void GButton::MouseUp( int x,int y,int button )
 {
 	if (MouseInside)
 	{
-		Clicked.call();
+		Click.call();
 	}
 }
 // 0 = Normal, 1 = Pressed, 2 = Disabled, 3 = Mouse Over, 4 = Focus & Default

@@ -21,7 +21,7 @@ class GSchemedSkin: public GSkin
 public:
 	VTexture* SkinTexture;
 
-	GFont* BaseFont;
+	GFont* SystemFont;
 	TColor32 DefaultFontColor;
 
 	VTexturePart WhitePart;

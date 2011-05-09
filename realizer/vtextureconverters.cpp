@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "vtextureformats.h"
+#include "tcompositegenericconverter.h"
 
-class TBitmapConverterBGRtoXRGB: public TBufferFormatGenericConverter
+class TBitmapConverterBGRtoXRGB: public TCompositeGenericConverter
 {
 public:
 	TBitmapConverterBGRtoXRGB()
@@ -24,7 +25,7 @@ public:
 	}
 };
 
-class TBitmapConverteRGBtoXRGB: public TBufferFormatGenericConverter
+class TBitmapConverteRGBtoXRGB: public TCompositeGenericConverter
 {
 public:
 	TBitmapConverteRGBtoXRGB()

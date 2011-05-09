@@ -4,7 +4,7 @@
 #include "vtexturepart.h"
 
 /**
-* Unoptimized scalable quad that formed by parts (524 bytes)
+* Unoptimized scalable quad that formed by parts (524 bytes) (its now 452 bytes)
 */
 class GScalableQuadParted
 {

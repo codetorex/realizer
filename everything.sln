@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_realizer", "examples\d
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "raise-test", "..\..\raise\test\test.vcxproj", "{865A2852-367D-4A04-B17E-B4053AABFA6F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fontloader", "plugins\fontloader\fontloader.vcxproj", "{01F175D0-86F8-4044-9997-A845323FED48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -50,11 +52,18 @@ Global
 		{865A2852-367D-4A04-B17E-B4053AABFA6F}.Release|Win32.Build.0 = Release|Win32
 		{865A2852-367D-4A04-B17E-B4053AABFA6F}.Template|Win32.ActiveCfg = Template|Win32
 		{865A2852-367D-4A04-B17E-B4053AABFA6F}.Template|Win32.Build.0 = Template|Win32
+		{01F175D0-86F8-4044-9997-A845323FED48}.Debug|Win32.ActiveCfg = Debug|Win32
+		{01F175D0-86F8-4044-9997-A845323FED48}.Debug|Win32.Build.0 = Debug|Win32
+		{01F175D0-86F8-4044-9997-A845323FED48}.Release|Win32.ActiveCfg = Release|Win32
+		{01F175D0-86F8-4044-9997-A845323FED48}.Release|Win32.Build.0 = Release|Win32
+		{01F175D0-86F8-4044-9997-A845323FED48}.Template|Win32.ActiveCfg = Release|Win32
+		{01F175D0-86F8-4044-9997-A845323FED48}.Template|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{53A084DD-87AB-4BB7-B087-DBBD7A9E3B7F} = {A0522352-DC14-4D03-B847-D3355A621347}
+		{01F175D0-86F8-4044-9997-A845323FED48} = {AE225766-452C-4509-90D8-EEBEB8BE1A4E}
 	EndGlobalSection
 EndGlobal
