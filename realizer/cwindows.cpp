@@ -6,7 +6,7 @@
 
 #ifdef WIN32
 
-bool CWin32RenderWindow::Create( int _width,int _height,ch16* _title,bool fullscr,int bits )
+bool CWin32RenderWindow::Create( int _width,int _height,const TString& _title,bool fullscr,int bits )
 {
 	SetViewportSize(_width,_height);
 
@@ -43,7 +43,7 @@ bool CWin32RenderWindow::Create( int _width,int _height,ch16* _title,bool fullsc
 	// Create the window.
 	hWnd = CreateWindowEx(NULL,                                       // The extended style.
 		L"Realizer",                                 // Window class.
-		_title,     // Window name.
+		TWinTools::SystemString16(_title),     // Window name.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE |         // Window style.
 		WS_SYSMENU |WS_CLIPCHILDREN |              // Window style.
 		WS_CLIPSIBLINGS,                           // Window style.

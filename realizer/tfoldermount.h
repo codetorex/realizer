@@ -7,7 +7,7 @@
 class TFolderMount: public TMount
 {
 private:
-	inline void GetRelativePath(str8& tmpStr, const str8& path)
+	inline void GetRelativePath(TString& tmpStr, const TString& path)
 	{
 		tmpStr += FullPath;
 		//tmpStr += TPath::DirectorySeprator;
@@ -15,9 +15,9 @@ private:
 	}
 
 public:
-	str8 FullPath; // should always end with directory seprator
+	TString FullPath; // should always end with directory seprator
 
-	TFolderMount(const str8& path,dword permission)
+	TFolderMount(const TString& path,dword permission)
 	{
 		TDirectoryInfo* td = new TDirectoryInfo(path);
 		MountRoot = td;
@@ -31,60 +31,60 @@ public:
 		delete MountRoot;
 	}
 
-	TStream* Open(const str8& path, FileMode mode)
+	TStream* Open(const TString& path, FileMode mode)
 	{
-		str8 tmpStr(1024); // TODO: write a better string allocation and dealloction algrotihms to make these temporary stuff better.
+		TString tmpStr(1024); // TODO: write a better string allocation and dealloction algrotihms to make these temporary stuff better.
 		GetRelativePath(tmpStr,path);
 		TStream* result = File::Open(tmpStr,mode);
 		return result;
 	}
 
-	TStream* Create(const str8& path)
+	TStream* Create(const TString& path)
 	{
 		return Open(path,fm_Write);
 	}
 
-	bool Delete(const str8& path)
+	bool Delete(const TString& path)
 	{
 
 		return false;
 	}
 
-	bool Move(const str8& srcpath,const str8& dstpath)
+	bool Move(const TString& srcpath,const TString& dstpath)
 	{
 		return false;
 	}
 
-	bool Exists(const str8& path)
+	bool Exists(const TString& path)
 	{
-		str8 tmpStr(1024);
+		TString tmpStr(1024);
 		GetRelativePath(tmpStr,path);
 		return TFileInfo::Exists(tmpStr);
 	}
 
-	bool CreateDir(const str8& path)
+	bool CreateDir(const TString& path)
 	{
 
 		return false;
 	}
 
-	bool DeleteDir(const str8& path)
+	bool DeleteDir(const TString& path)
 	{
 		return false;
 	}
 
-	bool MoveDir(const str8& srcDir,const str8& dstDir)
+	bool MoveDir(const TString& srcDir,const TString& dstDir)
 	{
 		return false;
 	}
 
-	IFile* GetFile(const str8& path)
+	IFile* GetFile(const TString& path)
 	{
 		TFileInfo* file = new TFileInfo(path);
 		return file;
 	}
 
-	IDirectory*	GetDirectory(const str8& path)
+	IDirectory*	GetDirectory(const TString& path)
 	{
 		throw "Not Impelemented";
 	}

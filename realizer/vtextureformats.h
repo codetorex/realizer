@@ -24,12 +24,12 @@ public:
 		FallbackFormat = fallback;
 	}
 
-	VTextureFormat(const str8& shortName, const str8& channels):TBufferFormat(shortName, TBitmapChannels::BitmapChannelRegistry, channels )
+	VTextureFormat(const TString& shortName, const TString& channels):TBufferFormat(shortName, TBitmapChannels::BitmapChannelRegistry, channels )
 	{
 
 	}
 
-	static TBufferFormat* CreateFormat(const str8& shortName, const str8& channels)
+	static TBufferFormat* CreateFormat(const TString& shortName, const TString& channels)
 	{
 		VTextureFormat* vtf = new VTextureFormat (shortName,channels);
 		return (TBufferFormat*)vtf;

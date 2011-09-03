@@ -10,7 +10,7 @@ public:
 
 	GWindow();
 
-	str16 Caption;
+	string Caption;
 
 	void CenterToScreen();
 

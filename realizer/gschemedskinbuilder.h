@@ -11,36 +11,36 @@ public:
 	/**
 	* Returns default value if key not found.
 	*/
-	int GetInt(const str8& key, int defaultValue);
+	int GetInt(const TString& key, int defaultValue);
 	
 	/**
-	* Returns str8::Empty if key not found.
+	* Returns TString::Empty if key not found.
 	*/
-	str8* GetValue(const str8& key);
+	TString* GetValue(const TString& key);
 
 	
-	inline str8* GetValueOrNull(const str8& key)
+	inline TString* GetValueOrNull(const TString& key)
 	{
-		str8* rv = Variables.GetValue(key);
+		TString* rv = Variables.GetValue(key);
 		return rv;
 	}
 
 	/**
 	* Throws exception if key not found.
 	*/
-	str8* GetMustValue(const str8& key);
+	TString* GetMustValue(const TString& key);
 
 	/**
 	* Returns color, if not found, returns white.
 	*/
-	TColor32ARGB GetColor(const str8& key);
+	TColor32ARGB GetColor(const TString& key);
 };
 
 class GSchemeFont
 {
 public:
-	str8* Name;
-	str8* FontName;
+	TString* Name;
+	TString* FontName;
 	int FontHeight;
 	int FontWidth;
 
@@ -75,7 +75,7 @@ public:
 	GSchemePaintStyle PaintStyle;
 	GSchemeTile Tiling;
 
-	str8* ImagePath;
+	TString* ImagePath;
 	int LeftMargin;
 	int RightMargin;
 	int TopMargin;
@@ -189,9 +189,9 @@ public:
 class GSchemeFile: public TINIParser
 {
 public:
-	GSchemeClass* GetClass(const str8& className);
-	GSchemeLayer GetLayer(const str8& className);
-	GSchemeText GetTextLayer(const str8& className);
+	GSchemeClass* GetClass(const TString& className);
+	GSchemeLayer GetLayer(const TString& className);
+	GSchemeText GetTextLayer(const TString& className);
 };
 
 

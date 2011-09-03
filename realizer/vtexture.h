@@ -14,7 +14,7 @@ class RDLL VTexture: public Resource, public TRange
 {
 public:
 	dword		pathHash;
-	str8		path;
+	TString		path;
 
 	TBitmap*	bitmap;
 	rtex		texID;

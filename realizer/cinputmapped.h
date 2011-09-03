@@ -13,7 +13,7 @@
 class RDLL CAction
 {
 public:
-	str8 actionName;
+	TString actionName;
 };
 
 class CTriggerAction: public CAction

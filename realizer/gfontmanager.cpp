@@ -4,7 +4,7 @@
 #include "gfont.h"
 
 
-GFont* GFontManager::LoadFont( const str8& path )
+GFont* GFontManager::LoadFont( const TString& path )
 {
 	TStream* fs = Engine.FileSystem.Open(path,fm_Read);
 	if (fs == NULL)

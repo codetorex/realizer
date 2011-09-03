@@ -20,8 +20,8 @@ public:
 
 	TArray<TMount*> Mounts;
 
-	TMount* MountSystemFolder(const str8& folderPath,dword permission);
-	TMount* MountPackage(const str8& packagePath,dword permission);
+	TMount* MountSystemFolder(const TString& folderPath,dword permission);
+	TMount* MountPackage(const TString& packagePath,dword permission);
 
 	TMount*	DefaultSaveMount;
 
@@ -43,32 +43,32 @@ public:
 	/**
 	* Opens file as a stream.
 	*/
-	TStream*		Open(const str8& path,FileMode mode);
+	TStream*		Open(const TString& path,FileMode mode);
 
 	/**
 	* Loads file to memory and returns buffer object.
 	*/
-	TBuffer*		Load(const str8& path);
+	TBuffer*		Load(const TString& path);
 
 	/**
 	* This stream is fully memory cached.
 	*/
-	TMemoryStream*	LoadOpen(const str8& path);
+	TMemoryStream*	LoadOpen(const TString& path);
 
 	/**
 	* Gets file entry record.
 	*/
-	IFile*			GetFile(const str8& path);
+	IFile*			GetFile(const TString& path);
 
 	/**
 	* Gets directory entry record.
 	*/
-	IDirectory*		GetDirectory(const str8& path);
+	IDirectory*		GetDirectory(const TString& path);
 
 	/**
 	* Finds file in mounts, and returns mount which contains the file.
 	*/
-	TMount*			FindFileInMounts(const str8& path);
+	TMount*			FindFileInMounts(const TString& path);
 };
 
 

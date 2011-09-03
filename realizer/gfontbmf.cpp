@@ -11,13 +11,12 @@ public:
 	{
 		bmf = src;
 	}
-
 	void Load()
 	{
 		ch8 magic[4];
 		bmf->Read(magic,1,4);
 
-		if (StringDriver::Compare(magic,"BMF\x03",4) != 0)
+		if (MemoryDriver::Compare(magic,"BMF\x03",4) != 0)
 		{
 			throw Exception("Unrecognized format");
 		}

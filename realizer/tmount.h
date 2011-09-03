@@ -28,18 +28,18 @@ public:
 
 	IDirectory* MountRoot;
 
-	virtual TStream*	Open(const str8& path, FileMode mode) = 0;
-	virtual TStream*	Create(const str8& path) = 0;
-	virtual bool		Delete(const str8& path) = 0;
-	virtual bool		Move(const str8& srcpath,const str8& dstpath) = 0;
-	virtual bool		Exists(const str8& path) = 0;
+	virtual TStream*	Open(const TString& path, FileMode mode) = 0;
+	virtual TStream*	Create(const TString& path) = 0;
+	virtual bool		Delete(const TString& path) = 0;
+	virtual bool		Move(const TString& srcpath,const TString& dstpath) = 0;
+	virtual bool		Exists(const TString& path) = 0;
 
-	virtual bool		CreateDir(const str8& path) = 0;
-	virtual bool		DeleteDir(const str8& path) = 0;
-	virtual bool		MoveDir(const str8& srcDir,const str8& dstDir) = 0;
+	virtual bool		CreateDir(const TString& path) = 0;
+	virtual bool		DeleteDir(const TString& path) = 0;
+	virtual bool		MoveDir(const TString& srcDir,const TString& dstDir) = 0;
 
-	virtual IFile*		GetFile(const str8& path) = 0;
-	virtual IDirectory*	GetDirectory(const str8& path) = 0;
+	virtual IFile*		GetFile(const TString& path) = 0;
+	virtual IDirectory*	GetDirectory(const TString& path) = 0;
 
 	bool HasPermission(FileMode mode);
 

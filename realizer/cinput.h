@@ -10,7 +10,7 @@
 class RDLL CInputDevice
 {
 public:
-	str8 inputName;
+	TString inputName;
 	bool connected;
 
 	CInputDevice()
@@ -173,7 +173,7 @@ public:
 	* Binds a key to ActiveMappedKeyboard if there is one.
 	* Actually useless shortcut function, but yeah it's looks cool.
 	*/
-	void BindKey(int keycode,const str8& actionName)
+	void BindKey(int keycode,const TString& actionName)
 	{
 		CTriggerAction* action = (CTriggerAction*)Actions.GetValue(actionName);;
 		BindKey(keycode,action);
@@ -203,7 +203,7 @@ public:
 		ActiveMappedKeyboard->BindKey(keycode,action);
 	}
 
-	CTriggerAction* CreateAction(const str8& actionName, bool* boolPtr )
+	CTriggerAction* CreateAction(const TString& actionName, bool* boolPtr )
 	{
 		CBoolChangerAction* act = new CBoolChangerAction(boolPtr);
 		act->actionName = actionName;

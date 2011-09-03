@@ -3,7 +3,7 @@
 #include "tfoldermount.h"
 #include "tmemorystream.h"
 
-TStream* TFileSystem::Open( const str8& path,FileMode mode )
+TStream* TFileSystem::Open( const TString& path,FileMode mode )
 {
 	if (TMount::IsWritableRequired(mode))
 	{
@@ -36,7 +36,7 @@ TStream* TFileSystem::Open( const str8& path,FileMode mode )
 	return NULL;
 }
 
-TMount* TFileSystem::FindFileInMounts( const str8& path )
+TMount* TFileSystem::FindFileInMounts( const TString& path )
 {
 	int i = Mounts.Count;
 	while(i--)
@@ -50,14 +50,14 @@ TMount* TFileSystem::FindFileInMounts( const str8& path )
 	return NULL;
 }
 
-TMount* TFileSystem::MountSystemFolder( const str8& folderPath,dword permission )
+TMount* TFileSystem::MountSystemFolder( const TString& folderPath,dword permission )
 {
 	TFolderMount* FMount = new TFolderMount(folderPath,permission);
 	Mount(FMount);
 	return FMount;
 }
 
-TBuffer* TFileSystem::Load( const str8& path )
+TBuffer* TFileSystem::Load( const TString& path )
 {
 	TStream* file = Open(path,fm_Read);
 	int length = file->Length();
@@ -67,7 +67,7 @@ TBuffer* TFileSystem::Load( const str8& path )
 	return result;
 }
 
-TMemoryStream* TFileSystem::LoadOpen( const str8& path )
+TMemoryStream* TFileSystem::LoadOpen( const TString& path )
 {
 	TBuffer* file = Load(path);
 	TMemoryStream* result = new TMemoryStream(file);

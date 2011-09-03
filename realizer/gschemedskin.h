@@ -32,8 +32,8 @@ public:
 	GScalableQuad ButtonQuad[5]; // 0 = Normal, 1 = Pressed, 2 = Disabled, 3 = Mouse Over, 4 = Focus & Default
 
 
-	void SaveSkin(const str8& path);
-	void LoadSkin(const str8& path);
+	void SaveSkin(const TString& path);
+	void LoadSkin(const TString& path);
 
 public:
 

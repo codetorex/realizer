@@ -29,7 +29,7 @@ class GFont;
 class GFontFile
 {
 public:
-	str8 FileName;
+	TString FileName;
 
 	int sizeMin;
 	int sizeMax;
@@ -48,7 +48,7 @@ public:
 class GFontEntry
 {
 public:
-	str8 FontName;
+	TString FontName;
 
 	TArray< GFontFile* > Files;
 	TArray< GFont* > Loaded;
@@ -66,19 +66,19 @@ public:
 	/**
 	* Loads cache from file.
 	*/
-	void LoadCache(const str8& cachefile);
+	void LoadCache(const TString& cachefile);
 
 	/**
 	* Saves cache to file.
 	*/
-	void SaveCache(const str8& cachefile);
+	void SaveCache(const TString& cachefile);
 
 	/**
 	* Loops through fonts folder and generates entries for font files.
 	*/
 	void CreateCache();
 
-	GFontEntry* GetFontEntry(const str8& fontname);
+	GFontEntry* GetFontEntry(const TString& fontname);
 };
 
 #endif

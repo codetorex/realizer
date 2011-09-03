@@ -28,8 +28,8 @@ Global
 		Template|Win32 = Template|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Debug|Win32.ActiveCfg = DebugStatic|Win32
-		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Debug|Win32.Build.0 = DebugStatic|Win32
+		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Debug|Win32.Build.0 = Debug|Win32
 		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Release|Win32.ActiveCfg = Release|Win32
 		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Release|Win32.Build.0 = Release|Win32
 		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9}.Template|Win32.ActiveCfg = Release|Win32

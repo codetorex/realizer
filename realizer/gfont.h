@@ -57,19 +57,19 @@ Hmm maybe different render function for monospaced fonts?
 class GFont
 {
 public:
-	str8 Name;
+	TString Name;
 	
-	virtual void Render(const str8& text, float x, float y, const TColor32& color, TextHorizontalAlign xalign, TextVerticalAlign yalign) = 0;
+	virtual void Render(const TString& text, float x, float y, const TColor32& color, TextHorizontalAlign xalign, TextVerticalAlign yalign) = 0;
 	virtual void Render(const str16& text, float x, float y, const TColor32& color, TextHorizontalAlign xalign, TextVerticalAlign yalign) = 0;
-	virtual int GetStringWidth(const str8& text) = 0;
+	virtual int GetStringWidth(const TString& text) = 0;
 	virtual int GetStringWidth(const str16& text) = 0;
 };*/
 
 class GFont
 {
 public:
-	str8 DevName; // engine name? or dev name
-	str8 Name;
+	TString DevName; // engine name? or dev name
+	TString Name;
 	
 
 	VTexture* FontTexture;
@@ -103,17 +103,15 @@ public:
 		Weight = RW_NORMAL;
 	}
 
-	template <class T>
-	int RenderText(T* text, int textLength, float x,float y, dword color)
+	int RenderText(const TString& text, float x,float y, dword color)
 	{
 		Engine.Draw.SetTexture(FontTexture);
-
-
 		int totalWidth = (int)x;
-
-		while(textLength--)
+		
+		TCharacterEnumerator schars(text);
+		while(schars.MoveNext())
 		{
-			ch16 curChar = (ch16)*text;
+			ch32 curChar = schars.Current;
 			int plane = curChar >> 8;
 			int planeChar = curChar & 0xFF;
 
@@ -131,7 +129,6 @@ public:
 			charData->DrawCharacter(x,y,color);
 
 			x += charData->XAdvance;
-			text++;
 		}
 		return ((int)x - totalWidth);
 	}
@@ -141,63 +138,36 @@ public:
 		
 	}
 
-	inline void Render(const str8& text, float x, float y, const TColor32ARGB& color, TextHorizontalAlign xalign, TextVerticalAlign yalign)
+	inline void Render(const TString& text, float x, float y, const TColor32ARGB& color, TextHorizontalAlign xalign, TextVerticalAlign yalign)
 	{
-		RenderText(text.Chars,text.Length,x,y,color.color);
-	}
-
-	inline void Render(const str16& text, float x, float y, const TColor32ARGB& color, TextHorizontalAlign xalign, TextVerticalAlign yalign)
-	{
-		RenderText(text.Chars,text.Length,x,y,color);
-		//Engine.Draw.DrawLine(x,y + (Height / 2),1024,y+ (Height / 2),color);
-		//Engine.Draw.Flush();
+		RenderText(text,x,y,color.color);
 	}
 
 	/**
-	* Renders a text with default aligning definitions.
-	* Default Alignment is Top Left.
-	*/
-	inline void Render(const str16& text,float x,float y, const TColor32ARGB& color)
+	 * Renders a text with default aligning definitions.
+	 * Default Alignment is Top Left.
+	 */
+	inline void Render(const TString& text,float x,float y, const TColor32ARGB& color)
 	{
-		RenderText(text.Chars,text.Length,x,y,color);
+		RenderText(text,x,y,color.color);
 	}
 
-	inline void Render(const str8& text,float x,float y, const TColor32ARGB& color)
+	int GetStringWidth(const string& text)
 	{
-		RenderText(text.Chars,text.Length,x,y,color);
-	}
-
-	int GetStringWidth(const str8& text)
-	{
-		int length = text.Length;
-		GCharacter* plane0 = Characters[0];
 		int result = 0;
-		while(length--)
-		{
-			result += plane0[text.Chars[length]].XAdvance;
-		}
-		return result;
-	}
+		TCharacterEnumerator schars(text);
 
-	int GetStringWidth(const str16& text)
-	{
-		int length = text.Length;
-		
-		int result = 0;
-		ch16* ptext = text.Chars;
-		while(length--)
+		while(schars.MoveNext())
 		{
-			ch16 curChar = *ptext;
-			GCharacter* plane = Characters[curChar >> 8];
+			GCharacter* plane = Characters[schars.Current >> 8];
 			if (plane != 0)
 			{
-				result += plane[curChar & 0xFF].XAdvance;
+				result += plane[schars.Current & 0xFF].XAdvance;
 			}
 			else
 			{
 				result += DefaultCharacter.XAdvance;
 			}
-			ptext++;
 		}
 		return result;
 	}

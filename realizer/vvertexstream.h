@@ -34,7 +34,7 @@ public:
 
 	void AddTranslatedVector3(float x,float y,float z)
 	{
-		float* fp = (float*)Index;
+		float* fp = (float*)(Data + Index);
 		fp[0] = x + PreTranslation.x;
 		fp[1] = y + PreTranslation.y;
 		fp[2] = z + PreTranslation.z;
@@ -57,7 +57,7 @@ public:
 
 	void Add2DVertex1Tex(float x,float y,float u,float v)
 	{
-		float* fp = (float*)Index;
+		float* fp = (float*)(Data + Index);
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;
@@ -69,7 +69,7 @@ public:
 
 	void Add2DVertexColor1Tex(float x,float y,float u,float v, dword color)
 	{
-		float* fp = (float*)Index;
+		float* fp = (float*)(Data + Index);
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;

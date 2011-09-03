@@ -4,7 +4,7 @@
 class CExtension
 {
 public:
-	virtual str8*	GetExtensionName() = 0;
+	virtual TString*	GetExtensionName() = 0;
 	virtual int		GetExtensionType() = 0;
 	virtual void*	GetExtension();
 };

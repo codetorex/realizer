@@ -4,7 +4,7 @@
 #include "gschemedskinbuilder.h"
 
 
-GSkin* GSkinManager::LoadSkin( const str8& path,int textureSize)
+GSkin* GSkinManager::LoadSkin( const TString& path,int textureSize)
 {
 	TStream* fs = Engine.FileSystem.Open(path,fm_Read);
 	if (fs == NULL)

@@ -19,9 +19,9 @@ public:
 
 	inline void MeasureTime()
 	{
-		MeasureStart = TTimeDriver::HighPrecision();
-		MeasureFreq = (double)TTimeDriver::HighFrequency();
-		TickCount = TTimeDriver::TickCount();
+		MeasureStart = TimeDriver::HighPrecision();
+		MeasureFreq = (double)TimeDriver::HighFrequency();
+		TickCount = TimeDriver::TickCount();
 	}
 
 	void Begining()
@@ -34,7 +34,7 @@ public:
 
 	void TimePassed()
 	{
-		double MeasureDiff = (double)(TTimeDriver::HighPrecision() - MeasureStart);
+		double MeasureDiff = (double)(TimeDriver::HighPrecision() - MeasureStart);
 		float MeasureFrac = (float)(MeasureDiff / MeasureFreq);
 
 		TimeDiff = MeasureFrac * TimeScale;

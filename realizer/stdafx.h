@@ -25,7 +25,11 @@
 
 #ifdef USE_DIRECTX9
 //d3dx9.lib d3d9.lib winmm.lib
+#if DEBUG
 #pragma comment(lib,"d3dx9d.lib")
+#else
+#pragma comment(lib,"d3dx9.lib")
+#endif
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"winmm.lib")
 #include <mmsystem.h>

@@ -67,7 +67,7 @@ public:
 	VGUI*	Master;
 	GSkin*	Skin;
 	GFont*	Font;
-	str8	Tooltip;
+	TString	Tooltip;
 	dword	ClassID;
 
 	virtual void Initialize() { Layout(); };

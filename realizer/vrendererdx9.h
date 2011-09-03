@@ -22,7 +22,7 @@ private:
 public:
 
 	static void InitializeFormats();
-	bool InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr,int bits);
+	bool InitializeRenderer(int _width,int _height,const TString& _title,bool fullscr,int bits);
 
 	inline void Clear(dword flags, dword color)
 	{

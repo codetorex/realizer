@@ -1,16 +1,20 @@
-﻿// demo_realizer.cpp : Defines the entry point for the application.
+// demo_realizer.cpp : Defines the entry point for the application.
 //
 
 #include "stdafx.h"
 #include <realizer.h>
 #include "mmatrix.h"
-#include "tstreamwriter.h"
+//#include "tstreamwriter.h"
 
 
 #include "gschemedskinbuilder.h"
 #include "gwindow.h"
 #include "gbutton.h"
 #include "gfont.h"
+
+#include <tencoding.h>
+#include <tutf8encoding.h>
+#include "tstring.h"
 
 class IntroScene: public VScene
 {
@@ -31,7 +35,7 @@ public:
 	int fps;
 	int lastOlcum;
 
-	str16 TestString;
+	string TestString;
 
 	void tstBut_Click()
 	{
@@ -78,7 +82,7 @@ public:
 		Engine.GUI.Render();
 		Engine.Draw.Flush();
 
-		TestString.Format(L"Current frame per second (FPS): %i",fps);
+		//TestString.FormatInplace("Current frame per second (FPS): %i",fps);
 		FontTest->Render(TestString,30,30, 0xFFFFFFFF,THA_LEFT,TVA_BOTTOM);
 
 		Engine.Renderer.Exit2D();
@@ -104,11 +108,11 @@ public:
 
 	void Initialize()
 	{
-		TestString.Allocate(512);
+		TestString = TString(512);
 
 		lastOlcum = 0;
 
-		SceneName = L"Intro Scene";
+		SceneName = "Intro Scene";
 		// Load resources here
 		TestTexture = Engine.Textures.LoadTexture("test.bmp");
 		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/but_close.tga");
@@ -118,11 +122,11 @@ public:
 
 		GWindow* testWin = new GWindow();
 		testWin->SetSize(100,100,300,200);
-		testWin->Caption = L"Testing Window";
+		testWin->Caption = "Testing Window";
 
 		GButton* testBut = new GButton();
 		testBut->SetSize(50,50,100,27);
-		testBut->Caption = L"Testing Button";
+		testBut->Caption = "Testing Button";
 		testBut->Click += GetHandler(this, &IntroScene::tstBut_Click);
 		
 		Engine.GUI.Desktop->AddChild(testWin);
@@ -147,19 +151,62 @@ public:
 	}
 };
 
-str8 MatrixToString(mat4& src)
+TString MatrixToString(mat4& src)
 {
-	str8 result(1024);
-	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._11,src._12,src._13,src._14);
-	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._21,src._22,src._23,src._24);
-	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._31,src._32,src._33,src._34);
-	result += str8::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._41,src._42,src._43,src._44);
+	TString result(1024);
+/*	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._11,src._12,src._13,src._14);
+	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._21,src._22,src._23,src._24);
+	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._31,src._32,src._33,src._34);
+	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._41,src._42,src._43,src._44);*/
+	return result;
+}
+
+string Totor(const TString& value)
+{
+	string result;
+	result += value;
+	result += " some more text";
 	return result;
 }
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
-	Engine.Renderer.InitializeRenderer(1280,720,L"Realizer3D",false,24);
+	/*TStream* fs = File::OpenWrite("c://booook.txt");
+
+	string japanese = "マルチバイト文字";
+	string ascii = "Some random english text";
+
+
+	if (japanese.Have(12496))
+	{
+		MessageBoxA(0,"Yes I have","No",MB_OK);
+	}
+
+	japanese += " this string will be appended to japanese one";
+	japanese += "\nthis is not a const string anymore you know?";
+
+	string kapanese = "kamil";
+	kapanese = Totor(japanese);
+
+	if (ascii.Have('z'))
+	{
+		MessageBoxA(0,"Yes I have too","Yes",MB_OK);
+	}
+
+	fs->Write(kapanese.Data,1,kapanese.ByteLength);
+	fs->Close();
+	
+	return 0;
+	*/
+
+	/*ch32 c1 = Encoding::UTF8->GetCharAdv(dataPtr);
+	ch32 c2 = Encoding::UTF8->GetCharAdv(dataPtr);*/
+
+	//fs->Write(,1,StringDriverFixedWidth::Length(kp));
+	//fs->Close();
+	
+
+	Engine.Renderer.InitializeRenderer(1280,720,"Realizer3D",false,24);
 	
 	CTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.running);
 	Engine.Inputs.CreateMappedKeyboard();
@@ -170,9 +217,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	IntroScene iScene;
 	Engine.Scenes.ActivateScene(&iScene);
-
-	int not = 0;
-	not += 31;
 
 	/*mat4 dxIdent;
 

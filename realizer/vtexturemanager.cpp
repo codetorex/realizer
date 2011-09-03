@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "vtexturemanager.h"
 #include "vtexture.h"
+#include "thashcodeprovider.h"
 
-TBitmap* VTextureManager::LoadToBitmap(const str8& path)
+TBitmap* VTextureManager::LoadToBitmap(const TString& path)
 {
 	TStream* fs = Engine.FileSystem.Open(path,fm_Read);
 	if (fs == NULL)
@@ -30,7 +31,7 @@ TBitmap* VTextureManager::LoadToBitmap(const str8& path)
 }
 
 
-VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
+VTexture* VTextureManager::LoadTexture(const TString& path, bool keepBitmap )
 {
 	TBitmap* Loader = LoadToBitmap(path);
 
@@ -48,7 +49,7 @@ VTexture* VTextureManager::LoadTexture(const str8& path, bool keepBitmap )
 
 	VTexture* LoadedTexture = CreateTexture(Loader);
 	LoadedTexture->path = path;
-	LoadedTexture->pathHash = str8::GetHash(path);
+	LoadedTexture->pathHash = TBasicHashCodeProvider::Instance.GetHashCode(path);
 
 	if (!keepBitmap)
 	{

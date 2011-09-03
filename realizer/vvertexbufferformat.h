@@ -40,7 +40,7 @@ public:
 class VVertexBufferFormat: public TBufferFormat
 {
 public:
-	VVertexBufferFormat(const str8& _Name, const str8& elementNames,dword fmtDesc = 0): TBufferFormat(_Name,VVertexBufferChannels::VBChannelRegistry,elementNames)
+	VVertexBufferFormat(const TString& _Name, const TString& elementNames,dword fmtDesc = 0): TBufferFormat(_Name,VVertexBufferChannels::VBChannelRegistry,elementNames)
 	{
 		FormatDescriptor = fmtDesc;
 		/*for (int i=0;i<ElementCount;i++) offsetler belirleyerek, generic islemleri yapabilen bi fonksiyon dusunmustum ama

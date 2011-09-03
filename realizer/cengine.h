@@ -38,7 +38,7 @@ public:
 
 	//Mesh, model, shader, material managers?
 
-	void Initialize(int width,int height, string title, bool fullscreen = false,int bits = 24);
+	void Initialize(int width,int height, const TString& title, bool fullscreen = false,int bits = 24);
 	void Run();
 
 	inline void Release(VTexture** res)

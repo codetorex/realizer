@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "gschemedskinbuilder.h"
 #include "cengine.h"
+#include "tconvert.h"
 
 
 void GSchemedSkinBuilder::Begin( int w,int h )
@@ -20,29 +21,29 @@ GSchemedSkin* GSchemedSkinBuilder::Finish()
 	return Skin;
 }
 
-int GSchemeClass::GetInt( const str8& key, int defaultValue = 0 )
+int GSchemeClass::GetInt( const TString& key, int defaultValue = 0 )
 {
-	THashKeyValue<str8*>* kp = Variables.Get(key);
+	THashKeyValue<TString*>* kp = Variables.Get(key);
 	if (kp == 0)
 	{
 		return defaultValue;
 	}
-	return kp->Value->ParseInt();
+	return Convert::ToInt32(*kp->Value);
 }
 
-str8* GSchemeClass::GetValue(const str8& key)
+TString* GSchemeClass::GetValue(const TString& key)
 {
-	str8* rv = Variables.GetValue(key);
+	TString* rv = Variables.GetValue(key);
 	if (rv == NULL)
 	{
-		return &str8::Empty;
+		return &TString::Empty;
 	}
 	return rv;
 }
 
-str8* GSchemeClass::GetMustValue( const str8& key )
+TString* GSchemeClass::GetMustValue( const TString& key )
 {
-	str8* rv = Variables.GetValue(key);
+	TString* rv = Variables.GetValue(key);
 	if (rv == NULL)
 	{
 		throw Exception("Value not found");
@@ -50,9 +51,9 @@ str8* GSchemeClass::GetMustValue( const str8& key )
 	return rv;
 }
 
-TColor32ARGB GSchemeClass::GetColor( const str8& key )
+TColor32ARGB GSchemeClass::GetColor( const TString& key )
 {
-	str8* val = GetValueOrNull(key);
+	TString* val = GetValueOrNull(key);
 	if (val == NULL)
 	{
 		return TColor32ARGB(255,255,255);
@@ -60,19 +61,19 @@ TColor32ARGB GSchemeClass::GetColor( const str8& key )
 
 	int nStart = 0;
 	int nLength = 0;
-	int cRed = val->ParseInt(nStart,&nLength);
+	int cRed = Convert::ToInt32Ambiguous(*val,nStart,&nLength); //val->ParseInt(nStart,&nLength);
 	if (nLength == 0)
 	{
 		return TColor32ARGB(255,255,255);
 	}
 	nStart += nLength+1;
-	int cGreen = val->ParseInt(nStart,&nLength);
+	int cGreen = Convert::ToInt32Ambiguous(*val,nStart,&nLength);
 	if (nLength == 0)
 	{
 		return TColor32ARGB(255,255,255);
 	}
 	nStart += nLength+1;
-	int cBlue = val->ParseInt(nStart);
+	int cBlue = Convert::ToInt32Ambiguous(*val,nStart );
 	if (nLength == 0)
 	{
 		return TColor32ARGB(255,255,255);
@@ -81,7 +82,7 @@ TColor32ARGB GSchemeClass::GetColor( const str8& key )
 	return TColor32ARGB(cRed,cGreen,cBlue);
 }
 
-GSchemeClass* GSchemeFile::GetClass( const str8& className )
+GSchemeClass* GSchemeFile::GetClass( const TString& className )
 {
 	TINIClass* inicls = Classes.GetValue(className);
 	return (GSchemeClass*)inicls;
@@ -134,7 +135,7 @@ void GSchemeText::LoadTextLayer( GSchemeClass* cls )
 	ContentBottom = cls->GetInt("contentbottom",0);
 }
 
-GSchemeLayer GSchemeFile::GetLayer( const str8& className )
+GSchemeLayer GSchemeFile::GetLayer( const TString& className )
 {
 	GSchemeLayer lyr;
 	GSchemeClass* cls = GetClass(className);
@@ -146,7 +147,7 @@ GSchemeLayer GSchemeFile::GetLayer( const str8& className )
 	return lyr;
 }
 
-GSchemeText GSchemeFile::GetTextLayer( const str8& className )
+GSchemeText GSchemeFile::GetTextLayer( const TString& className )
 {
 	GSchemeText lyr;
 	GSchemeClass* cls = GetClass(className);
