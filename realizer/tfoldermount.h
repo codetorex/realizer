@@ -78,6 +78,13 @@ public:
 		return false;
 	}
 
+	bool ExistsDir(const TString& path)
+	{
+		TString tmpStr(1024);
+		GetRelativePath(tmpStr,path);
+		return TDirectoryInfo::Exists(tmpStr);
+	}
+
 	IFile* GetFile(const TString& path)
 	{
 		TFileInfo* file = new TFileInfo(path);
@@ -86,7 +93,10 @@ public:
 
 	IDirectory*	GetDirectory(const TString& path)
 	{
-		throw "Not Impelemented";
+		TString tmpStr(1024);
+		GetRelativePath(tmpStr,path);
+		TDirectoryInfo* DirectoryInterface = new TDirectoryInfo(tmpStr);
+		return DirectoryInterface;
 	}
 };
 

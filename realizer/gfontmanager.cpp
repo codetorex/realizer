@@ -21,8 +21,9 @@ GFont* GFontManager::LoadFont( const TString& path )
 	}
 	else if (path.EndsWith("fnt")) // AngelCode bitmap font generator's FNT
 	{
+		TString mainfolder = TPath::StripFilename(path);
 		result = new GFont();
-		result->LoadBMF(fs);
+		result->LoadBMF(fs,mainfolder);
 	}
 	else
 	{
@@ -31,4 +32,11 @@ GFont* GFontManager::LoadFont( const TString& path )
 
 	Add(result);
 	return result;
+}
+
+GFont* GFontManager::GetFont( const TString& fontName, int fontSize /*= 12*/, FontWeight fontWeight /*= RW_NORMAL */, int outlineWidth /*= 0*/, bool italic /*= false*/ )
+{
+	GFontEntry* fentry = Cache.GetFontEntry(fontName);
+	throw NotImplementedException();
+
 }

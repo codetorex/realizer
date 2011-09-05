@@ -15,7 +15,6 @@ public:
 	double MeasureFreq;
 
 	dword TickCount;
-	
 
 	inline void MeasureTime()
 	{
@@ -29,6 +28,7 @@ public:
 		CurrentTime = 0;
 		TimeDiff = 0;
 		TimeScale = 1.0f;
+//		LoopCount = 0;
 		MeasureTime();
 	}
 

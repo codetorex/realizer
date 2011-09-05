@@ -88,6 +88,8 @@ public:
 	int OutlineWidth;
 	int SpaceWidth; // Pixel width of whitespace character.
 
+	bool Italic;
+
 	FontWeight Weight;
 	FontQuality Quality;
 
@@ -101,6 +103,7 @@ public:
 		FontTexture = 0;
 		Quality = FQ_DEFAULT;
 		Weight = RW_NORMAL;
+		Italic = false;
 	}
 
 	int RenderText(const TString& text, float x,float y, dword color)
@@ -172,7 +175,7 @@ public:
 		return result;
 	}
 
-	void LoadBMF(TStream* bmfstream, bool closestream = true);
+	void LoadBMF(TStream* bmfstream, const TString& texturePath, bool closestream = true);
 	void LoadRMF(TStream* rmfstream, bool closestream = true);
 };
 

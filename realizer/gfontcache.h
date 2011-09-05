@@ -3,6 +3,8 @@
 
 #include <tserializable.h>
 #include <tarray.h>
+#include <thashmap.h>
+
 
 enum FontQuality
 {
@@ -31,16 +33,17 @@ class GFontFile
 public:
 	TString FileName;
 
-	int sizeMin;
-	int sizeMax;
+	int SizeMin;
+	int SizeMax;
 
-	int weightMin;
-	int weightMax;
+	int WeightMin;
+	int WeightMax;
 
-	bool italic;
+	bool Italic;
+	bool Bold;
 
-	int outline;
-	bool canoutline;
+	int Outline;
+	bool CanOutline;
 
 	static TMemberInfo MemberInfo;
 };
@@ -49,6 +52,7 @@ class GFontEntry
 {
 public:
 	TString FontName;
+	TString CompareName;
 
 	TArray< GFontFile* > Files;
 	TArray< GFont* > Loaded;
@@ -56,29 +60,43 @@ public:
 	static TMemberInfo MemberInfo;
 
 	GFont* GetFont(int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);
+
+	void AddFontFile(const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline);
 };
+
+class TStream;
 
 class GFontCache
 {
 public:
-	TArray< GFontEntry* > Entries;
+	THashMap< GFontEntry* > Entries;
 
 	/**
 	* Loads cache from file.
 	*/
-	void LoadCache(const TString& cachefile);
+	void LoadCache(TStream* cacheStream);
 
 	/**
 	* Saves cache to file.
 	*/
-	void SaveCache(const TString& cachefile);
+	void SaveCache(TStream* cacheStream);
 
 	/**
 	* Loops through fonts folder and generates entries for font files.
 	*/
 	void CreateCache();
 
-	GFontEntry* GetFontEntry(const TString& fontname);
+	/**
+	 * Gets font entry by name from entries array. If not found creates if told like so or returns null.
+	 */
+	GFontEntry* GetFontEntry(const TString& fontname,bool createIfNotExist = false);
+
+	GFontEntry* FindFontEntry( const TString& fontname );
+
+	/**
+	 * Creates a font entry and adds it to entries array.
+	 */
+	GFontEntry* CreateFontEntry(const TString& fontname);
 };
 
 #endif

@@ -69,6 +69,11 @@ public:
 	* Finds file in mounts, and returns mount which contains the file.
 	*/
 	TMount*			FindFileInMounts(const TString& path);
+
+	/**
+	 * Finds directory in mounts, and returns mount which contains the directory.
+	 */
+	TMount*			FindDirectoryInMounts(const TString& path);
 };
 
 

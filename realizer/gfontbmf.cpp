@@ -6,11 +6,14 @@ class BMFLoader : GFontLoader
 {
 public:
 	TStream* bmf;
+	TString texturePath;
 
-	BMFLoader(GFont* target,TStream* src):GFontLoader(target)
+	BMFLoader(GFont* target,const TString& _texturePath,TStream* src):GFontLoader(target)
 	{
 		bmf = src;
+		texturePath = _texturePath;
 	}
+
 	void Load()
 	{
 		ch8 magic[4];
@@ -95,9 +98,9 @@ public:
 		bmf->Read(src,1,size);
 		infoBlock* blk = (infoBlock*)src;
 
-		font->Size = blk->fontSize;
+		font->Size = blk->fontSize > 32768 ? (65536 - blk->fontSize) : blk->fontSize;
 		font->OutlineWidth = blk->outline;
-		font->Name = blk->fontName;
+		font->Name += blk->fontName;
 
 		if (blk->aa)
 		{
@@ -107,6 +110,11 @@ public:
 		if (blk->bold)
 		{
 			font->Weight = RW_BOLD;
+		}
+
+		if (blk->italic)
+		{
+			font->Italic = true;
 		}
 
 		if (size > 1024)
@@ -157,8 +165,12 @@ public:
 
 		char* pagename = blk->pageNames;
 
-		// actually, pagename is relative to fnt file, but we using stream, so how do we know where is this shit?
-		font->FontTexture = Engine.Textures.LoadTexture( pagename );
+		// actually, pagename is relative to fnt file, but we using stream, so how do we know where is this shit? (old note)
+		// yeah that is going to be problem so I implemented texturePath to know where to look hmm (05.09.2011)
+		TString relativePath = texturePath;
+		relativePath += pagename;
+
+		font->FontTexture = Engine.Textures.LoadTexture( relativePath );
 	}
 
 	void ReadCharsBlock(int size)
@@ -234,9 +246,9 @@ public:
 	}
 };
 
-void GFont::LoadBMF( TStream* bmfstream, bool closestream )
+void GFont::LoadBMF( TStream* bmfstream, const TString& texturePath, bool closestream )
 {
-	BMFLoader loader(this,bmfstream);
+	BMFLoader loader(this,texturePath,bmfstream);
 	loader.Load();
 
 	if (closestream)

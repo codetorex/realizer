@@ -169,7 +169,6 @@
     <ClCompile Include="vvertexstream.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="important.txt" />
     <None Include="vrenderertypes.h" />
   </ItemGroup>

@@ -3,6 +3,28 @@
 #include "tfoldermount.h"
 #include "tmemorystream.h"
 
+IDirectory* TFileSystem::GetDirectory( const TString& path )
+{
+	if (LastUsedMount != 0)
+	{
+		if ( LastUsedMount->ExistsDir(path) )
+		{
+			return LastUsedMount->GetDirectory(path);
+		}
+	}
+	else
+	{
+		TMount* filemount = FindDirectoryInMounts(path);
+		if (filemount != NULL)
+		{
+			LastUsedMount = filemount;
+			return filemount->GetDirectory(path);
+		}
+	}
+
+	return NULL;
+}
+
 TStream* TFileSystem::Open( const TString& path,FileMode mode )
 {
 	if (TMount::IsWritableRequired(mode))
@@ -31,6 +53,20 @@ TStream* TFileSystem::Open( const TString& path,FileMode mode )
 				LastUsedMount = fileMount;
 				return fileMount->Open(path,mode);
 			}
+		}
+	}
+	return NULL;
+}
+
+TMount* TFileSystem::FindDirectoryInMounts( const TString& path )
+{
+	int i = Mounts.Count;
+	while(i--)
+	{
+		TMount* curMount = Mounts[i];
+		if (curMount->ExistsDir(path))
+		{
+			return curMount;
 		}
 	}
 	return NULL;

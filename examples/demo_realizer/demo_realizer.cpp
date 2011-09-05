@@ -39,7 +39,7 @@ public:
 
 	void tstBut_Click()
 	{
-		MessageBoxA(0,"Hello!","Realizer",MB_OK);
+		TWinTools::ShowMessage("Hello!");
 	}
 
 	void Render()
@@ -83,7 +83,8 @@ public:
 		Engine.Draw.Flush();
 
 		//TestString.FormatInplace("Current frame per second (FPS): %i",fps);
-		FontTest->Render(TestString,30,30, 0xFFFFFFFF,THA_LEFT,TVA_BOTTOM);
+		TestString = "Current frame per second (FPS): ";
+		//FontTest->Render(TestString,30,30, 0xFFFFFFFF,THA_LEFT,TVA_BOTTOM);
 
 		Engine.Renderer.Exit2D();
 
@@ -132,8 +133,25 @@ public:
 		Engine.GUI.Desktop->AddChild(testWin);
 		testWin->AddChild(testBut);
 
-		//FontTest = Engine.GUI.Fonts.LoadFont("dina_12.fnt");
-		FontTest = Engine.GUI.Fonts.LoadFont("segoe_11.fnt");
+		/*TStream* fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Read );
+
+		if (fontcacheStream != 0)
+		{
+			Engine.GUI.Fonts.Cache.LoadCache(fontcacheStream);
+		}
+		else
+		{
+			fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Write);
+			Engine.GUI.Fonts.Cache.CreateCache();
+			Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
+		}*/
+
+		TStream* fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Write);
+		Engine.GUI.Fonts.Cache.CreateCache();
+		Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
+
+//		FontTest = Engine.GUI.Fonts.LoadFont("dina_12.fnt");
+		//FontTest = Engine.GUI.Fonts.LoadFont("segoe_11.fnt");
 
 		/*TestMesh = new VVertexStream(VVertexBufferFormats::Textured1,4,RL_TRIANGLELIST,true);
 		TestMesh->Add2DQuad1Tex(0,0,128,128,0.0f,0.0f,1.0f,1.0f);

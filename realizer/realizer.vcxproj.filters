@@ -308,6 +308,5 @@
       <Filter>Source Files\Visual</Filter>
     </None>
     <None Include="important.txt" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

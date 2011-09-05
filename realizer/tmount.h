@@ -37,6 +37,7 @@ public:
 	virtual bool		CreateDir(const TString& path) = 0;
 	virtual bool		DeleteDir(const TString& path) = 0;
 	virtual bool		MoveDir(const TString& srcDir,const TString& dstDir) = 0;
+	virtual bool		ExistsDir(const TString& path) = 0;
 
 	virtual IFile*		GetFile(const TString& path) = 0;
 	virtual IDirectory*	GetDirectory(const TString& path) = 0;
