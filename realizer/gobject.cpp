@@ -3,8 +3,10 @@
 
 void GObject::ActivateObject( GObject* obj )
 {
+	obj->Active = true;
 	if (LastItem == obj) return;
 
+	LastItem->Active = false;
 	if (FirstItem == obj)
 	{
 		FirstItem = obj->NextItem;

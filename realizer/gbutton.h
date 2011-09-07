@@ -8,8 +8,6 @@ class GButton: public GObject
 public:
 	GButton();
 
-	string Caption;
-
 	void MouseExit();
 	void MouseUp(int x,int y,int button);
 	void MouseMove(int x,int y);

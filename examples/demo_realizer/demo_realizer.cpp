@@ -115,7 +115,16 @@ public:
 
 		SceneName = "Intro Scene";
 		// Load resources here
+
+
+
 		TestTexture = Engine.Textures.LoadTexture("test.bmp");
+
+		// CREATE FONT CACHE FIRST, OR LOAD FROM FILE
+		TStream* fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Write);
+		Engine.GUI.Fonts.Cache.CreateCache();
+		Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
+
 		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/but_close.tga");
 
 		SkinTest = (GSchemedSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
@@ -123,15 +132,23 @@ public:
 
 		GWindow* testWin = new GWindow();
 		testWin->SetSize(100,100,300,200);
-		testWin->Caption = "Testing Window";
+		testWin->Text = "Testing Window";
 
 		GButton* testBut = new GButton();
 		testBut->SetSize(50,50,100,27);
-		testBut->Caption = "Testing Button";
+		testBut->Text = "Testing Button";
 		testBut->Click += GetHandler(this, &IntroScene::tstBut_Click);
 		
 		Engine.GUI.Desktop->AddChild(testWin);
 		testWin->AddChild(testBut);
+
+		//TColor32 testcolor(255,128,64);
+
+		/*TStream* testBitmapStream = Engine.FileSystem.Open( "bok.bmp" , fm_Write);
+		TBitmap stupid(512,512,TBitmapFormats::fBGRA);
+
+		stupid.DrawRectangle(128,128,128,128,testcolor.bclr);
+		stupid.WriteBMP(testBitmapStream);*/
 
 		/*TStream* fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Read );
 
@@ -146,9 +163,7 @@ public:
 			Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
 		}*/
 
-		TStream* fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Write);
-		Engine.GUI.Fonts.Cache.CreateCache();
-		Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
+
 
 //		FontTest = Engine.GUI.Fonts.LoadFont("dina_12.fnt");
 		//FontTest = Engine.GUI.Fonts.LoadFont("segoe_11.fnt");

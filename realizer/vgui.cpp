@@ -28,6 +28,8 @@ void VGUI::EnableGUI(GSkin* defSkin,GObject* desktopObj)
 	if (defSkin != 0)
 	{
 		desktopObj->Skin = defSkin;
+		desktopObj->Font = desktopObj->Skin->SystemFont;
+		desktopObj->ForeColor = desktopObj->Skin->DefaultFontColor;
 	}
 	
 	Engine.Inputs.Mouse.Attach(this);

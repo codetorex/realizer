@@ -28,6 +28,9 @@ public:
 		MousePressed = false;
 		ClassID = GOBJECT_CLASSID;
 		Parent = 0;
+		Font = 0;
+		Active = false;
+		TextAlign = CA_TopRight;
 	}
 
 	TRegion ScreenRegion;
@@ -59,6 +62,7 @@ public:
 	bool	Focused;
 	bool	Enabled;
 	bool	Visible;
+	bool	Active;
 
 	bool	MouseInside;
 	bool	MouseEntered;
@@ -69,6 +73,11 @@ public:
 	GFont*	Font;
 	TString	Tooltip;
 	dword	ClassID;
+
+	TString	Text;
+	ContentAlignment TextAlign;
+	int	TextPixelWidth;
+	TColor32 ForeColor;
 
 	virtual void Initialize() { Layout(); };
 	virtual void Update();
@@ -84,6 +93,11 @@ public:
 		Add(obj);
 		obj->Master = Master;
 		obj->Skin = Skin;
+		if (obj->Font == 0)
+		{
+			obj->Font = Font;
+			obj->ForeColor = ForeColor;
+		}
 		obj->Initialize();
 	}
 
@@ -104,7 +118,7 @@ public:
 	GObject* FindObject();
 
 	/**
-	* Doesnt have any relation with VGUI. Only for tool and design usage.
+	* Doesn't have any relation with VGUI. Only for tool and design usage.
 	*/
 	GObject* FindObject(int x,int y);
 };

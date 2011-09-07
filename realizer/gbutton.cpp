@@ -5,6 +5,7 @@
 GButton::GButton()
 {
 	GraphicState = 0;
+	TextAlign = CA_MiddleCenter;
 }
 
 void GButton::Render()

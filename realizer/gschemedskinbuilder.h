@@ -3,6 +3,7 @@
 
 #include "gschemedskin.h"
 #include <tiniparser.h>
+#include "genums.h"
 
 class GSchemeClass: public TINIClass
 {
@@ -33,20 +34,44 @@ public:
 	/**
 	* Returns color, if not found, returns white.
 	*/
-	TColor32ARGB GetColor(const TString& key);
+	TColor32 GetColor(const TString& key);
+};
+
+class GSchemeColor
+{
+public:
+	int ColorID;
+	TColor32 mColor;
+
+	void LoadColor(GSchemeClass* cls);
 };
 
 class GSchemeFont
 {
 public:
-	TString* Name;
-	TString* FontName;
-	int FontHeight;
-	int FontWidth;
+	GSchemeFont()
+	{
+		LoadedFont = 0;
+	}
+
+	int FontID;
+
+	TString FntName;
+	int FntHeight;
+	int FntWeight;
+
+	int DrawingStyle; // I don't know how this is used.
 
 	int ShadowR;
 	int ShadowG;
 	int ShadowB;
+
+	int ShadowOffset;
+	int ShadowOffsetY;
+
+	GFont* LoadedFont;
+
+	void LoadFontToEngine();
 
 	void LoadFont(GSchemeClass* cls);
 };
@@ -119,8 +144,8 @@ public:
 	GSchemeTextXAlign XAlign;
 	GSchemeTextXAlign XAlignPressed;
 
-	GSchemeTextXAlign YAlign;
-	GSchemeTextXAlign YAlignPressed;
+	GSchemeTextYAlign YAlign;
+	GSchemeTextYAlign YAlignPressed;
 
 	int TextAlpha;
 	int TextAlphaInactive;
@@ -142,6 +167,68 @@ public:
 	int ContentTop;
 	int ContentBottom;
 
+	int UseOSFont;
+
+	static ContentAlignment SchemeToContentAlign(const GSchemeTextXAlign& x,const GSchemeTextYAlign& y,ContentAlignment defaultvalue = CA_TopRight)
+	{
+		if (x == XA_Left)
+		{
+			switch(y)
+			{
+			case YA_Top:
+				return CA_TopLeft;
+
+			case YA_Center:
+				return CA_MiddleLeft;
+
+			case YA_Bottom:
+				return CA_BottomLeft;
+			}
+		}
+
+		if (x == XA_Center)
+		{
+			switch(y)
+			{
+			case YA_Top:
+				return CA_TopCenter;
+
+			case YA_Center:
+				return CA_MiddleCenter;
+
+			case YA_Bottom:
+				return CA_BottomCenter;
+			}
+		}
+
+		if (x == XA_Right)
+		{
+			switch(y)
+			{
+			case YA_Top:
+				return CA_TopRight;
+
+			case YA_Center:
+				return CA_MiddleRight;
+
+			case YA_Bottom:
+				return CA_BottomRight;
+			}
+		}
+
+		return defaultvalue;
+	}
+
+	ContentAlignment GetContentAlign(ContentAlignment defaultvalue = CA_TopRight) const
+	{
+		return SchemeToContentAlign(XAlign,YAlign,defaultvalue);
+	}
+
+	ContentAlignment GetPressedContentAlign(ContentAlignment defaultvalue = CA_TopRight) const
+	{
+		return SchemeToContentAlign(XAlignPressed,YAlignPressed,defaultvalue);
+	}
+
 	void LoadTextLayer(GSchemeClass* cls);
 };
 
@@ -151,39 +238,39 @@ public:
 class GSchemeColors
 {
 public:
-	TColor32ARGB Scrollbar;
-	TColor32ARGB ActiveTitle;
-	TColor32ARGB InactiveTitle;
-	TColor32ARGB Menu;
-	TColor32ARGB Window;
-	TColor32ARGB MenuText;
-	TColor32ARGB WindowText;
-	TColor32ARGB TitleText;
-	TColor32ARGB ActiveBorder;
-	TColor32ARGB InactiveBorder;
-	TColor32ARGB AppWorkSpace;
-	TColor32ARGB Hilight;
-	TColor32ARGB HilightText;
-	TColor32ARGB ButtonFace;
-	TColor32ARGB ButtonShadow;
-	TColor32ARGB GrayText;
-	TColor32ARGB ButtonText;
-	TColor32ARGB InactiveTitleText;
-	TColor32ARGB ButtonHilight;
-	TColor32ARGB ButtonDkShadow;
-	TColor32ARGB ButtonLight;
-	TColor32ARGB InfoText;
-	TColor32ARGB InfoWindow;
-	TColor32ARGB ButtonAlternateFace;
-	TColor32ARGB HotTrackingColor;
-	TColor32ARGB GradientActiveTitle;
-	TColor32ARGB GradientInactiveTitle;
-	TColor32ARGB MenuHilight;
-	TColor32ARGB MenuBar;
-	TColor32ARGB Background;
-	TColor32ARGB WindowFrame;
+	TColor32 Scrollbar;
+	TColor32 ActiveTitle;
+	TColor32 InactiveTitle;
+	TColor32 Menu;
+	TColor32 Window;
+	TColor32 MenuText;
+	TColor32 WindowText;
+	TColor32 TitleText;
+	TColor32 ActiveBorder;
+	TColor32 InactiveBorder;
+	TColor32 AppWorkSpace;
+	TColor32 Hilight;
+	TColor32 HilightText;
+	TColor32 ButtonFace;
+	TColor32 ButtonShadow;
+	TColor32 GrayText;
+	TColor32 ButtonText;
+	TColor32 InactiveTitleText;
+	TColor32 ButtonHilight;
+	TColor32 ButtonDkShadow;
+	TColor32 ButtonLight;
+	TColor32 InfoText;
+	TColor32 InfoWindow;
+	TColor32 ButtonAlternateFace;
+	TColor32 HotTrackingColor;
+	TColor32 GradientActiveTitle;
+	TColor32 GradientInactiveTitle;
+	TColor32 MenuHilight;
+	TColor32 MenuBar;
+	TColor32 Background;
+	TColor32 WindowFrame;
 
-	void LoadColors(GSchemeClass* cls);
+	void LoadColorsClass(GSchemeClass* cls);
 };
 
 class GSchemeFile: public TINIParser
@@ -207,7 +294,17 @@ private:
 	GSchemeFile* Scheme;
 	GSchemeColors Colors;
 
+	TArray< GSchemeColor* > NumberedColors;
+	TArray< GSchemeFont* > NumberedFonts;
+	TArray< GSchemeFont* > NumberedSystemFonts;
+
 public:
+
+	enum FontKinds
+	{
+		FK_CUSTOMFONTS,
+		FK_SYSTEMFONTS,
+	};
 
 	void Begin(int w,int h);
 	GSchemedSkin* Finish();
@@ -221,6 +318,10 @@ public:
 
 	void LoadButtons     (const GSchemeText& buttonData);
 
+	void LoadFontsAndColors();
+
+	GSchemeFont* GetNumberedFont(int fontID, FontKinds fontKind );
+	GFont* GetNumberedEngineFont(int fontID, FontKinds fontKind = FK_CUSTOMFONTS);
 
 	/**
 	* Loads skin from a scheme file. Which is window blinds UIS file.

@@ -68,9 +68,8 @@ public:
 class GFont
 {
 public:
-	TString DevName; // engine name? or dev name
 	TString Name;
-	
+	TString DevName; // engine name? or dev name
 
 	VTexture* FontTexture;
 	GCharacter* Characters[256]; // TODO: Implement TIndex and use it here for supporting astral planes
@@ -136,12 +135,74 @@ public:
 		return ((int)x - totalWidth);
 	}
 
-	inline void CalculatePosition(float& x, float& y, TextHorizontalAlign xalign, TextVerticalAlign yalign)
+	void Render(const TString& text, const TRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
+		if (stringPixelWidth == -1)
+		{
+			stringPixelWidth = GetStringWidth(text);
+		}
+
+		int x,y;
+		switch(align)
+		{
+		case CA_TopLeft:
+			x = screenRegion.X;
+			y = screenRegion.Y;
+			break;
+
+		case CA_TopCenter:
+			x = screenRegion.X + ((screenRegion.Width - stringPixelWidth) / 2);
+			y = screenRegion.Y;
+			break;
+
+		case CA_TopRight:
+			x = (screenRegion.Right) - stringPixelWidth; // TODO: check stringPixelWidth is larger than space
+			y = screenRegion.Y;
+			break;
+
+		case CA_MiddleLeft:
+			x = screenRegion.X;
+			y = screenRegion.Y + (( screenRegion.Height - Size ) / 2);
+			break;
+
+		case CA_MiddleCenter:
+			x = screenRegion.X + ((screenRegion.Width - stringPixelWidth) / 2);
+			y = screenRegion.Y + (( screenRegion.Height - Size ) / 2);
+			break;
+
+		case CA_MiddleRight:
+			x = (screenRegion.Right) - stringPixelWidth; // TODO: check stringPixelWidth is larger than space
+			y = screenRegion.Y + (( screenRegion.Height - Size ) / 2);
+			break;
+
+		case CA_BottomLeft:
+			x = screenRegion.X;
+			y = ( screenRegion.Bottom ) - Size;
+			break;
+
+		case CA_BottomCenter:
+			x = screenRegion.X + ((screenRegion.Width - stringPixelWidth) / 2);
+			y = ( screenRegion.Bottom ) - Size;
+			break;
+
+		case CA_BottomRight:
+			x = (screenRegion.Right) - stringPixelWidth; // TODO: check stringPixelWidth is larger than spacelarger than space
+			y = ( screenRegion.Bottom ) - Size;
+			break;
+		}
+		x += xOffset;
+		y += yOffset;
+
+		RenderText(text,(float)x,(float)y,color.color);
+	}
+
+	inline void CalculatePosition(const TString& text, ContentAlignment align, TPosition& pos, const TRange& objRange)
+	{
+		int totalWidth = GetStringWidth(text);
 		
 	}
 
-	inline void Render(const TString& text, float x, float y, const TColor32ARGB& color, TextHorizontalAlign xalign, TextVerticalAlign yalign)
+	inline void Render(const TString& text, float x, float y, const TColor32& color, ContentAlignment align)
 	{
 		RenderText(text,x,y,color.color);
 	}
@@ -150,7 +211,7 @@ public:
 	 * Renders a text with default aligning definitions.
 	 * Default Alignment is Top Left.
 	 */
-	inline void Render(const TString& text,float x,float y, const TColor32ARGB& color)
+	inline void Render(const TString& text,float x,float y, const TColor32& color)
 	{
 		RenderText(text,x,y,color.color);
 	}

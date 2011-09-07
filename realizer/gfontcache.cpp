@@ -55,12 +55,11 @@ void GFontCache::CreateCache()
 			TString fname = FontPath;
 			fname += FontFiles->Current->GetName();
 
-			GFont* LoadedFont = Engine.GUI.Fonts.LoadFont(fname);
+			GFont* LoadedFont = Engine.GUI.Fonts.LoadStaticFont(fname); // .FNT is a static font
 			if (LoadedFont)
 			{
 				GFontEntry* fentry = GetFontEntry(LoadedFont->Name, true);
-				fentry->AddFontFile(fname,LoadedFont->Size,LoadedFont->Size,LoadedFont->Weight,LoadedFont->Weight,LoadedFont->Italic,LoadedFont->OutlineWidth,false);
-				fentry->Loaded.Add(LoadedFont);
+				GFontFile* curfile = fentry->AddFontFile(fname,LoadedFont->Size,LoadedFont->Size,LoadedFont->Weight,LoadedFont->Weight,LoadedFont->Italic,LoadedFont->OutlineWidth,false);
 			}
 			else
 			{
@@ -77,12 +76,17 @@ void GFontCache::SaveCache( TStream* cacheStream )
 	TRMLWriter* rmlWriter = new TRMLWriter(cacheStream);
 	rmlWriter->WriteElementStart("fontcache");
 
-	THashMapEnumerator<GFontEntry*> sEntries(&Entries);
+	/*THashMapEnumerator<GFontEntry*> sEntries(&Entries);
 
 	while(sEntries.MoveNext())
 	{
 		rmlWriter->Serialize(&GFontEntry::MemberInfo,sEntries.Current->Value);
+	}*/
+	for (dword i=0;i<Entries.Count;i++)
+	{
+		rmlWriter->Serialize( &GFontEntry::MemberInfo, Entries.Item[i] );
 	}
+
 
 	rmlWriter->WriteElementEnd();
 }
@@ -92,14 +96,24 @@ GFontEntry* GFontCache::CreateFontEntry( const TString& fontname )
 	GFontEntry* entry = new GFontEntry();
 	entry->FontName = fontname;
 	entry->CompareName = fontname.ToLower();
-	Entries.Add(fontname,entry);
+	//Entries.Add(fontname,entry);
+	Entries.Add(entry);
 	return entry;
 }
 
 GFontEntry* GFontCache::GetFontEntry( const TString& fontname,bool createIfNotExist /*= false*/ )
 {
-	GFontEntry* entry = Entries.GetValueOrNull(fontname);
-	if (entry) return entry;
+	/*GFontEntry* entry = Entries.GetValueOrNull(fontname);
+	if (entry) return entry;*/
+
+	for (dword i=0;i<Entries.Count;i++)
+	{
+		GFontEntry* curEntry = Entries.Item[i];
+		if (curEntry->FontName == fontname)
+		{
+			return curEntry;
+		}
+	}
 
 	//not found
 	if (createIfNotExist)
@@ -112,10 +126,37 @@ GFontEntry* GFontCache::GetFontEntry( const TString& fontname,bool createIfNotEx
 
 GFontEntry* GFontCache::FindFontEntry( const TString& fontname )
 {
-	throw NotImplementedException();
+	/*GFontEntry* entry = Entries.GetValueOrNull(fontname);
+	if (entry) return entry;*/
+	GFontEntry* entry = GetFontEntry(fontname);
+	if (entry) return entry;
+
+	// TODO: if this function becomes sluggish you may need to implement THybridMap which is merge of TArray and HashMap it finds fast, and can look sequentially fast
+	TString lowercase = fontname.ToLower();
+
+	for (dword i=0;i<Entries.Count;i++)
+	{
+		GFontEntry* curEntry = Entries.Item[i];
+		if (curEntry->CompareName.IndexOf(lowercase) != -1)
+		{
+			return curEntry;
+		}
+	}
+
+	/*THashMapEnumerator<GFontEntry*> allentries(&Entries);
+	while(allentries.MoveNext())
+	{
+		if (allentries.Current->Value->CompareName.IndexOf(lowercase) != -1)
+		{
+			return allentries.Current->Value;
+		}
+	}*/
+
+	// still not found?
+	return 0;
 }
 
-void GFontEntry::AddFontFile( const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline )
+GFontFile* GFontEntry::AddFontFile( const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline )
 {
 	GFontFile* fileEntry = new GFontFile();
 	fileEntry->FileName = path;
@@ -128,4 +169,5 @@ void GFontEntry::AddFontFile( const TString& path, int sizeMin, int sizeMax, int
 	fileEntry->CanOutline = canOutline;
 
 	Files.Add(fileEntry);
+	return fileEntry;
 }

@@ -40,10 +40,36 @@ public:
 	int WeightMax;
 
 	bool Italic;
-	bool Bold;
 
 	int Outline;
 	bool CanOutline;
+
+	inline bool Match(int _size, int _weight, bool _italic,int _outline)
+	{
+		if ( _size < SizeMin && _size > SizeMax)
+		{
+			return false;
+		}
+
+		if (_weight < WeightMin && _weight > WeightMax)
+		{
+			return false;
+		}
+
+		if (_italic != Italic)
+		{
+			return false;
+		}
+
+		if ( Outline != _outline )
+		{
+			if (!CanOutline)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
 	static TMemberInfo MemberInfo;
 };
@@ -55,13 +81,12 @@ public:
 	TString CompareName;
 
 	TArray< GFontFile* > Files;
-	TArray< GFont* > Loaded;
 
 	static TMemberInfo MemberInfo;
 
 	GFont* GetFont(int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);
 
-	void AddFontFile(const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline);
+	GFontFile* AddFontFile(const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline);
 };
 
 class TStream;
@@ -69,7 +94,7 @@ class TStream;
 class GFontCache
 {
 public:
-	THashMap< GFontEntry* > Entries;
+	TArray< GFontEntry* > Entries;
 
 	/**
 	* Loads cache from file.
