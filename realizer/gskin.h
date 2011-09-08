@@ -10,6 +10,8 @@ class GFont;
 class GLabel;
 class GCheckBox;
 class GRadioButton;
+class GProgressBar;
+
 
 class GSkin
 {
@@ -27,6 +29,8 @@ public:
 	virtual void RenderCheckBox(GCheckBox* checkbox) = 0;
 
 	virtual void RenderRadioButton(GRadioButton* radiobutton) = 0;
+
+	virtual void RenderProgressBar(GProgressBar* progressbar) = 0;
 };
 
 

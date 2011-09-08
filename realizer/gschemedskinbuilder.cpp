@@ -207,92 +207,35 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 
 	LoadCheckBox(Scheme->GetLayer("button.checkbox"));
 	LoadRadio(Scheme->GetLayer("button.radio"));
+	LoadProgress(Scheme->GetLayer("progressxp.horzedge"),Scheme->GetLayer("progressxp.horzblock"));
 
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
 	// TODO: lower case stuff of classes, implement it to TINIParser
 }
 
-void GSchemeFont::LoadFont( GSchemeClass* cls )
+
+void GSchemedSkinBuilder::LoadProgress( const GSchemeLayer& pbarbg, const GSchemeLayer& pbarblk )
 {
-	FntName = *cls->GetValue("fontname");
-	FntHeight = cls->GetInt("fontheight",9);
-	FntWeight = cls->GetInt("fontweight",400);
+	TBitmap* image = Engine.Textures.LoadToBitmap(*pbarbg.ImagePath);
+	VTexturePart* sub = InsertImage(image);
 
-	DrawingStyle = cls->GetInt("drawingstyle",1);
+	TRegion tmpRegion;
+	tmpRegion.SetFrom( sub );
 
-	ShadowR = cls->GetInt("shadowr",0);
-	ShadowG = cls->GetInt("shadowg",0);
-	ShadowB = cls->GetInt("shadowb",0);
+	pbarbg.CopyTo(&Skin->ProgressBarBg);
+	Skin->ProgressBarBg.Initialize(SkinBitmap,tmpRegion);
 
-	ShadowOffset = cls->GetInt("shadowoffset",0);
-	ShadowOffsetY = cls->GetInt("shadowoffsety",0);
-}
+	delete image;
 
-void GSchemeFont::LoadFontToEngine()
-{
-	LoadedFont = Engine.GUI.Fonts.GetFont(FntName,FntHeight,(FontWeight)FntWeight);
-	if (LoadedFont == 0)
-	{
-		throw Exception("Scheme font cant loaded");
-	}
-}
+	image = Engine.Textures.LoadToBitmap(*pbarblk.ImagePath);
+	sub = InsertImage(image);
 
-void GSchemedSkinBuilder::LoadFontsAndColors()
-{
-	THashMapEnumerator< TINIClass* > classenum(&Scheme->Classes);
-	while(classenum.MoveNext())
-	{
-		TINIClass* curClass = classenum.Current->Value;
+	tmpRegion.SetFrom( sub );
 
-		if (curClass->Name.StartsWith("colour"))
-		{
-			if (curClass->Name.GetLast() == 's') // Loading colours class is another story, so just do it and get back here.
-			{
-				Colors.LoadColorsClass((GSchemeClass*)curClass);
-				continue;
-			}
+	pbarblk.CopyTo(&Skin->ProgressBarBlock);
+	Skin->ProgressBarBlock.Initialize(SkinBitmap,tmpRegion);
 
-			int colorId = Convert::ToInt32Ambiguous(curClass->Name, 5 );
-			GSchemeColor* newColor = new GSchemeColor();
-			newColor->ColorID = colorId;
-			newColor->LoadColor((GSchemeClass*)curClass);
-
-			NumberedColors.Add(newColor);
-			continue;
-		}
-
-		if (curClass->Name.StartsWith("systemfont"))
-		{
-			if (curClass->Name.GetLast() == 's') // Loading colours class is another story, so just do it and get back here.
-			{
-				continue;
-			}
-			
-			GSchemeFont* newFont = new GSchemeFont();
-			newFont->LoadFont((GSchemeClass*)curClass);
-			newFont->FontID = Convert::ToInt32Ambiguous(curClass->Name, 9 );
-			NumberedSystemFonts.Add(newFont);
-			continue;
-		}
-
-		if (curClass->Name.StartsWith("font"))
-		{
-			if (curClass->Name.Data[4] == 's')
-			{
-				continue;
-			}
-			GSchemeFont* newFont = new GSchemeFont();
-			newFont->LoadFont((GSchemeClass*)curClass);
-			newFont->FontID = Convert::ToInt32Ambiguous(curClass->Name, 3 );
-			NumberedFonts.Add(newFont);
-			continue;
-		}
-	}
-
-	Skin->SystemFont = GetNumberedEngineFont(0,FK_SYSTEMFONTS);
-	Skin->DefaultFontColor = Colors.ButtonText;
-	Skin->WindowTitleColor[0] = Colors.TitleText;
-	Skin->WindowTitleColor[1] = Colors.InactiveTitleText;
+	delete image;
 }
 
 void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData, bool corners )
@@ -485,6 +428,11 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 		throw Exception("Texture is not big enough, implement multi texture method");
 	}
 
+	if (bmp->BufferFormat != SkinBitmap->BufferFormat)
+	{
+		bmp->Convert(SkinBitmap->BufferFormat);
+	}
+
 	SkinBitmap->Copy(bmp,node);
 	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
 	return tpart;
@@ -494,7 +442,7 @@ GSchemeFont* GSchemedSkinBuilder::GetNumberedFont( int fontID, FontKinds fontKin
 {
 	
 	TArray<GSchemeFont*>& fontArray = fontKind == FK_CUSTOMFONTS ? NumberedFonts : NumberedSystemFonts;
-	for (int i=0;i<fontArray.Count;i++)
+	for (dword i=0;i<fontArray.Count;i++)
 	{
 		GSchemeFont* curFont = fontArray.Item[i];
 
@@ -572,4 +520,85 @@ void GSchemeColor::LoadColor( GSchemeClass* cls )
 	}
 }
 
+void GSchemeFont::LoadFont( GSchemeClass* cls )
+{
+	FntName = *cls->GetValue("fontname");
+	FntHeight = cls->GetInt("fontheight",9);
+	FntWeight = cls->GetInt("fontweight",400);
 
+	DrawingStyle = cls->GetInt("drawingstyle",1);
+
+	ShadowR = cls->GetInt("shadowr",0);
+	ShadowG = cls->GetInt("shadowg",0);
+	ShadowB = cls->GetInt("shadowb",0);
+
+	ShadowOffset = cls->GetInt("shadowoffset",0);
+	ShadowOffsetY = cls->GetInt("shadowoffsety",0);
+}
+
+void GSchemeFont::LoadFontToEngine()
+{
+	LoadedFont = Engine.GUI.Fonts.GetFont(FntName,FntHeight,(FontWeight)FntWeight);
+	if (LoadedFont == 0)
+	{
+		throw Exception("Scheme font cant loaded");
+	}
+}
+
+void GSchemedSkinBuilder::LoadFontsAndColors()
+{
+	THashMapEnumerator< TINIClass* > classenum(&Scheme->Classes);
+	while(classenum.MoveNext())
+	{
+		TINIClass* curClass = classenum.Current->Value;
+
+		if (curClass->Name.StartsWith("colour"))
+		{
+			if (curClass->Name.GetLast() == 's') // Loading colours class is another story, so just do it and get back here.
+			{
+				Colors.LoadColorsClass((GSchemeClass*)curClass);
+				continue;
+			}
+
+			int colorId = Convert::ToInt32Ambiguous(curClass->Name, 5 );
+			GSchemeColor* newColor = new GSchemeColor();
+			newColor->ColorID = colorId;
+			newColor->LoadColor((GSchemeClass*)curClass);
+
+			NumberedColors.Add(newColor);
+			continue;
+		}
+
+		if (curClass->Name.StartsWith("systemfont"))
+		{
+			if (curClass->Name.GetLast() == 's') // Loading colours class is another story, so just do it and get back here.
+			{
+				continue;
+			}
+
+			GSchemeFont* newFont = new GSchemeFont();
+			newFont->LoadFont((GSchemeClass*)curClass);
+			newFont->FontID = Convert::ToInt32Ambiguous(curClass->Name, 9 );
+			NumberedSystemFonts.Add(newFont);
+			continue;
+		}
+
+		if (curClass->Name.StartsWith("font"))
+		{
+			if (curClass->Name.Data[4] == 's')
+			{
+				continue;
+			}
+			GSchemeFont* newFont = new GSchemeFont();
+			newFont->LoadFont((GSchemeClass*)curClass);
+			newFont->FontID = Convert::ToInt32Ambiguous(curClass->Name, 3 );
+			NumberedFonts.Add(newFont);
+			continue;
+		}
+	}
+
+	Skin->SystemFont = GetNumberedEngineFont(0,FK_SYSTEMFONTS);
+	Skin->DefaultFontColor = Colors.ButtonText;
+	Skin->WindowTitleColor[0] = Colors.TitleText;
+	Skin->WindowTitleColor[1] = Colors.InactiveTitleText;
+}

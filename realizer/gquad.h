@@ -60,6 +60,10 @@ public:
 	void Rotate(int way);
 
 	void Render(GObject* obj);
+
+	void Render(TRegion* region);
+
+	void RenderLeftOnly(TRegion* region);
 };
 
 /**

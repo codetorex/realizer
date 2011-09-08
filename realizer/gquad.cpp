@@ -54,7 +54,11 @@ void GScalableQuad::Initialize( TRange* textureRange, const TRegion& rect )
 
 void GScalableQuad::Render( GObject* obj )
 {
-	Engine.Draw.PreTranslate((float)obj->ScreenRegion.X,(float)obj->ScreenRegion.Y,0.0f);
+	TRegion tmpRegion;
+	tmpRegion.SetFrom(&obj->ScreenRegion);
+	Render(&tmpRegion);
+
+	/*Engine.Draw.PreTranslate((float)obj->ScreenRegion.X,(float)obj->ScreenRegion.Y,0.0f);
 
 	float q1,q2;
 	q1 = (float)(obj->Width - RightMargin);
@@ -72,6 +76,49 @@ void GScalableQuad::Render( GObject* obj )
 	Engine.Draw.Add2DQuadColor1Tex((float)LeftMargin,q2,q1,(float)obj->Height,TextureCoords[1],TextureCoords[5],TextureCoords[2],TextureCoords[6]); // orta alt
 	Engine.Draw.Add2DQuadColor1Tex(q1,q2,(float)obj->Width,(float)obj->Height,TextureCoords[2],TextureCoords[5],TextureCoords[3],TextureCoords[6]); // sag alt
 	
+	Engine.Draw.PreTranslate();
+	Engine.Draw.Flush();*/
+}
+
+void GScalableQuad::Render( TRegion* region )
+{
+	if (region->Width <= LeftMargin)
+	{
+		RenderLeftOnly(region);
+		return;
+	}
+
+	Engine.Draw.PreTranslate((float)region->X,(float)region->Y,0.0f);
+
+	float q1,q2;
+	q1 = (float)(region->Width - RightMargin);
+	q2 = (float)(region->Height - BottomMargin);
+
+	Engine.Draw.Add2DQuadColor1Tex(0,0,(float)LeftMargin,(float)TopMargin,TextureCoords[0],TextureCoords[7],TextureCoords[1],TextureCoords[4]); // sol ust
+	Engine.Draw.Add2DQuadColor1Tex((float)LeftMargin,0,q1,(float)TopMargin,TextureCoords[1],TextureCoords[7],TextureCoords[2],TextureCoords[4]); // ust orta
+	Engine.Draw.Add2DQuadColor1Tex(q1,0,(float)region->Width,(float)TopMargin,TextureCoords[2],TextureCoords[7],TextureCoords[3],TextureCoords[4]); // sag ust
+
+	Engine.Draw.Add2DQuadColor1Tex(0,(float)TopMargin,(float)LeftMargin,q2,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5]); // sol
+	Engine.Draw.Add2DQuadColor1Tex((float)LeftMargin,(float)TopMargin,q1,q2,TextureCoords[1],TextureCoords[4],TextureCoords[2],TextureCoords[5]);// orta
+	Engine.Draw.Add2DQuadColor1Tex(q1,(float)TopMargin,(float)region->Width,q2,TextureCoords[2],TextureCoords[4],TextureCoords[3],TextureCoords[5]); // sag
+
+	Engine.Draw.Add2DQuadColor1Tex(0,q2,(float)LeftMargin,(float)region->Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6]); // sol alt
+	Engine.Draw.Add2DQuadColor1Tex((float)LeftMargin,q2,q1,(float)region->Height,TextureCoords[1],TextureCoords[5],TextureCoords[2],TextureCoords[6]); // orta alt
+	Engine.Draw.Add2DQuadColor1Tex(q1,q2,(float)region->Width,(float)region->Height,TextureCoords[2],TextureCoords[5],TextureCoords[3],TextureCoords[6]); // sag alt
+
+	Engine.Draw.PreTranslate();
+	Engine.Draw.Flush();
+}
+
+void GScalableQuad::RenderLeftOnly( TRegion* region )
+{
+	Engine.Draw.PreTranslate((float)region->X,(float)region->Y,0.0f);
+	float q = (float)(region->Height - BottomMargin);
+
+	Engine.Draw.Add2DQuadColor1Tex(0,0,(float)LeftMargin,(float)TopMargin,TextureCoords[0],TextureCoords[7],TextureCoords[1],TextureCoords[4]); // sol ust
+	Engine.Draw.Add2DQuadColor1Tex(0,(float)TopMargin,(float)LeftMargin,q,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5]); // sol
+	Engine.Draw.Add2DQuadColor1Tex(0,q,(float)LeftMargin,(float)region->Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6]); // sol alt
+
 	Engine.Draw.PreTranslate();
 	Engine.Draw.Flush();
 }

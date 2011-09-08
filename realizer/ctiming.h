@@ -7,9 +7,14 @@
 class CTiming
 {
 public:
+	dword CurrentTimeMS;
 	float CurrentTime;
 	float TimeDiff;
 	float TimeScale;
+
+	float RealTime;
+	float RealDiff;
+	dword RealTimeMS;
 	
 	qword MeasureStart;
 	double MeasureFreq;
@@ -28,7 +33,7 @@ public:
 		CurrentTime = 0;
 		TimeDiff = 0;
 		TimeScale = 1.0f;
-//		LoopCount = 0;
+		RealTime = 0;
 		MeasureTime();
 	}
 
@@ -37,8 +42,14 @@ public:
 		double MeasureDiff = (double)(TimeDriver::HighPrecision() - MeasureStart);
 		float MeasureFrac = (float)(MeasureDiff / MeasureFreq);
 
+		RealDiff = MeasureFrac;
+		RealTime += MeasureFrac;
+		RealTimeMS = (dword)(RealTime * 1000.0f);
+
 		TimeDiff = MeasureFrac * TimeScale;
 		CurrentTime += TimeDiff;
+		CurrentTimeMS = (dword)(CurrentTime * 1000.0f);
+
 		MeasureTime();
 	}
 

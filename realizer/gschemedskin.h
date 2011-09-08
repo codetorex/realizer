@@ -35,6 +35,10 @@ public:
 	VTexturePart CheckBoxQuad[12];
 	VTexturePart RadioQuad[8];
 
+	GScalableQuad ProgressBarBg;
+	GScalableQuad ProgressBarBlock;
+
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
 
@@ -51,6 +55,8 @@ public:
 	void RenderCheckBox(GCheckBox* checkbox);
 
 	void RenderRadioButton(GRadioButton* radiobutton);
+
+	void RenderProgressBar(GProgressBar* progressbar);
 };
 
 

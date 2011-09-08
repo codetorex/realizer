@@ -5,11 +5,9 @@
 #include "cengine.h"
 #include "gfont.h"
 
-#include "gwindow.h"
-#include "gbutton.h"
-#include "glabel.h"
-#include "gcheckbox.h"
-#include "gradiobutton.h"
+#include "gcomponents.h"
+
+#include "tconvert.h"
 
 void GSchemedSkin::RenderWindow( GWindow* window )
 {
@@ -46,7 +44,7 @@ void GSchemedSkin::RenderCheckBox( GCheckBox* checkbox )
 {
 	Engine.Draw.SetTexture(SkinTexture);
 	checkbox->Height = CheckBoxQuad[0].Height; // TODO: fix this and use checkalign
-	CheckBoxQuad[checkbox->GraphicState].Draw(checkbox->ScreenRegion.X,checkbox->ScreenRegion.Y,0xFFFFFFFF);
+	CheckBoxQuad[checkbox->GraphicState].Draw((float)checkbox->ScreenRegion.X,(float)checkbox->ScreenRegion.Y,0xFFFFFFFF);
 	checkbox->Font->Render(checkbox->Text,checkbox->ScreenRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxQuad[0].Width+5,-1);
 }
 
@@ -54,6 +52,40 @@ void GSchemedSkin::RenderRadioButton( GRadioButton* radiobutton )
 {
 	Engine.Draw.SetTexture(SkinTexture);
 	radiobutton->Height = RadioQuad[0].Height; // TODO: fix this and use checkalign
-	RadioQuad[radiobutton->GraphicState].Draw(radiobutton->ScreenRegion.X,radiobutton->ScreenRegion.Y,0xFFFFFFFF);
+	RadioQuad[radiobutton->GraphicState].Draw((float)radiobutton->ScreenRegion.X,(float)radiobutton->ScreenRegion.Y,0xFFFFFFFF);
 	radiobutton->Font->Render(radiobutton->Text,radiobutton->ScreenRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioQuad[0].Width+5,-1);
+}
+
+void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	ProgressBarBg.Render(progressbar);
+
+	if (progressbar->Value > progressbar->Minimum)
+	{
+		if (progressbar->Value != progressbar->Maximum)
+		{
+			TRegion progressRegion;
+			progressRegion.SetFrom(&progressbar->ScreenRegion);
+			progressRegion.SetWidth(progressbar->GetPercentWidth());
+			ProgressBarBlock.Render(&progressRegion);
+		}
+		else
+		{
+			ProgressBarBlock.Render(progressbar);
+		}
+	}
+
+	//progressbar->Value = (progressbar->Value + 1) % progressbar->Maximum;
+	
+	if (progressbar->ShowPercent)
+	{
+		TString* pbstr = &progressbar->Text;
+		pbstr->Clear();
+		TConvert::AppendToString(progressbar->GetPercentage(),*pbstr);
+		pbstr->AppendASCIIFast(' ');
+		pbstr->AppendASCIIFast('%');
+
+		progressbar->Font->Render(progressbar->Text,progressbar->ScreenRegion,progressbar->PercentAlign,progressbar->ForeColor,0,-1);
+	}
 }

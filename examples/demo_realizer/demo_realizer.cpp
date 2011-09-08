@@ -8,12 +8,7 @@
 
 
 #include "gschemedskinbuilder.h"
-#include "gwindow.h"
-#include "gbutton.h"
-#include "gfont.h"
-#include "glabel.h"
-#include "gcheckbox.h"
-#include "gradiobutton.h"
+#include "gcomponents.h"
 
 #include <tencoding.h>
 #include <tutf8encoding.h>
@@ -40,9 +35,20 @@ public:
 
 	string TestString;
 
+	GProgressBar* pb;
+
 	void tstBut_Click()
 	{
 		TWinTools::ShowMessage("Hello!");
+	}
+
+	void testTimer_Elapsed()
+	{
+		pb->Value++;
+		if (pb->Value > pb->Maximum)
+		{
+			pb->Value = pb->Minimum;
+		}
 	}
 
 	void Render()
@@ -108,6 +114,7 @@ public:
 		newX = (cosf( DEGTORAD(CurAng) ) * 200) + HalfW - 64; // 200 px movement
 		newY = HalfH - 64;
 		//newY = (sinf( DEGTORAD(CurAng) ) * 200) + HalfH - 64; // 200 px movement
+		
 	}
 
 	void Initialize()
@@ -146,7 +153,7 @@ public:
 		testWin->AddChild(testBut);
 
 		GWindow* otherWin = new GWindow();
-		otherWin->SetSize(500,500,200,200);
+		otherWin->SetSize(500,500,300,200);
 		otherWin->Text = "Other Window";
 
 		GLabel* testLabel = new GLabel();
@@ -166,12 +173,25 @@ public:
 		testRadio2->SetSize(50,120,100,20);
 		testRadio2->Text = "option 2";
 
+		GProgressBar* testPbar = new GProgressBar();
+		testPbar->SetSize(50,145,200,32);
+		testPbar->Value = 50;
+		testPbar->ShowPercent = true;
+		pb = testPbar;
+
+		GTimer* testTimer = new GTimer();
+		testTimer->Delay = 100;
+		testTimer->RealTime = true;
+		testTimer->Elapsed += GetHandler(this, &IntroScene::testTimer_Elapsed);
+
 
 		Engine.GUI.Desktop->AddChild(otherWin);
 		otherWin->AddChild(testLabel);
 		otherWin->AddChild(testCbox);
 		otherWin->AddChild(testRadio);
 		otherWin->AddChild(testRadio2);
+		otherWin->AddChild(testPbar);
+		otherWin->AddChild(testTimer);
 
 		//TColor32 testcolor(255,128,64);
 

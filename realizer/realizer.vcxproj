@@ -93,6 +93,7 @@
     <ClInclude Include="cwindows.h" />
     <ClInclude Include="gbutton.h" />
     <ClInclude Include="gcheckbox.h" />
+    <ClInclude Include="gcomponents.h" />
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
@@ -102,11 +103,13 @@
     <ClInclude Include="gfontmanager.h" />
     <ClInclude Include="glabel.h" />
     <ClInclude Include="gobject.h" />
+    <ClInclude Include="gprogressbar.h" />
     <ClInclude Include="gquad.h" />
     <ClInclude Include="gradiobutton.h" />
     <ClInclude Include="gschemedskin.h" />
     <ClInclude Include="gschemedskinbuilder.h" />
     <ClInclude Include="gskin.h" />
+    <ClInclude Include="gtimer.h" />
     <ClInclude Include="gwindow.h" />
     <ClInclude Include="realizer.h" />
     <ClInclude Include="realizertypes.h" />
@@ -142,11 +145,13 @@
     <ClCompile Include="gfontmanager.cpp" />
     <ClCompile Include="glabel.cpp" />
     <ClCompile Include="gobject.cpp" />
+    <ClCompile Include="gprogressbar.cpp" />
     <ClCompile Include="gquad.cpp" />
     <ClCompile Include="gradiobutton.cpp" />
     <ClCompile Include="gschemedskin.cpp" />
     <ClCompile Include="gschemedskinbuilder.cpp" />
     <ClCompile Include="gskinmanager.cpp" />
+    <ClCompile Include="gtimer.cpp" />
     <ClCompile Include="gwindow.cpp" />
     <ClCompile Include="realizer.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
