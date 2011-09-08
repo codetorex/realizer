@@ -7,6 +7,7 @@
 #include "genums.h"
 #include "gskin.h"
 #include <tregion.h>
+#include "tenumerator.h"
 
 class GFont;
 class VGUI;
@@ -29,8 +30,7 @@ public:
 		ClassID = GOBJECT_CLASSID;
 		Parent = 0;
 		Font = 0;
-		Active = false;
-		TextAlign = CA_TopRight;
+		TextAlign = CA_TopLeft;
 	}
 
 	TRegion ScreenRegion;
@@ -62,7 +62,6 @@ public:
 	bool	Focused;
 	bool	Enabled;
 	bool	Visible;
-	bool	Active;
 
 	bool	MouseInside;
 	bool	MouseEntered;
@@ -79,6 +78,11 @@ public:
 	int	TextPixelWidth;
 	TColor32 ForeColor;
 
+	inline bool IsActive()
+	{
+		return Parent->LastItem == this;
+	}
+
 	virtual void Initialize() { Layout(); };
 	virtual void Update();
 	virtual void Render();
@@ -87,6 +91,12 @@ public:
 	void Dock(DockType dock);
 
 	void ActivateObject(GObject* obj); // makes this object last object.
+
+	/**
+	 * Activates all objects from this object through master parent.
+	 * Good for making window on top.
+	 */
+	void ActivateRoot();
 
 	inline void AddChild(GObject* obj)
 	{
@@ -121,6 +131,42 @@ public:
 	* Doesn't have any relation with VGUI. Only for tool and design usage.
 	*/
 	GObject* FindObject(int x,int y);
+};
+
+class GObjectEnumerator: public TEnumerator< GObject* >
+{
+public:
+	GObject* mParent;
+	bool Start;
+	GObjectEnumerator(GObject* pParent)
+	{
+		mParent = pParent;
+		Reset();
+	}
+
+	void Reset()
+	{
+		Start = true;
+	}
+
+	bool MoveNext()
+	{
+		if (!Start)
+		{
+			Current = Current->NextItem;
+		}
+		else
+		{
+			Current = mParent->FirstItem;
+			Start = false;
+		}
+		if (Current)
+		{
+			return true;
+		}
+		return false;
+	}
+
 };
 
 #endif

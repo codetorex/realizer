@@ -6,6 +6,7 @@ GButton::GButton()
 {
 	GraphicState = 0;
 	TextAlign = CA_MiddleCenter;
+	ClassID = GBUTTON_CLASSID;
 }
 
 void GButton::Render()

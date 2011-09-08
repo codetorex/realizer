@@ -41,6 +41,28 @@ enum DockType
 enum GUIClassID
 {
 	GOBJECT_CLASSID,
+	GWINDOW_CLASSID,
+	GBUTTON_CLASSID,
+	GLABEL_CLASSID,
+	GCHECKBOX_CLASSID,
+	GRADIOBUTTON_CLASSID,
 };
+
+enum CheckStates
+{
+	CS_Unchecked = 0,
+	CS_Checked = 1,
+	CS_Indeterminate = 2,
+};
+
+enum GenericGraphicState
+{
+	GGS_NORMAL,
+	GGS_OVER,
+	GGS_DOWN,
+	GGS_DISABLED, // TODO: do this
+};
+
+
 
 #endif

@@ -318,6 +318,11 @@ public:
 
 	void LoadButtons     (const GSchemeText& buttonData);
 
+	void LoadCheckBox	 (const GSchemeLayer& checkboxData);
+	void LoadRadio		 (const GSchemeLayer& radioData);
+
+	void LoadGeneric	 (const GSchemeLayer& data, int imagecount, VTexturePart* output);
+
 	void LoadFontsAndColors();
 
 	GSchemeFont* GetNumberedFont(int fontID, FontKinds fontKind );

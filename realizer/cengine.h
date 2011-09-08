@@ -35,6 +35,7 @@ public:
 	//TPluginManager	Plugins;
 	//NNetworkManager	Network;
 	//CHookManager		Hooks;
+	//CAudioManager		Audio;
 
 	//Mesh, model, shader, material managers?
 

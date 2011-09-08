@@ -35,6 +35,11 @@ public:
 		BottomRightCoord = range->GetRatio((float)x+_width,(float)y+_height);
 	}
 
+	inline void Initialize(TRange* range, const TRegion& rect)
+	{
+		Initialize(range,rect.X,rect.Y,rect.Width,rect.Height);
+	}
+
 	inline void InitializeRelative(TRange* range, TPosition* relation, int x,int y,int _width, int _height)
 	{
 		Initialize(range,relation->X + x,relation->Y +y,_width,_height);

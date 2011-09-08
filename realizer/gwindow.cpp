@@ -55,6 +55,7 @@ GWindow::GWindow()
 {
 	TitleBar = new GWindowTitlebar();
 	AddChild(TitleBar);
+	ClassID = GWINDOW_CLASSID;
 }
 
 void GWindow::Render()

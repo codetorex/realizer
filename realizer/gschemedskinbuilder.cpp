@@ -205,6 +205,9 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 
 	LoadButtons(Scheme->GetTextLayer("buttons"));
 
+	LoadCheckBox(Scheme->GetLayer("button.checkbox"));
+	LoadRadio(Scheme->GetLayer("button.radio"));
+
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
 	// TODO: lower case stuff of classes, implement it to TINIParser
 }
@@ -397,6 +400,37 @@ void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData , bool
 
 	delete image;
 }
+
+void GSchemedSkinBuilder::LoadCheckBox( const GSchemeLayer& checkboxData )
+{
+	LoadGeneric(checkboxData,12,Skin->CheckBoxQuad);
+}
+
+
+void GSchemedSkinBuilder::LoadRadio( const GSchemeLayer& radioData )
+{
+	LoadGeneric(radioData,8,Skin->RadioQuad);
+}
+
+void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imagecount, VTexturePart* output )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*data.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int partWidth = sub->Width / imagecount;
+	TRegion tmpRegion;
+	tmpRegion.SetFrom( sub );
+	tmpRegion.SetWidth(partWidth);
+
+	for (int i=0;i<imagecount;i++)
+	{
+		output[i].Initialize(SkinBitmap, tmpRegion);
+		tmpRegion.SetLeftRelative(partWidth);
+	}
+
+	delete image;
+}
+
 
 void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 {

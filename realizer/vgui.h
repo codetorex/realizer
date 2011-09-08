@@ -63,6 +63,7 @@ public:
 		{
 			obj->SetFocus();
 			obj->MouseDown(x - obj->ScreenRegion.X, y - obj->ScreenRegion.Y, button);
+			obj->ActivateRoot();
 		}
 	}
 

@@ -92,6 +92,7 @@
     <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
     <ClInclude Include="gbutton.h" />
+    <ClInclude Include="gcheckbox.h" />
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
@@ -99,8 +100,10 @@
     <ClInclude Include="gfontcache.h" />
     <ClInclude Include="gfontloader.h" />
     <ClInclude Include="gfontmanager.h" />
+    <ClInclude Include="glabel.h" />
     <ClInclude Include="gobject.h" />
     <ClInclude Include="gquad.h" />
+    <ClInclude Include="gradiobutton.h" />
     <ClInclude Include="gschemedskin.h" />
     <ClInclude Include="gschemedskinbuilder.h" />
     <ClInclude Include="gskin.h" />
@@ -131,13 +134,16 @@
     <ClCompile Include="cengine.cpp" />
     <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="gbutton.cpp" />
+    <ClCompile Include="gcheckbox.cpp" />
     <ClCompile Include="gfont.cpp" />
     <ClCompile Include="gfontbmf.cpp" />
     <ClCompile Include="gfontcache.cpp" />
     <ClCompile Include="gfontloader.cpp" />
     <ClCompile Include="gfontmanager.cpp" />
+    <ClCompile Include="glabel.cpp" />
     <ClCompile Include="gobject.cpp" />
     <ClCompile Include="gquad.cpp" />
+    <ClCompile Include="gradiobutton.cpp" />
     <ClCompile Include="gschemedskin.cpp" />
     <ClCompile Include="gschemedskinbuilder.cpp" />
     <ClCompile Include="gskinmanager.cpp" />

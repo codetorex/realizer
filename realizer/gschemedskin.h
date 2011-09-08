@@ -32,10 +32,11 @@ public:
 	GScalableQuad ButtonQuad[5]; // 0 = Normal, 1 = Pressed, 2 = Disabled, 3 = Mouse Over, 4 = Focus & Default
 	GFont* ButtonFont;
 
+	VTexturePart CheckBoxQuad[12];
+	VTexturePart RadioQuad[8];
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
-
-	void RenderText(GFont* font, GObject* obj, ContentAlignment alignment = CA_MiddleCenter );
 
 public:
 
@@ -44,6 +45,12 @@ public:
 	void LayoutWindow(GWindow* window);
 
 	void RenderButton(GButton* button);
+
+	void RenderLabel(GLabel* label);
+
+	void RenderCheckBox(GCheckBox* checkbox);
+
+	void RenderRadioButton(GRadioButton* radiobutton);
 };
 
 

@@ -3,10 +3,9 @@
 
 void GObject::ActivateObject( GObject* obj )
 {
-	obj->Active = true;
 	if (LastItem == obj) return;
+	if (!obj->NextItem && !obj->PrevItem) return;
 
-	LastItem->Active = false;
 	if (FirstItem == obj)
 	{
 		FirstItem = obj->NextItem;
@@ -221,4 +220,22 @@ GObject* GObject::FindObject()
 	}
 
 	return 0;
+}
+
+void GObject::ActivateRoot()
+{
+	GObject* curObj = this;
+	while(curObj)
+	{
+		GObject* curParent = (GObject*)curObj->Parent;
+		if (curParent != curObj)
+		{
+			curParent->ActivateObject(curObj);
+		}
+		else
+		{
+			break;
+		}
+		curObj = curParent;
+	}
 }

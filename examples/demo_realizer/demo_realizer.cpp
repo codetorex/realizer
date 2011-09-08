@@ -1,4 +1,4 @@
-// demo_realizer.cpp : Defines the entry point for the application.
+﻿// demo_realizer.cpp : Defines the entry point for the application.
 //
 
 #include "stdafx.h"
@@ -11,6 +11,9 @@
 #include "gwindow.h"
 #include "gbutton.h"
 #include "gfont.h"
+#include "glabel.h"
+#include "gcheckbox.h"
+#include "gradiobutton.h"
 
 #include <tencoding.h>
 #include <tutf8encoding.h>
@@ -141,6 +144,34 @@ public:
 		
 		Engine.GUI.Desktop->AddChild(testWin);
 		testWin->AddChild(testBut);
+
+		GWindow* otherWin = new GWindow();
+		otherWin->SetSize(500,500,200,200);
+		otherWin->Text = "Other Window";
+
+		GLabel* testLabel = new GLabel();
+		testLabel->SetSize(50,50,100,27);
+		testLabel->Text = "Test label here";
+
+		GCheckBox* testCbox = new GCheckBox();
+		testCbox->SetSize(50,80,100,20);
+		//testCbox->Text = "A";
+		testCbox->Text += L"йельский";
+
+		GRadioButton* testRadio = new GRadioButton();
+		testRadio->SetSize(50,100,100,20);
+		testRadio->Text = "option 1";
+
+		GRadioButton* testRadio2 = new GRadioButton();
+		testRadio2->SetSize(50,120,100,20);
+		testRadio2->Text = "option 2";
+
+
+		Engine.GUI.Desktop->AddChild(otherWin);
+		otherWin->AddChild(testLabel);
+		otherWin->AddChild(testCbox);
+		otherWin->AddChild(testRadio);
+		otherWin->AddChild(testRadio2);
 
 		//TColor32 testcolor(255,128,64);
 

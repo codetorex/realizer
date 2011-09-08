@@ -213,6 +213,15 @@
     <ClInclude Include="gfontcache.h">
       <Filter>Source Files\Visual\GUI\Font</Filter>
     </ClInclude>
+    <ClInclude Include="glabel.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gcheckbox.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gradiobutton.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -301,6 +310,15 @@
     </ClCompile>
     <ClCompile Include="gfontcache.cpp">
       <Filter>Source Files\Visual\GUI\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="glabel.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gcheckbox.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gradiobutton.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
