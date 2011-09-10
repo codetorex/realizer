@@ -153,7 +153,7 @@ public:
 		testWin->AddChild(testBut);
 
 		GWindow* otherWin = new GWindow();
-		otherWin->SetSize(500,500,300,200);
+		otherWin->SetSize(500,70,300,250);
 		otherWin->Text = "Other Window";
 
 		GLabel* testLabel = new GLabel();
@@ -184,6 +184,9 @@ public:
 		testTimer->RealTime = true;
 		testTimer->Elapsed += GetHandler(this, &IntroScene::testTimer_Elapsed);
 
+		GTextBox* testText = new GTextBox();
+		testText->SetSize(50,180,200,20);
+
 
 		Engine.GUI.Desktop->AddChild(otherWin);
 		otherWin->AddChild(testLabel);
@@ -192,6 +195,7 @@ public:
 		otherWin->AddChild(testRadio2);
 		otherWin->AddChild(testPbar);
 		otherWin->AddChild(testTimer);
+		otherWin->AddChild(testText);
 
 		//TColor32 testcolor(255,128,64);
 
@@ -292,7 +296,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	Engine.Renderer.InitializeRenderer(1280,720,"Realizer3D",false,24);
 	
-	CTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.running);
+	CTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.Running);
 	Engine.Inputs.CreateMappedKeyboard();
 	Engine.Inputs.BindKey(Keys::Esc,exitAction);
 

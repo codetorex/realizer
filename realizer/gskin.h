@@ -11,7 +11,7 @@ class GLabel;
 class GCheckBox;
 class GRadioButton;
 class GProgressBar;
-
+class GTextBox;
 
 class GSkin
 {
@@ -31,7 +31,10 @@ public:
 	virtual void RenderRadioButton(GRadioButton* radiobutton) = 0;
 
 	virtual void RenderProgressBar(GProgressBar* progressbar) = 0;
-};
 
+	virtual void RenderTextBox(GTextBox* textbox) = 0;
+
+	virtual void RenderSunkEdge(GObject* object) = 0;
+};
 
 #endif

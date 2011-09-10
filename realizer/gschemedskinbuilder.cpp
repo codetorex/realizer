@@ -208,11 +208,34 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 	LoadCheckBox(Scheme->GetLayer("button.checkbox"));
 	LoadRadio(Scheme->GetLayer("button.radio"));
 	LoadProgress(Scheme->GetLayer("progressxp.horzedge"),Scheme->GetLayer("progressxp.horzblock"));
+	LoadSunkEdge(Scheme->GetLayer("sunkedge"));
 
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
 	// TODO: lower case stuff of classes, implement it to TINIParser
 }
 
+
+void GSchemedSkinBuilder::LoadSunkEdge( const GSchemeLayer& sunkedgeData )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*sunkedgeData.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+
+	const int PartCount = 4;
+
+	int partWidth = sub->Width / PartCount; // there is 5 different pictures
+	TRegion tmpRegion;
+	tmpRegion.SetFrom( sub );
+	tmpRegion.SetWidth( partWidth );
+	for (int i=0;i<PartCount;i++)
+	{
+		sunkedgeData.CopyTo(&Skin->SunkEdge[i]);
+		Skin->SunkEdge[i].Initialize(SkinBitmap, tmpRegion);
+		tmpRegion.SetLeftRelative(partWidth); // increment x of region
+	}
+
+	delete image;
+}
 
 void GSchemedSkinBuilder::LoadProgress( const GSchemeLayer& pbarbg, const GSchemeLayer& pbarblk )
 {

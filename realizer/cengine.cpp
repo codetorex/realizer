@@ -6,16 +6,16 @@ REngine Engine;
 void REngine::Initialize( int width,int height, const TString& title, bool fullscreen /*= false*/,int bits /*= 24*/ )
 {
 	Renderer.InitializeRenderer(width,height,title,fullscreen,bits);
-	running = false;
+	Running = false;
 }
 
 void REngine::Run()
 {
-	running = true;
+	Running = true;
 
 	Time.Begining();
 	Draw.Initialize();
-	while( running )
+	while( Running )
 	{
 		Renderer.DoEvents();
 		Scenes.Run();

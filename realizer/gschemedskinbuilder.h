@@ -321,6 +321,7 @@ public:
 	void LoadCheckBox	 (const GSchemeLayer& checkboxData);
 	void LoadRadio		 (const GSchemeLayer& radioData);
 	void LoadProgress	 (const GSchemeLayer& pbarbg, const GSchemeLayer& pbarblk);
+	void LoadSunkEdge	 (const GSchemeLayer& sunkedgeData);
 
 	void LoadGeneric	 (const GSchemeLayer& data, int imagecount, VTexturePart* output);
 

@@ -105,6 +105,34 @@ public:
 		Italic = false;
 	}
 
+	GCharacter* GetCharacter(ch32 charID)
+	{
+		int plane = charID >> 8;
+		int planeChar = charID & 0xFF;
+
+		GCharacter* charPlane = Characters[plane];
+		GCharacter* charData;
+		if (charPlane == 0)
+		{
+			charData = &DefaultCharacter;
+		}
+		else
+		{
+			charData = &charPlane[planeChar];
+		}
+		return charData;
+	}
+
+	inline void BeginCustomRendering()
+	{
+		Engine.Draw.SetTexture(FontTexture);
+	}
+
+	int GetStringIndexAt(const TString& value, int x)
+	{
+		throw 0;
+	}
+
 	int RenderText(const TString& text, float x,float y, dword color)
 	{
 		Engine.Draw.SetTexture(FontTexture);
@@ -112,24 +140,9 @@ public:
 		
 		TCharacterEnumerator schars(text);
 		while(schars.MoveNext())
-		{
-			ch32 curChar = schars.Current;
-			int plane = curChar >> 8;
-			int planeChar = curChar & 0xFF;
-
-			GCharacter* charPlane = Characters[plane];
-			GCharacter* charData;
-			if (charPlane == 0)
-			{
-				charData = &DefaultCharacter;
-			}
-			else
-			{
-				charData = &charPlane[planeChar];
-			}
-
+		{	
+			GCharacter* charData = GetCharacter(schars.Current);
 			charData->DrawCharacter(x,y,color);
-
 			x += charData->XAdvance;
 		}
 		return ((int)x - totalWidth);

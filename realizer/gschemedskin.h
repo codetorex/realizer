@@ -38,6 +38,8 @@ public:
 	GScalableQuad ProgressBarBg;
 	GScalableQuad ProgressBarBlock;
 
+	GScalableQuad SunkEdge[4];
+
 
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
@@ -57,6 +59,10 @@ public:
 	void RenderRadioButton(GRadioButton* radiobutton);
 
 	void RenderProgressBar(GProgressBar* progressbar);
+
+	void RenderTextBox(GTextBox* textbox);
+
+	void RenderSunkEdge(GObject* object);
 };
 
 

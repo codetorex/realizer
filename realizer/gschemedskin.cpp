@@ -89,3 +89,16 @@ void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
 		progressbar->Font->Render(progressbar->Text,progressbar->ScreenRegion,progressbar->PercentAlign,progressbar->ForeColor,0,-1);
 	}
 }
+
+void GSchemedSkin::RenderTextBox( GTextBox* textbox )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	SunkEdge[0].Render(textbox);
+	//textbox->Font->Render(textbox->Text,textbox->ScreenRegion,CA_TopLeft,textbox->ForeColor,SunkEdge[0].LeftMargin,-1);
+}
+
+void GSchemedSkin::RenderSunkEdge( GObject* object )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	SunkEdge[0].Render(object);
+}

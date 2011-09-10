@@ -231,6 +231,12 @@
     <ClInclude Include="gcomponents.h">
       <Filter>Source Files\Visual\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="gtextbox.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gtextboxbase.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -333,6 +339,12 @@
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
     <ClCompile Include="gtimer.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gtextbox.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gtextboxbase.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,6 +8,7 @@
 #include "gradiobutton.h"
 #include "gprogressbar.h"
 #include "gtimer.h"
+#include "gtextbox.h"
 
 
 #endif

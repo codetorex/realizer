@@ -16,7 +16,7 @@
 class RDLL REngine
 {
 public:
-	bool running;
+	bool Running;
 
 	REngine()
 	{

@@ -109,6 +109,8 @@
     <ClInclude Include="gschemedskin.h" />
     <ClInclude Include="gschemedskinbuilder.h" />
     <ClInclude Include="gskin.h" />
+    <ClInclude Include="gtextbox.h" />
+    <ClInclude Include="gtextboxbase.h" />
     <ClInclude Include="gtimer.h" />
     <ClInclude Include="gwindow.h" />
     <ClInclude Include="realizer.h" />
@@ -151,6 +153,8 @@
     <ClCompile Include="gschemedskin.cpp" />
     <ClCompile Include="gschemedskinbuilder.cpp" />
     <ClCompile Include="gskinmanager.cpp" />
+    <ClCompile Include="gtextbox.cpp" />
+    <ClCompile Include="gtextboxbase.cpp" />
     <ClCompile Include="gtimer.cpp" />
     <ClCompile Include="gwindow.cpp" />
     <ClCompile Include="realizer.cpp">
