@@ -2,6 +2,19 @@
 #include "gtimer.h"
 #include "cengine.h"
 
+void GTimeEffect::set_RealTime( bool value )
+{
+	RealTime = value;
+	if (RealTime)
+	{
+		ReadReference = &Engine.Time.RealTimeMS;
+	}
+	else
+	{
+		ReadReference = &Engine.Time.CurrentTimeMS;
+	}
+}
+
 void GTimer::SetLastCheck()
 {
 	if (RealTime)
@@ -40,3 +53,4 @@ void GTimer::Update()
 		SetLastCheck();
 	}
 }
+

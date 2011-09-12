@@ -6,6 +6,106 @@
 #include "cengine.h"
 
 
+/**
+ * Lame function to test out stuff.
+ * TODO: integrate it to GFONT with attaching 4 white pixel to it.
+ */
+void DrawRectangle(int x1,int y1,int x2,int y2, dword color)
+{
+	VTexture* curTexture = Engine.Draw.CurrentTexture;
+
+	Engine.Draw.Flush();
+	Engine.Draw.SetTexture(0);
+	//Engine.Draw.DrawRectangle(,,curChar.FontCharacter->XAdvance,Font->Height,lolColor.color);
+
+	Engine.Draw.DrawQuad((float)x1,(float)y1,(float)x2,(float)y2,0,0,1,1,color);
+	Engine.Draw.Flush();
+	Engine.Draw.SetTexture(curTexture);
+}
+
+void DrawRectangleSize(int x,int y,int w,int h, dword color)
+{
+	DrawRectangle(x,y,x+w,y+h,color);
+}
+
+void GEditableLine::Render( int x,int y )
+{
+	Engine.Draw.PreTranslate((float)x,(float)y,0.0f);
+	InternalRender();
+	Engine.Draw.PreTranslate();
+}
+
+void GEditableLine::RenderWithSelection( int x,int y, int caret )
+{
+	Engine.Draw.PreTranslate((float)x,(float)y,0.0f);
+
+	if (Characters.Count > 0)
+	{
+		if ( SelectionStart != SelectionEnd )
+		{			
+			if (SelectionEnd < SelectionStart) // exchange if broken
+			{
+				int tmp = SelectionEnd;
+				SelectionEnd = SelectionStart;
+				SelectionStart = tmp;
+			}
+
+			GCharacterBox& selStart = Characters.Item[SelectionStart];
+			int startX = selStart.X;
+			int endX;
+
+
+			if (SelectionEnd >= Characters.Count)
+			{
+				GCharacterBox& selEnd = Characters.Item[Characters.Count-1];
+				endX = selEnd.CharEndPx();
+			}
+			else
+			{
+				GCharacterBox& selEnd = Characters.Item[SelectionEnd];
+				endX = selEnd.X;
+			}
+
+			// TODO: improve this shit
+			DrawRectangle(startX,0,endX,15,0x7F7F7F7F);
+		}
+
+		InternalRender();
+	}
+
+	if (caret != -1)
+	{
+		int drawPos = 1;
+		if (caret == Characters.Count)
+		{
+			if (Characters.Count != 0)
+			{
+				GCharacterBox& lastChr = Characters.Item[Characters.Count-1];
+				drawPos = lastChr.X + lastChr.FontCharacter->XAdvance;
+			}
+		}
+		else if (caret != 0)
+		{
+			GCharacterBox& caretChr = Characters.Item[caret];
+			drawPos = caretChr.X;
+		}
+		
+
+		DrawRectangleSize(drawPos,0,1,15,DefaultColor.color);
+	}
+
+	Engine.Draw.PreTranslate();
+}
+
+void GEditableLine::InternalRender()
+{
+	DefaultFont->BeginCustomRendering();
+	for (int i=0;i<Characters.Count;i++)
+	{
+		Characters.Item[i].Render();
+	}
+}
+
 GTextBoxBase::GTextBoxBase()
 {
 	ClassID = GTEXTBOXBASE_CLASSID;
@@ -18,171 +118,112 @@ GTextBoxBase::GTextBoxBase()
 	AutoSize = true;
 	TextAlign = CA_MiddleCenter;
 
-	XOffset = 0;
-	YOffset = 0;
-
 	Selecting = false;
-}
+	CaretPosition = 0;
 
-int GTextBoxBase::TextSimulation( int scanX,int scanY, bool dontrender )
-{
-	Font->BeginCustomRendering();
-
-	
-
-	int tx = ScreenRegion.X + XOffset;
-	int ty = ScreenRegion.Y + YOffset;
-	int theight = ty + Font->Height;
-	int LastCharMidX = tx; // start x
-	int LastCharY = ty; // start y
-	int CurCharMidX = LastCharMidX; // current x
-
-	int result = -1;
-
-	bool LongerThanControl = false;
-	
-
-	TCharacterEnumerator schars(Text);
-	while(schars.MoveNext())
-	{
-		GCharacter* charData = Font->GetCharacter(schars.Current);
-		if ( !dontrender ) charData->DrawCharacter(tx,ty,ForeColor.color);
-
-		
-		if (result == -1) 
-		{
-			CurCharMidX = tx + (charData->XAdvance/2);
-			if (scanX > LastCharMidX && scanX < CurCharMidX)
-			{
-				if (scanY > ty && scanY < theight)
-				{
-					result = schars.CharIndex;
-				}
-			}
-
-			LastCharMidX = CurCharMidX;
-			tx += charData->XAdvance;
-
-			if (tx > ScreenRegion.Right)
-			{
-				LongerThanControl = true;
-				break;
-			}
-		}
-		
-	}
-	return result;
-}
-
-void GTextBoxBase::RenderText()
-{
-	Font->BeginCustomRendering();
-
-	TColor32 lolColor(128,128,128,128);
-
-	for (int i=0;i<Characters.Count;i++)
-	{
-		GCharacterBox& curChar = Characters.Item[i];
-		if (i >= SelectionStart && i <= SelectionEnd)
-		{
-			Engine.Draw.Flush();
-			Engine.Draw.SetTexture(0);
-			//Engine.Draw.DrawRectangle(,,curChar.FontCharacter->XAdvance,Font->Height,lolColor.color);
-			int x1 = curChar.ScreenX;
-			int y1 = curChar.ScreenY;
-			int x2 = x1 + curChar.FontCharacter->XAdvance;
-			int y2 = y1 + Font->Height + 5;
-
-			Engine.Draw.DrawQuad(x1,y1,x2,y2,0,0,1,1,lolColor.color);
-			Font->BeginCustomRendering();
-		}
-
-		curChar.Render(ForeColor.color);
-		if (CaretPosition == i)
-		{
-			GCharacter* line = Font->GetCharacter('|');
-			line->DrawCharacter(curChar.ScreenX + curChar.FontCharacter->XAdvance-1,curChar.ScreenY,ForeColor.color);
-		}
-	}
-}
-
-
-void GTextBoxBase::UpdateText()
-{
-	int tx = ScreenRegion.X + XOffset;
-	int ty = ScreenRegion.Y + YOffset;
-
-	for (int i=0;i<Characters.Count;i++)
-	{
-		GCharacterBox& curChar = Characters.Item[i];
-		curChar.FontCharacter = Font->GetCharacter(curChar.Character);
-		curChar.ScreenY = ty;
-		curChar.ScreenX = tx;
-		curChar.ScreenMid = curChar.ScreenX + (curChar.FontCharacter->XAdvance / 2); 
-		tx += curChar.FontCharacter->XAdvance;
-	}
-}
-
-int GTextBoxBase::CollideText( int x,int y )
-{
-	if (Characters.Count == 0) return 0;
-	
-	for (int i=0;i<Characters.Count-1;i++)
-	{
-		GCharacterBox& curChar = Characters.Item[i];
-		GCharacterBox& nextChar = Characters.Item[i+1];
-		
-		if ( x > (curChar.ScreenMid) && x < (nextChar.ScreenMid))
-		{
-			if (y > (curChar.ScreenY) && y < (curChar.ScreenY + Font->Height))
-			{
-				return i;
-			}
-		}
-	}
-	return -1;
+	CaretEffect.set_RealTime(true);
+	CaretEffect.Delay = 400;
 }
 
 void GTextBoxBase::Render()
 {
-	RenderText();
+	// TODO: make caret parameter bound to a GTimer like but simpler object
+	int ShowCaret = CaretPosition;
+	if (!CaretEffect.Value || !Focused)
+	{
+		ShowCaret = -1;
+	}
+	Line.RenderWithSelection(ScreenRegion.X,ScreenRegion.Y, ShowCaret);
+}
+
+void GTextBoxBase::KeyDown( dword keyID )
+{
+	if (keyID == Keys::Left)
+	{
+		CaretPosition--;
+		if (CaretPosition < 0)
+			CaretPosition = 0;
+	}
+	else if (keyID == Keys::Right)
+	{
+		CaretPosition++;
+		if (CaretPosition > Line.Characters.Count)
+			CaretPosition = Line.Characters.Count;
+	}
+	else if (keyID == Keys::Delete)
+	{
+		if (CaretPosition <= 0)
+		{
+			CaretPosition = 0;
+			return;
+		}
+
+		if (CaretPosition >= Line.Characters.Count)
+			return;
+		
+		Line.RemoveCharacter(CaretPosition,CaretPosition+1);
+		if (CaretPosition > Line.Characters.Count)
+			CaretPosition = Line.Characters.Count;
+	}
+
+	CaretEffect.ResetValue(true);
 }
 
 void GTextBoxBase::KeyPress( dword keyID )
 {
 	if (keyID == Keys::BackSpace)
 	{
-		Characters.RemoveLast();
-		UpdateText();
+		if (SelectionLength != 0)
+		{
+			Line.RemoveSelection();
+			CaretPosition = Line.SelectionStart;
+			Line.SelectionEnd = Line.SelectionStart;
+			SelectionLength = 0;
+			return;
+		}
+
+		if (CaretPosition <= 0)
+		{
+			CaretPosition = 0;
+			return;
+		}
+		Line.RemoveCharacter(CaretPosition-1,CaretPosition);
+		CaretPosition--;
 		return;
 	}
-
-	GCharacterBox x;
-	x.Character = keyID;
-	Characters.Add(x);
-
-	UpdateText();
-	/*if (keyID == Keys::BackSpace)
+	if (keyID < ' ')
 	{
-		Text.Truncate(Text.Length - 1);
 		return;
 	}
-	Text.AppendUnicode(keyID);*/
+
+	if (SelectionLength != 0)
+	{
+		Line.ReplaceSelection(keyID);
+		Line.SelectionStart++;
+		CaretPosition = Line.SelectionStart;
+		Line.SelectionEnd = Line.SelectionStart;
+		SelectionLength = 0;
+	}
+	else
+	{
+		Line.InsertCharacter(keyID,CaretPosition);
+		CaretPosition++;
+	}
+	
+	CaretEffect.ResetValue(true);
 }
 
 void GTextBoxBase::MouseDown( int x,int y, int button )
 {
-	int scrX = x + ScreenRegion.X;
-	int scrY = y + ScreenRegion.Y;
-
-	int HitPosition = CollideText(scrX,scrY);
-	if (HitPosition != -1)
-	{
-		SelectionStart = HitPosition;
-		SelectionLength = 0;
-		CaretPosition = HitPosition;
-	}
+	int hitpos = Line.Collide(x);
+	SelectionStart = hitpos;
+	SelectionLength = 0;
+	SelectionEnd = SelectionStart;
 	Selecting = true;
+
+	// TODO: find a way to connect these members
+	Line.SelectionStart = SelectionStart;
+	Line.SelectionEnd = SelectionEnd;
 }
 
 void GTextBoxBase::MouseUp( int x,int y,int button )
@@ -194,26 +235,26 @@ void GTextBoxBase::MouseUp( int x,int y,int button )
 void GTextBoxBase::MouseMove( int x,int y )
 {
 	if ( !Selecting ) return;
+	int hitpos = Line.Collide(x);
 
-	int scrX = x + ScreenRegion.X;
-	int scrY = y + ScreenRegion.Y;
-
-	int HitPosition = CollideText(scrX,scrY);
-	if (HitPosition != -1)
-	{
-		SelectionLength = HitPosition - SelectionStart;
-		SelectionEnd = HitPosition;
-		CaretPosition = HitPosition;
-	}
+	SelectionEnd = hitpos;
+	SelectionLength = SelectionEnd - SelectionStart;
+	CaretPosition = SelectionEnd;
+	
+	Line.SelectionStart = SelectionStart;
+	Line.SelectionEnd = SelectionEnd;
 }
 
 
 void GTextBoxBase::Update()
 {
 	this->GObject::Update();
+	Line.DefaultFont = Font;
+	Line.DefaultColor.color = ForeColor.color;
+
+	CaretEffect.Update();
 	/*if (AutoSize)
 	{
 		this->Height = Font->Height;
 	}*/
 }
-

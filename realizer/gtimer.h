@@ -3,6 +3,73 @@
 
 #include "gobject.h"
 
+/**
+ * Time caused effect.
+ */
+class GTimeEffect
+{
+protected:
+	dword* ReadReference;
+	bool RealTime;
+
+public:
+	
+	inline bool get_RealTime() { return RealTime; }
+
+	void set_RealTime(bool value);
+
+	GTimeEffect(bool _realTime = false)
+	{
+		set_RealTime(_realTime);
+	}
+
+	virtual void Update() = 0;
+};
+
+class GTimeEffectBool: public GTimeEffect
+{
+public:
+	dword Delay;
+	dword LastCheck;
+
+	/**
+	 * True while it works.
+	 */
+	bool Value;
+
+	inline void SetHertz(dword hertz)
+	{
+		Delay = 1000 / hertz;
+	}
+
+	GTimeEffectBool() 
+	{
+		SetHertz(1);
+	}
+
+	GTimeEffectBool(dword hertz, bool _realTime = false): GTimeEffect(_realTime)
+	{
+		SetHertz(hertz);
+		Value = false;
+	}
+
+	inline void ResetValue(bool val)
+	{
+		Value = val;
+		LastCheck = *ReadReference;
+	}
+
+	inline void Update()
+	{
+		if (*ReadReference - LastCheck >= Delay)
+		{
+			LastCheck = *ReadReference;
+			Value = !Value;
+		}
+	}
+};
+
+// TODO: make this derived from GTimeEffect though..
 class GTimer: public GObject // I don't know why I derived this from GObject?
 {
 private:
@@ -22,5 +89,7 @@ public:
 	void SetLastCheck();
 	dword GetDiff();
 };
+
+
 
 #endif

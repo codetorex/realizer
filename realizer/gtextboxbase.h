@@ -2,6 +2,8 @@
 #define GTEXTBOXBASE_H
 
 #include "gobject.h"
+#include "gfont.h"
+#include "gtimer.h"
 
 class GCharacter;
 
@@ -45,27 +47,41 @@ public:
 	{
 		FontCharacter = font->GetCharacter(Character);
 	}
+
+	inline int CharEndPx()
+	{
+		return X + FontCharacter->XAdvance;
+	}
 };
 
 class GEditableLine
 {
 public:
+	GEditableLine()
+	{
+		SelectionStart = 0;
+		SelectionEnd = 0;
+		DefaultFont = 0;
+		DefaultColor.color = 0xFF;
+	}
+
 	TArray< GCharacterBox > Characters;
 	int SelectionStart;
 	int SelectionEnd;
-	int TotalLength;
+	int TotalPixelLength;
 
 	GFont* DefaultFont;
 	TColor32 DefaultColor;
 
 	void UpdateCharacter(int startPos, int endPos)
 	{
-		int rx = 0,ry = 0;
+		if (Characters.Count == 0) return;
 
+		int rx = 0,ry = 0;
 		if (startPos > 0)
 		{
-			rx = Characters.Item[startPos].X;
-			ry = Characters.Item[startPos].Y;
+			rx = Characters.Item[startPos-1].X + Characters.Item[startPos-1].FontCharacter->XAdvance;
+			ry = Characters.Item[startPos-1].Y;
 		}
 
 		if (endPos > Characters.Count)
@@ -78,12 +94,12 @@ public:
 			GCharacterBox& curChar = Characters.Item[i];
 			curChar.X = rx;
 			curChar.Y = ry;
-			curChar.MidPoint = curChar.FontCharacter->XAdvance / 2;
+			curChar.MidPoint = rx + curChar.FontCharacter->XAdvance / 2;
 
 			rx += curChar.FontCharacter->XAdvance;
 		}
 
-		TotalLength = rx;
+		TotalPixelLength = rx;
 	}
 
 	void ChangeFont(GFont* font)
@@ -108,8 +124,26 @@ public:
 
 	void RemoveCharacter(int startPos, int endPos)
 	{
+		if (endPos < startPos)
+		{
+			int tmp = endPos;
+			endPos = startPos;
+			startPos = tmp;
+		}
+
 		Characters.RemoveBetween(startPos,endPos-startPos);
 		UpdateCharacter(startPos);
+	}
+
+	void RemoveSelection()
+	{
+		RemoveCharacter(SelectionStart,SelectionEnd);
+	}
+
+	void ReplaceSelection(ch32 chr)
+	{
+		RemoveSelection();
+		InsertCharacter(chr,SelectionStart);
 	}
 
 	inline void SelectAll()
@@ -118,7 +152,40 @@ public:
 		SelectionEnd = Characters.Count;
 	}
 
+	/**
+	 * Collides with characters to detect caret position.
+	 * Returns insert position ( character position ) for a caret.
+	 */
+	int Collide(int x)
+	{
+		if (Characters.Count == 0)
+		{
+			return 0;
+		}
+
+		if (x < Characters.Item[0].MidPoint)
+		{
+			return 0;
+		}
+
+		for (int i=0;i<Characters.Count;i++)
+		{
+			GCharacterBox& curChar = Characters.Item[i];
+
+			if ( x < curChar.MidPoint )
+			{
+				return i;
+			}
+		}
+
+		return Characters.Count;
+	}
+
+	void InternalRender();
 	void Render(int x,int y);
+
+	// TODO: caret parameter is lame find a way to connect these classes
+	void RenderWithSelection(int x,int y,  int caret);
 };
 
 class GEditableMultiLine
@@ -129,29 +196,20 @@ public:
 
 class GTextBoxBase: public GObject
 {
-public:
-	bool Selecting;
+private:
+	GEditableLine Line;
+	GTimeEffectBool CaretEffect;
 	int CaretPosition;
-	int XOffset;
-	int YOffset;
-
-	int TextSimulation(int scanX,int scanY, bool dontrender);
-
-	void RenderText();
-	void UpdateText();
-	int CollideText(int x,int y);
-
-	
+	bool Selecting;
 
 public:
 	GTextBoxBase();
 
-	/*void GotFocus();
-	void LostFocus();*/
-
 	void MouseDown(int x,int y, int button);
 	void MouseUp(int x,int y,int button);
 	void MouseMove(int x,int y);
+
+	void KeyDown(dword keyID);
 
 	void KeyPress(dword keyID);
 
@@ -163,6 +221,7 @@ public:
 	bool AutoSize;
 
 	ContentAlignment TextAlign;
+	TColor32 SelectionBackGroundColor;
 
 	TString get_Text();
 
