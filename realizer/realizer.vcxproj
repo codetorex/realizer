@@ -119,8 +119,11 @@
     <ClInclude Include="tfilesystem.h" />
     <ClInclude Include="tfoldermount.h" />
     <ClInclude Include="tmount.h" />
+    <ClInclude Include="vanimation.h" />
     <ClInclude Include="vdraw.h" />
     <ClInclude Include="vgui.h" />
+    <ClInclude Include="vnode.h" />
+    <ClInclude Include="vscenenodebased.h" />
     <ClInclude Include="vrenderer.h" />
     <ClInclude Include="vrendererdx9.h" />
     <ClInclude Include="vscene.h" />

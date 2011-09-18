@@ -12,7 +12,7 @@
 class GFont;
 class VGUI;
 
-class GObject: public TListNode< GObject >, public TList< GObject >, public TRegion
+class GObject: public TListNode< GObject* >, public TList< GObject* >, public TRegion
 {
 public:
 	typedef delegate0<void>				NoArgEvent;
@@ -133,40 +133,6 @@ public:
 	GObject* FindObject(int x,int y);
 };
 
-class GObjectEnumerator: public TEnumerator< GObject* >
-{
-public:
-	GObject* mParent;
-	bool Start;
-	GObjectEnumerator(GObject* pParent)
-	{
-		mParent = pParent;
-		Reset();
-	}
-
-	void Reset()
-	{
-		Start = true;
-	}
-
-	bool MoveNext()
-	{
-		if (!Start)
-		{
-			Current = Current->NextItem;
-		}
-		else
-		{
-			Current = mParent->FirstItem;
-			Start = false;
-		}
-		if (Current)
-		{
-			return true;
-		}
-		return false;
-	}
-
-};
+typedef TLinkedListEnumerator<GObject*> GObjectEnumerator;
 
 #endif

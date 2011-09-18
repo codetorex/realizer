@@ -237,6 +237,15 @@
     <ClInclude Include="gtextboxbase.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
+    <ClInclude Include="vnode.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="vscenenodebased.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="vanimation.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

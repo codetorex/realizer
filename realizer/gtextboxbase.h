@@ -194,6 +194,8 @@ public:
 	// not implemented yet.
 };
 
+
+// TODO: GeditableLine ile bunu birlestir
 class GTextBoxBase: public GObject
 {
 private:

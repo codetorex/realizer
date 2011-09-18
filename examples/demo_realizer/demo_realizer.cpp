@@ -14,6 +14,51 @@
 #include <tutf8encoding.h>
 #include "tstring.h"
 
+#include "vscenenodebased.h"
+#include "vanimation.h"
+
+/*class NodeTest: public VSceneNodeBased
+{
+public:
+	VAnimator* TestAnimator;
+
+	void BeginScene()
+	{
+		Engine.Renderer.Clear(RL_COLOR_BUFFER | RL_ZBUFFER, 0xFF888888);
+		Engine.Renderer.BeginScene();
+
+		Engine.Renderer.D3DDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1 );
+
+		Engine.Renderer.EnableBlending();
+		Engine.Renderer.EnableTextureAlphaVertexColorAlpha(0);
+		Engine.Renderer.Enter2D();
+	}
+
+	void EndScene()
+	{
+		Engine.Renderer.Exit2D();
+
+		Engine.Renderer.EndScene();
+		Engine.Renderer.SwapBackBuffer();
+	}
+
+	void Initialize()
+	{
+		TestAnimator = new VAnimator();
+		
+
+		this->VSceneNodeBased::Initialize(); // initializes sub nodes
+	}
+
+};*/
+
+static char* statusmsgs[] = 
+{
+	"AS_NOTSTARTED",
+	"AS_RUNNING",
+	"AS_ENDED",
+};
+
 class IntroScene: public VScene
 {
 public:
@@ -37,9 +82,12 @@ public:
 
 	GProgressBar* pb;
 
+	VAnimation Animator;
+
 	void tstBut_Click()
 	{
-		TWinTools::ShowMessage("Hello!");
+		//TWinTools::ShowMessage("Hello!");
+		Animator.Rewind();
 	}
 
 	void testTimer_Elapsed()
@@ -49,6 +97,18 @@ public:
 		{
 			pb->Value = pb->Minimum;
 		}
+	}
+
+	void DebugWrite(int x, int y,char* fmt , ...)
+	{
+		char text[256];
+		va_list ap;
+
+		va_start(ap,fmt);
+		_vsnprintf(text,256,fmt,ap);
+		va_end(ap);
+
+		FontTest->Render(text,x,y,0xFFFFFFFF);
 	}
 
 	void Render()
@@ -91,8 +151,13 @@ public:
 		Engine.GUI.Render();
 		Engine.Draw.Flush();
 
+		
+		DebugWrite(30,30,"Animation time: %f", Animator.CurrentTime);
+		DebugWrite(30,50,"Animation value: %f", Animator.CurrentValue);
+		DebugWrite(30,70,"Animation status: %s", statusmsgs[Animator.Status]);
+
 		//TestString.FormatInplace("Current frame per second (FPS): %i",fps);
-		TestString = "Current frame per second (FPS): ";
+		//TestString = "Current frame per second (FPS): ";
 		//FontTest->Render(TestString,30,30, 0xFFFFFFFF,THA_LEFT,TVA_BOTTOM);
 
 		Engine.Renderer.Exit2D();
@@ -115,6 +180,7 @@ public:
 		newY = HalfH - 64;
 		//newY = (sinf( DEGTORAD(CurAng) ) * 200) + HalfH - 64; // 200 px movement
 		
+		Animator.AdvanceTime(Engine.Time.TimeDiff);
 	}
 
 	void Initialize()
@@ -136,6 +202,8 @@ public:
 		Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
 
 		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/but_close.tga");
+
+		FontTest = Engine.GUI.Fonts.GetFont("Dina",12);
 
 		SkinTest = (GSchemedSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
 		Engine.GUI.EnableGUI(SkinTest);
@@ -196,6 +264,15 @@ public:
 		otherWin->AddChild(testPbar);
 		otherWin->AddChild(testTimer);
 		otherWin->AddChild(testText);
+
+		Animator.Set(AA_LINEAR,ADT_INT,&(otherWin->X));
+		Animator.AddKeyFrame(0,255.0f);
+		Animator.AddKeyFrame(1,256.0f);
+		Animator.AddKeyFrame(30,500.0f);
+		Animator.AddKeyFrame(60,400.0f);
+		Animator.AddKeyFrame(90,25.0f);
+		Animator.AddKeyFrame(150,500.0f);
+		Animator.UpdateTimeReferences();
 
 		//TColor32 testcolor(255,128,64);
 

@@ -21,6 +21,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "raise-test", "..\..\raise\t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fontloader", "plugins\fontloader\fontloader.vcxproj", "{01F175D0-86F8-4044-9997-A845323FED48}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{940CE870-C174-4EAF-BA37-BF880F47F91A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Damned World", "Damned World", "{1BBD7BB8-43C1-42D9-A4B2-0E7A2E8F3FDE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dwclient", "..\..\DamnedWorld\src\dwclient\dwclient.vcxproj", "{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}"
+	ProjectSection(ProjectDependencies) = postProject
+		{936EDD66-ABBF-40E5-804B-564DA1BFEDE9} = {936EDD66-ABBF-40E5-804B-564DA1BFEDE9}
+		{BD3D8A71-E80C-42DB-B0F3-59F9AA8660E5} = {BD3D8A71-E80C-42DB-B0F3-59F9AA8660E5}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -58,6 +68,12 @@ Global
 		{01F175D0-86F8-4044-9997-A845323FED48}.Release|Win32.Build.0 = Release|Win32
 		{01F175D0-86F8-4044-9997-A845323FED48}.Template|Win32.ActiveCfg = Release|Win32
 		{01F175D0-86F8-4044-9997-A845323FED48}.Template|Win32.Build.0 = Release|Win32
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}.Debug|Win32.Build.0 = Debug|Win32
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}.Release|Win32.ActiveCfg = Release|Win32
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}.Release|Win32.Build.0 = Release|Win32
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}.Template|Win32.ActiveCfg = Release|Win32
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62}.Template|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,5 +81,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{53A084DD-87AB-4BB7-B087-DBBD7A9E3B7F} = {A0522352-DC14-4D03-B847-D3355A621347}
 		{01F175D0-86F8-4044-9997-A845323FED48} = {AE225766-452C-4509-90D8-EEBEB8BE1A4E}
+		{1BBD7BB8-43C1-42D9-A4B2-0E7A2E8F3FDE} = {940CE870-C174-4EAF-BA37-BF880F47F91A}
+		{AD815BC5-7E77-4F87-AB30-2FE0FC69EC62} = {1BBD7BB8-43C1-42D9-A4B2-0E7A2E8F3FDE}
 	EndGlobalSection
 EndGlobal
