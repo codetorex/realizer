@@ -82,7 +82,7 @@ public:
 
 	GProgressBar* pb;
 
-	VAnimation Animator;
+	VAnimationIntWriteBack<2> Animator;
 
 	void tstBut_Click()
 	{
@@ -153,8 +153,9 @@ public:
 
 		
 		DebugWrite(30,30,"Animation time: %f", Animator.CurrentTime);
-		DebugWrite(30,50,"Animation value: %f", Animator.CurrentValue);
-		DebugWrite(30,70,"Animation status: %s", statusmsgs[Animator.Status]);
+		DebugWrite(30,50,"Animation value X: %f", Animator.CurrentFrame->Value[0]);
+		DebugWrite(30,70,"Animation value Y: %f", Animator.CurrentFrame->Value[1]);
+		DebugWrite(30,90,"Animation status: %s", statusmsgs[Animator.Status]);
 
 		//TestString.FormatInplace("Current frame per second (FPS): %i",fps);
 		//TestString = "Current frame per second (FPS): ";
@@ -265,13 +266,16 @@ public:
 		otherWin->AddChild(testTimer);
 		otherWin->AddChild(testText);
 
-		Animator.Set(AA_LINEAR,ADT_INT,&(otherWin->X));
-		Animator.AddKeyFrame(0,255.0f);
-		Animator.AddKeyFrame(1,256.0f);
-		Animator.AddKeyFrame(30,500.0f);
-		Animator.AddKeyFrame(60,400.0f);
-		Animator.AddKeyFrame(90,25.0f);
-		Animator.AddKeyFrame(150,500.0f);
+		
+		Animator.Setup(VAnimationAlgorithm::GetAlgorithm(VAnimationAlgorithm::AA_COSINE),8,&(otherWin->X),&(otherWin->Y));
+
+		Animator.AddKeyFrame(0,250.0f,250.0f);
+		Animator.AddKeyFrame(30,350.0f,350.0f);
+		Animator.AddKeyFrame(60,250.0f,450.0f);
+		Animator.AddKeyFrame(90,150.0f,350.0f);
+		Animator.AddKeyFrame(120,250.0f,250.0f);
+
+		Animator.Loop = true;
 		Animator.UpdateTimeReferences();
 
 		//TColor32 testcolor(255,128,64);

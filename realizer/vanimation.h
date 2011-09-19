@@ -3,6 +3,8 @@
 
 #include "vnode.h"
 #include "mmathdriver.h"
+#include "tbuffer.h"
+#include "tenumerator.h"
 
 enum AnimationDataType
 {
@@ -12,12 +14,45 @@ enum AnimationDataType
 	ADT_BYTE,
 };
 
-enum AnimationAlgorithm
+
+
+class VAnimation;
+
+class VAnimationAlgorithm
 {
-	AA_LINEAR,
-	AA_COSINE,
-	AA_CUBIC,
-	AA_HERMITE,
+public:
+
+	enum KnownImplementations
+	{
+		AA_SET,
+		AA_LINEAR,
+		AA_COSINE,
+	};
+
+	static VAnimationAlgorithm* GetAlgorithm( KnownImplementations which );
+
+	virtual void AdvanceAnimation( VAnimation& animation) = 0;
+};
+
+class VAnimationAlgorithmSet: public VAnimationAlgorithm
+{
+public:
+	static VAnimationAlgorithmSet Instance;
+	void AdvanceAnimation( VAnimation& animation );
+};
+
+class VAnimationAlgorithmLinear: public VAnimationAlgorithm
+{
+public:
+	static VAnimationAlgorithmLinear Instance;
+	void AdvanceAnimation( VAnimation& animation );
+};
+
+class VAnimationAlgorithmCosine: public VAnimationAlgorithm
+{
+public:
+	static VAnimationAlgorithmCosine Instance;
+	void AdvanceAnimation( VAnimation& animation );
 };
 
 enum AnimationStatus
@@ -31,8 +66,8 @@ class VAnimationKeyFrame
 {
 public:
 	int Frame;
-	float TimeRef; // frame in seconds
-	float Value;
+	float TimeRef;
+	float Value[2];
 };
 
 /**
@@ -41,90 +76,125 @@ public:
 class VAnimation
 {
 private:
-	float FramesPerSecond;
+	TByteArray Buffer;
+	VAnimationKeyFrame* KeyFrameWritePtr;
+	int CurValueIndex;
+	int BytePerFrame;
 
-public:
-	AnimationDataType WriteBackDataType;
-	AnimationAlgorithm Algorithm;
-	AnimationStatus Status;
-	TArray< VAnimationKeyFrame > KeyFrames;
-	bool Loop;
-
-	float CurrentTime;
-	float CurrentValue;
-	int CurrentFrameIndex;
-	int LastFrameIndex;
-
-	void* WriteBackPtr;
-
-	VAnimation()
+	inline void UpdateCurrentFramePtr()
 	{
-
+		CurrentFrame = (VAnimationKeyFrame*)(Buffer.Data + (Buffer.Capacity - BytePerFrame));
 	}
 
-	VAnimation(AnimationAlgorithm _algorithm, AnimationDataType _wbDataType = ADT_NOWB, void* _wbPtr = 0,bool _loop = false)
+	inline void CheckCapacity()
 	{
-		Set(_algorithm,_wbDataType,_wbPtr,_loop);
-	}
-
-	void Set(AnimationAlgorithm _algorithm, AnimationDataType _wbDataType = ADT_NOWB, void* _wbPtr = 0,bool _loop = false)
-	{
-		WriteBackDataType = _wbDataType;
-		WriteBackPtr = _wbPtr;
-
-		Algorithm = _algorithm;
-		Loop = _loop;
-		FramesPerSecond = 30.0f;
-		CurrentTime= 0.0f;
-		CurrentFrameIndex = 0;
-		Status = AS_NOTSTARTED;
-	}
-
-	void AddKeyFrame(int frame, float value)
-	{
-		VAnimationKeyFrame newKeyFrame;
-		newKeyFrame.Frame = frame;
-		newKeyFrame.Value = value;
-		KeyFrames.Add(newKeyFrame);
-	}
-
-	inline void WriteBackFloat()
-	{
-		*(float*)WriteBackPtr = CurrentValue;
-	}
-
-	inline void WriteBackInt()
-	{
-		*(int*)WriteBackPtr = (int)CurrentValue;
-	}
-
-	inline void WriteBackByte()
-	{
-		*(byte*)WriteBackPtr = (byte)MathDriver::Clamp(0,255,CurrentValue);
-	}
-
-	inline void WriteBack()
-	{
-		switch(WriteBackDataType)
+		if ( (FrameCount+1) >= (Buffer.Capacity / BytePerFrame))
 		{
-		case ADT_NOWB:
-			return;
-
-		case ADT_FLOAT:
-			WriteBackFloat();
-			return;
-
-		case ADT_INT:
-			WriteBackInt();
-			return;
-
-		case ADT_BYTE:
-			WriteBackByte();
-			return;
+			Buffer.Grow(Buffer.Capacity * 2);
+			UpdateCurrentFramePtr();
 		}
 	}
 
-	void Rewind()
+	friend class VAnimationKeyFrameEnumerator;
+
+public:
+
+	int						ValueCount;
+	int						FrameCount;
+	float					FramesPerSecond;
+	float					CurrentTime;
+	bool					Loop;
+	AnimationStatus			Status;
+	VAnimationAlgorithm*	Algorithm;
+	VAnimationKeyFrame*		CurrentFrame;
+	int						CurrentFrameIndex;
+
+	inline float get_FramesPerSecond()
+	{
+		return FramesPerSecond;
+	}
+
+	inline void set_FramesPerSecond(float value)
+	{
+		FramesPerSecond = value;
+		UpdateTimeReferences();
+	}
+
+	VAnimation()
+	{
+		ValueCount = 0;
+		FrameCount = 0;
+	}
+
+	VAnimation(int _ValueCount, VAnimationAlgorithm* _algorithm, int _initialBuffer): Algorithm(_algorithm)
+	{
+		SetupBuffer(_ValueCount, _initialBuffer);
+	}
+
+	void SetupBuffer(int _ValueCount, int _initialBuffer = 8);
+
+
+	/**
+	 * Start creating a key frame.
+	 */
+	void KeyFrameBegin(int frame);
+
+	/**
+	 * Set a value of key frame and prepare to write next value.
+	 */
+	inline void KeyFrameAddValue(float value)
+	{
+		KeyFrameWritePtr->Value[CurValueIndex++] = value;
+	}
+
+	/**
+	 * Finalize creating key frame.
+	 */
+	inline void KeyFrameEnd()
+	{
+		FrameCount++;
+	}
+
+	/**
+	 * Get frame pointer by id.
+	 */
+	inline VAnimationKeyFrame* GetFrame(int id)
+	{
+		return (VAnimationKeyFrame*)(Buffer.Data + (id * BytePerFrame));
+	}
+
+	/**
+	 * Get last frame data.
+	 */
+	inline VAnimationKeyFrame* GetLastKeyFrame()
+	{
+		return (VAnimationKeyFrame*)(Buffer.Data + (Buffer.Capacity - BytePerFrame));
+	}
+
+	/**
+	 * Updates time references.
+	 * This is necessary when you changed frame number of an item or when added or removed frames.
+	 */
+	void UpdateTimeReferences();
+
+
+
+	inline VAnimationKeyFrame* GetCurrentKeyFrame()
+	{
+		return GetFrame(CurrentFrameIndex);
+	}
+
+	inline VAnimationKeyFrame* GetNextKeyFrame()
+	{
+		return GetFrame(CurrentFrameIndex+1);
+	}
+
+	void AddKeyFrame(int frame, float v0);
+	void AddKeyFrame(int frame, float v0,float v1);
+	void AddKeyFrame(int frame, float v0,float v1,float v2);
+	void AddKeyFrame(int frame, float v0,float v1,float v2,float v3);
+
+	inline void Rewind()
 	{
 		CurrentTime = 0.0f;
 		CurrentFrameIndex = 0;
@@ -134,94 +204,97 @@ public:
 	/**
 	 * Cumbersome unoptimized implementation for test purposes only.
 	 */
-	void AdvanceTime(float time)
+	void AdvanceTime(float time);
+
+
+	virtual void ValuesChanged() = 0;
+};
+
+class VAnimationKeyFrameEnumerator: public TEnumerator< VAnimationKeyFrame* >
+{
+private:
+	VAnimation* curAnim;
+	inline void UpdateCurrentPtr(int idx)
 	{
-		if (Status == AS_ENDED) return;
-
-		CurrentTime += time;
-		int currentKey = -1;
-		for (int i=CurrentFrameIndex;i<KeyFrames.Count;i++)
-		{
-			VAnimationKeyFrame& curKeyFrame = KeyFrames.Item[i];
-			if (CurrentTime >= curKeyFrame.TimeRef)
-			{
-				currentKey = i;
-				continue;
-			}
-			break;
-		}
-
-		if (currentKey == -1) // animation for this object not started yet
-		{
-			Status = AS_NOTSTARTED;
-			return;
-		}
-
-		// this is point -1
-		
-		if (currentKey >= KeyFrames.Count-1) // animation for this object is ended
-		{
-			if (Status != AS_ENDED)
-			{
-				CurrentValue = KeyFrames.Item[KeyFrames.Count-1].Value;
-				CurrentTime = KeyFrames.Item[KeyFrames.Count-1].TimeRef;
-				WriteBack();
-			}
-			Status = AS_ENDED;
-			return;
-		}
-
-		Status = AS_RUNNING;
-
-		CurrentFrameIndex = currentKey; // can be in point -1
-
-		VAnimationKeyFrame& curKeyFrame = KeyFrames.Item[currentKey];
-		VAnimationKeyFrame& nextKeyFrame = KeyFrames.Item[currentKey+1];
-
-		float curValue = curKeyFrame.Value;
-		float nextValue = nextKeyFrame.Value;
-		float tween = (CurrentTime - curKeyFrame.TimeRef) / (nextKeyFrame.TimeRef - curKeyFrame.TimeRef);
-
-		switch (Algorithm)
-		{
-		case AA_LINEAR:
-			CurrentValue = MathInterpolate::LinearInterpolate(curValue,nextValue,tween);
-			break;
-
-		case AA_COSINE:
-			CurrentValue = MathInterpolate::CosineInterpolate(CurrentValue,nextValue,tween);
-			break;
-
-		case AA_CUBIC:
-		case AA_HERMITE:
-			throw 0;
-		}
-		
-		WriteBack();
+		Current = (VAnimationKeyFrame*)(curAnim->Buffer.Data + (curAnim->BytePerFrame * idx));
 	}
 
-	inline float get_FramesPerSecond()
+	inline void UpdateCurrentPtr()
 	{
-		return FramesPerSecond;
+		UpdateCurrentPtr( FrameIndex );
 	}
 
-	void set_FramesPerSecond(float value)
+public:
+
+	int FrameIndex;
+
+	VAnimationKeyFrameEnumerator( VAnimation* anim, int startIndex = 0 )
 	{
-		FramesPerSecond = value;
-		UpdateTimeReferences();
+		curAnim = anim;
+		StartFrom(startIndex);
 	}
 
-	void UpdateTimeReferences()
+	inline void Reset()
 	{
-		float frameRelation = 1 / FramesPerSecond;
-		for (int i=0;i<KeyFrames.Count;i++)
+		StartFrom(0);
+	}
+
+	inline void StartFrom(int index)
+	{
+		index--;
+		FrameIndex = index;
+		UpdateCurrentPtr();
+	}
+
+	inline bool MoveNext()
+	{
+		if (FrameIndex != curAnim->FrameCount)
 		{
-			VAnimationKeyFrame& curKeyFrame = KeyFrames.Item[i];
-			curKeyFrame.TimeRef = frameRelation * (float)curKeyFrame.Frame;
+			Current = (VAnimationKeyFrame*)((byte*)Current + curAnim->BytePerFrame);
+			FrameIndex++;
+			return true;
+		}
+		return false;
+	}
+};
+
+template <int sz>
+class VAnimationIntWriteBack: public VAnimation
+{
+public:
+	int* WriteBackPointers[sz];
+
+	VAnimationIntWriteBack()
+	{
+		//Setup();
+	}
+
+	inline void Setup(VAnimationAlgorithm* pAlgorithm, int _bufferSize = 8, ...)
+	{
+		Algorithm = pAlgorithm;
+		SetupBuffer(sz,_bufferSize);
+
+		va_list ap;
+		va_start(ap,_bufferSize);
+		for (int i=0;i<sz;i++)
+		{
+			WriteBackPointers[i] = va_arg(ap, int* );
+		}
+		va_end(ap);
+	}
+
+	void ValuesChanged()
+	{
+		for (int i =0;i<sz;i++)
+		{
+			*WriteBackPointers[i] = (int)CurrentFrame->Value[i];
 		}
 	}
 };
 
+/**
+ * Composite manager for VAnimation.
+ */
 class VAnimationManager
 {
 public:

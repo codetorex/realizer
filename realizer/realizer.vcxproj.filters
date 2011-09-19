@@ -356,6 +356,9 @@
     <ClCompile Include="gtextboxbase.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
+    <ClCompile Include="vanimation.cpp">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vrenderertypes.h">
