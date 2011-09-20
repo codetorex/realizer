@@ -177,7 +177,7 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 	}
 
 	// This optimization allows rendering "just" color things easily without changing texture.
-	dword white = 0xFFFFFFFF;
+	ui32 white = 0xFFFFFFFF;
 	TRectangleNode* whiteNode = Pack->Insert(16,16);
 	SkinBitmap->DrawRectangle(whiteNode->X,whiteNode->Y,16,16,(byte*)&white);
 	VTexturePart* whitePart = new VTexturePart( SkinBitmap, whiteNode );
@@ -465,7 +465,7 @@ GSchemeFont* GSchemedSkinBuilder::GetNumberedFont( int fontID, FontKinds fontKin
 {
 	
 	TArray<GSchemeFont*>& fontArray = fontKind == FK_CUSTOMFONTS ? NumberedFonts : NumberedSystemFonts;
-	for (dword i=0;i<fontArray.Count;i++)
+	for (ui32 i=0;i<fontArray.Count;i++)
 	{
 		GSchemeFont* curFont = fontArray.Item[i];
 

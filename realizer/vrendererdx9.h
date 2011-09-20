@@ -17,19 +17,19 @@ public:
 private:
 	bool	InitializeDirect3D();
 	void	DestroyDirect3D();
-	D3DFORMAT BitmapToD3DFormat(dword bmpFormat);
+	D3DFORMAT BitmapToD3DFormat(ui32 bmpFormat);
 
 public:
 
 	static void InitializeFormats();
 	bool InitializeRenderer(int _width,int _height,const TString& _title,bool fullscr,int bits);
 
-	inline void Clear(dword flags, dword color)
+	inline void Clear(ui32 flags, ui32 color)
 	{
 		D3DDevice->Clear(0, NULL,flags,color,1.0f,0);
 	}
 
-	inline void Clear(dword flags)
+	inline void Clear(ui32 flags)
 	{
 		Clear(flags,0);
 	}
@@ -167,7 +167,7 @@ public:
 		// set depth test back?
 	}
 
-	inline void EnableBlending(dword src = RL_SRCALPHA,dword dst = RL_INVSRCALPHA)
+	inline void EnableBlending(ui32 src = RL_SRCALPHA,ui32 dst = RL_INVSRCALPHA)
 	{
 		D3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 		D3DDevice->SetRenderState( D3DRS_SRCBLEND, src );

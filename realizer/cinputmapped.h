@@ -49,10 +49,10 @@ public:
 class CFlagAction: public CTriggerAction
 {
 public:
-	dword* flagAddr;
-	dword bit;
+	ui32* flagAddr;
+	ui32 bit;
 
-	CFlagAction(dword* _flagAddr, dword _bit)
+	CFlagAction(ui32* _flagAddr, ui32 _bit)
 	{
 		flagAddr = _flagAddr;
 		bit = _bit;

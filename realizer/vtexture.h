@@ -13,7 +13,7 @@
 class RDLL VTexture: public Resource, public TRange
 {
 public:
-	dword		pathHash;
+	ui32		pathHash;
 	TString		path;
 
 	TBitmap*	bitmap;

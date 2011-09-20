@@ -7,19 +7,19 @@
 class CTiming
 {
 public:
-	dword CurrentTimeMS;
+	ui32 CurrentTimeMS;
 	float CurrentTime;
 	float TimeDiff;
 	float TimeScale;
 
 	float RealTime;
 	float RealDiff;
-	dword RealTimeMS;
+	ui32 RealTimeMS;
 	
 	qword MeasureStart;
 	double MeasureFreq;
 
-	dword TickCount;
+	ui32 TickCount;
 
 	inline void MeasureTime()
 	{
@@ -44,11 +44,11 @@ public:
 
 		RealDiff = MeasureFrac;
 		RealTime += MeasureFrac;
-		RealTimeMS = (dword)(RealTime * 1000.0f);
+		RealTimeMS = (ui32)(RealTime * 1000.0f);
 
 		TimeDiff = MeasureFrac * TimeScale;
 		CurrentTime += TimeDiff;
-		CurrentTimeMS = (dword)(CurrentTime * 1000.0f);
+		CurrentTimeMS = (ui32)(CurrentTime * 1000.0f);
 
 		MeasureTime();
 	}

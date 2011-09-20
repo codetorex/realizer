@@ -57,7 +57,7 @@ public:
 		SetRectangleFrom(othr);
 	}
 
-	inline void Draw(float x,float y,dword color)
+	inline void Draw(float x,float y,ui32 color)
 	{
 		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
 	}
@@ -67,7 +67,7 @@ public:
 		Draw(x,y,Engine.Draw.DefaultDiffuse);
 	}
 
-	inline void DrawScaled(float x,float y, float w, float h, dword color)
+	inline void DrawScaled(float x,float y, float w, float h, ui32 color)
 	{
 		Engine.Draw.Add2DQuadColor1Tex(x,y,x+w,y+h,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
 	}
@@ -78,7 +78,7 @@ public:
 	}
 
 
-	void DrawCropped(float x,float y, float w,float h,dword color)
+	void DrawCropped(float x,float y, float w,float h,ui32 color)
 	{
 
 	}
@@ -89,7 +89,7 @@ public:
 	}
 
 
-	void DrawTiled(float x,float y, float w,float h,dword color)
+	void DrawTiled(float x,float y, float w,float h,ui32 color)
 	{
 
 	}
@@ -126,7 +126,7 @@ public:
 		DrawFunction = 0;
 	}
 
-	typedef void (VTexturePartDefined::*PartDrawFncPtr) (float x,float y,float w,float h,dword color);
+	typedef void (VTexturePartDefined::*PartDrawFncPtr) (float x,float y,float w,float h,ui32 color);
 	PartDrawFncPtr DrawFunction;
 
 	void SetPartType(PartTypes partType)
@@ -147,7 +147,7 @@ public:
 		}
 	}
 
-	inline void DrawPart(float x,float y,float w,float h,dword color)
+	inline void DrawPart(float x,float y,float w,float h,ui32 color)
 	{
 		(this->*DrawFunction)(x,y,w,h,color);
 	}

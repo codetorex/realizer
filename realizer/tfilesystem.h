@@ -20,8 +20,8 @@ public:
 
 	TArray<TMount*> Mounts;
 
-	TMount* MountSystemFolder(const TString& folderPath,dword permission);
-	TMount* MountPackage(const TString& packagePath,dword permission);
+	TMount* MountSystemFolder(const TString& folderPath,ui32 permission);
+	TMount* MountPackage(const TString& packagePath,ui32 permission);
 
 	TMount*	DefaultSaveMount;
 

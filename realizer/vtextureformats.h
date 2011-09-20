@@ -6,11 +6,11 @@
 class VTextureFormat: public TBufferFormat
 {
 public:
-	dword FormatDescriptor;
+	ui32 FormatDescriptor;
 	bool IsSupported;
 	TBufferFormat* FallbackFormat;
 
-	void Supported(dword fmtDescriptor)
+	void Supported(ui32 fmtDescriptor)
 	{
 		FormatDescriptor = fmtDescriptor;
 		IsSupported = true;

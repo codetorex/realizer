@@ -27,7 +27,7 @@ public:
 	VTexturePartDefined Bottom;
 	VTexturePartDefined Center;
 
-	dword CenterColor;
+	ui32 CenterColor;
 
 	void Render(GObject* obj);
 };

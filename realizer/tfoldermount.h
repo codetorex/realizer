@@ -17,7 +17,7 @@ private:
 public:
 	TString FullPath; // should always end with directory seprator
 
-	TFolderMount(const TString& path,dword permission)
+	TFolderMount(const TString& path,ui32 permission)
 	{
 		TDirectoryInfo* td = new TDirectoryInfo(path);
 		MountRoot = td;

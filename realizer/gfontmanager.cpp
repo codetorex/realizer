@@ -40,7 +40,7 @@ GFont* GFontManager::GetFont( const TString& fontName, int fontSize /*= 12*/, Fo
 {
 	GFontEntry* fentry = Cache.FindFontEntry(fontName); // TODO: this function maybe slow to find but if its in cache it will find it no matter what?
 
-	for (dword i=0;i<Count;i++)
+	for (ui32 i=0;i<Count;i++)
 	{
 		GFont* curFont = Item[i];
 		if (curFont->Size == fontSize && curFont->Weight == fontWeight && curFont->OutlineWidth == outlineWidth && curFont->Italic == italic)
@@ -50,7 +50,7 @@ GFont* GFontManager::GetFont( const TString& fontName, int fontSize /*= 12*/, Fo
 	}
 
 	// none of fonts are match, lets check not loaded yet files
-	for (dword i=0;i<fentry->Files.Count;i++)
+	for (ui32 i=0;i<fentry->Files.Count;i++)
 	{
 		GFontFile* curFile = fentry->Files.Item[i];
 		if (curFile->Match(fontSize,fontWeight,italic,outlineWidth))

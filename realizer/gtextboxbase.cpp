@@ -10,7 +10,7 @@
  * Lame function to test out stuff.
  * TODO: integrate it to GFONT with attaching 4 white pixel to it.
  */
-void DrawRectangle(int x1,int y1,int x2,int y2, dword color)
+void DrawRectangle(int x1,int y1,int x2,int y2, ui32 color)
 {
 	VTexture* curTexture = Engine.Draw.CurrentTexture;
 
@@ -23,7 +23,7 @@ void DrawRectangle(int x1,int y1,int x2,int y2, dword color)
 	Engine.Draw.SetTexture(curTexture);
 }
 
-void DrawRectangleSize(int x,int y,int w,int h, dword color)
+void DrawRectangleSize(int x,int y,int w,int h, ui32 color)
 {
 	DrawRectangle(x,y,x+w,y+h,color);
 }
@@ -136,7 +136,7 @@ void GTextBoxBase::Render()
 	Line.RenderWithSelection(ScreenRegion.X,ScreenRegion.Y, ShowCaret);
 }
 
-void GTextBoxBase::KeyDown( dword keyID )
+void GTextBoxBase::KeyDown( ui32 keyID )
 {
 	if (keyID == Keys::Left)
 	{
@@ -169,7 +169,7 @@ void GTextBoxBase::KeyDown( dword keyID )
 	CaretEffect.ResetValue(true);
 }
 
-void GTextBoxBase::KeyPress( dword keyID )
+void GTextBoxBase::KeyPress( ui32 keyID )
 {
 	if (keyID == Keys::BackSpace)
 	{

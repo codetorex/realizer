@@ -17,7 +17,7 @@ public:
 	bool UpdateEnabled;
 	bool DebugRenderEnabled;
 
-	dword ClassID;
+	ui32 ClassID;
 
 	string NodeName;
 

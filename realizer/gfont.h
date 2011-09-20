@@ -41,7 +41,7 @@ public:
 		XAdvance = xadv;
 	}
 
-	inline void DrawCharacter(float x,float y,dword color)
+	inline void DrawCharacter(float x,float y,ui32 color)
 	{
 		x += XOffset;
 		y += YOffset;
@@ -133,7 +133,7 @@ public:
 		throw 0;
 	}
 
-	int RenderText(const TString& text, float x,float y, dword color)
+	int RenderText(const TString& text, float x,float y, ui32 color)
 	{
 		Engine.Draw.SetTexture(FontTexture);
 		int totalWidth = (int)x;

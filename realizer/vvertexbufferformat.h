@@ -40,7 +40,7 @@ public:
 class VVertexBufferFormat: public TBufferFormat
 {
 public:
-	VVertexBufferFormat(const TString& _Name, const TString& elementNames,dword fmtDesc = 0): TBufferFormat(_Name,VVertexBufferChannels::VBChannelRegistry,elementNames)
+	VVertexBufferFormat(const TString& _Name, const TString& elementNames,ui32 fmtDesc = 0): TBufferFormat(_Name,VVertexBufferChannels::VBChannelRegistry,elementNames)
 	{
 		FormatDescriptor = fmtDesc;
 		/*for (int i=0;i<ElementCount;i++) offsetler belirleyerek, generic islemleri yapabilen bi fonksiyon dusunmustum ama
@@ -54,7 +54,7 @@ public:
 		// TODO: TFlexibleFormatBuilder
 	}
 
-	dword FormatDescriptor; // Used by DirectX 9 as FVF and OpenGL for defining witch items available.
+	ui32 FormatDescriptor; // Used by DirectX 9 as FVF and OpenGL for defining witch items available.
 };
 
 class VVertexBufferFormats

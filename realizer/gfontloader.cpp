@@ -10,8 +10,8 @@ void GFontLoader::SetChar( GCharacter* gchr,int x, int y, int w,int h,int xoffse
 
 GCharacter* GFontLoader::CreateCharacter( int id )
 {
-	dword plane = (id & 0xFF00) >> 8;
-	dword chr = (id & 0xFF);
+	ui32 plane = (id & 0xFF00) >> 8;
+	ui32 chr = (id & 0xFF);
 
 	if (font->Characters[plane] == 0)
 	{

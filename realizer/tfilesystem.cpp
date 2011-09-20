@@ -86,7 +86,7 @@ TMount* TFileSystem::FindFileInMounts( const TString& path )
 	return NULL;
 }
 
-TMount* TFileSystem::MountSystemFolder( const TString& folderPath,dword permission )
+TMount* TFileSystem::MountSystemFolder( const TString& folderPath,ui32 permission )
 {
 	TFolderMount* FMount = new TFolderMount(folderPath,permission);
 	Mount(FMount);

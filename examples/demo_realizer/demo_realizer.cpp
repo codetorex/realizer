@@ -267,7 +267,7 @@ public:
 		otherWin->AddChild(testText);
 
 		
-		Animator.Setup(VAnimationAlgorithm::GetAlgorithm(VAnimationAlgorithm::AA_COSINE),8,&(otherWin->X),&(otherWin->Y));
+		Animator.Setup(VAnimationAlgorithm::GetAlgorithm(VAnimationAlgorithm::AA_LINEAR),8,&(otherWin->X),&(otherWin->Y));
 
 		Animator.AddKeyFrame(0,250.0f,250.0f);
 		Animator.AddKeyFrame(30,350.0f,350.0f);

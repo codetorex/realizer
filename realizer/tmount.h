@@ -23,7 +23,7 @@ public:
 		PackageMount,
 	};
 
-	dword PermissionFlags;
+	ui32 PermissionFlags;
 	MountType MyType;
 
 	IDirectory* MountRoot;

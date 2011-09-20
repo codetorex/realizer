@@ -136,14 +136,14 @@ void VAnimation::AdvanceTime( float time )
 	ValuesChanged();
 }
 
-void VAnimation::AddKeyFrame( int frame, float v0)
+void VAnimation::AddKeyFrame( ui32 frame, float v0)
 {
 	KeyFrameBegin(frame);
 	KeyFrameWritePtr->Value[0] = v0;
 	KeyFrameEnd();
 }
 
-void VAnimation::AddKeyFrame( int frame, float v0,float v1)
+void VAnimation::AddKeyFrame( ui32 frame, float v0,float v1)
 {
 	KeyFrameBegin(frame);
 	KeyFrameWritePtr->Value[0] = v0;
@@ -151,7 +151,7 @@ void VAnimation::AddKeyFrame( int frame, float v0,float v1)
 	KeyFrameEnd();
 }
 
-void VAnimation::AddKeyFrame( int frame, float v0,float v1,float v2 )
+void VAnimation::AddKeyFrame( ui32 frame, float v0,float v1,float v2 )
 {
 	KeyFrameBegin(frame);
 	KeyFrameWritePtr->Value[0] = v0;
@@ -160,7 +160,7 @@ void VAnimation::AddKeyFrame( int frame, float v0,float v1,float v2 )
 	KeyFrameEnd();
 }
 
-void VAnimation::AddKeyFrame( int frame, float v0,float v1,float v2,float v3 )
+void VAnimation::AddKeyFrame( ui32 frame, float v0,float v1,float v2,float v3 )
 {
 	KeyFrameBegin(frame);
 	KeyFrameWritePtr->Value[0] = v0;
@@ -169,7 +169,7 @@ void VAnimation::AddKeyFrame( int frame, float v0,float v1,float v2,float v3 )
 	KeyFrameWritePtr->Value[3] = v3;
 	KeyFrameEnd();
 }
-void VAnimation::SetupBuffer( int _ValueCount, int _initialBuffer /*= 8*/ )
+void VAnimation::SetupBuffer( ui32 _ValueCount, ui32 _initialBuffer /*= 8*/ )
 {
 	FrameCount = 0;
 
@@ -180,12 +180,12 @@ void VAnimation::SetupBuffer( int _ValueCount, int _initialBuffer /*= 8*/ )
 	Loop = false;
 
 	ValueCount = _ValueCount;
-	BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount-2) * sizeof(float));
+	BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount-1) * sizeof(float));
 	Buffer.InitializeByteArray(BytePerFrame * _initialBuffer);
 	UpdateCurrentFramePtr();
 }
 
-void VAnimation::KeyFrameBegin( int frame )
+void VAnimation::KeyFrameBegin( ui32 frame )
 {
 	if (ValueCount == 0)
 	{

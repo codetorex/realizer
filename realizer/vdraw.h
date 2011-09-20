@@ -39,7 +39,7 @@ public:
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,DefaultDiffuse);
 	}
 
-	void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, dword color)
+	void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, ui32 color)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
 	}
@@ -47,7 +47,7 @@ public:
 
 	// TODO: FORMAT THESE LINE DRAWING STUFF TO BETTER SPACE?
 
-	inline void DrawLine(float x0,float y0, float x1,float y1,dword color)
+	inline void DrawLine(float x0,float y0, float x1,float y1,ui32 color)
 	{
 		if (MeshType != RL_LINELIST)
 		{
@@ -60,7 +60,7 @@ public:
 		Add2DVertexColor1Tex(x1,y1,0.0f,0.0f,color);
 	}
 
-	void DrawRectangle(float x,float y,float width,float height,dword color)
+	void DrawRectangle(float x,float y,float width,float height,ui32 color)
 	{
 		float r = x + width;
 		float b = y + height;

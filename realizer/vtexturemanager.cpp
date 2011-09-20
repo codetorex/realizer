@@ -11,7 +11,7 @@ TBitmap* VTextureManager::LoadToBitmap(const TString& path)
 		throw Exception("File not found");
 	}
 
-	dword bitmapExtension = TPath::GetExtensionAsDword(path);
+	ui32 bitmapExtension = TPath::GetExtensionAsDword(path);
 
 	TBitmap* Loader = new TBitmap();
 	TBitmapReader* myReader = TBitmapReader::GetReader(bitmapExtension);

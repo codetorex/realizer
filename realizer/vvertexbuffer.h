@@ -14,7 +14,7 @@ public:
 	bool	Locked;
 	rvbf	BufferObject;
 	int		MeshType;
-	dword	PrimitiveCount;
+	ui32	PrimitiveCount;
 
 	VVertexBuffer()
 	{

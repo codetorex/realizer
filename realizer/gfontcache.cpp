@@ -82,7 +82,7 @@ void GFontCache::SaveCache( TStream* cacheStream )
 	{
 		rmlWriter->Serialize(&GFontEntry::MemberInfo,sEntries.Current->Value);
 	}*/
-	for (dword i=0;i<Entries.Count;i++)
+	for (ui32 i=0;i<Entries.Count;i++)
 	{
 		rmlWriter->Serialize( &GFontEntry::MemberInfo, Entries.Item[i] );
 	}
@@ -106,7 +106,7 @@ GFontEntry* GFontCache::GetFontEntry( const TString& fontname,bool createIfNotEx
 	/*GFontEntry* entry = Entries.GetValueOrNull(fontname);
 	if (entry) return entry;*/
 
-	for (dword i=0;i<Entries.Count;i++)
+	for (ui32 i=0;i<Entries.Count;i++)
 	{
 		GFontEntry* curEntry = Entries.Item[i];
 		if (curEntry->FontName == fontname)
@@ -134,7 +134,7 @@ GFontEntry* GFontCache::FindFontEntry( const TString& fontname )
 	// TODO: if this function becomes sluggish you may need to implement THybridMap which is merge of TArray and HashMap it finds fast, and can look sequentially fast
 	TString lowercase = fontname.ToLower();
 
-	for (dword i=0;i<Entries.Count;i++)
+	for (ui32 i=0;i<Entries.Count;i++)
 	{
 		GFontEntry* curEntry = Entries.Item[i];
 		if (curEntry->CompareName.IndexOf(lowercase) != -1)

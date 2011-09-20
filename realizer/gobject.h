@@ -17,7 +17,7 @@ class GObject: public TListNode< GObject* >, public TList< GObject* >, public TR
 public:
 	typedef delegate0<void>				NoArgEvent;
 	typedef delegate3<void,int,int,int> MouseEvent;
-	typedef delegate1<void,dword>		KeyEvent;
+	typedef delegate1<void,ui32>		KeyEvent;
 
 	GObject()
 	{
@@ -55,9 +55,9 @@ public:
 	virtual void MouseMove(int x,int y) {};
 	virtual void GotFocus() {};
 	virtual void LostFocus() {};
-	virtual void KeyPress(dword keyID) {};
-	virtual void KeyDown(dword keyID) {};
-	virtual void KeyUp(dword keyID) {};
+	virtual void KeyPress(ui32 keyID) {};
+	virtual void KeyDown(ui32 keyID) {};
+	virtual void KeyUp(ui32 keyID) {};
 
 	bool	Focused;
 	bool	Enabled;
@@ -71,7 +71,7 @@ public:
 	GSkin*	Skin;
 	GFont*	Font;
 	TString	Tooltip;
-	dword	ClassID;
+	ui32	ClassID;
 
 	TString	Text;
 	ContentAlignment TextAlign;

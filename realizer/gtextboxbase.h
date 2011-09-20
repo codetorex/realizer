@@ -20,7 +20,7 @@ public:
 		Character = chr;
 	}
 
-	GCharacterBox(ch32 chr, GFont* fnt, dword clr)
+	GCharacterBox(ch32 chr, GFont* fnt, ui32 clr)
 	{
 		Character = chr;
 		SetFont(fnt);
@@ -32,7 +32,7 @@ public:
 	ch32 Character;
 
 	/// Every character can have different color
-	dword Color;
+	ui32 Color;
 
 	int X;
 	int Y;
@@ -211,9 +211,9 @@ public:
 	void MouseUp(int x,int y,int button);
 	void MouseMove(int x,int y);
 
-	void KeyDown(dword keyID);
+	void KeyDown(ui32 keyID);
 
-	void KeyPress(dword keyID);
+	void KeyPress(ui32 keyID);
 
 	int SelectionStart;
 	int SelectionLength;

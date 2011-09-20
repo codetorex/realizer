@@ -9,7 +9,7 @@
 class GTimeEffect
 {
 protected:
-	dword* ReadReference;
+	ui32* ReadReference;
 	bool RealTime;
 
 public:
@@ -29,15 +29,15 @@ public:
 class GTimeEffectBool: public GTimeEffect
 {
 public:
-	dword Delay;
-	dword LastCheck;
+	ui32 Delay;
+	ui32 LastCheck;
 
 	/**
 	 * True while it works.
 	 */
 	bool Value;
 
-	inline void SetHertz(dword hertz)
+	inline void SetHertz(ui32 hertz)
 	{
 		Delay = 1000 / hertz;
 	}
@@ -47,7 +47,7 @@ public:
 		SetHertz(1);
 	}
 
-	GTimeEffectBool(dword hertz, bool _realTime = false): GTimeEffect(_realTime)
+	GTimeEffectBool(ui32 hertz, bool _realTime = false): GTimeEffect(_realTime)
 	{
 		SetHertz(hertz);
 		Value = false;
@@ -76,8 +76,8 @@ private:
 
 public:
 	bool RealTime;
-	dword Delay;
-	dword LastCheck;
+	ui32 Delay;
+	ui32 LastCheck;
 
 	GTimer();
 
@@ -87,7 +87,7 @@ public:
 	void Update();
 
 	void SetLastCheck();
-	dword GetDiff();
+	ui32 GetDiff();
 };
 
 

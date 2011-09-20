@@ -27,7 +27,7 @@ void GTimer::SetLastCheck()
 	}
 }
 
-dword GTimer::GetDiff()
+ui32 GTimer::GetDiff()
 {
 	if (RealTime)
 	{

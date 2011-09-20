@@ -65,9 +65,9 @@ enum AnimationStatus
 class VAnimationKeyFrame
 {
 public:
-	int Frame;
-	float TimeRef;
-	float Value[2];
+	float	TimeRef;
+	ui32	Frame;
+	float	Value[1];
 };
 
 /**
@@ -78,8 +78,8 @@ class VAnimation
 private:
 	TByteArray Buffer;
 	VAnimationKeyFrame* KeyFrameWritePtr;
-	int CurValueIndex;
-	int BytePerFrame;
+	ui32 CurValueIndex;
+	ui32 BytePerFrame;
 
 	inline void UpdateCurrentFramePtr()
 	{
@@ -99,15 +99,15 @@ private:
 
 public:
 
-	int						ValueCount;
-	int						FrameCount;
+	ui32					ValueCount;
+	ui32					FrameCount;
 	float					FramesPerSecond;
 	float					CurrentTime;
 	bool					Loop;
 	AnimationStatus			Status;
 	VAnimationAlgorithm*	Algorithm;
 	VAnimationKeyFrame*		CurrentFrame;
-	int						CurrentFrameIndex;
+	ui32					CurrentFrameIndex;
 
 	inline float get_FramesPerSecond()
 	{
@@ -126,18 +126,18 @@ public:
 		FrameCount = 0;
 	}
 
-	VAnimation(int _ValueCount, VAnimationAlgorithm* _algorithm, int _initialBuffer): Algorithm(_algorithm)
+	VAnimation(ui32 _ValueCount, VAnimationAlgorithm* _algorithm, ui32 _initialBuffer): Algorithm(_algorithm)
 	{
 		SetupBuffer(_ValueCount, _initialBuffer);
 	}
 
-	void SetupBuffer(int _ValueCount, int _initialBuffer = 8);
+	void SetupBuffer(ui32 _ValueCount, ui32 _initialBuffer = 8);
 
 
 	/**
 	 * Start creating a key frame.
 	 */
-	void KeyFrameBegin(int frame);
+	void KeyFrameBegin(ui32 frame);
 
 	/**
 	 * Set a value of key frame and prepare to write next value.
@@ -158,7 +158,7 @@ public:
 	/**
 	 * Get frame pointer by id.
 	 */
-	inline VAnimationKeyFrame* GetFrame(int id)
+	inline VAnimationKeyFrame* GetFrame(ui32 id)
 	{
 		return (VAnimationKeyFrame*)(Buffer.Data + (id * BytePerFrame));
 	}
@@ -189,10 +189,19 @@ public:
 		return GetFrame(CurrentFrameIndex+1);
 	}
 
-	void AddKeyFrame(int frame, float v0);
-	void AddKeyFrame(int frame, float v0,float v1);
-	void AddKeyFrame(int frame, float v0,float v1,float v2);
-	void AddKeyFrame(int frame, float v0,float v1,float v2,float v3);
+	/**
+	 * Frames should be sorted before animation can run.
+	 * If frames are created as sorted no need to call this function.
+	 */
+	void SortKeyFrames()
+	{
+		throw NotImplementedException();
+	}
+
+	void AddKeyFrame(ui32 frame, float v0);
+	void AddKeyFrame(ui32 frame, float v0,float v1);
+	void AddKeyFrame(ui32 frame, float v0,float v1,float v2);
+	void AddKeyFrame(ui32 frame, float v0,float v1,float v2,float v3);
 
 	inline void Rewind()
 	{
@@ -214,7 +223,7 @@ class VAnimationKeyFrameEnumerator: public TEnumerator< VAnimationKeyFrame* >
 {
 private:
 	VAnimation* curAnim;
-	inline void UpdateCurrentPtr(int idx)
+	inline void UpdateCurrentPtr(ui32 idx)
 	{
 		Current = (VAnimationKeyFrame*)(curAnim->Buffer.Data + (curAnim->BytePerFrame * idx));
 	}
@@ -291,6 +300,42 @@ public:
 		}
 	}
 };
+
+template <int sz>
+class VAnimationByteWriteBack: public VAnimation
+{
+public:
+	int* WriteBackPointers[sz];
+
+	VAnimationByteWriteBack()
+	{
+		//Setup();
+	}
+
+	inline void Setup(VAnimationAlgorithm* pAlgorithm, int _bufferSize = 8, ...)
+	{
+		Algorithm = pAlgorithm;
+		SetupBuffer(sz,_bufferSize);
+
+		va_list ap;
+		va_start(ap,_bufferSize);
+		for (int i=0;i<sz;i++)
+		{
+			WriteBackPointers[i] = va_arg(ap, byte* );
+		}
+		va_end(ap);
+	}
+
+	void ValuesChanged()
+	{
+		for (int i =0;i<sz;i++)
+		{
+			*WriteBackPointers[i] = (byte)MathDriver::Clamp(0.0f,255.0f,CurrentFrame->Value[i]);
+		}
+	}
+};
+
+typedef VAnimationByteWriteBack<4> VAnimationColor;
 
 /**
  * Composite manager for VAnimation.
