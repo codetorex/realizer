@@ -9,12 +9,12 @@ void VAnimationAlgorithmLinear::AdvanceAnimation( VAnimation& animation )
 {
 	VAnimationKeyFrame* curKeyFrame = animation.GetCurrentKeyFrame();
 	VAnimationKeyFrame* nextKeyFrame = animation.GetNextKeyFrame();
-	VAnimationKeyFrame* resultKeyFrame = animation.CurrentFrame;
+	VAnimationKeyFrame* resultKeyFrame = animation.CurrentValueFrame;
 
 	float mu = (animation.CurrentTime - curKeyFrame->TimeRef) / (nextKeyFrame->TimeRef - curKeyFrame->TimeRef);
 
 
-	for (int i=0;i<animation.ValueCount;i++)
+	for (ui32 i=0;i<animation.ValueCount;i++)
 	{
 		float y1 = curKeyFrame->Value[i];
 		float y2 = nextKeyFrame->Value[i];
@@ -28,12 +28,12 @@ void VAnimationAlgorithmCosine::AdvanceAnimation( VAnimation& animation )
 {
 	VAnimationKeyFrame* curKeyFrame = animation.GetCurrentKeyFrame();
 	VAnimationKeyFrame* nextKeyFrame = animation.GetNextKeyFrame();
-	VAnimationKeyFrame* resultKeyFrame = animation.CurrentFrame;
+	VAnimationKeyFrame* resultKeyFrame = animation.CurrentValueFrame;
 
 	float mu = (animation.CurrentTime - curKeyFrame->TimeRef) / (nextKeyFrame->TimeRef - curKeyFrame->TimeRef);
 
 
-	for (int i=0;i<animation.ValueCount;i++)
+	for (ui32 i=0;i<animation.ValueCount;i++)
 	{
 		float y1 = curKeyFrame->Value[i];
 		float y2 = nextKeyFrame->Value[i];
@@ -45,9 +45,9 @@ void VAnimationAlgorithmCosine::AdvanceAnimation( VAnimation& animation )
 void VAnimationAlgorithmSet::AdvanceAnimation( VAnimation& animation )
 {
 	VAnimationKeyFrame* curKeyFrame = animation.GetCurrentKeyFrame();
-	VAnimationKeyFrame* resultKeyFrame = animation.CurrentFrame;
+	VAnimationKeyFrame* resultKeyFrame = animation.CurrentValueFrame;
 
-	for (int i=0;i<animation.ValueCount;i++)
+	for (ui32 i=0;i<animation.ValueCount;i++)
 	{
 		resultKeyFrame->Value[i] = curKeyFrame->Value[i];
 	}
@@ -66,6 +66,7 @@ VAnimationAlgorithm* VAnimationAlgorithm::GetAlgorithm( KnownImplementations whi
 	case AA_COSINE:
 		return &VAnimationAlgorithmCosine::Instance;
 	}
+	return 0;
 }
 
 void VAnimation::UpdateTimeReferences( )
@@ -96,6 +97,8 @@ void VAnimation::AdvanceTime( float time )
 	CurrentTime += time;
 	int currentKey = -1;
 
+	
+
 	VAnimationKeyFrameEnumerator sframes( this, CurrentFrameIndex );
 	while(sframes.MoveNext())
 	{
@@ -115,7 +118,8 @@ void VAnimation::AdvanceTime( float time )
 
 	// this is point -1
 
-	if (currentKey >= FrameCount) // animation for this object is ended
+	int LastFrameZB = FrameCount - 1; // last frame id for zerobased index
+	if (currentKey >= LastFrameZB) // animation for this object is ended
 	{
 		if (Status != AS_ENDED)
 		{
@@ -180,7 +184,7 @@ void VAnimation::SetupBuffer( ui32 _ValueCount, ui32 _initialBuffer /*= 8*/ )
 	Loop = false;
 
 	ValueCount = _ValueCount;
-	BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount-1) * sizeof(float));
+	BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount) * sizeof(float));
 	Buffer.InitializeByteArray(BytePerFrame * _initialBuffer);
 	UpdateCurrentFramePtr();
 }

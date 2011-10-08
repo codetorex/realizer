@@ -83,7 +83,7 @@ private:
 
 	inline void UpdateCurrentFramePtr()
 	{
-		CurrentFrame = (VAnimationKeyFrame*)(Buffer.Data + (Buffer.Capacity - BytePerFrame));
+		CurrentValueFrame = (VAnimationKeyFrame*)(Buffer.Data + (Buffer.Capacity - BytePerFrame));
 	}
 
 	inline void CheckCapacity()
@@ -106,7 +106,7 @@ public:
 	bool					Loop;
 	AnimationStatus			Status;
 	VAnimationAlgorithm*	Algorithm;
-	VAnimationKeyFrame*		CurrentFrame;
+	VAnimationKeyFrame*		CurrentValueFrame;
 	ui32					CurrentFrameIndex;
 
 	inline float get_FramesPerSecond()
@@ -236,11 +236,25 @@ private:
 public:
 
 	int FrameIndex;
+	int EndIndex;
 
-	VAnimationKeyFrameEnumerator( VAnimation* anim, int startIndex = 0 )
+	/**
+	 * Constructor for enumerator.
+	 * @param startIndex zero based index for starting frame id.
+	 * @param endIndex zero based index for ending enumeration, if -1 then goes until last frame.
+	 */
+	VAnimationKeyFrameEnumerator( VAnimation* anim, int startIndex = 0, int endIndex = -1 )
 	{
 		curAnim = anim;
 		StartFrom(startIndex);
+		if (endIndex == -1)
+		{
+			EndIndex = curAnim->FrameCount-1;
+		}
+		else
+		{
+			EndIndex = endIndex;
+		}
 	}
 
 	inline void Reset()
@@ -257,7 +271,7 @@ public:
 
 	inline bool MoveNext()
 	{
-		if (FrameIndex != curAnim->FrameCount)
+		if (FrameIndex != EndIndex)
 		{
 			Current = (VAnimationKeyFrame*)((byte*)Current + curAnim->BytePerFrame);
 			FrameIndex++;
@@ -296,7 +310,7 @@ public:
 	{
 		for (int i =0;i<sz;i++)
 		{
-			*WriteBackPointers[i] = (int)CurrentFrame->Value[i];
+			*WriteBackPointers[i] = (int)CurrentValueFrame->Value[i];
 		}
 	}
 };
@@ -330,7 +344,7 @@ public:
 	{
 		for (int i =0;i<sz;i++)
 		{
-			*WriteBackPointers[i] = (byte)MathDriver::Clamp(0.0f,255.0f,CurrentFrame->Value[i]);
+			*WriteBackPointers[i] = (byte)MathDriver::Clamp(0.0f,255.0f,CurrentValueFrame->Value[i]);
 		}
 	}
 };

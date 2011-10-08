@@ -153,8 +153,8 @@ public:
 
 		
 		DebugWrite(30,30,"Animation time: %f", Animator.CurrentTime);
-		DebugWrite(30,50,"Animation value X: %f", Animator.CurrentFrame->Value[0]);
-		DebugWrite(30,70,"Animation value Y: %f", Animator.CurrentFrame->Value[1]);
+		DebugWrite(30,50,"Animation value X: %f", Animator.CurrentValueFrame->Value[0]);
+		DebugWrite(30,70,"Animation value Y: %f", Animator.CurrentValueFrame->Value[1]);
 		DebugWrite(30,90,"Animation status: %s", statusmsgs[Animator.Status]);
 
 		//TestString.FormatInplace("Current frame per second (FPS): %i",fps);
