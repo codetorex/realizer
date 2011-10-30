@@ -16,6 +16,8 @@
 
 #include "vscenenodebased.h"
 #include "vanimation.h"
+#include "vanimationsimple.h"
+#include "vanimationbuilder.h"
 
 /*class NodeTest: public VSceneNodeBased
 {
@@ -81,13 +83,18 @@ public:
 	string TestString;
 
 	GProgressBar* pb;
+	
+	VAnimationMultiLinear* WindowAnimation;
 
-	VAnimationIntWriteBack<2> Animator;
+
+	//VAnimationIntWriteBack<2> Animator;
+
+
 
 	void tstBut_Click()
 	{
 		//TWinTools::ShowMessage("Hello!");
-		Animator.Rewind();
+		//Animator.Rewind();
 	}
 
 	void testTimer_Elapsed()
@@ -152,10 +159,10 @@ public:
 		Engine.Draw.Flush();
 
 		
-		DebugWrite(30,30,"Animation time: %f", Animator.CurrentTime);
-		DebugWrite(30,50,"Animation value X: %f", Animator.CurrentValueFrame->Value[0]);
-		DebugWrite(30,70,"Animation value Y: %f", Animator.CurrentValueFrame->Value[1]);
-		DebugWrite(30,90,"Animation status: %s", statusmsgs[Animator.Status]);
+		DebugWrite(30,30,"Animation time: %f", WindowAnimation->CurrentTime);
+		DebugWrite(30,50,"Animation value X: %f", WindowAnimation->GetValue(0));
+		DebugWrite(30,70,"Animation value Y: %f", WindowAnimation->GetValue(1));
+		DebugWrite(30,90,"Animation status: %s", statusmsgs[WindowAnimation->Status]);
 
 		//TestString.FormatInplace("Current frame per second (FPS): %i",fps);
 		//TestString = "Current frame per second (FPS): ";
@@ -181,7 +188,11 @@ public:
 		newY = HalfH - 64;
 		//newY = (sinf( DEGTORAD(CurAng) ) * 200) + HalfH - 64; // 200 px movement
 		
-		Animator.AdvanceTime(Engine.Time.TimeDiff);
+
+		WindowAnimation->AdvanceTime(Engine.Time.TimeDiff);
+
+		/*wX.AdvanceTime(Engine.Time.TimeDiff);
+		wY.AdvanceTime(Engine.Time.TimeDiff);*/
 	}
 
 	void Initialize()
@@ -266,8 +277,26 @@ public:
 		otherWin->AddChild(testTimer);
 		otherWin->AddChild(testText);
 
+		VAnimationBuilder vb;
+		vb.Setup(VAnimationBuilder::VT_MULTILINEAR,2);
+
+		vb.AddKeyFrame(0,250.0f,250.0f);
+		vb.AddKeyFrame(30,350.0f,350.0f);
+		vb.AddKeyFrame(60,250.0f,450.0f);
+		vb.AddKeyFrame(90,150.0f,350.0f);
+		vb.AddKeyFrame(120,250.0f,250.0f);
+
+		vb.Animation->Loop = true;
+		vb.Animation->UpdateTimeReferences();
+		vb.ConnectMemoryConverting(&otherWin->X,TDiagramOutputMemory::TT_INT);
+		vb.ConnectMemoryConverting(&otherWin->Y,TDiagramOutputMemory::TT_INT);
+
+		WindowAnimation = vb.AnimationMultiLinear;
+		WindowAnimation->Status = AS_RUNNING;
+
+
 		
-		Animator.Setup(VAnimationAlgorithm::GetAlgorithm(VAnimationAlgorithm::AA_LINEAR),8,&(otherWin->X),&(otherWin->Y));
+		/*Animator.Setup(VAnimationAlgorithm::GetAlgorithm(VAnimationAlgorithm::AA_LINEAR),8,&(otherWin->X),&(otherWin->Y));
 
 		Animator.AddKeyFrame(0,250.0f,250.0f);
 		Animator.AddKeyFrame(30,350.0f,350.0f);
@@ -276,7 +305,7 @@ public:
 		Animator.AddKeyFrame(120,250.0f,250.0f);
 
 		Animator.Loop = true;
-		Animator.UpdateTimeReferences();
+		Animator.UpdateTimeReferences();*/
 
 		//TColor32 testcolor(255,128,64);
 

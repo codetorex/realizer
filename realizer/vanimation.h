@@ -14,22 +14,21 @@ enum AnimationDataType
 	ADT_BYTE,
 };
 
-
+enum VAnimationAlgorithms
+{
+	AA_SET,
+	AA_LINEAR,
+	AA_COSINE,
+};
 
 class VAnimation;
 
 class VAnimationAlgorithm
 {
 public:
+	int BytesPerKeyFrame;
 
-	enum KnownImplementations
-	{
-		AA_SET,
-		AA_LINEAR,
-		AA_COSINE,
-	};
-
-	static VAnimationAlgorithm* GetAlgorithm( KnownImplementations which );
+	static VAnimationAlgorithm* GetAlgorithm( VAnimationAlgorithms which );
 
 	virtual void AdvanceAnimation( VAnimation& animation) = 0;
 };
@@ -38,12 +37,23 @@ class VAnimationAlgorithmSet: public VAnimationAlgorithm
 {
 public:
 	static VAnimationAlgorithmSet Instance;
+
+	VAnimationAlgorithmSet()
+	{
+		BytesPerKeyFrame = sizeof(float);
+	}
+
 	void AdvanceAnimation( VAnimation& animation );
 };
 
 class VAnimationAlgorithmLinear: public VAnimationAlgorithm
 {
 public:
+	VAnimationAlgorithmLinear()
+	{
+		BytesPerKeyFrame = sizeof(float);
+	}
+
 	static VAnimationAlgorithmLinear Instance;
 	void AdvanceAnimation( VAnimation& animation );
 };
@@ -51,6 +61,11 @@ public:
 class VAnimationAlgorithmCosine: public VAnimationAlgorithm
 {
 public:
+	VAnimationAlgorithmCosine()
+	{
+		BytesPerKeyFrame = sizeof(float);
+	}
+
 	static VAnimationAlgorithmCosine Instance;
 	void AdvanceAnimation( VAnimation& animation );
 };
@@ -67,7 +82,14 @@ class VAnimationKeyFrame
 public:
 	float	TimeRef;
 	ui32	Frame;
-	float	Value[1];
+	byte	Value[1]; // unlimited number of complexities will be hidden behind this value
+
+	inline float GetFloatValue(int index)
+	{
+		return ((float*)&Value[0])[index];
+	}
+
+	static const ui32 SizeWithoutValue;
 };
 
 /**
@@ -75,39 +97,25 @@ public:
  */
 class VAnimation
 {
-private:
-	TByteArray Buffer;
-	VAnimationKeyFrame* KeyFrameWritePtr;
-	ui32 CurValueIndex;
-	ui32 BytePerFrame;
-
-	inline void UpdateCurrentFramePtr()
-	{
-		CurrentValueFrame = (VAnimationKeyFrame*)(Buffer.Data + (Buffer.Capacity - BytePerFrame));
-	}
-
-	inline void CheckCapacity()
-	{
-		if ( (FrameCount+1) >= (Buffer.Capacity / BytePerFrame))
-		{
-			Buffer.Grow(Buffer.Capacity * 2);
-			UpdateCurrentFramePtr();
-		}
-	}
-
+public:
 	friend class VAnimationKeyFrameEnumerator;
 
-public:
-
-	ui32					ValueCount;
 	ui32					FrameCount;
 	float					FramesPerSecond;
 	float					CurrentTime;
 	bool					Loop;
 	AnimationStatus			Status;
-	VAnimationAlgorithm*	Algorithm;
-	VAnimationKeyFrame*		CurrentValueFrame;
 	ui32					CurrentFrameIndex;
+	ui32					BytePerFrame;
+	TByteArray				Buffer;
+
+	inline void CheckCapacity()
+	{
+		if ( (FrameCount/*+1*/) >= (Buffer.Capacity / BytePerFrame)) // that +1 artifact is from animation 2.0, since last frame was result frame at the time
+		{
+			Buffer.Grow(Buffer.Capacity * 2);
+		}
+	}
 
 	inline float get_FramesPerSecond()
 	{
@@ -122,38 +130,16 @@ public:
 
 	VAnimation()
 	{
-		ValueCount = 0;
 		FrameCount = 0;
+		FramesPerSecond = 30.0f;
+		CurrentTime= 0.0f;
+		CurrentFrameIndex = 0;
+		Status = AS_NOTSTARTED;
+		Loop = false;
 	}
 
-	VAnimation(ui32 _ValueCount, VAnimationAlgorithm* _algorithm, ui32 _initialBuffer): Algorithm(_algorithm)
-	{
-		SetupBuffer(_ValueCount, _initialBuffer);
-	}
+	void InitializeBuffer( ui32 _frameCapacity = 8 );
 
-	void SetupBuffer(ui32 _ValueCount, ui32 _initialBuffer = 8);
-
-
-	/**
-	 * Start creating a key frame.
-	 */
-	void KeyFrameBegin(ui32 frame);
-
-	/**
-	 * Set a value of key frame and prepare to write next value.
-	 */
-	inline void KeyFrameAddValue(float value)
-	{
-		KeyFrameWritePtr->Value[CurValueIndex++] = value;
-	}
-
-	/**
-	 * Finalize creating key frame.
-	 */
-	inline void KeyFrameEnd()
-	{
-		FrameCount++;
-	}
 
 	/**
 	 * Get frame pointer by id.
@@ -189,20 +175,6 @@ public:
 		return GetFrame(CurrentFrameIndex+1);
 	}
 
-	/**
-	 * Frames should be sorted before animation can run.
-	 * If frames are created as sorted no need to call this function.
-	 */
-	void SortKeyFrames()
-	{
-		throw NotImplementedException();
-	}
-
-	void AddKeyFrame(ui32 frame, float v0);
-	void AddKeyFrame(ui32 frame, float v0,float v1);
-	void AddKeyFrame(ui32 frame, float v0,float v1,float v2);
-	void AddKeyFrame(ui32 frame, float v0,float v1,float v2,float v3);
-
 	inline void Rewind()
 	{
 		CurrentTime = 0.0f;
@@ -210,14 +182,15 @@ public:
 		Status = AS_NOTSTARTED;
 	}
 
-	/**
-	 * Cumbersome unoptimized implementation for test purposes only.
-	 */
 	void AdvanceTime(float time);
 
-
-	virtual void ValuesChanged() = 0;
+	/**
+	 * Interpolate key frames
+	 */
+	virtual void AdvanceAnimation() = 0;
 };
+
+
 
 class VAnimationKeyFrameEnumerator: public TEnumerator< VAnimationKeyFrame* >
 {
@@ -295,7 +268,7 @@ public:
 	inline void Setup(VAnimationAlgorithm* pAlgorithm, int _bufferSize = 8, ...)
 	{
 		Algorithm = pAlgorithm;
-		SetupBuffer(sz,_bufferSize);
+		InitializeBuffer(sz,_bufferSize);
 
 		va_list ap;
 		va_start(ap,_bufferSize);
@@ -329,7 +302,7 @@ public:
 	inline void Setup(VAnimationAlgorithm* pAlgorithm, int _bufferSize = 8, ...)
 	{
 		Algorithm = pAlgorithm;
-		SetupBuffer(sz,_bufferSize);
+		InitializeBuffer(sz,_bufferSize);
 
 		va_list ap;
 		va_start(ap,_bufferSize);

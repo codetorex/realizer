@@ -120,6 +120,8 @@
     <ClInclude Include="tfoldermount.h" />
     <ClInclude Include="tmount.h" />
     <ClInclude Include="vanimation.h" />
+    <ClInclude Include="vanimationbuilder.h" />
+    <ClInclude Include="vanimationsimple.h" />
     <ClInclude Include="vdraw.h" />
     <ClInclude Include="vgui.h" />
     <ClInclude Include="vnode.h" />

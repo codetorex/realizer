@@ -246,6 +246,12 @@
     <ClInclude Include="vanimation.h">
       <Filter>Source Files\Visual\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="vanimationbuilder.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="vanimationsimple.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

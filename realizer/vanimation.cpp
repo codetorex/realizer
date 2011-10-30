@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "vanimation.h"
 
-VAnimationAlgorithmLinear VAnimationAlgorithmLinear::Instance;
+const ui32 VAnimationKeyFrame::SizeWithoutValue = sizeof(float) + sizeof(ui32);
+
+/*VAnimationAlgorithmLinear VAnimationAlgorithmLinear::Instance;
 VAnimationAlgorithmCosine VAnimationAlgorithmCosine::Instance;
 VAnimationAlgorithmSet VAnimationAlgorithmSet::Instance;
 
@@ -67,7 +69,7 @@ VAnimationAlgorithm* VAnimationAlgorithm::GetAlgorithm( KnownImplementations whi
 		return &VAnimationAlgorithmCosine::Instance;
 	}
 	return 0;
-}
+}*/
 
 void VAnimation::UpdateTimeReferences( )
 {
@@ -124,8 +126,7 @@ void VAnimation::AdvanceTime( float time )
 		if (Status != AS_ENDED)
 		{
 			CurrentFrameIndex = FrameCount - 1;
-			VAnimationAlgorithmSet::Instance.AdvanceAnimation(*this);
-			ValuesChanged();
+			AdvanceAnimation();
 		}
 		Status = AS_ENDED;
 		return;
@@ -135,71 +136,11 @@ void VAnimation::AdvanceTime( float time )
 
 	CurrentFrameIndex = currentKey; // can be in point -1
 
-	Algorithm->AdvanceAnimation(*this);
-
-	ValuesChanged();
+	AdvanceAnimation();
 }
 
-void VAnimation::AddKeyFrame( ui32 frame, float v0)
+void VAnimation::InitializeBuffer( ui32 _frameCapacity /*= 8*/ )
 {
-	KeyFrameBegin(frame);
-	KeyFrameWritePtr->Value[0] = v0;
-	KeyFrameEnd();
-}
-
-void VAnimation::AddKeyFrame( ui32 frame, float v0,float v1)
-{
-	KeyFrameBegin(frame);
-	KeyFrameWritePtr->Value[0] = v0;
-	KeyFrameWritePtr->Value[1] = v1;
-	KeyFrameEnd();
-}
-
-void VAnimation::AddKeyFrame( ui32 frame, float v0,float v1,float v2 )
-{
-	KeyFrameBegin(frame);
-	KeyFrameWritePtr->Value[0] = v0;
-	KeyFrameWritePtr->Value[1] = v1;
-	KeyFrameWritePtr->Value[2] = v2;
-	KeyFrameEnd();
-}
-
-void VAnimation::AddKeyFrame( ui32 frame, float v0,float v1,float v2,float v3 )
-{
-	KeyFrameBegin(frame);
-	KeyFrameWritePtr->Value[0] = v0;
-	KeyFrameWritePtr->Value[1] = v1;
-	KeyFrameWritePtr->Value[2] = v2;
-	KeyFrameWritePtr->Value[3] = v3;
-	KeyFrameEnd();
-}
-void VAnimation::SetupBuffer( ui32 _ValueCount, ui32 _initialBuffer /*= 8*/ )
-{
-	FrameCount = 0;
-
-	FramesPerSecond = 30.0f;
-	CurrentTime= 0.0f;
-	CurrentFrameIndex = 0;
-	Status = AS_NOTSTARTED;
-	Loop = false;
-
-	ValueCount = _ValueCount;
-	BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount) * sizeof(float));
-	Buffer.InitializeByteArray(BytePerFrame * _initialBuffer);
-	UpdateCurrentFramePtr();
-}
-
-void VAnimation::KeyFrameBegin( ui32 frame )
-{
-	if (ValueCount == 0)
-	{
-		throw Exception("Keyframe can't be created before keyframe size is set");
-	}
-
-	CheckCapacity();
-
-	KeyFrameWritePtr = (VAnimationKeyFrame*)(Buffer.Data + (BytePerFrame * FrameCount));
-
-	KeyFrameWritePtr->Frame = frame;
-	CurValueIndex = 0;
+	//BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount) * sizeof(float));
+	Buffer.InitializeByteArray(BytePerFrame * _frameCapacity);
 }
