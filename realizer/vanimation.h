@@ -182,7 +182,45 @@ public:
 		Status = AS_NOTSTARTED;
 	}
 
-	void AdvanceTime(float time);
+	int GetKeyFrameIndex( float time, int startIndex = 0);
+
+	//virtual float GetValueAtTime(float time, int& keyFrame,int port) = 0;
+
+	/**
+	 * Updates animation using current time.
+	 */
+	void UpdateAnimation();
+
+	/**
+	 * Sets time and updates animation
+	 */
+	inline void SetTime(float time)
+	{
+		CurrentFrameIndex = 0;
+		CurrentTime = time;
+		UpdateAnimation();
+	}
+
+	/**
+	 * Advances time and updates animation.
+	 */
+	inline void AdvanceTime(float time)
+	{
+		if (Status == AS_ENDED)
+		{
+			if (!Loop)
+			{
+				return;
+			}
+			else
+			{
+				Rewind();
+			}
+		}
+
+		CurrentTime += time;
+		UpdateAnimation();
+	}
 
 	/**
 	 * Interpolate key frames
@@ -254,83 +292,22 @@ public:
 	}
 };
 
-template <int sz>
-class VAnimationIntWriteBack: public VAnimation
-{
-public:
-	int* WriteBackPointers[sz];
-
-	VAnimationIntWriteBack()
-	{
-		//Setup();
-	}
-
-	inline void Setup(VAnimationAlgorithm* pAlgorithm, int _bufferSize = 8, ...)
-	{
-		Algorithm = pAlgorithm;
-		InitializeBuffer(sz,_bufferSize);
-
-		va_list ap;
-		va_start(ap,_bufferSize);
-		for (int i=0;i<sz;i++)
-		{
-			WriteBackPointers[i] = va_arg(ap, int* );
-		}
-		va_end(ap);
-	}
-
-	void ValuesChanged()
-	{
-		for (int i =0;i<sz;i++)
-		{
-			*WriteBackPointers[i] = (int)CurrentValueFrame->Value[i];
-		}
-	}
-};
-
-template <int sz>
-class VAnimationByteWriteBack: public VAnimation
-{
-public:
-	int* WriteBackPointers[sz];
-
-	VAnimationByteWriteBack()
-	{
-		//Setup();
-	}
-
-	inline void Setup(VAnimationAlgorithm* pAlgorithm, int _bufferSize = 8, ...)
-	{
-		Algorithm = pAlgorithm;
-		InitializeBuffer(sz,_bufferSize);
-
-		va_list ap;
-		va_start(ap,_bufferSize);
-		for (int i=0;i<sz;i++)
-		{
-			WriteBackPointers[i] = va_arg(ap, byte* );
-		}
-		va_end(ap);
-	}
-
-	void ValuesChanged()
-	{
-		for (int i =0;i<sz;i++)
-		{
-			*WriteBackPointers[i] = (byte)MathDriver::Clamp(0.0f,255.0f,CurrentValueFrame->Value[i]);
-		}
-	}
-};
-
-typedef VAnimationByteWriteBack<4> VAnimationColor;
-
 /**
  * Composite manager for VAnimation.
  */
 class VAnimationManager
 {
 public:
+	TArray< VAnimation* > Animations;
 
+	void AdvanceTime( float time )
+	{
+		int i = Animations.Count;
+		while(i--)
+		{
+			Animations.Item[i]->AdvanceTime(time);
+		}
+	}
 };
 
 #endif

@@ -8,6 +8,7 @@ enum VNodeClassID
 {
 	VANIMATOR_CLASSID,
 	VCAMERA_CLASSID,
+	VCANVAS_CLASSID,
 };
 
 class VNode: public TListNode< VNode* >

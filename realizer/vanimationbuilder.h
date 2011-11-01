@@ -3,6 +3,7 @@
 
 #include "vanimation.h"
 #include "vanimationsimple.h"
+#include "vanimationmulti.h"
 
 class VAnimationBuilder
 {
@@ -16,12 +17,21 @@ private:
 		return (VAnimationKeyFrame*)&Animation->Buffer.Data[BufferIndex];
 	}
 
+	void Initialize()
+	{
+		Animation = 0;
+		BufferIndex = 0;
+		CurrentOutputConnection = 0;
+		AnimationMultiLinear = 0;
+	}
+
 public:
 	VAnimation* Animation;
 
 	union
 	{
 		VAnimationMultiLinear* AnimationMultiLinear;
+		VAnimationMultiCosine* AnimationMultiCosine;
 	};
 	
 
@@ -42,23 +52,58 @@ public:
 
 	VAnimationType CurrentAnimationType;
 
-	VAnimationBuilder()
+	/**
+	 * Uses existing animation for building on it.
+	 */
+	VAnimationBuilder(VAnimationMultiLinear& animationVar, int valueCount, float fps = 30.0f)
 	{
-		Animation = 0;
-		BufferIndex = 0;
-		CurrentOutputConnection = 0;
+		Initialize();
+		CurrentAnimationType = VT_MULTILINEAR;
+		AnimationMultiLinear = &animationVar;
+		Animation = &animationVar;
+		animationVar.set_ValueCount( valueCount );
+		animationVar.set_FramesPerSecond( fps );
 	}
 
-	void Setup(VAnimationType AnimType, int ValueCount, float fps = 30.0f)
+	/**
+	 * Uses existing animation for building on it.
+	 */
+	VAnimationBuilder(VAnimationMultiCosine& animationVar, int valueCount, float fps = 30.0f)
 	{
+		Initialize();
+		CurrentAnimationType = VT_MULTICOSINE;
+		AnimationMultiCosine = &animationVar;
+		Animation = &animationVar;
+		animationVar.set_ValueCount( valueCount );
+		animationVar.set_FramesPerSecond( fps );
+	}
+
+	/**
+	 * Creates new animation.
+	 */
+	VAnimationBuilder(VAnimationType AnimType, int ValueCount, float fps = 30.0f)
+	{
+		Initialize();
+
 		CurrentAnimationType = AnimType;
 		switch(AnimType)
 		{
 		case VT_MULTILINEAR:
-			AnimationMultiLinear = new VAnimationMultiLinear();
+			if (!AnimationMultiLinear)
+				AnimationMultiLinear = new VAnimationMultiLinear();
+
 			AnimationMultiLinear->set_ValueCount(ValueCount);
 			AnimationMultiLinear->set_FramesPerSecond(fps);
 			Animation = AnimationMultiLinear;
+			break;
+
+		case VT_MULTICOSINE:
+			if (!AnimationMultiCosine)
+				AnimationMultiCosine = new VAnimationMultiCosine();
+
+			AnimationMultiCosine->set_ValueCount(ValueCount);
+			AnimationMultiCosine->set_FramesPerSecond(fps);
+			Animation = AnimationMultiCosine;
 			break;
 
 		default:
@@ -124,6 +169,11 @@ public:
 		KeyFrameEnd();
 	}
 
+	inline void UpdateTimeReferences()
+	{
+		Animation->UpdateTimeReferences();
+	}
+
 	/**
 	 * You can connect outputs serially to memory pointers
 	 */
@@ -132,7 +182,8 @@ public:
 		switch(CurrentAnimationType)
 		{
 		case VT_MULTILINEAR:
-			AnimationMultiLinear->Outputs.Item[outputPort]->ConnectMemory(outputMemPtr);
+		case VT_MULTICOSINE:
+			((VAnimationMulti*)Animation)->Outputs.Item[outputPort]->ConnectMemory(outputMemPtr);
 			break;
 		}
 	}
@@ -142,17 +193,18 @@ public:
 		ConnectMemory(CurrentOutputConnection++,outputMemPtr);
 	}
 
-	void ConnectMemoryConverting(int outputPort,void* targetPtr, TDiagramOutputMemory::TTargetType targetType)
+	void ConnectMemoryConverting(int outputPort,void* targetPtr, TDiagramOutputType targetType)
 	{
 		switch(CurrentAnimationType)
 		{
 		case VT_MULTILINEAR:
-			AnimationMultiLinear->Outputs.Item[outputPort]->ConnectMemoryConverting(targetPtr,targetType);
+		case VT_MULTICOSINE:
+			((VAnimationMulti*)Animation)->Outputs.Item[outputPort]->ConnectMemoryConverting(targetPtr,targetType);
 			return;
 		}
 	}
 
-	inline void ConnectMemoryConverting(void* targetPtr, TDiagramOutputMemory::TTargetType targetType)
+	inline void ConnectMemoryConverting(void* targetPtr, TDiagramOutputType targetType)
 	{
 		ConnectMemoryConverting(CurrentOutputConnection++,targetPtr,targetType);
 	}

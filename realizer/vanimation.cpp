@@ -82,7 +82,24 @@ void VAnimation::UpdateTimeReferences( )
 	}
 }
 
-void VAnimation::AdvanceTime( float time )
+/*void VAnimation::GetValueAtTime( float time , int& keyFrame )
+{
+
+	int currentKey = GetKeyFrameIndex(time);
+
+	
+	int LastFrameZB = FrameCount - 1; // last frame id for zerobased index
+	if (currentKey >= LastFrameZB) // animation for this object is ended
+	{
+		CurrentFrameIndex = FrameCount - 1;
+		AdvanceAnimation();
+		return;
+	}
+
+
+}*/
+
+void VAnimation::UpdateAnimation()
 {
 	if (Status == AS_ENDED)
 	{
@@ -96,21 +113,7 @@ void VAnimation::AdvanceTime( float time )
 		}
 	}
 
-	CurrentTime += time;
-	int currentKey = -1;
-
-	
-
-	VAnimationKeyFrameEnumerator sframes( this, CurrentFrameIndex );
-	while(sframes.MoveNext())
-	{
-		if (CurrentTime >= sframes.Current->TimeRef)
-		{
-			currentKey = sframes.FrameIndex;
-			continue;
-		}
-		break;
-	}
+	int currentKey = GetKeyFrameIndex(CurrentTime, CurrentFrameIndex);
 
 	if (currentKey == -1) // animation for this object not started yet
 	{
@@ -139,8 +142,25 @@ void VAnimation::AdvanceTime( float time )
 	AdvanceAnimation();
 }
 
+
 void VAnimation::InitializeBuffer( ui32 _frameCapacity /*= 8*/ )
 {
 	//BytePerFrame = sizeof(VAnimationKeyFrame) + ((ValueCount) * sizeof(float));
 	Buffer.InitializeByteArray(BytePerFrame * _frameCapacity);
+}
+
+int VAnimation::GetKeyFrameIndex( float time, int startIndex /*= 0*/ )
+{
+	int currentKey = -1;
+	VAnimationKeyFrameEnumerator sframes( this , startIndex);
+	while(sframes.MoveNext())
+	{
+		if (time >= sframes.Current->TimeRef)
+		{
+			currentKey = sframes.FrameIndex;
+			continue;
+		}
+		break;
+	}
+	return currentKey;
 }

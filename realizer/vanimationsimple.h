@@ -16,7 +16,7 @@
  * VAnimationMultiBezier
  * VAnimationMultiCatmullRom: algorithm same but value is multiple
  * VAnimationComplex: frames are same but algorithms are different
- * VAnimationCombination: uses multiple VAnimationSimple's together
+ * VAnimationCombination: uses multiple VAnimationSimple's together ( DECORATOR PATTERN )
  */
 
 /*class VAnimationSimpleSet: public VAnimation
@@ -52,65 +52,13 @@ public:
 
 		Output.Set(result);
 	}
-};
 
-class VAnimationMultiLinear: public VAnimation
-{
-private:
-	ui32 ValueCount;
-
-public:
-	TArray< TDiagramOutput<float>* > Outputs;
-
-	VAnimationMultiLinear()
+	float GetValueAtTime(float time, int& keyFrame,int port)
 	{
-		BytePerFrame = 0;
-	}
 
-	VAnimationMultiLinear(ui32 valueCount)
-	{
-		BytePerFrame = 0;
-		set_ValueCount(valueCount);
-	}
-
-	inline ui32 get_ValueCount()
-	{
-		return ValueCount;
-	}
-
-	inline void set_ValueCount(ui32 p_ValueCount )
-	{
-		ValueCount = p_ValueCount;
-		BytePerFrame = VAnimationKeyFrame::SizeWithoutValue + (sizeof(float) * ValueCount);
-		InitializeBuffer();
-
-		for (int i=0;i<p_ValueCount;i++)
-		{
-			Outputs.Add( new TDiagramOutput<float>() );
-		}
-	}
-
-	void AdvanceAnimation()
-	{
-		VAnimationKeyFrame* curKeyFrame = GetCurrentKeyFrame();
-		VAnimationKeyFrame* nextKeyFrame = GetNextKeyFrame();
-
-		float mu = (CurrentTime - curKeyFrame->TimeRef) / (nextKeyFrame->TimeRef - curKeyFrame->TimeRef);
-		
-		for (ui32 i=0;i<ValueCount;i++)
-		{
-			float y1 = curKeyFrame->GetFloatValue(i);
-			float y2 = nextKeyFrame->GetFloatValue(i);
-
-			Outputs[i]->Set( MathInterpolate::LinearInterpolate(y1,y2,mu) );
-		}
-	}
-
-	inline float GetValue(int outputPort)
-	{
-		return Outputs.Item[outputPort]->Value;
 	}
 };
+
 
 
 #endif

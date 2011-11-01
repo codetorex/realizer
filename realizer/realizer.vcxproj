@@ -87,6 +87,7 @@
     <ClInclude Include="cinputmapped.h" />
     <ClInclude Include="clinux.h" />
     <ClInclude Include="cdisplaydevice.h" />
+    <ClInclude Include="cloader.h" />
     <ClInclude Include="cresource.h" />
     <ClInclude Include="ctiming.h" />
     <ClInclude Include="cviewport.h" />
@@ -121,10 +122,14 @@
     <ClInclude Include="tmount.h" />
     <ClInclude Include="vanimation.h" />
     <ClInclude Include="vanimationbuilder.h" />
+    <ClInclude Include="vanimationmulti.h" />
     <ClInclude Include="vanimationsimple.h" />
+    <ClInclude Include="vnodeanimation.h" />
+    <ClInclude Include="vnodecanvas.h" />
     <ClInclude Include="vdraw.h" />
     <ClInclude Include="vgui.h" />
     <ClInclude Include="vnode.h" />
+    <ClInclude Include="vnodecanvasimage.h" />
     <ClInclude Include="vscenenodebased.h" />
     <ClInclude Include="vrenderer.h" />
     <ClInclude Include="vrendererdx9.h" />
@@ -179,6 +184,8 @@
     <ClCompile Include="vanimation.cpp" />
     <ClCompile Include="vdraw.cpp" />
     <ClCompile Include="vgui.cpp" />
+    <ClCompile Include="vnodeanimation.cpp" />
+    <ClCompile Include="vnodecanvas.cpp" />
     <ClCompile Include="vrendererdx9.cpp" />
     <ClCompile Include="vtexture.cpp" />
     <ClCompile Include="vtextureconverters.cpp" />

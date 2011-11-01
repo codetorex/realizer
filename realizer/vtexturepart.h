@@ -100,6 +100,9 @@ public:
 	}
 };
 
+/**
+ * TODO: reimplement this with STATE pattern.
+ */
 class VTexturePartDefined: public VTexturePart
 {
 public:
