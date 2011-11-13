@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "cengine.h"
+#include "realizerversion.h"
+
+TModule RealizerModule("Realizer",TVersion(REALIZER_BUILD,REALIZER_PHASE));
 
 REngine Engine;
 

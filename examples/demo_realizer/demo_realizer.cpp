@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include <realizer.h>
 #include "mmatrix.h"
+
+#include "tlogtext.h"
+
 //#include "tstreamwriter.h"
 
 
@@ -213,6 +216,7 @@ public:
 		SceneName = "Intro Scene";
 		// Load resources here
 
+		Log.Output( LG_INF, "Initializing scene...");
 
 
 		TestTexture = Engine.Textures.LoadTexture("test.bmp");
@@ -222,9 +226,12 @@ public:
 		Engine.GUI.Fonts.Cache.CreateCache();
 		Engine.GUI.Fonts.Cache.SaveCache(fontcacheStream);
 
+		Log.Output( LG_INF, "Font cache created and saved");
+
 		TestTGATexture = Engine.Textures.LoadTexture("Acrylic 7/but_close.tga");
 
 		FontTest = Engine.GUI.Fonts.GetFont("Dina",12);
+		Log.Output( LG_INF, "Font 'Dina' with height '12' loaded");
 
 		SkinTest = (GSchemedSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
 		Engine.GUI.EnableGUI(SkinTest);
@@ -310,6 +317,8 @@ public:
 		ab.ConnectMemoryConverting(&testLabel->ForeColor.g,TDG_BYTE);
 		ab.ConnectMemoryConverting(&testLabel->ForeColor.b,TDG_BYTE);
 		ab.ConnectMemoryConverting(&testLabel->ForeColor.a,TDG_BYTE);
+
+		Log.Output( LG_INF, "Initialization completed");
 		
 		/*Animator.Setup(VAnimationAlgorithm::GetAlgorithm(VAnimationAlgorithm::AA_LINEAR),8,&(otherWin->X),&(otherWin->Y));
 
@@ -384,6 +393,7 @@ string Totor(const TString& value)
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
+
 	/*TStream* fs = File::OpenWrite("c://booook.txt");
 
 	string japanese = "マルチバイト文字";
@@ -418,6 +428,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	//fs->Write(,1,StringDriverFixedWidth::Length(kp));
 	//fs->Close();
 	
+	Application.Begin("Realizer Demo", RealizerModule.Version);
+	Application.Modules.Add(&RealizerModule);
 
 	Engine.Renderer.InitializeRenderer(1280,720,"Realizer3D",false,24);
 	
@@ -427,6 +439,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	Engine.FileSystem.MountSystemFolder("../data/", TMount::Readable);
 	Engine.FileSystem.MountSystemFolder("../save/", TMount::Writeable | TMount::Readable);
+
+	TLogText textLog(Engine.FileSystem.Open("log.txt", fm_Write));
+	Log.RegisterOutput(&textLog);
 
 	IntroScene iScene;
 	Engine.Scenes.ActivateScene(&iScene);

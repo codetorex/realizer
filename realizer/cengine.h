@@ -10,6 +10,7 @@
 #include "vdraw.h"
 #include "vgui.h"
 #include "cloader.h"
+#include "realizerversion.h"
 
 /**
 * Main Realizer engine block.
