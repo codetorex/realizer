@@ -101,6 +101,7 @@
     <ClInclude Include="gbutton.h" />
     <ClInclude Include="gcheckbox.h" />
     <ClInclude Include="gcomponents.h" />
+    <ClInclude Include="gconsole.h" />
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="vanimationbuilder.h" />
     <ClInclude Include="vanimationmulti.h" />
     <ClInclude Include="vanimationsimple.h" />
+    <ClInclude Include="vscenelayered.h" />
     <ClInclude Include="vnodeanimation.h" />
     <ClInclude Include="vnodecanvas.h" />
     <ClInclude Include="vdraw.h" />

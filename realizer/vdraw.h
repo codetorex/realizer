@@ -20,7 +20,7 @@ public:
 	*/
 	void Initialize()
 	{
-		InitializeBuffer(VVertexBufferFormats::ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
+		InitializeBuffer(VertexBufferFormats->ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
 		CreateVertexBuffer(CapacityItem);
 		LockBuffer();
 	}

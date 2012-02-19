@@ -124,6 +124,7 @@ public:
 	* Checks for mouse enter and exit events.
 	* Optimizes with using mouseInside information.
 	* Takes parameters from Master VGUI.
+	* Basically Chain of responsibility pattern used for mouse events.
 	*/
 	GObject* FindObject();
 

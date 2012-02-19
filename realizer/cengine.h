@@ -38,6 +38,7 @@ public:
 	//NNetworkManager	Network;
 	//CHookManager		Hooks;
 	//CAudioManager		Audio;
+	//CDiagnostics		Diagnostics; // will collect speed data of application runtime  Profiling lookup for baseprofile.cs of runuo
 
 	//Mesh, model, shader, material managers?
 

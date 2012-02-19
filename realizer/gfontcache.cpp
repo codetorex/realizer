@@ -10,15 +10,18 @@ TMemberInfo GFontFileMemberInfo()
 	TMemberInfo memberInfo;
 	GFontFile ent;
 
-	memberInfo.SetObjectName(TMemberInfo::GetOffset(&ent,&ent.FileName));
+	TMemberInfoBuilder mib(&memberInfo,&ent);
+
+	mib.SetObjectName(&ent.FileName);
+
 	//memberInfo.AddMember("FileName"     ,TMemberInfo::GetOffset(&ent,&ent.FileName)  ,MT_STRING);
-	memberInfo.AddMember("SizeSmallest" ,TMemberInfo::GetOffset(&ent,&ent.SizeMin)   ,MT_INT);
-	memberInfo.AddMember("SizeLargest"  ,TMemberInfo::GetOffset(&ent,&ent.SizeMax)   ,MT_INT);
-	memberInfo.AddMember("WidthSmallest",TMemberInfo::GetOffset(&ent,&ent.WeightMin) ,MT_INT);
-	memberInfo.AddMember("WidthLargest" ,TMemberInfo::GetOffset(&ent,&ent.WeightMax) ,MT_INT);
-	memberInfo.AddMember("IsItalic"     ,TMemberInfo::GetOffset(&ent,&ent.Italic)    ,MT_BOOL);
-	memberInfo.AddMember("OutlineWidth" ,TMemberInfo::GetOffset(&ent,&ent.Outline)   ,MT_INT);
-	memberInfo.AddMember("CanOutline"   ,TMemberInfo::GetOffset(&ent,&ent.CanOutline),MT_BOOL);
+	mib.AddMember("SizeSmallest" ,&ent.SizeMin   ,MT_INT);
+	mib.AddMember("SizeLargest"  ,&ent.SizeMax   ,MT_INT);
+	mib.AddMember("WidthSmallest",&ent.WeightMin ,MT_INT);
+	mib.AddMember("WidthLargest" ,&ent.WeightMax ,MT_INT);
+	mib.AddMember("IsItalic"     ,&ent.Italic    ,MT_BOOL);
+	mib.AddMember("OutlineWidth" ,&ent.Outline   ,MT_INT);
+	mib.AddMember("CanOutline"   ,&ent.CanOutline,MT_BOOL);
 
 	return memberInfo;
 }
@@ -29,10 +32,12 @@ TMemberInfo GFontEntryMemberInfo()
 {
 	TMemberInfo memberInfo;
 	GFontEntry ent;
+
+	TMemberInfoBuilder mib(&memberInfo,&ent);
 	
-	memberInfo.SetObjectName(TMemberInfo::GetOffset(&ent,&ent.FontName));
+	mib.SetObjectName(&ent.FontName);
 	//memberInfo.AddMember("FontName",TMemberInfo::GetOffset(&ent,&ent.FontName),MT_STRING);
-	memberInfo.AddMember("Files",TMemberInfo::GetOffset(&ent,&ent.Files),MT_ARRAY,MT_OBJECT,&GFontFile::MemberInfo);
+	mib.AddMember("Files",&ent.Files,MT_ARRAY,MT_OBJECT,&GFontFile::MemberInfo);
 	
 	return memberInfo;
 }

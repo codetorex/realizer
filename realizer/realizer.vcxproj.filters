@@ -276,6 +276,12 @@
     <ClInclude Include="realizerversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vscenelayered.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="gconsole.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

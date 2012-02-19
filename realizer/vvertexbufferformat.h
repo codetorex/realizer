@@ -1,68 +1,86 @@
 #ifndef VVERTEXBUFFERFORMAT_H
 #define VVERTEXBUFFERFORMAT_H
 
-
-#include <tcompositebuffer.h>
-#include "realizertypes.h"
-
-class VVertexBufferChannels
-{
-public:
-	static TCompositionPrimitive* PosX; // positional X
-	static TCompositionPrimitive* PosY;
-	static TCompositionPrimitive* PosZ;
-	static TCompositionPrimitive* PosRHW; // WTF?
-
-	static TCompositionPrimitive* NX; // normal
-	static TCompositionPrimitive* NY;
-	static TCompositionPrimitive* NZ;
-
-	static TCompositionPrimitive* TU; // texture x
-	static TCompositionPrimitive* TV; // texture y
-
-	static TCompositionPrimitive* Position;
-	static TCompositionPrimitive* Normal;
-	static TCompositionPrimitive* TexCoord0;
-	static TCompositionPrimitive* TexCoord1;
-	static TCompositionPrimitive* TexCoord2;
-	static TCompositionPrimitive* TexCoord3;
-	static TCompositionPrimitive* TexCoord4;
-	static TCompositionPrimitive* TexCoord5;
-	static TCompositionPrimitive* TexCoord6;
-	static TCompositionPrimitive* Color; // ARGB order in dX
-
-
-	static TArray<TCompositionPrimitive*>* VBChannelRegistry; // vertex buffer channel registry
-
-	void Initialize();
-};
+#include "tcompositionmanager.h"
 
 class VVertexBufferFormat: public TBufferFormat
 {
 public:
-	VVertexBufferFormat(const TString& _Name, const TString& elementNames,ui32 fmtDesc = 0): TBufferFormat(_Name,VVertexBufferChannels::VBChannelRegistry,elementNames)
-	{
-		FormatDescriptor = fmtDesc;
-		/*for (int i=0;i<ElementCount;i++) offsetler belirleyerek, generic islemleri yapabilen bi fonksiyon dusunmustum ama
-		{
-			TFormatElement* curE = Elements[i];
-			if(curE == VVertexBufferChannels::Position)
-			{
 
-			}
-		}*/
+	VVertexBufferFormat(const TString& name, PrimitiveArray* primitives, const TString& components): TBufferFormat(name,primitives,components)
+	{
+
+	}
+
+	VVertexBufferFormat(const TString& longname,const TString& shortname, PrimitiveArray* primitives, const TString& components): TBufferFormat(longname,shortname,primitives,components)
+	{
 		// TODO: TFlexibleFormatBuilder
 	}
 
 	ui32 FormatDescriptor; // Used by DirectX 9 as FVF and OpenGL for defining witch items available.
 };
 
-class VVertexBufferFormats
+class VVertexBufferFormats: public TCompositionManager
 {
 public:
-	static VVertexBufferFormat* Textured1; // should be initialized by renderer
-	static VVertexBufferFormat* ColoredTextured1;
+	TCompositionPrimitive PosX; // positional X
+	TCompositionPrimitive PosY;
+	TCompositionPrimitive PosZ;
+	TCompositionPrimitive PosRHW; // WTF?
+	
+	TCompositionPrimitive NX; // normal
+	TCompositionPrimitive NY;
+	TCompositionPrimitive NZ;
+
+	TCompositionPrimitive TU; // texture x
+	TCompositionPrimitive TV; // texture y
+
+	TComposition Position;
+	TComposition Normal;
+	TComposition TexCoord0;
+	TComposition TexCoord1;
+	TComposition TexCoord2;
+	TComposition TexCoord3;
+	TComposition TexCoord4;
+	TComposition TexCoord5;
+	TComposition TexCoord6;
+	TComposition Color; // ARGB order in dX
+
+	VVertexBufferFormat* Textured1; // should be initialized by renderer
+	VVertexBufferFormat* ColoredTextured1;
+
+	void InitializeVertexFormats();
+
+	inline VVertexBufferFormat* CreateVertexFormat(const TString& name, const TString& components,ui32 desc)
+	{
+		VVertexBufferFormat* result = (VVertexBufferFormat*)Factory->CreateFormat(name, &Primitives,components);
+		AddFormat(result);
+		result->FormatDescriptor = desc;
+		return result;
+	}
+
+	VVertexBufferFormats(TCompositeFormatFactory* _factory): TCompositionManager(_factory)
+	{
+		InitializeVertexFormats();
+	}
 };
 
+extern VVertexBufferFormats* VertexBufferFormats;
+
+class TCompositeFormatFactoryVertex: public TCompositeFormatFactory
+{
+public:
+	static TCompositeFormatFactoryVertex Instance;
+
+	TBufferFormat* CreateFormat(const TString& name, PrimitiveArray* primitives, const TString& components)
+	{ 
+		return new VVertexBufferFormat(name,primitives,components);
+	}
+
+	TBufferFormat* CreateFormat(const TString& longname, const TString& shortname,PrimitiveArray* primitives, const TString& components) 
+	{
+		return new VVertexBufferFormat(longname,shortname,primitives,components);
+	}
+};
 
 #endif

@@ -9,12 +9,6 @@ class VSceneManager
 public:
 	TArray<VScene*> Scenes;
 
-	VScene* ActiveScene;
-
-	VSceneManager()
-	{
-		ActiveScene = 0;
-	}
 
 	inline void LoadScene(VScene* scene)
 	{
@@ -30,26 +24,29 @@ public:
 
 	inline void ActivateScene(VScene* scene)
 	{
-		if (Scenes.Contains(scene))
-		{
-			ActiveScene = scene;
-		}
-		else
+		if (!Scenes.Contains(scene))
 		{
 			LoadScene(scene);
-			ActiveScene = scene;
 		}
+		scene->Active = true;
 	}
 
 	inline void Update()
 	{
-		ActiveScene->Update();
+		TArrayEnumerator<VScene*> se(Scenes);
+		while(se.MoveNext())
+		{
+			se.Current->Update();
+		}
 	}
 
 	inline void Render()
 	{
-		// TODO: check for is any active scene?
-		ActiveScene->Render();
+		TArrayEnumeratorReverse<VScene*> se(Scenes);
+		while(se.MoveNext())
+		{
+			se.Current->Render();
+		}
 	}
 
 	inline void Run()

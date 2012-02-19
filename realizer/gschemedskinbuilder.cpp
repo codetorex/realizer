@@ -6,7 +6,7 @@
 
 void GSchemedSkinBuilder::Begin( int w,int h )
 {
-	SkinBitmap = new TBitmap(w,h,TBitmapFormats::fARGB);
+	SkinBitmap = new TBitmap(w,h,BitmapFormats->fARGB);
 	Pack = new TPackedRectangle(w,h);
 	Skin = new GSchemedSkin();
 }

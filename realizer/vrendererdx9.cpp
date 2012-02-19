@@ -184,25 +184,25 @@ void VRendererDX9::UpdateTextureFromBitmap( rtex tx, TBitmap* bmp )
 
 void VRendererDX9::InitializeFormats()
 {
-	VTextureFormats k;
-	k.Initialize();
+	TextureFormats = new VTextureFormats(&TCompositeFormatFactoryTexture::Instance);
+	BitmapFormats = TextureFormats;
+
 
 	// TODO: test for RGB is supported, if not set it to fallback
 
-	((VTextureFormat*)VTextureFormats::fARGB)->Supported(D3DFMT_A8R8G8B8);
-	((VTextureFormat*)VTextureFormats::fABGR)->Supported(D3DFMT_A8B8G8R8);
-	((VTextureFormat*)VTextureFormats::fXRGB)->Supported(D3DFMT_X8R8G8B8);
-	((VTextureFormat*)VTextureFormats::fXBGR)->Supported(D3DFMT_X8B8G8R8);
-	((VTextureFormat*)VTextureFormats::fRGBA)->UnSupported(VTextureFormats::fARGB);
-	((VTextureFormat*)VTextureFormats::fBGRA)->UnSupported(VTextureFormats::fABGR);
-	((VTextureFormat*)VTextureFormats::fRGB)->UnSupported(VTextureFormats::fXRGB);
-	((VTextureFormat*)VTextureFormats::fBGR)->UnSupported(VTextureFormats::fXRGB);
+	((VTextureFormat*)TextureFormats->fARGB)->Supported(D3DFMT_A8R8G8B8);
+	((VTextureFormat*)TextureFormats->fABGR)->Supported(D3DFMT_A8B8G8R8);
+	((VTextureFormat*)TextureFormats->fXRGB)->Supported(D3DFMT_X8R8G8B8);
+	((VTextureFormat*)TextureFormats->fXBGR)->Supported(D3DFMT_X8B8G8R8);
+	((VTextureFormat*)TextureFormats->fRGBA)->UnSupported(TextureFormats->fARGB);
+	((VTextureFormat*)TextureFormats->fBGRA)->UnSupported(TextureFormats->fABGR);
+	((VTextureFormat*)TextureFormats->fRGB)->UnSupported(TextureFormats->fXRGB);
+	((VTextureFormat*)TextureFormats->fBGR)->UnSupported(TextureFormats->fXRGB);
 
-	VVertexBufferChannels l;
-	l.Initialize();
+	VertexBufferFormats = new VVertexBufferFormats(&TCompositeFormatFactoryVertex::Instance);
 
-	VVertexBufferFormats::Textured1 = new VVertexBufferFormat("2DTEX1","POST0",D3DFVF_XYZ | D3DFVF_TEX1);
-	VVertexBufferFormats::ColoredTextured1 = new VVertexBufferFormat("2DCLRTEX1","POSCLRT0",D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+	VertexBufferFormats->Textured1 = VertexBufferFormats->CreateVertexFormat("2DTEX1","POST0",D3DFVF_XYZ | D3DFVF_TEX1);
+	VertexBufferFormats->ColoredTextured1 = VertexBufferFormats->CreateVertexFormat("2DCLRTEX1","POSCLRT0",D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
 	TBitmapBMP::Install();
 	TBitmapTGA::Install();

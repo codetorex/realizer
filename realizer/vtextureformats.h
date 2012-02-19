@@ -1,7 +1,7 @@
 #ifndef VTEXTUREFORMATS_H
 #define VTEXTUREFORMATS_H
 
-#include <tbitmap.h>
+#include "tbitmapformats.h"
 
 class VTextureFormat: public TBufferFormat
 {
@@ -24,87 +24,89 @@ public:
 		FallbackFormat = fallback;
 	}
 
-	VTextureFormat(const TString& shortName, const TString& channels):TBufferFormat(shortName, TBitmapChannels::BitmapChannelRegistry, channels )
+	VTextureFormat(const TString& name, PrimitiveArray* primitives, const TString& components): TBufferFormat(name,primitives,components)
 	{
 
 	}
 
-	static TBufferFormat* CreateFormat(const TString& shortName, const TString& channels)
+	VTextureFormat(const TString& longname,const TString& shortname, PrimitiveArray* primitives, const TString& components): TBufferFormat(longname,shortname,primitives,components)
 	{
-		VTextureFormat* vtf = new VTextureFormat (shortName,channels);
-		return (TBufferFormat*)vtf;
+
 	}
 };
 
-class VTextureChannels: public TBitmapChannels
-{
-public:
-	static bool ExtensionsInitialized;
 
-	static TCompositionPrimitive* cDepth32;
-	static TCompositionPrimitive* cDepth24;
-	static TCompositionPrimitive* cDepth16;
-
-	static TCompositionPrimitive* cStencil;
-
-	static TCompositionPrimitive* cUnused;
-
-	static TCompositionPrimitive* cRedf;
-	static TCompositionPrimitive* cGreenf;
-	static TCompositionPrimitive* cBluef;
-	static TCompositionPrimitive* cAlphaf;
-
-	static TCompositionPrimitive* cReds;
-	static TCompositionPrimitive* cGreens;
-	static TCompositionPrimitive* cBlues;
-	static TCompositionPrimitive* cAlphas;
-
-	static TCompositionPrimitive* cLuminance;
-
-	static TCompositionPrimitive* cCompressedStream;
-
-	void CreateExtendedChannels();
-
-	void Initialize()
-	{
-		if (BitmapChannelRegistry == 0)
-		{
-			CreateDefaultChannels();
-		}
-		CreateExtendedChannels();
-	}
-};
 
 class VTextureFormats: public TBitmapFormats
 {
 public:
-	static VTextureFormat* fXRGB;
-	static VTextureFormat* fXBGR;
+	TCompositionPrimitive cDepth32;
+	TCompositionPrimitive cDepth24;
+	TCompositionPrimitive cDepth16;
 
-	static VTextureFormat* fABGR16; // each component is short
-	static VTextureFormat* fDXT1;
-	static VTextureFormat* fDXT3;
-	static VTextureFormat* fDXT5;
+	TCompositionPrimitive cStencil;
 
-	static VTextureFormat* fD32; 
-	static VTextureFormat* fD24S8;
-	static VTextureFormat* fD16;
-	static VTextureFormat* fL8;
+	TCompositionPrimitive cUnused;
 
-	static VTextureFormat* fR32F;
-	static VTextureFormat* fGR32F;
-	static VTextureFormat* fABGR32F;
+	TCompositionPrimitive cRedf;
+	TCompositionPrimitive cGreenf;
+	TCompositionPrimitive cBluef;
+	TCompositionPrimitive cAlphaf;
 
-	void CreateExtendedFormats();
-	void CreateExtendedConverters();
+	TCompositionPrimitive cReds;
+	TCompositionPrimitive cGreens;
+	TCompositionPrimitive cBlues;
+	TCompositionPrimitive cAlphas;
 
-	void Initialize()
+	TCompositionPrimitive cLuminance;
+
+	TCompositionPrimitive cCompressedStream;
+
+	VTextureFormat* fXRGB;
+	VTextureFormat* fXBGR;
+
+	VTextureFormat* fABGR16; // each component is short
+	VTextureFormat* fDXT1;
+	VTextureFormat* fDXT3;
+	VTextureFormat* fDXT5;
+
+	VTextureFormat* fD32; 
+	VTextureFormat* fD24S8;
+	VTextureFormat* fD16;
+	VTextureFormat* fL8;
+
+	VTextureFormat* fR32F;
+	VTextureFormat* fGR32F;
+	VTextureFormat* fABGR32F;
+
+	void InitializeTextureFormats();
+	void CreateTextureConverters();
+
+	VTextureFormats(TCompositeFormatFactory* _factory): TBitmapFormats(_factory)
 	{
-		CreateExtendedFormats();
-		CreateExtendedConverters();
+		InitializeTextureFormats();
+		CreateTextureConverters();
 	}
+
 };
 
+extern VTextureFormats* TextureFormats;
+
+class TCompositeFormatFactoryTexture: public TCompositeFormatFactory
+{
+public:
+	static TCompositeFormatFactoryTexture Instance;
+
+	TBufferFormat* CreateFormat(const TString& name, PrimitiveArray* primitives, const TString& components)
+	{ 
+		return new VTextureFormat(name,primitives,components);
+	}
+
+	TBufferFormat* CreateFormat(const TString& longname, const TString& shortname,PrimitiveArray* primitives, const TString& components) 
+	{
+		return new VTextureFormat(longname,shortname,primitives,components);
+	}
+};
 
 #endif
 

@@ -5,7 +5,7 @@
 #include <realizer.h>
 #include "mmatrix.h"
 
-#include "tlogtext.h"
+#include "tlogstream.h"
 
 //#include "tstreamwriter.h"
 
@@ -440,7 +440,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	Engine.FileSystem.MountSystemFolder("../data/", TMount::Readable);
 	Engine.FileSystem.MountSystemFolder("../save/", TMount::Writeable | TMount::Readable);
 
-	TLogText textLog(Engine.FileSystem.Open("log.txt", fm_Write));
+	TLogStream textLog(Engine.FileSystem.Open("log.txt", fm_Write));
 	Log.RegisterOutput(&textLog);
 
 	IntroScene iScene;

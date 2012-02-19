@@ -2,7 +2,7 @@
 #define VVERTEXBUFFER_H
 
 #include "vvertexbufferformat.h"
-
+#include "realizertypes.h"
 
 // TODO: make these guys enum
 

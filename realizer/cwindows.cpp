@@ -40,10 +40,13 @@ bool CWin32RenderWindow::Create( int _width,int _height,const TString& _title,bo
 
 	if(!RegisterClassEx(&wc)) return false;
 
+	ch16 tmpTitle[1024];
+	TWinTools::SystemString16(_title,tmpTitle,1024);
+
 	// Create the window.
 	hWnd = CreateWindowEx(NULL,                                       // The extended style.
 		L"Realizer",                                 // Window class.
-		TWinTools::SystemString16(_title),     // Window name.
+		tmpTitle,     // Window name.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE |         // Window style.
 		WS_SYSMENU |WS_CLIPCHILDREN |              // Window style.
 		WS_CLIPSIBLINGS,                           // Window style.
