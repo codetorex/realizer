@@ -7,6 +7,8 @@ TCompositeFormatFactoryTexture TCompositeFormatFactoryTexture::Instance;
 
 void VTextureFormats::InitializeTextureFormats()
 {
+	TextureFormats = this;
+
 	SetPrimitive(cDepth32         ,"Depth (float)","D32",tc_float);
 	SetPrimitive(cDepth24         ,"Depth (24-bit float)","D24",tc_float24);
 	SetPrimitive(cDepth16         ,"Depth (short)","D16",tc_short);

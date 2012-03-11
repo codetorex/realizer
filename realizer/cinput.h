@@ -1,161 +1,33 @@
 #ifndef CINPUT_H
 #define CINPUT_H
 
-#include "cinputenums.h"
-#include "cinputinterface.h"
-#include "cinputmapped.h"
+#include "tinputmap.h"
+#include "tjoystick.h"
 #include "tarray.h"
 #include "thashmap.h"
-
-class RDLL CInputDevice
-{
-public:
-	TString inputName;
-	bool connected;
-
-	CInputDevice()
-	{
-		connected = false;
-	}
-};
-
-/**
-* Mapped keyboard input.
-*/
-class RDLL CKeyboard: public CInputDevice
-{
-public:
-	TArray< IKeyboardObserver* > Observers;
-
-	CKeyboard()
-	{
-		inputName = "Keyboard";
-	}
-
-	inline void Attach( IKeyboardObserver* Observer )
-	{
-		Observers.Add(Observer);
-	}
-
-	inline void Detach( IKeyboardObserver* Observer )
-	{
-		Observers.Remove(Observer);
-	}
-
-	inline void KeyDown(int keyID)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->KeyDown(keyID);
-		}
-	}
-
-	inline void KeyUp(int keyID)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->KeyUp(keyID);
-		}
-	}
-
-	inline void KeyUnicode(ch16 keyChar)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->KeyUnicode(keyChar);
-		}
-	}
-};
-
-class RDLL CMouse: public CInputDevice
-{
-public:
-	TArray< IMouseObserver* > Observers;
-
-	CMouse()
-	{
-		inputName = "Mouse";
-	}
-
-	inline void Attach( IMouseObserver* Observer )
-	{
-		Observers.Add(Observer);
-	}
-
-	inline void Detach( IMouseObserver* Observer )
-	{
-		Observers.Remove(Observer);
-	}
-
-	inline void MouseMove(int _x,int _y)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->MouseMove(_x,_y);
-		}
-	}
-
-	inline void MouseDown(int _x,int _y,int _button)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->MouseDown(_x,_y,_button);
-		}
-	}
-
-	inline void MouseUp(int _x,int _y,int _button)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->MouseUp(_x,_y,_button);
-		}
-	}
-
-	inline void MouseWheel(int _x, int _y, int _delta)
-	{
-		int i = Observers.Count;
-		while(i--)
-		{
-			Observers.Item[i]->MouseWheel(_x,_y,_delta);
-		}
-	}
-};
-
-class RDLL CJoystick: public CInputDevice
-{
-public:
-	// Not Implemented Yet.
-};
-
 
 /**
 * Low level Input manager based on observer pattern.
 * There can be unlimited observers for input for any device.
 */
-class RDLL CInputManager
+class CInputManager
 {
 public:
-	CKeyboard			Keyboard;
-	CMouse				Mouse;
-	CJoystick			Joysticks[8];
+	TKeyboard			Keyboard;
+	TMouse				Mouse;
+	TJoystick			Joysticks[8];
 
-	THashMap<CAction*>	Actions; // maybe use dictionary in future.
-	CMappedKeyboard*	ActiveMappedKeyboard;
+	THashMap<TInputAction*>	Actions; // maybe use dictionary in future.
+	TMappedKeyboard*	ActiveMappedKeyboard;
 
 	CInputManager()
 	{
 		ActiveMappedKeyboard = 0;
 	}
 
-	CMappedKeyboard* CreateMappedKeyboard(bool attach = true)
+	TMappedKeyboard* CreateMappedKeyboard(bool attach = true)
 	{
-		CMappedKeyboard* keybrd = new CMappedKeyboard();
+		TMappedKeyboard* keybrd = new TMappedKeyboard();
 		if (attach)
 		{
 			Keyboard.Attach(keybrd);
@@ -164,7 +36,7 @@ public:
 		return keybrd;
 	}
 
-	void RegisterAction(CAction* action)
+	void RegisterAction(TInputAction* action)
 	{
 		Actions.Add(action->actionName,action);
 	}
@@ -175,7 +47,7 @@ public:
 	*/
 	void BindKey(int keycode,const TString& actionName)
 	{
-		CTriggerAction* action = (CTriggerAction*)Actions.GetValue(actionName);;
+		TTriggerAction* action = (TTriggerAction*)Actions.GetValue(actionName);;
 		BindKey(keycode,action);
 	}
 
@@ -183,7 +55,7 @@ public:
 	* Binds a key to ActiveMappedKeyboard if there is one.
 	* Actually useless shortcut function, but yeah it's looks cool.
 	*/
-	void BindKey(int keycode, CTriggerAction* action)
+	void BindKey(int keycode, TTriggerAction* action)
 	{
 		if (action == NULL)
 		{
@@ -203,12 +75,21 @@ public:
 		ActiveMappedKeyboard->BindKey(keycode,action);
 	}
 
-	CTriggerAction* CreateAction(const TString& actionName, bool* boolPtr )
+	TTriggerAction* CreateAction(const TString& actionName, bool* boolPtr )
 	{
-		CBoolChangerAction* act = new CBoolChangerAction(boolPtr);
+		TBoolChangerAction* act = new TBoolChangerAction(boolPtr);
 		act->actionName = actionName;
 		RegisterAction(act);
 		return act;
+	}
+
+	TEventAction* CreateAction(const TString& actionName, TEventAction::TriggerEvent* handler )
+	{
+		TEventAction* act = new TEventAction();
+		act->actionName = actionName;
+		act->OnTrigger += handler;
+		return act;
+		
 	}
 };
 

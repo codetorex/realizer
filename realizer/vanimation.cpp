@@ -131,11 +131,11 @@ void VAnimation::UpdateAnimation()
 			CurrentFrameIndex = FrameCount - 1;
 			AdvanceAnimation();
 		}
-		Status = AS_ENDED;
+		set_Status(AS_ENDED);
 		return;
 	}
 
-	Status = AS_RUNNING;
+	set_Status(AS_RUNNING);
 
 	CurrentFrameIndex = currentKey; // can be in point -1
 

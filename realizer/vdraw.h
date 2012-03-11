@@ -2,6 +2,7 @@
 #define VDRAW_H
 
 #include "vvertexstream.h"
+#include "tregion.h"
 
 class VTexture;
 
@@ -18,7 +19,7 @@ public:
 	/**
 	* Initializes and creates the VBO. Should be called after engine initialization.
 	*/
-	void Initialize()
+	inline void Initialize()
 	{
 		InitializeBuffer(VertexBufferFormats->ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
 		CreateVertexBuffer(CapacityItem);
@@ -34,14 +35,19 @@ public:
 
 	void Flush();
 
-	void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1)
+	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,DefaultDiffuse);
 	}
 
-	void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, ui32 color)
+	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, ui32 color)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
+	}
+
+	inline void DrawQuad(const TRegion& reg,ui32 color )
+	{
+		DrawQuad((float)reg.X,(float)reg.Y,(float)reg.Right,(float)reg.Bottom,0,0,1,1,color);
 	}
 
 
@@ -68,6 +74,11 @@ public:
 		DrawLine(r,y,r,b,color);
 		DrawLine(r,b,x,b,color);
 		DrawLine(x,b,x,y,color);
+	}
+
+	inline void DrawRectangle(const TRegion& reg, ui32 color)
+	{
+		DrawRectangle((float)reg.X,(float)reg.Y,(float)reg.Width,(float)reg.Height,color);
 	}
 
 	/**

@@ -17,6 +17,7 @@ public:
 	};
 
 	//REngine*		engine;
+	ui32			ReferenceCount;
 	ResourceTypes	ResourceType;
 };
 

@@ -36,7 +36,7 @@ void GSchemedSkin::RenderButton( GButton* button )
 
 void GSchemedSkin::RenderLabel( GLabel* label )
 {
-	Engine.Draw.SetTexture(SkinTexture);
+	Engine.Draw.SetTexture(SkinTexture); // TODO: wtf is this shit?
 	label->Font->Render(label->Text,label->ScreenRegion,label->TextAlign,label->ForeColor,0,-1);
 }
 

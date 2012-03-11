@@ -52,17 +52,17 @@ public:
 void VTextureFormats::CreateTextureConverters()
 {
 	TBitmapConverterBGRtoXRGB* BGRtoXRGB = new TBitmapConverterBGRtoXRGB();
-	TextureFormats->fBGR->Converters.Add(BGRtoXRGB);
+	fBGR->Converters.Add(BGRtoXRGB);
 
 	TBitmapConverterBGRtoXRGB* BGRtoARGB = new TBitmapConverterBGRtoXRGB();
 	BGRtoARGB->DestinationFormat = TextureFormats->fARGB;
-	TextureFormats->fBGR->Converters.Add(BGRtoARGB);
+	fBGR->Converters.Add(BGRtoARGB);
 
 	TBitmapConverteRGBtoXRGB* RGBtoXRGB = new TBitmapConverteRGBtoXRGB();
-	TextureFormats->fRGB->Converters.Add(RGBtoXRGB);
+	fRGB->Converters.Add(RGBtoXRGB);
 
 	TBitmapConverteRGBtoXRGB* BGRtoXBGR = new TBitmapConverteRGBtoXRGB();
 	BGRtoXBGR->SourceFormat = TextureFormats->fBGR;
 	BGRtoXBGR->DestinationFormat = TextureFormats->fXBGR;
-	TextureFormats->fBGR->Converters.Add(BGRtoXBGR);
+	fBGR->Converters.Add(BGRtoXBGR);
 }

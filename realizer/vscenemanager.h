@@ -2,51 +2,57 @@
 #define VSCENEMANAGER_H
 
 #include "tarray.h"
-#include "vscene.h"
+#include "vscenelayered.h"
+#include "vscenerender.h"
 
-class VSceneManager
+class VSceneManager: public VSceneLayered
 {
 public:
-	TArray<VScene*> Scenes;
+	inline void LoadSceneAfterBegin(VScene* scene)
+	{
+		VScene* bs = FindSceneByType(ST_BEGIN);
+		scene->Initialize();
+		InsertAfter(bs,scene);
+	}
+
+	inline void LoadScaneBeforeEnd(VScene* scene)
+	{
+		VScene* bs = FindSceneByType(ST_END);
+		scene->Initialize();
+		InsertBefore(bs,scene);
+	}
 
 
 	inline void LoadScene(VScene* scene)
 	{
 		scene->Initialize();
-		Scenes.Add(scene);
+		Add(scene);
 	}
 
 	inline void UnloadScene(VScene* scene)
 	{
 		scene->Finalize();
-		Scenes.Remove(scene);
+		Remove(scene);
 	}
 
 	inline void ActivateScene(VScene* scene)
 	{
-		if (!Scenes.Contains(scene))
-		{
-			LoadScene(scene);
-		}
-		scene->Active = true;
+		scene->Flags += SF_ACTIVE;
 	}
 
-	inline void Update()
+	inline void DeactivateScene(VScene* scene)
 	{
-		TArrayEnumerator<VScene*> se(Scenes);
-		while(se.MoveNext())
-		{
-			se.Current->Update();
-		}
+		scene->Flags += SF_ACTIVE;
 	}
 
-	inline void Render()
+	/**
+	 * Setups basic stack for rendering. Clears screen and swaps buffers. You can insert additional scenes between them.
+	 */
+	inline void SetupBasicStack()
 	{
-		TArrayEnumeratorReverse<VScene*> se(Scenes);
-		while(se.MoveNext())
-		{
-			se.Current->Render();
-		}
+		LoadScene( new VSceneRenderBegin() );
+
+		LoadScene( new VSceneRenderEnd() );
 	}
 
 	inline void Run()

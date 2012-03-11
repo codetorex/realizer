@@ -2,13 +2,19 @@
 #include "vgui.h"
 #include "cengine.h"
 
+
+void VGUI::InitializeDesktop( GObject* _desktop )
+{
+	_desktop->Master = this;
+	Focused = _desktop;
+	_desktop->Parent = _desktop;
+	_desktop->SetSize(0,0,Engine.Renderer.vWidth,Engine.Renderer.vHeight);
+}
+
 void VGUI::ActivateDesktop(GObject* newDesktop)
 {
 	Desktop = newDesktop;
-	newDesktop->Master = this;
-	Focused = Desktop;
-	Desktop->Parent = Desktop;
-	Desktop->SetSize(0,0,Engine.Renderer.vWidth,Engine.Renderer.vHeight);
+	InitializeDesktop(newDesktop);
 }
 
 void VGUI::EnableGUI(GSkin* defSkin,GObject* desktopObj)
@@ -34,10 +40,14 @@ void VGUI::EnableGUI(GSkin* defSkin,GObject* desktopObj)
 	
 	Engine.Inputs.Mouse.Attach(this);
 	Engine.Inputs.Keyboard.Attach(this);
+
+	Enabled = true;
 }
 
 void VGUI::DisableGUI()
 {
 	Engine.Inputs.Mouse.Detach(this);
 	Engine.Inputs.Keyboard.Detach(this);
+	Enabled = false;
 }
+

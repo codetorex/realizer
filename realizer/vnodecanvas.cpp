@@ -14,8 +14,8 @@ VNodeCanvasImage* VNodeCanvas::DrawImage( VTexture* Texture, int dstX,int dstY, 
 	img->Texture = Texture;
 	img->Part.Initialize(Texture,0,0,Texture->Width,Texture->Height);
 
-	img->Position.x = dstX;
-	img->Position.y = dstY;
+	img->Position.x = (float)dstX;
+	img->Position.y = (float)dstY;
 
 	img->Color.color = 0xFFFFFFFF;
 

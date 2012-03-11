@@ -88,13 +88,11 @@
     <ClInclude Include="cextension.h" />
     <ClInclude Include="chooks.h" />
     <ClInclude Include="cinput.h" />
-    <ClInclude Include="cinputenums.h" />
-    <ClInclude Include="cinputinterface.h" />
-    <ClInclude Include="cinputmapped.h" />
     <ClInclude Include="clinux.h" />
     <ClInclude Include="cdisplaydevice.h" />
     <ClInclude Include="cloader.h" />
     <ClInclude Include="cresource.h" />
+    <ClInclude Include="cshell.h" />
     <ClInclude Include="ctiming.h" />
     <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
@@ -145,6 +143,7 @@
     <ClInclude Include="vscene.h" />
     <ClInclude Include="vscenemanager.h" />
     <ClInclude Include="gskinmanager.h" />
+    <ClInclude Include="vscenerender.h" />
     <ClInclude Include="vtexture.h" />
     <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
@@ -156,9 +155,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cengine.cpp" />
+    <ClCompile Include="cshell.cpp" />
     <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="gbutton.cpp" />
     <ClCompile Include="gcheckbox.cpp" />
+    <ClCompile Include="gconsole.cpp" />
     <ClCompile Include="gfont.cpp" />
     <ClCompile Include="gfontbmf.cpp" />
     <ClCompile Include="gfontcache.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="vnodeanimation.cpp" />
     <ClCompile Include="vnodecanvas.cpp" />
     <ClCompile Include="vrendererdx9.cpp" />
+    <ClCompile Include="vscenerender.cpp" />
     <ClCompile Include="vtexture.cpp" />
     <ClCompile Include="vtextureconverters.cpp" />
     <ClCompile Include="vtextureformats.cpp" />

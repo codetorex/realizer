@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "gtextbox.h"
 #include "vgui.h"
-#include "cinputenums.h"
+#include "tinputenum.h"
 
 
 GTextBox::GTextBox()

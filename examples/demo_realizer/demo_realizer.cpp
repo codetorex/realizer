@@ -433,7 +433,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	Engine.Renderer.InitializeRenderer(1280,720,"Realizer3D",false,24);
 	
-	CTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.Running);
+	TTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.Running);
 	Engine.Inputs.CreateMappedKeyboard();
 	Engine.Inputs.BindKey(Keys::Esc,exitAction);
 

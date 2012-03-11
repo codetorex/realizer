@@ -18,6 +18,7 @@ public:
 	VSceneNodeBased()
 	{
 		DebugMode = false;
+		Flags += SF_RENDER | SF_UPDATE;
 	}
 	
 	virtual void Update()

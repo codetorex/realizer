@@ -29,4 +29,7 @@ public:
 	virtual void Finalize() {};
 };
 
+/**
+ * VNodeScene <- Scene inside node scene Sceneception
+ */
 #endif

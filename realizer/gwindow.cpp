@@ -45,8 +45,8 @@ public:
 			dy = Master->Y - gy;
 			
 			GObject* p = (GObject*)Parent;
-			p->X = windowX + dx;
-			p->Y = windowY + dy;
+			p->SetLeft(windowX + dx);
+			p->SetTop(windowY + dy);
 		}
 	}
 };
@@ -83,4 +83,13 @@ void GWindow::Layout()
 {
 	// this->GObject::Layout(); TODO: use this for layouting the objects like docked, padded, 
 	Skin->LayoutWindow(this);
+}
+
+void GWindow::CenterToScreen()
+{
+	int newX = (((GObject*)Parent)->Width - Width) / 2;
+	int newY = (((GObject*)Parent)->Height - Height) / 2;
+
+	SetLeft(newX);
+	SetTop(newY);
 }

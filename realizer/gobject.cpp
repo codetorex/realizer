@@ -63,8 +63,6 @@ void GObject::SetFocus()
 	Master->Focused = this;
 	Focused = true;
 	GotFocus();
-
-
 }
 
 void GObject::Render()

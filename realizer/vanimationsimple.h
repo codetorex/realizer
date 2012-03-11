@@ -25,6 +25,8 @@ public:
 
 };*/
 
+
+
 /**
  * There is only one value to be interpolated.
  * Uses diagram interface

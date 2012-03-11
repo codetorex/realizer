@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "gtextboxbase.h"
 #include "vgui.h"
-#include "cinputenums.h"
+#include "tinputenum.h"
 #include "gfont.h"
 #include "cengine.h"
 

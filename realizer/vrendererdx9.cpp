@@ -185,8 +185,6 @@ void VRendererDX9::UpdateTextureFromBitmap( rtex tx, TBitmap* bmp )
 void VRendererDX9::InitializeFormats()
 {
 	TextureFormats = new VTextureFormats(&TCompositeFormatFactoryTexture::Instance);
-	BitmapFormats = TextureFormats;
-
 
 	// TODO: test for RGB is supported, if not set it to fallback
 

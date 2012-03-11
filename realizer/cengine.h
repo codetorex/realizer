@@ -11,6 +11,7 @@
 #include "vgui.h"
 #include "cloader.h"
 #include "realizerversion.h"
+#include "cshell.h"
 
 /**
 * Main Realizer engine block.
@@ -33,7 +34,9 @@ public:
 	CTiming				Time;
 	VDraw				Draw; // a vbo for rendering 2d, makes less creation of VBO's for small renderings.
 	VGUI				GUI;
+	CShell				Shell;
 
+	//TResourceManager	Resources; // GOOD FOR DELAYED LOADING OF ITEMS AND KEEP TRACKING WHAT LOADED WHAT UNLOADED
 	//TPluginManager	Plugins;
 	//NNetworkManager	Network;
 	//CHookManager		Hooks;

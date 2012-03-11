@@ -5,6 +5,7 @@
 #include "mmathdriver.h"
 #include "tbuffer.h"
 #include "tenumerator.h"
+#include "tevent.h"
 
 enum AnimationDataType
 {
@@ -97,8 +98,13 @@ public:
  */
 class VAnimation
 {
+private:
+	AnimationStatus			LastStatus;
+
 public:
 	friend class VAnimationKeyFrameEnumerator;
+
+	typedef delegate2<void,VAnimation*,AnimationStatus> StatusEvent;
 
 	ui32					FrameCount;
 	float					FramesPerSecond;
@@ -108,6 +114,11 @@ public:
 	ui32					CurrentFrameIndex;
 	ui32					BytePerFrame;
 	TByteArray				Buffer;
+
+	event<StatusEvent>		StatusChanged;
+
+
+
 
 	inline void CheckCapacity()
 	{
@@ -126,6 +137,16 @@ public:
 	{
 		FramesPerSecond = value;
 		UpdateTimeReferences();
+	}
+
+	inline void set_Status(AnimationStatus value)
+	{
+		Status = value;
+		if (LastStatus != Status)
+		{
+			StatusChanged.call(this,Status);
+		}
+		LastStatus = Status;
 	}
 
 	VAnimation()
@@ -179,7 +200,8 @@ public:
 	{
 		CurrentTime = 0.0f;
 		CurrentFrameIndex = 0;
-		Status = AS_NOTSTARTED;
+
+		set_Status(AS_NOTSTARTED);
 	}
 
 	int GetKeyFrameIndex( float time, int startIndex = 0);

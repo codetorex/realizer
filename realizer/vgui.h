@@ -2,7 +2,8 @@
 #define VGUI_H
 
 #include "gobject.h"
-#include "cinputinterface.h"
+#include "tkeyboard.h"
+#include "tmouse.h"
 
 #include "gskinmanager.h"
 #include "gfontmanager.h"
@@ -22,11 +23,15 @@ public:
 	{
 		Desktop = 0;
 		Focused = 0;
+		Enabled = false;
 	}
 
 	int X;
 	int Y;
 	bool ButtonState[5];
+
+	/// true means active desktop will capture the input
+	bool Enabled;
 
 	REngine* Parent;
 	GObject* Desktop;
@@ -35,6 +40,8 @@ public:
 
 	void ActivateDesktop(GObject* newDesktop);
 
+	void InitializeDesktop(GObject* _desktop);
+
 	GObject* CreateDesktop(bool activate)
 	{
 		GObject* newDesktop = new GObject();
@@ -42,6 +49,10 @@ public:
 		if (activate)
 		{
 			ActivateDesktop(newDesktop);
+		}
+		else
+		{
+			InitializeDesktop(newDesktop);
 		}
 		return newDesktop;
 	}
@@ -114,18 +125,23 @@ public:
 	*/
 	void DisableGUI();
 
-	inline void Render()
+	inline void RenderDesktop(GObject* dsktp)
 	{
-		Desktop->MouseInside = true;
-		Desktop->Update();
+		dsktp->MouseInside = true;
+		dsktp->Update();
 
-		GObject* obj = Desktop->FindObject();
+		GObject* obj = dsktp->FindObject();
 		if (obj)
 		{
 			obj->MouseMove(X - obj->ScreenRegion.X, Y - obj->ScreenRegion.Y);
 		}
 
-		Desktop->Render();
+		dsktp->Render();
+	}
+
+	inline void Render()
+	{
+		RenderDesktop(Desktop);
 	}
 };
 

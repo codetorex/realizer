@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Visual\GUI">
       <UniqueIdentifier>{633b31ab-d37a-4939-9335-e7d1a5dea8d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Input">
-      <UniqueIdentifier>{78a70caa-587f-4209-932a-d422b4020644}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{aa779be0-95b2-4fef-be98-f0536726d704}</UniqueIdentifier>
     </Filter>
@@ -108,9 +105,6 @@
     <ClInclude Include="chooks.h">
       <Filter>Source Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="cinput.h">
-      <Filter>Source Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="vtexturemanager.h">
       <Filter>Source Files\Visual\Material System</Filter>
     </ClInclude>
@@ -173,15 +167,6 @@
     </ClInclude>
     <ClInclude Include="vgui.h">
       <Filter>Source Files\Visual\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="cinputinterface.h">
-      <Filter>Source Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="cinputenums.h">
-      <Filter>Source Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="cinputmapped.h">
-      <Filter>Source Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="gschemedskin.h">
       <Filter>Source Files\Visual\GUI\Skin</Filter>
@@ -281,6 +266,15 @@
     </ClInclude>
     <ClInclude Include="gconsole.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="vscenerender.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="cshell.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cinput.h">
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +394,15 @@
     </ClCompile>
     <ClCompile Include="vnodeanimation.cpp">
       <Filter>Source Files\Visual\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="gconsole.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="vscenerender.cpp">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="cshell.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "vvertexbufferformat.h"
-#include <tbitmap.h>
+#include "tbitmapformats.h"
 
 VVertexBufferFormats* VertexBufferFormats;
 
@@ -19,6 +19,11 @@ void VVertexBufferFormats::InitializeVertexFormats()
 
 	SetPrimitive(TU,"Texture U","TU",tc_float);
 	SetPrimitive(TV,"Texture V","TV",tc_float);
+
+	AddPrimitive(&BitmapFormats->cRed);
+	AddPrimitive(&BitmapFormats->cGreen);
+	AddPrimitive(&BitmapFormats->cBlue);
+	AddPrimitive(&BitmapFormats->cAlpha);
 
 	SetCompositePrimitive(Position,"Position","POS","PXPYPZ");
 	SetCompositePrimitive(Normal,"Normal", "NORM","NXNYNZ");
