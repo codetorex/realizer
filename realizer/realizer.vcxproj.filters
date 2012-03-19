@@ -270,10 +270,13 @@
     <ClInclude Include="vscenerender.h">
       <Filter>Source Files\Visual\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="cshell.h">
+    <ClInclude Include="cinput.h">
       <Filter>Source Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="cinput.h">
+    <ClInclude Include="ccommand.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cresourcemanager.h">
       <Filter>Source Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -401,7 +404,7 @@
     <ClCompile Include="vscenerender.cpp">
       <Filter>Source Files\Visual\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="cshell.cpp">
+    <ClCompile Include="ccommand.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>

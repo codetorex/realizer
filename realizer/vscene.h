@@ -1,6 +1,7 @@
 #ifndef VSCENE_H
 #define VSCENE_H
 
+#include "cresource.h"
 #include "tstring.h"
 #include "tflag.h"
 #include "tlinkedlist.h"
@@ -24,13 +25,18 @@ enum VSceneTypes
 	ST_DEBUG2D, // gui for easy debugging facilities
 };
 
-class VScene: public TListNode<VScene*>
+class VScene: public Resource, public TListNode<VScene*>
 {
 public:
 	ui32		ID; // index/identification number for scene
 	string		SceneName;
 	TFlag32		Flags;
 	ui32		Type;
+
+	VScene()
+	{
+		ResourceType = Resource::SCENE;
+	}
 
 	inline bool IsAlwaysOnTop()
 	{
@@ -41,6 +47,11 @@ public:
 	virtual void Update()  { Flags -= SF_UPDATE; };
 	virtual void Initialize() {};
 	virtual void Finalize() {};
+
+	inline void Free()
+	{
+		Finalize();
+	}
 };
 
 #endif

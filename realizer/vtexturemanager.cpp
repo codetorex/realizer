@@ -2,6 +2,7 @@
 #include "vtexturemanager.h"
 #include "vtexture.h"
 #include "thashcodeprovider.h"
+#include "tlog.h"
 
 TBitmap* VTextureManager::LoadToBitmap(const TString& path)
 {
@@ -36,6 +37,8 @@ VTexture* VTextureManager::LoadTexture(const TString& path, bool keepBitmap )
 	TBitmap* Loader = LoadToBitmap(path);
 
 	VTextureFormat* BitmapFormat = (VTextureFormat*)Loader->BufferFormat;
+
+	Log.Output(LG_INF,"Loading texture %", sfs(path));
 
 	if (!BitmapFormat->IsSupported)
 	{
@@ -72,5 +75,8 @@ VTexture* VTextureManager::CreateTexture( TBitmap* source )
 	VTexture* createdTexture = new VTexture(source);
 	createdTexture->CreateTexture();
 	Add(createdTexture);
+
+	Log.Output(LG_INF,"Created texture out of bitmap with size of %x%", sfu(source->Width),sfu(source->Height));
+
 	return createdTexture;
 }

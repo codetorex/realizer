@@ -92,7 +92,8 @@
     <ClInclude Include="cdisplaydevice.h" />
     <ClInclude Include="cloader.h" />
     <ClInclude Include="cresource.h" />
-    <ClInclude Include="cshell.h" />
+    <ClInclude Include="ccommand.h" />
+    <ClInclude Include="cresourcemanager.h" />
     <ClInclude Include="ctiming.h" />
     <ClInclude Include="cviewport.h" />
     <ClInclude Include="cwindows.h" />
@@ -155,7 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cengine.cpp" />
-    <ClCompile Include="cshell.cpp" />
+    <ClCompile Include="ccommand.cpp" />
     <ClCompile Include="cwindows.cpp" />
     <ClCompile Include="gbutton.cpp" />
     <ClCompile Include="gcheckbox.cpp" />

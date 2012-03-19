@@ -1,38 +1,31 @@
-#ifndef CSHELL_H
-#define CSHELL_H
+#ifndef CCOMMAND_H
+#define CCOMMAND_H
 
 
 #include "tconsoledriver.h"
 #include "tapplication.h"
 #include "tdictionary.h"
 
-class CShellCommand
+#include "tlogconsole.h"
+
+class CCommand
 {
 public:
 	TString Command;
-	TString CommandLine;
+	TString CommandLineParameters;
+
 
 
 
 };
 
-class CShellVariable
+class CVariable
 {
 public:
 	TString Variable;
 	void* Target;
 
 };
-
-
-class 
-{
-public:
-
-
-};
-
-
 
 /**
  * Event driver command shell for controlling engine.
@@ -42,11 +35,11 @@ class CCommandManager
 public:
 	TConsoleDriver* Output;
 	
-	TDictionary<CShellCommand> Commands;
+	TDictionary<CCommand> Commands;
 
-	TDictionary<CShellVariable> Variables;
+	TDictionary<CVariable> Variables;
 
-	CShellCommand* CurrentCommand; // current running command
+	CCommand* CurrentCommand; // current running command
 
 
 	//TQueue<ch32> InputBuffer;
@@ -65,9 +58,15 @@ public:
 		Output->SetForeColor(CC_GREEN);
 		Output->WriteLine(Application.IdentifyText);
 
-		Output->KeyPress +=	GetHandler(this,&CShell::Input);
+		//Output->KeyPress +=	GetHandler(this,&CShell::Input);
 
-		WritePrompt();
+		//WritePrompt();
+	}
+
+	void ConnectAsLogOutput()
+	{
+		TLogConsole* lg = new TLogConsole(Output);
+		Log.RegisterOutput(lg);
 	}
 
 	void WritePrompt()

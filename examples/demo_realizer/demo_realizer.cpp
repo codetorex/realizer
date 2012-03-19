@@ -368,7 +368,7 @@ public:
 	// and on finalize it just empties the pool.
 	void Finalize()
 	{
-		Engine.Release(&TestTexture);
+		// Engine.Release(&TestTexture); MOVED THIS SHIT TO RESOURCE STUFF
 
 	}
 };

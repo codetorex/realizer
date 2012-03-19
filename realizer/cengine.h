@@ -11,7 +11,9 @@
 #include "vgui.h"
 #include "cloader.h"
 #include "realizerversion.h"
-#include "cshell.h"
+#include "ccommand.h"
+#include "cresourcemanager.h"
+
 
 /**
 * Main Realizer engine block.
@@ -34,8 +36,10 @@ public:
 	CTiming				Time;
 	VDraw				Draw; // a vbo for rendering 2d, makes less creation of VBO's for small renderings.
 	VGUI				GUI;
-	CShell				Shell;
+	CCommandManager		Command;
+	CResourceManager	Resources;
 
+	//CMemoryManager	Memory; // for managing memory easily.
 	//TResourceManager	Resources; // GOOD FOR DELAYED LOADING OF ITEMS AND KEEP TRACKING WHAT LOADED WHAT UNLOADED
 	//TPluginManager	Plugins;
 	//NNetworkManager	Network;
@@ -47,11 +51,6 @@ public:
 
 	void Initialize(int width,int height, const TString& title, bool fullscreen = false,int bits = 24);
 	void Run();
-
-	inline void Release(VTexture** res)
-	{
-		Textures.ReleaseTexture(res);
-	}
 };
 
 extern REngine Engine;

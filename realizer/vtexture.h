@@ -37,15 +37,6 @@ public:
 		ResourceType = Resource::TEXTURE;
 	}
 
-	~VTexture()
-	{
-		if (texID != 0)
-			DeleteTexture();
-
-		if (bitmap != 0)
-			delete bitmap;
-	}
-
 	inline void CreateTexture()
 	{
 		if (texID != 0)
@@ -79,6 +70,20 @@ public:
 	inline void SetTexture(int stage = 0)
 	{
 		Engine.Renderer.SetTexture(stage,texID);
+	}
+
+	inline void Free()
+	{
+		if (texID != 0)
+			DeleteTexture();
+
+		if (bitmap != 0)
+			delete bitmap;
+	}
+
+	~VTexture()
+	{
+		Free();
 	}
 };
 

@@ -45,6 +45,11 @@ public:
 		scene->Flags += SF_ACTIVE;
 	}
 
+	inline void ChangeScene(VScene* oldScene, VScene* newScene)
+	{
+
+	}
+
 	/**
 	 * Setups basic stack for rendering. Clears screen and swaps buffers. You can insert additional scenes between them.
 	 */
