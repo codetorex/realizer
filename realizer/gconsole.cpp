@@ -57,9 +57,8 @@ void GConsole::Render()
 			charData->DrawCharacter(drawX,drawY,currentChar->ForeColor);
 			drawX += charData->XAdvance;
 		}
+		Engine.Draw.Flush();
 	}
-
-	Engine.Draw.Flush();
 }
 
 void GConsole::DrawBg( float x,float y, ui32 color )
