@@ -63,7 +63,7 @@ public:
 
 	inline void QueueLoad(CResourceCommand* cmd)
 	{
-		ResourceQueue.Push(cmd);
+		ResourceQueue.Enqueue(cmd);
 	}
 
 

@@ -202,7 +202,7 @@ void VRendererDX9::InitializeFormats()
 	VertexBufferFormats->Textured1 = VertexBufferFormats->CreateVertexFormat("2DTEX1","POST0",D3DFVF_XYZ | D3DFVF_TEX1);
 	VertexBufferFormats->ColoredTextured1 = VertexBufferFormats->CreateVertexFormat("2DCLRTEX1","POSCLRT0",D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
-	TBitmapBMP::Install();
+	/*TBitmapBMP::Install();
 	TBitmapTGA::Install();
-	TBitmapPNG::Install();
+	TBitmapPNG::Install();*/
 }

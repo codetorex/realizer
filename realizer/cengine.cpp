@@ -2,8 +2,6 @@
 #include "cengine.h"
 #include "realizerversion.h"
 
-TModule RealizerModule("Realizer",TVersion(REALIZER_BUILD,REALIZER_PHASE));
-
 REngine Engine;
 
 void REngine::Initialize( int width,int height, const TString& title, bool fullscreen /*= false*/,int bits /*= 24*/ )
