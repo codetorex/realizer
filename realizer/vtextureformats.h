@@ -26,12 +26,12 @@ public:
 
 	VTextureFormat(const TString& name, PrimitiveArray* primitives, const TString& components): TBufferFormat(name,primitives,components)
 	{
-
+		UnSupported(0);
 	}
 
 	VTextureFormat(const TString& longname,const TString& shortname, PrimitiveArray* primitives, const TString& components): TBufferFormat(longname,shortname,primitives,components)
 	{
-
+		UnSupported(0);
 	}
 };
 
@@ -62,8 +62,8 @@ public:
 
 	TCompositionPrimitive cCompressedStream;
 
-	VTextureFormat* fXRGB;
-	VTextureFormat* fXBGR;
+	VTextureFormat* fBGRX;
+	VTextureFormat* fRGBX;
 
 	VTextureFormat* fABGR16; // each component is short
 	VTextureFormat* fDXT1;

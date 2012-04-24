@@ -5,6 +5,8 @@
 #include <realizer.h>
 #include "mmatrix.h"
 
+#include "realizerversion.h"
+
 #include "tlogstream.h"
 
 //#include "tstreamwriter.h"
@@ -428,8 +430,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	//fs->Write(,1,StringDriverFixedWidth::Length(kp));
 	//fs->Close();
 	
-	Application.Begin("Realizer Demo", RealizerModule.Version);
-	Application.Modules.Add(&RealizerModule);
+	Application.Begin("Realizer Demo", TVersion(REALIZER_BUILD,REALIZER_PHASE), RAISE_DEFAULT_COMPANYNAME);
+	USESREALIZER;
 
 	Engine.Renderer.InitializeRenderer(1280,720,"Realizer3D",false,24);
 	

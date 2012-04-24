@@ -1,6 +1,8 @@
 #ifndef GENTITY_H
 #define GENTITY_H
 
+#include "mvector3.h"
+
 /*
 After years of coding, I am creating this class today.
 05.November.2010 09.07

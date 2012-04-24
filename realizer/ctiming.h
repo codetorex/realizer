@@ -7,9 +7,13 @@
 class CTiming
 {
 public:
-	ui32 CurrentTimeMS;
+	/// Current total time
 	float CurrentTime;
+
+	/// Current time difference from last frame
 	float TimeDiff;
+
+	ui32 CurrentTimeMS;
 	float TimeScale;
 
 	float RealTime;

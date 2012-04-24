@@ -3,6 +3,8 @@
 #include "vtexture.h"
 #include "thashcodeprovider.h"
 #include "tlog.h"
+#include "tbitmapreader.h"
+#include "mmathcolor.h"
 
 TBitmap* VTextureManager::LoadToBitmap(const TString& path)
 {
@@ -44,8 +46,11 @@ VTexture* VTextureManager::LoadTexture(const TString& path, bool keepBitmap )
 	{
 		if (BitmapFormat->FallbackFormat == NULL)
 		{
-			throw Exception("Bitmap is in not supported format");
+			throw Exception("Bitmap format in (%) is not supported: %",sfs(path), sfs(BitmapFormat->ShortName));
 		}
+
+
+		Log.Output(LG_WRN,"This format % is not supported, fallback is: %", sfs(BitmapFormat->ShortName), sfs(BitmapFormat->FallbackFormat->ShortName));
 
 		Loader->Convert( BitmapFormat->FallbackFormat );
 	}

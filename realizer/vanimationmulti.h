@@ -38,7 +38,7 @@ public:
 		BytePerFrame = CalculateBytesPerFrame(p_ValueCount); //
 		InitializeBuffer();
 
-		for (int i=0;i<p_ValueCount;i++)
+		for (ui32 i=0;i<p_ValueCount;i++)
 		{
 			Outputs.Add( new TDiagramOutput<float>() );
 		}

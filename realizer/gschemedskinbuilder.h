@@ -4,6 +4,7 @@
 #include "gschemedskin.h"
 #include <tiniparser.h>
 #include "genums.h"
+#include <tgraphics.h>
 
 class GSchemeClass: public TINIClass
 {
@@ -288,6 +289,7 @@ class GSchemedSkinBuilder
 private:
 	GSchemedSkin* Skin;
 	TBitmap* SkinBitmap;
+	TBitmapGraphics Gfx;
 
 	TPackedRectangle* Pack;
 

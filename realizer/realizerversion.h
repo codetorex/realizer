@@ -1,8 +1,10 @@
 #ifndef REALIZERVERSION_H
 #define REALIZERVERSION_H
 
-#define REALIZER_BUILD					181
-#define REALIZER_BUILD_STRING			"181"
+#include "raiseversion.h"
+
+#define REALIZER_BUILD					258
+#define REALIZER_BUILD_STRING			"258"
 
 #define REALIZER_PHASE					&TVersionPhase::PreAlpha
 

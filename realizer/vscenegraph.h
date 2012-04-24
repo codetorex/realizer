@@ -9,13 +9,13 @@ typedef TLinkedListEnumerator<VNode*> VSceneNodeEnumerator;
 /**
  * Node based scene
  */
-class VSceneNodeBased: public VScene, public TList< VNode* >
+class VSceneGraph: public VScene, public TList< VNode* >
 {
 public:
 
 	bool DebugMode;
 
-	VSceneNodeBased()
+	VSceneGraph()
 	{
 		DebugMode = false;
 		Flags += SF_RENDER | SF_UPDATE;

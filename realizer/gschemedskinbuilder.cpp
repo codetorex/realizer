@@ -2,11 +2,13 @@
 #include "gschemedskinbuilder.h"
 #include "cengine.h"
 #include "tconvert.h"
+#include "tbitmapcodecs.h"
 
 
 void GSchemedSkinBuilder::Begin( int w,int h )
 {
-	SkinBitmap = new TBitmap(w,h,BitmapFormats->fARGB);
+	SkinBitmap = new TBitmap(w,h);
+	Gfx.Initialize(SkinBitmap);
 	Pack = new TPackedRectangle(w,h);
 	Skin = new GSchemedSkin();
 }
@@ -16,7 +18,7 @@ GSchemedSkin* GSchemedSkinBuilder::Finish()
 	Skin->SkinTexture = Engine.Textures.CreateTexture(SkinBitmap);
 	
 	TStream* fs = Engine.FileSystem.Open("outputSKIN.bmp",fm_Write);
-	SkinBitmap->WriteBMP(fs);
+	SkinBitmap->Save(fs,TBitmapCodecs::Bmp);
 
 	return Skin;
 }
@@ -162,6 +164,8 @@ GSchemeText GSchemeFile::GetTextLayer( const TString& className )
 	return lyr;
 }
 
+#include "tgraphics.h"
+
 void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 {
 	Scheme = (GSchemeFile*) new TINIParser(srcStream);
@@ -179,7 +183,7 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 	// This optimization allows rendering "just" color things easily without changing texture.
 	ui32 white = 0xFFFFFFFF;
 	TRectangleNode* whiteNode = Pack->Insert(16,16);
-	SkinBitmap->DrawRectangle(whiteNode->X,whiteNode->Y,16,16,(byte*)&white);
+	Gfx.FillRectangle(TBrush(TColors::white),whiteNode->X,whiteNode->Y,16,16);
 	VTexturePart* whitePart = new VTexturePart( SkinBitmap, whiteNode );
 	Skin->WhitePart = *whitePart;
 
@@ -456,7 +460,7 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 		bmp->Convert(SkinBitmap->BufferFormat);
 	}
 
-	SkinBitmap->Copy(bmp,node);
+	((TGraphics*)&Gfx)->DrawImage(*bmp,node);
 	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
 	return tpart;
 }

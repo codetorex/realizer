@@ -120,6 +120,7 @@
     <ClInclude Include="gtextboxbase.h" />
     <ClInclude Include="gtimer.h" />
     <ClInclude Include="gwindow.h" />
+    <ClInclude Include="gwireframeskin.h" />
     <ClInclude Include="realizer.h" />
     <ClInclude Include="realizertypes.h" />
     <ClInclude Include="realizerversion.h" />
@@ -138,7 +139,7 @@
     <ClInclude Include="vgui.h" />
     <ClInclude Include="vnode.h" />
     <ClInclude Include="vnodecanvasimage.h" />
-    <ClInclude Include="vscenenodebased.h" />
+    <ClInclude Include="vscenegraph.h" />
     <ClInclude Include="vrenderer.h" />
     <ClInclude Include="vrendererdx9.h" />
     <ClInclude Include="vscene.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="gtextboxbase.cpp" />
     <ClCompile Include="gtimer.cpp" />
     <ClCompile Include="gwindow.cpp" />
+    <ClCompile Include="gwireframeskin.cpp" />
     <ClCompile Include="realizer.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

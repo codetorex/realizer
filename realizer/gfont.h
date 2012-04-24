@@ -133,22 +133,22 @@ public:
 		throw 0;
 	}
 
-	int RenderText(const TString& text, float x,float y, ui32 color)
+	int RenderText(TCharacterEnumerator& schars, float x,float y, ui32 color)
 	{
 		Engine.Draw.SetTexture(FontTexture);
 		int totalWidth = (int)x;
 		
-		TCharacterEnumerator schars(text);
 		while(schars.MoveNext())
 		{	
 			GCharacter* charData = GetCharacter(schars.Current);
 			charData->DrawCharacter(x,y,color);
 			x += charData->XAdvance;
 		}
+		schars.Reset();
 		return ((int)x - totalWidth);
 	}
 
-	void Render(const TString& text, const TRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
+	void Render(TCharacterEnumerator& text, const TRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
 		if (stringPixelWidth == -1)
 		{
@@ -209,13 +209,25 @@ public:
 		RenderText(text,(float)x,(float)y,color.color);
 	}
 
-	inline void CalculatePosition(const TString& text, ContentAlignment align, TPosition& pos, const TRange& objRange)
+	inline void Render(const TString& text, const TRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
-		int totalWidth = GetStringWidth(text);
-		
+		TCharacterEnumerator schars(text);
+		Render(schars,screenRegion,align,color,xOffset,yOffset,stringPixelWidth);
+	}
+	
+	inline void Render(const TStringBuilder& sb, const TRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
+	{
+		TCharacterEnumerator schars(sb);
+		Render(schars,screenRegion,align,color,xOffset,yOffset,stringPixelWidth);
 	}
 
-	inline void Render(const TString& text, float x, float y, const TColor32& color, ContentAlignment align)
+	inline void CalculatePosition(TCharacterEnumerator& text, ContentAlignment align, TPosition& pos, const TRange& objRange)
+	{
+
+		int totalWidth = GetStringWidth(text);
+	}
+
+	inline void Render(TCharacterEnumerator& text, float x, float y, const TColor32& color, ContentAlignment align)
 	{
 		RenderText(text,x,y,color.color);
 	}
@@ -224,16 +236,26 @@ public:
 	 * Renders a text with default aligning definitions.
 	 * Default Alignment is Top Left.
 	 */
-	inline void Render(const TString& text,float x,float y, const TColor32& color)
+	inline void Render(TCharacterEnumerator& schars,float x,float y, const TColor32& color)
 	{
-		RenderText(text,x,y,color.color);
+		RenderText(schars,x,y,color.color);
 	}
 
-	int GetStringWidth(const string& text)
+	inline void Render(const TString& text,float x,float y, const TColor32& color)
+	{
+		TCharacterEnumerator schars(text);
+		RenderText(schars,x,y,color.color);
+	}
+
+	inline void Render(const TStringBuilder& sb,float x,float y, const TColor32& color)
+	{
+		TCharacterEnumerator schars(sb);
+		RenderText(schars,x,y,color.color);
+	}
+
+	int GetStringWidth(TCharacterEnumerator& schars)
 	{
 		int result = 0;
-		TCharacterEnumerator schars(text);
-
 		while(schars.MoveNext())
 		{
 			GCharacter* plane = Characters[schars.Current >> 8];
@@ -246,6 +268,7 @@ public:
 				result += DefaultCharacter.XAdvance;
 			}
 		}
+		schars.Reset();
 		return result;
 	}
 

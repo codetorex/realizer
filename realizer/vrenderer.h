@@ -8,7 +8,11 @@
 
 //TODO: implement linux based Vengine
 
+class IRenderer
+{
+public:
 
+};
 
 
 // Current Default = DirectX

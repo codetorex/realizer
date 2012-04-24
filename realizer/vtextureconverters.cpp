@@ -2,13 +2,13 @@
 #include "vtextureformats.h"
 #include "tcompositegenericconverter.h"
 
-class TBitmapConverterBGRtoXRGB: public TCompositeGenericConverter
+class TBitmapConverterBGRtoBGRA: public TCompositeGenericConverter
 {
 public:
-	TBitmapConverterBGRtoXRGB()
+	TBitmapConverterBGRtoBGRA()
 	{
 		SourceFormat = TextureFormats->fBGR;
-		DestinationFormat = TextureFormats->fXRGB;
+		DestinationFormat = TextureFormats->fBGRA;
 	}
 
 	void DoConversion(byte* src, byte* dst,int pixelCount)
@@ -25,13 +25,13 @@ public:
 	}
 };
 
-class TBitmapConverteRGBtoXRGB: public TCompositeGenericConverter
+class TBitmapConverteRGBtoBGRA: public TCompositeGenericConverter
 {
 public:
-	TBitmapConverteRGBtoXRGB()
+	TBitmapConverteRGBtoBGRA()
 	{
 		SourceFormat = TextureFormats->fRGB;
-		DestinationFormat = TextureFormats->fXRGB;
+		DestinationFormat = TextureFormats->fBGRA;
 	}
 
 	void DoConversion(byte* src, byte* dst,int pixelCount)
@@ -49,20 +49,22 @@ public:
 };
 
 
+
+
 void VTextureFormats::CreateTextureConverters()
 {
-	TBitmapConverterBGRtoXRGB* BGRtoXRGB = new TBitmapConverterBGRtoXRGB();
-	fBGR->Converters.Add(BGRtoXRGB);
+	// 3 to 4 no swapping
+	AddConverter(new TBitmapConverterBGRtoBGRA());
 
-	TBitmapConverterBGRtoXRGB* BGRtoARGB = new TBitmapConverterBGRtoXRGB();
-	BGRtoARGB->DestinationFormat = TextureFormats->fARGB;
-	fBGR->Converters.Add(BGRtoARGB);
+	AddConverter("BGR", "BGRX", new TBitmapConverterBGRtoBGRA() );
 
-	TBitmapConverteRGBtoXRGB* RGBtoXRGB = new TBitmapConverteRGBtoXRGB();
-	fRGB->Converters.Add(RGBtoXRGB);
+	// 3 to 4 swapping
 
-	TBitmapConverteRGBtoXRGB* BGRtoXBGR = new TBitmapConverteRGBtoXRGB();
-	BGRtoXBGR->SourceFormat = TextureFormats->fBGR;
-	BGRtoXBGR->DestinationFormat = TextureFormats->fXBGR;
-	fBGR->Converters.Add(BGRtoXBGR);
+	AddConverter(new TBitmapConverteRGBtoBGRA());
+
+	AddConverter("RGB", "BGRX", new TBitmapConverteRGBtoBGRA() );
+
+	AddConverter("BGR", "RGBA", new TBitmapConverteRGBtoBGRA() );
+
+	AddConverter("BGR", "RGBX", new TBitmapConverteRGBtoBGRA() );
 }

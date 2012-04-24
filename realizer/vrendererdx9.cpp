@@ -103,6 +103,7 @@ bool VRendererDX9::InitializeDirect3D()
 
 	// Now we must create the rendering device.
 	if(FAILED(D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,VertexProcessing,&Present_Parameters, &D3DDevice)))
+	//if(FAILED(D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_REF, hWnd,VertexProcessing,&Present_Parameters, &D3DDevice)))
 	{
 	//	MessageBox(NULL, "CreateDevice() failed!  Make sure you have DirectX 9.","Error!", MB_OK);
 		return false;
@@ -188,14 +189,23 @@ void VRendererDX9::InitializeFormats()
 
 	// TODO: test for RGB is supported, if not set it to fallback
 
-	((VTextureFormat*)TextureFormats->fARGB)->Supported(D3DFMT_A8R8G8B8);
+	// ((VTextureFormat*)TextureFormats->fRGBA)->Supported(D3DFMT_A8B8G8R8); //D3DFMT_A8R8G8B8
+
+	((VTextureFormat*)TextureFormats->fRGBA)->UnSupported(TextureFormats->fBGRA); //D3DFMT_A8R8G8B8
+
+	((VTextureFormat*)TextureFormats->fBGRA)->Supported(D3DFMT_A8R8G8B8); // TextureFormats->fABGR);
+	((VTextureFormat*)TextureFormats->fBGRX)->Supported(D3DFMT_X8R8G8B8);
+	((VTextureFormat*)TextureFormats->fBGR)->UnSupported(TextureFormats->fBGRX);
+	
+
+	/*((VTextureFormat*)TextureFormats->fARGB)->Supported(D3DFMT_A8R8G8B8);
 	((VTextureFormat*)TextureFormats->fABGR)->Supported(D3DFMT_A8B8G8R8);
-	((VTextureFormat*)TextureFormats->fXRGB)->Supported(D3DFMT_X8R8G8B8);
+	
 	((VTextureFormat*)TextureFormats->fXBGR)->Supported(D3DFMT_X8B8G8R8);
-	((VTextureFormat*)TextureFormats->fRGBA)->UnSupported(TextureFormats->fARGB);
+	
 	((VTextureFormat*)TextureFormats->fBGRA)->UnSupported(TextureFormats->fABGR);
-	((VTextureFormat*)TextureFormats->fRGB)->UnSupported(TextureFormats->fXRGB);
-	((VTextureFormat*)TextureFormats->fBGR)->UnSupported(TextureFormats->fXRGB);
+	((VTextureFormat*)TextureFormats->fRGB)->UnSupported(TextureFormats->fXRGB);*/
+	
 
 	VertexBufferFormats = new VVertexBufferFormats(&TCompositeFormatFactoryVertex::Instance);
 

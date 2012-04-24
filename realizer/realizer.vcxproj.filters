@@ -70,6 +70,9 @@
     <Filter Include="Source Files\Visual\Scene\Canvas">
       <UniqueIdentifier>{f5479d8e-7472-46d6-999b-2e119e41c644}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Visual\Scene\Nodes">
+      <UniqueIdentifier>{99ad0765-aff8-4772-92cf-cd63ed3ceb99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -228,12 +231,6 @@
     <ClInclude Include="gtextboxbase.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
-    <ClInclude Include="vnode.h">
-      <Filter>Source Files\Visual\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="vscenenodebased.h">
-      <Filter>Source Files\Visual\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="vanimationsimple.h">
       <Filter>Source Files\Visual\Animation</Filter>
     </ClInclude>
@@ -255,9 +252,6 @@
     <ClInclude Include="cloader.h">
       <Filter>Source Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="vnodeanimation.h">
-      <Filter>Source Files\Visual\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="realizerversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -278,6 +272,18 @@
     </ClInclude>
     <ClInclude Include="cresourcemanager.h">
       <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="gwireframeskin.h">
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="vscenegraph.h">
+      <Filter>Source Files\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="vnodeanimation.h">
+      <Filter>Source Files\Visual\Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="vnode.h">
+      <Filter>Source Files\Visual\Scene\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +401,6 @@
     <ClCompile Include="vnodecanvas.cpp">
       <Filter>Source Files\Visual\Scene\Canvas</Filter>
     </ClCompile>
-    <ClCompile Include="vnodeanimation.cpp">
-      <Filter>Source Files\Visual\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="gconsole.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
@@ -406,6 +409,12 @@
     </ClCompile>
     <ClCompile Include="ccommand.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="gwireframeskin.cpp">
+      <Filter>Source Files\Visual\GUI\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="vnodeanimation.cpp">
+      <Filter>Source Files\Visual\Scene\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

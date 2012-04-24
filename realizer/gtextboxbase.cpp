@@ -258,3 +258,14 @@ void GTextBoxBase::Update()
 		this->Height = Font->Height;
 	}*/
 }
+
+TString GTextBoxBase::get_Text()
+{
+	TStringBuilder sb;
+	for (ui32 i=0;i<Line.Characters.Count;i++)
+	{
+		GCharacterBox& cb = Line.Characters.Item[i];
+		sb.AppendUnicode(cb.Character);
+	}
+	return sb.ToString();
+}
