@@ -40,6 +40,8 @@ public:
 	inline void SetHertz(ui32 hertz)
 	{
 		Delay = 1000 / hertz;
+		if (Delay <= 0)
+			Delay = 1;
 	}
 
 	GTimeEffectBool() 

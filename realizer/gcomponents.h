@@ -9,6 +9,11 @@
 #include "gprogressbar.h"
 #include "gtimer.h"
 #include "gtextbox.h"
-
+#include "gdropdown.h"
+#include "gmenustrip.h"
+#include "gmenuitem.h"
+#include "gimagelist.h"
+#include "gtoolstrip.h"
+#include "gscrollbar.h"
 
 #endif

@@ -6,6 +6,9 @@
 #include "genums.h"
 #include <tgraphics.h>
 
+/**
+ * Extends TINIClass functionality. Cant hold data!
+ */
 class GSchemeClass: public TINIClass
 {
 public:
@@ -277,7 +280,7 @@ public:
 class GSchemeFile: public TINIParser
 {
 public:
-	GSchemeClass* GetClass(const TString& className);
+	GSchemeClass* GetSchemeClass(const TString& className);
 	GSchemeLayer GetLayer(const TString& className);
 	GSchemeText GetTextLayer(const TString& className);
 };
@@ -302,41 +305,89 @@ private:
 
 public:
 
+	GSchemedSkinBuilder()
+	{
+		UsePerPixel = true;
+		KeepPack = false;
+	}
+
 	enum FontKinds
 	{
 		FK_CUSTOMFONTS,
 		FK_SYSTEMFONTS,
 	};
 
-	void Begin(int w,int h);
+	/**
+	 * Creates a bitmap and pack structure and initializes them.
+	 */
+	void Begin(int w,int h, bool _keeppack = true);
+
+	/**
+	 * Uses existing bitmap and pack structure.
+	 */
+	void Begin( TBitmap* bmp, TPackedRectangle* pck);
+
 	GSchemedSkin* Finish();
 
 	VTexturePart* InsertImage(TBitmap* bmp);
 
-	void LoadWindowTop   (const GSchemeText& borderData, bool corners);
-	void LoadWindowBottom(const GSchemeLayer& borderData, bool corners);
-	void LoadWindowLeft  (const GSchemeLayer& borderData, bool corners);
-	void LoadWindowRight (const GSchemeLayer& borderData, bool corners);
+	void LoadWindowTop          (const GSchemeText& borderData, bool corners);
+	void LoadWindowBottom       (const GSchemeLayer& borderData, bool corners);
+	void LoadWindowLeft         (const GSchemeLayer& borderData, bool corners);
+	void LoadWindowRight        (const GSchemeLayer& borderData, bool corners);
 
-	void LoadButtons     (const GSchemeText& buttonData);
+	void LoadButtons            (const GSchemeText& buttonData);
 
-	void LoadCheckBox	 (const GSchemeLayer& checkboxData);
-	void LoadRadio		 (const GSchemeLayer& radioData);
-	void LoadProgress	 (const GSchemeLayer& pbarbg, const GSchemeLayer& pbarblk);
-	void LoadSunkEdge	 (const GSchemeLayer& sunkedgeData);
+	void LoadCheckBox	        (const GSchemeLayer& checkboxData);
+	void LoadRadio		        (const GSchemeLayer& radioData);
+	void LoadProgress	        (const GSchemeLayer& pbarbg, const GSchemeLayer& pbarblk);
+	void LoadSunkEdge	        (const GSchemeLayer& sunkedgeData);
 
-	void LoadGeneric	 (const GSchemeLayer& data, int imagecount, VTexturePart* output);
+	void LoadMenuStripBackground(const GSchemeLayer& menubg);
+
+	void LoadDropDown           (const GSchemeLayer& dropData );
+
+	void LoadMenuItem			(const GSchemeLayer& menuItem);
+
+	void LoadMenuStripItem		(const GSchemeLayer& menustripItem);
+
+	void LoadToolStripBackground(const GSchemeLayer& toolbg);
+
+	void LoadToolStripButton	(const GSchemeLayer& buttonData);
+
+	void LoadScrollbarButtons	(const GSchemeLayer& buttonData);
+	void LoadScrollbarBgH		(const GSchemeLayer& bgData);
+	void LoadScrollbarBgV		(const GSchemeLayer& bgData);
+	void LoadScrollbarDragH		(const GSchemeLayer& dragData);
+	void LoadScrollbarDragV		(const GSchemeLayer& dragData);
+	void LoadScrollbarDragHSmall(const GSchemeLayer& dragsData);
+	void LoadScrollbarDragVSmall(const GSchemeLayer& dragsData);
+
+	void LoadGeneric	        (const GSchemeLayer& data, int imagecount, VTexturePart* output);
+	void LoadGeneric			(const GSchemeLayer& data, int imageCount, GScalableQuad* output);
+
+	inline void LoadGeneric		(const GSchemeLayer& data, GScalableQuad* output)
+	{
+		LoadGeneric(data,1,output);
+	}
 
 	void LoadFontsAndColors();
 
 	GSchemeFont* GetNumberedFont(int fontID, FontKinds fontKind );
 	GFont* GetNumberedEngineFont(int fontID, FontKinds fontKind = FK_CUSTOMFONTS);
 
+	bool UsePerPixel;
+
+	/**
+	 * Keeps pack structure.
+	 */
+	bool KeepPack;
+
 	/**
 	* Loads skin from a scheme file. Which is window blinds UIS file.
 	* Note: this function will close the stream after usage.
 	*/
-	void LoadFromScheme(TStream* srcStream, bool usePerPixel = true);
+	void LoadFromScheme(TStream* srcStream);
 };
 
 

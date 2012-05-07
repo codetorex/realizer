@@ -3,7 +3,7 @@
 #include "cengine.h"
 
 
-void VGUI::InitializeDesktop( GObject* _desktop )
+void VGUI::InitializeDesktop( GDesktop* _desktop )
 {
 	_desktop->Master = this;
 	Focused = _desktop;
@@ -11,13 +11,13 @@ void VGUI::InitializeDesktop( GObject* _desktop )
 	_desktop->SetSize(0,0,Engine.Renderer.vWidth,Engine.Renderer.vHeight);
 }
 
-void VGUI::ActivateDesktop(GObject* newDesktop)
+void VGUI::ActivateDesktop(GDesktop* newDesktop)
 {
 	Desktop = newDesktop;
 	InitializeDesktop(newDesktop);
 }
 
-void VGUI::EnableGUI(GSkin* defSkin,GObject* desktopObj)
+void VGUI::EnableGUI(GSkin* defSkin,GDesktop* desktopObj)
 {
 	if (desktopObj == 0)
 	{
@@ -38,8 +38,12 @@ void VGUI::EnableGUI(GSkin* defSkin,GObject* desktopObj)
 		desktopObj->ForeColor = desktopObj->Skin->DefaultFontColor;
 	}
 	
-	Engine.Inputs.Mouse.Attach(this);
-	Engine.Inputs.Keyboard.Attach(this);
+	
+	if (!Enabled)
+	{
+		Engine.Inputs.Mouse.Attach(this);
+		Engine.Inputs.Keyboard.Attach(this);
+	}
 
 	Enabled = true;
 }

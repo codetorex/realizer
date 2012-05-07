@@ -62,8 +62,8 @@ public:
 
 	TCompositionPrimitive cCompressedStream;
 
-	VTextureFormat* fBGRX;
-	VTextureFormat* fRGBX;
+	/*VTextureFormat* fBGRX;
+	VTextureFormat* fRGBX;*/
 
 	VTextureFormat* fABGR16; // each component is short
 	VTextureFormat* fDXT1;

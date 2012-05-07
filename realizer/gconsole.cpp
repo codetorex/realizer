@@ -25,7 +25,7 @@ void GConsole::Render()
 	{
 		int cursorX = ScreenRegion.Left + (Buffer.Cursor.X * Font->SpaceWidth);
 		int cursorY = ScreenRegion.Top + (Buffer.Cursor.Y * Font->Size);
-		DrawBg(cursorX,cursorY,TColors::green);
+		DrawBg(cursorX,cursorY,TColors::Green);
 	}
 
 	Engine.Draw.SetTexture(Font->FontTexture);
@@ -61,7 +61,7 @@ void GConsole::Render()
 	}
 }
 
-void GConsole::DrawBg( float x,float y, ui32 color )
+void GConsole::DrawBg( float x,float y, const TColor32& color )
 {
 	Engine.Draw.DrawQuad(x,y,x+Font->SpaceWidth,y+Font->Size,0,0,1,1,color);
 }

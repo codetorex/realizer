@@ -30,8 +30,8 @@ void VTextureFormats::InitializeTextureFormats()
 
 	SetPrimitive(cCompressedStream,"Compressed stream","STREAM",tc_notdefined);
 
-	fBGRX     = (VTextureFormat*)CreateFormat("BGRX","B8G8R8X8");
-	fRGBX	  = (VTextureFormat*)CreateFormat("RGBX","R8G8B8X8");
+	/*fBGRX     = (VTextureFormat*)CreateFormat("BGRX","B8G8R8X8");
+	fRGBX	  = (VTextureFormat*)CreateFormat("RGBX","R8G8B8X8");*/
 
 	fABGR16   = (VTextureFormat*)CreateFormat("ABGR16","A16B16G16R16");
 	fDXT1     = (VTextureFormat*)CreateFormat("DXT1","STREAM");

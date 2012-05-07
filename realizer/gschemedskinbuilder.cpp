@@ -2,25 +2,38 @@
 #include "gschemedskinbuilder.h"
 #include "cengine.h"
 #include "tconvert.h"
-#include "tbitmapcodecs.h"
 
 
-void GSchemedSkinBuilder::Begin( int w,int h )
+void GSchemedSkinBuilder::Begin( int w,int h , bool _keeppack )
 {
 	SkinBitmap = new TBitmap(w,h);
 	Gfx.Initialize(SkinBitmap);
 	Pack = new TPackedRectangle(w,h);
+	Skin = new GSchemedSkin();
+	KeepPack = _keeppack;
+	Gfx.Clear(0);
+}
+
+void GSchemedSkinBuilder::Begin( TBitmap* bmp, TPackedRectangle* pck )
+{
+	SkinBitmap = bmp;
+	Gfx.Initialize(SkinBitmap);
+	Pack = pck;
 	Skin = new GSchemedSkin();
 }
 
 GSchemedSkin* GSchemedSkinBuilder::Finish()
 {
 	Skin->SkinTexture = Engine.Textures.CreateTexture(SkinBitmap);
-	
-	TStream* fs = Engine.FileSystem.Open("outputSKIN.bmp",fm_Write);
-	SkinBitmap->Save(fs,TBitmapCodecs::Bmp);
 
+	if (KeepPack)
+	{
+		Skin->Pack = Pack;
+	}
+	
 	return Skin;
+
+	// delete this?
 }
 
 int GSchemeClass::GetInt( const TString& key, int defaultValue = 0 )
@@ -84,9 +97,9 @@ TColor32 GSchemeClass::GetColor( const TString& key )
 	return TColor32(cRed,cGreen,cBlue);
 }
 
-GSchemeClass* GSchemeFile::GetClass( const TString& className )
+GSchemeClass* GSchemeFile::GetSchemeClass( const TString& className )
 {
-	TINIClass* inicls = Classes.GetValue(className);
+	TINIClass* inicls = GetClass(className);
 	return (GSchemeClass*)inicls;
 }
 
@@ -142,7 +155,7 @@ void GSchemeText::LoadTextLayer( GSchemeClass* cls )
 GSchemeLayer GSchemeFile::GetLayer( const TString& className )
 {
 	GSchemeLayer lyr;
-	GSchemeClass* cls = GetClass(className);
+	GSchemeClass* cls = GetSchemeClass(className);
 	if (cls == 0)
 	{
 		throw Exception("Class not found");
@@ -154,7 +167,7 @@ GSchemeLayer GSchemeFile::GetLayer( const TString& className )
 GSchemeText GSchemeFile::GetTextLayer( const TString& className )
 {
 	GSchemeText lyr;
-	GSchemeClass* cls = GetClass(className);
+	GSchemeClass* cls = GetSchemeClass(className);
 	if (cls == 0)
 	{
 		throw Exception("Class not found");
@@ -166,7 +179,7 @@ GSchemeText GSchemeFile::GetTextLayer( const TString& className )
 
 #include "tgraphics.h"
 
-void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
+void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 {
 	Scheme = (GSchemeFile*) new TINIParser(srcStream);
 	Scheme->LowerCaseKeys = true;
@@ -175,21 +188,21 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 	// TODO: do lots of stuff here
 	
 	// Lets load window images
-	if ( !Scheme->ContainsClass("windowframe.topperpixel") && usePerPixel )
+	if ( !Scheme->ContainsClass("windowframe.topperpixel") && UsePerPixel )
 	{
-		usePerPixel = false;
+		UsePerPixel = false;
 	}
 
 	// This optimization allows rendering "just" color things easily without changing texture.
-	ui32 white = 0xFFFFFFFF;
+	//ui32 white = 0xFFFFFFFF;
 	TRectangleNode* whiteNode = Pack->Insert(16,16);
-	Gfx.FillRectangle(TBrush(TColors::white),whiteNode->X,whiteNode->Y,16,16);
+	Gfx.FillRectangle(TBrush(TColors::White),whiteNode->X,whiteNode->Y,16,16);
 	VTexturePart* whitePart = new VTexturePart( SkinBitmap, whiteNode );
 	Skin->WhitePart = *whitePart;
 
 	LoadFontsAndColors();
 
-	if (usePerPixel)
+	if (UsePerPixel)
 	{
 		LoadWindowTop(Scheme->GetTextLayer("windowframe.topperpixel"),true);
 		LoadWindowBottom(Scheme->GetLayer("windowframe.bottomperpixel"),true);
@@ -207,38 +220,35 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream, bool usePerPixel )
 	Skin->WindowQuad[1].CenterColor = Colors.ButtonFace;
 	Skin->ButtonFaceWindowBackgroundColor = Colors.ButtonFace;
 
-	LoadButtons(Scheme->GetTextLayer("buttons"));
+	LoadButtons            (Scheme->GetTextLayer("buttons"));
 
-	LoadCheckBox(Scheme->GetLayer("button.checkbox"));
-	LoadRadio(Scheme->GetLayer("button.radio"));
-	LoadProgress(Scheme->GetLayer("progressxp.horzedge"),Scheme->GetLayer("progressxp.horzblock"));
-	LoadSunkEdge(Scheme->GetLayer("sunkedge"));
+	LoadCheckBox           (Scheme->GetLayer("button.checkbox"));
+	LoadRadio              (Scheme->GetLayer("button.radio"));
+	LoadProgress           (Scheme->GetLayer("progressxp.horzedge"),Scheme->GetLayer("progressxp.horzblock"));
+	LoadSunkEdge           (Scheme->GetLayer("sunkedge"));
+	LoadMenuStripBackground(Scheme->GetLayer("menubar.background"));
+	LoadDropDown           (Scheme->GetLayer("menubackground"));
+	LoadMenuItem           (Scheme->GetLayer("menuitem"));
+	LoadMenuStripItem      (Scheme->GetLayer("menubar"));
+	LoadToolStripBackground(Scheme->GetLayer("toolbarbackground"));
+	LoadToolStripButton    (Scheme->GetLayer("toolbar.normal"));
+	LoadToolStripButton    (Scheme->GetLayer("toolbar.normal"));
+
+	LoadScrollbarButtons   (Scheme->GetLayer("scrollbar"));
+	LoadScrollbarBgH       (Scheme->GetLayer("horzscroll"));
+	LoadScrollbarBgV       (Scheme->GetLayer("vertscroll"));
+	LoadScrollbarDragH     (Scheme->GetLayer("horzscrollthumb"));
+	LoadScrollbarDragV     (Scheme->GetLayer("vertscrollthumb"));
+	LoadScrollbarDragHSmall(Scheme->GetLayer("smallhscrollthumb"));
+	LoadScrollbarDragVSmall(Scheme->GetLayer("smallvscrollthumb"));
 
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
-	// TODO: lower case stuff of classes, implement it to TINIParser
 }
 
 
 void GSchemedSkinBuilder::LoadSunkEdge( const GSchemeLayer& sunkedgeData )
 {
-	TBitmap* image = Engine.Textures.LoadToBitmap(*sunkedgeData.ImagePath);
-	VTexturePart* sub = InsertImage(image);
-
-
-	const int PartCount = 4;
-
-	int partWidth = sub->Width / PartCount; // there is 5 different pictures
-	TRegion tmpRegion;
-	tmpRegion.SetFrom( sub );
-	tmpRegion.SetWidth( partWidth );
-	for (int i=0;i<PartCount;i++)
-	{
-		sunkedgeData.CopyTo(&Skin->SunkEdge[i]);
-		Skin->SunkEdge[i].Initialize(SkinBitmap, tmpRegion);
-		tmpRegion.SetLeftRelative(partWidth); // increment x of region
-	}
-
-	delete image;
+	LoadGeneric(sunkedgeData,4,Skin->SunkEdge);
 }
 
 void GSchemedSkinBuilder::LoadProgress( const GSchemeLayer& pbarbg, const GSchemeLayer& pbarblk )
@@ -401,6 +411,56 @@ void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imagecount,
 	delete image;
 }
 
+void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imageCount, GScalableQuad* output )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(*data.ImagePath);
+	VTexturePart* sub = InsertImage(image);
+
+	int partWidth = sub->Width / imageCount; // there is 5 different pictures
+	TRegion tmpRegion;
+	tmpRegion.SetFrom( sub );
+	tmpRegion.SetWidth( partWidth );
+	for (int i=0;i<imageCount;i++)
+	{
+		data.CopyTo(&output[i]);
+		output[i].Initialize(SkinBitmap, tmpRegion);
+		tmpRegion.SetLeftRelative(partWidth); // increment x of region
+	}
+
+	delete image;
+}
+
+void GSchemedSkinBuilder::LoadMenuStripBackground( const GSchemeLayer& menubg )
+{
+	LoadGeneric(menubg,2, Skin->MenuBarBg);
+}
+
+
+void GSchemedSkinBuilder::LoadToolStripBackground( const GSchemeLayer& toolbg )
+{
+	LoadGeneric(toolbg,&Skin->ToolBarBg);
+}
+
+void GSchemedSkinBuilder::LoadDropDown( const GSchemeLayer& dropData )
+{
+	LoadGeneric(dropData,&Skin->DropDownBg);
+}
+
+
+void GSchemedSkinBuilder::LoadMenuItem( const GSchemeLayer& menuItem )
+{
+	LoadGeneric(menuItem,5,Skin->MenuItemBg);
+}
+
+void GSchemedSkinBuilder::LoadMenuStripItem( const GSchemeLayer& menustripItem )
+{
+	LoadGeneric(menustripItem,5,Skin->MenuBarButton);
+}
+
+void GSchemedSkinBuilder::LoadToolStripButton( const GSchemeLayer& buttonData )
+{
+	LoadGeneric(buttonData,6,Skin->ToolButton);
+}
 
 void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 {
@@ -455,12 +515,15 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 		throw Exception("Texture is not big enough, implement multi texture method");
 	}
 
-	if (bmp->BufferFormat != SkinBitmap->BufferFormat)
+	/*
+	 *NO need to convert since they are converted in graphics
+	 *
+	 *if (bmp->BufferFormat != SkinBitmap->BufferFormat)
 	{
 		bmp->Convert(SkinBitmap->BufferFormat);
-	}
+	}*/
 
-	((TGraphics*)&Gfx)->DrawImage(*bmp,node);
+	Gfx.DrawImage(*bmp,*(TPosition*)node);
 	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
 	return tpart;
 }
@@ -629,3 +692,39 @@ void GSchemedSkinBuilder::LoadFontsAndColors()
 	Skin->WindowTitleColor[0] = Colors.TitleText;
 	Skin->WindowTitleColor[1] = Colors.InactiveTitleText;
 }
+
+void GSchemedSkinBuilder::LoadScrollbarButtons( const GSchemeLayer& buttonData )
+{
+	LoadGeneric(buttonData,23,Skin->ScrollbarButtons);
+}
+
+void GSchemedSkinBuilder::LoadScrollbarBgH( const GSchemeLayer& bgData )
+{
+	LoadGeneric(bgData,4,Skin->ScrollbarBgHorizontal);
+}
+
+void GSchemedSkinBuilder::LoadScrollbarBgV( const GSchemeLayer& bgData )
+{
+	LoadGeneric(bgData,4,Skin->ScrollbarBgVertical);
+}
+
+void GSchemedSkinBuilder::LoadScrollbarDragH( const GSchemeLayer& dragData )
+{
+	LoadGeneric(dragData,3,Skin->ScrollbarDragHorizontal);
+}
+
+void GSchemedSkinBuilder::LoadScrollbarDragV( const GSchemeLayer& dragData )
+{
+	LoadGeneric(dragData,3,Skin->ScrollbarDragVertical);
+}
+
+void GSchemedSkinBuilder::LoadScrollbarDragHSmall( const GSchemeLayer& dragsData )
+{
+	LoadGeneric(dragsData,3,Skin->ScrollbarDragHorizontalSmall);
+}
+
+void GSchemedSkinBuilder::LoadScrollbarDragVSmall( const GSchemeLayer& dragsData )
+{
+	LoadGeneric(dragsData,3,Skin->ScrollbarDragVerticalSmall);
+}
+

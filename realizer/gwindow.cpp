@@ -56,18 +56,22 @@ GWindow::GWindow()
 	TitleBar = new GWindowTitlebar();
 	AddChild(TitleBar);
 	ClassID = GWINDOW_CLASSID;
+	Layouter = &GLayout::Instance; // default layouter
 }
 
 void GWindow::Render()
 {
 	Skin->RenderWindow(this);
 	this->GObject::Render(); // render children
+
+	/*Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(ScreenRegion.X + ObjectRegion.X,ScreenRegion.Y + ObjectRegion.Y,ObjectRegion.Width,ObjectRegion.Height,TColors::Red);*/
 }
 
 void GWindow::Update()
 {
 	this->GObject::Update();
-	// do stuff here, like effects?
+	// do stuff here, like effects, animations?
 }
 
 void GWindow::Initialize()
@@ -81,8 +85,14 @@ void GWindow::Initialize()
 
 void GWindow::Layout()
 {
+
+	//this->GObject::Layout();
 	// this->GObject::Layout(); TODO: use this for layouting the objects like docked, padded, 
 	Skin->LayoutWindow(this);
+	Layouter->Layout(this,false);
+	LayoutChilds(); // let them resize
+	//TRectangle usage = Layouter->Layout(this,false);
+	//ObjectRegion.SetRectangle(ObjectRegion.X + usage.X, ObjectRegion.Y + usage.Y,usage.Width,usage.Height);
 }
 
 void GWindow::CenterToScreen()

@@ -33,6 +33,32 @@ public:
 	void RenderTextBox( GTextBox* textbox );
 
 	void RenderSunkEdge( GObject* object );
+
+	void RenderMenuStrip(GMenuStrip* menustrip);
+
+	void RenderDropDown(GDropDown* dropdown);
+	
+	void LayoutDropDown(GDropDown* dropdown);
+
+	void RenderMenuItem(GMenuItem* menuItem);
+
+	void RenderMenuStripItem(GMenuItem* menuItem);
+
+	void LayoutMenuStripItem(GMenuItem* menuItem);
+
+	void RenderToolStrip(GToolStrip* toolbox);
+
+	void RenderToolButton(GToolStripButton* button);
+
+	void LayoutToolButton(GToolStripButton* button);
+
+	void RenderScrollBar(GScrollBar* scrollbar);
+	
+	void LayoutScrollBar(GScrollBar* scrollbar);
+
+private:
+	void RenderScrollBarButton(GScrollBarButton* button);
+	void LayoutScrollBarButton(GScrollBarButton* button);
 };
 
 #endif

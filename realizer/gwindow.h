@@ -2,11 +2,15 @@
 #define GWINDOW_H
 
 #include "gobject.h"
+#include "glayout.h"
 
 class GWindow: public GObject
 {
 public:
 	GObject* TitleBar;
+
+	GLayout* Layouter;
+
 
 	GWindow();
 

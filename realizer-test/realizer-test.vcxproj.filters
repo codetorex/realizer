@@ -27,11 +27,14 @@
     <ClInclude Include="test_texture.h">
       <Filter>Tests</Filter>
     </ClInclude>
+    <ClInclude Include="test_enginecolor.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="test_gui.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="realizer-test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,6 +42,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="test_texture.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="test_enginecolor.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="test_gui.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

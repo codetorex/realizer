@@ -39,6 +39,11 @@ void GScalableQuadParted::Render( GObject* obj )
 	Engine.Draw.Flush();
 }
 
+void GScalableQuadParted::SetObjectRegion( GObject* obj )
+{
+	obj->ObjectRegion.SetRectangle(Left.Width,Top.Height,GetWidthSpace(obj->Width), GetHeightSpace(obj->Height));
+}
+
 void GScalableQuad::Initialize( TRange* textureRange, const TRegion& rect )
 {
 	TextureCoords[0] = textureRange->GetXRatio((float)rect.X);
@@ -121,4 +126,9 @@ void GScalableQuad::RenderLeftOnly( TRegion* region )
 
 	Engine.Draw.PreTranslate();
 	Engine.Draw.Flush();
+}
+
+void GScalableQuad::SetObjectRegion( GObject* obj )
+{
+	obj->ObjectRegion.SetRectangle(LeftMargin,RightMargin,GetWidthSpace(obj->Width), GetHeightSpace(obj->Height));
 }

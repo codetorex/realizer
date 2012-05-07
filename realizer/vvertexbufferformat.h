@@ -44,7 +44,9 @@ public:
 	TComposition TexCoord4;
 	TComposition TexCoord5;
 	TComposition TexCoord6;
-	TComposition Color; // ARGB order in dX
+	TComposition Color; // BGRA order in dX
+
+	TComposition ColorF; // RGBA ordered float colors for OPENGL
 
 	VVertexBufferFormat* Textured1; // should be initialized by renderer
 	VVertexBufferFormat* ColoredTextured1;

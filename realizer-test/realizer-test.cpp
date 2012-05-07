@@ -19,6 +19,8 @@
 #include "rtestsuite.h"
 
 #include "test_texture.h"
+#include "test_enginecolor.h"
+#include "test_gui.h"
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
@@ -50,6 +52,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	TestSuite.LoadResources();
 	
 	TestSuite.AddTest(&TestTexture);
+	TestSuite.AddTest(&TestColor);
+	TestSuite.AddTest(&TestGUI);
 
 	// Lets setup basic rendering pipeline/stack.
 	Engine.Scenes.SetupBasicStack();

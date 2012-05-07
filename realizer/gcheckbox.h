@@ -17,6 +17,8 @@ public:
 
 	void Render();
 
+	event<NoArgEvent> CheckedChanged;
+
 	bool ThreeState;
 	CheckStates CheckState;
 	bool Checked;

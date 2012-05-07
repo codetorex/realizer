@@ -18,7 +18,7 @@ void RTestSuite::LoadResources()
 
 		DebugSkin = new GWireFrameSkin();
 		DebugSkin->SystemFont = DebugFont;
-		DebugSkin->DefaultFontColor = TColors::white;
+		DebugSkin->DefaultFontColor = TColors::White;
 
 		CurrentTest = 0;
 		CurrentTestIndex = -1;
@@ -35,6 +35,8 @@ void RTestSuite::LoadResources()
 		TestConsole->InitializeConsole(80,24,96);
 		TestConsole->X = 0;
 		TestConsole->Y = TestDesktop->Height - TestConsole->Height;
+
+		TestDesktop->Layout();
 
 		Engine.Command.Start(&TestConsole->Buffer);
 		Engine.Command.ConnectAsLogOutput(); // TODO: make this somewhere internal?
@@ -162,7 +164,7 @@ void RTestSuite::Update()
 
 void RTestSuite::WriteText( TCharacterEnumerator schars , TRegion& reg, ContentAlignment alg)
 {
-	TestSuite.DebugFont->Render(schars, reg, alg, TColors::white);
+	TestSuite.DebugFont->Render(schars, reg, alg, TColors::White);
 	reg.SetTopRelative( DebugFont->Height );
 }
 

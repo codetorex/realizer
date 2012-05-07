@@ -45,10 +45,10 @@ void RTestTexture::Render()
 		texreg.SetSize(x+padding,y + texSize + (4 * padding),texSize,10);
 
 		Engine.Draw.SetTexture(0);
-		Engine.Draw.DrawRectangle(x,y,texSize + (padding *2),texSize + (padding*2),TColors::white);
+		Engine.Draw.DrawRectangle(x,y,texSize + (padding *2),texSize + (padding*2),TColors::White);
 		
 		Engine.Draw.SetTexture(te.Current->Texture);
-		Engine.Draw.DrawQuad(x+padding,y+padding,x+padding + texSize ,y+padding +texSize,0,0,1,1,TColors::white);
+		Engine.Draw.DrawQuad(x+padding,y+padding,x+padding + texSize ,y+padding +texSize,0,0,1,1,TColors::White);
 
 		Engine.Draw.Flush();
 		

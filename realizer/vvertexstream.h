@@ -14,12 +14,23 @@ public:
 
 	VVertexStream()
 	{
-		DefaultDiffuse = TColor32(255,255,255,255); // default to white color
+		DefaultDiffuse = TColors::White; // default to white color
 	}
 
 	VVertexStream(VVertexBufferFormat* _format, int _capacity,int _meshType, bool makeitReady = false): VVertexBuffer(_format,_capacity,_meshType,makeitReady)
 	{
-		DefaultDiffuse = TColor32(255,255,255,255); // default to white color
+		DefaultDiffuse = TColors::White; // default to white color
+	}
+
+	void Flush();
+
+	inline void ChangeMeshType(int mType)
+	{
+		if (MeshType != mType)
+		{
+			Flush();
+			MeshType = mType;
+		}
 	}
 
 	void PreTranslate(float x,float y,float z)
@@ -55,6 +66,13 @@ public:
 		AddFloat(y);
 	}
 
+	// TODO: make this function better suited.
+	// TODO: consider openGL version of this will use floats?
+	inline ui32 TransformColorToEngineColor(const TColor32& color)
+	{
+		return D3DCOLOR_RGBA(color.r,color.g,color.b,color.a);
+	}
+
 	void Add2DVertex1Tex(float x,float y,float u,float v)
 	{
 		float* fp = (float*)(Data + Index);
@@ -67,13 +85,13 @@ public:
 		Used++;
 	}
 
-	void Add2DVertexColor1Tex(float x,float y,float u,float v, ui32 color)
+	void Add2DVertexColor1Tex(float x,float y,float u,float v, const TColor32& color)
 	{
 		float* fp = (float*)(Data + Index);
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;
-		*(ui32*)(&fp[3]) = color;
+		*(ui32*)(&fp[3]) = TransformColorToEngineColor(color);
 		fp[4] = u;
 		fp[5] = v;
 		Index += 6 * sizeof(float);
@@ -92,7 +110,7 @@ public:
 		Add2DVertex1Tex(x1,y1,tu1,tv1);
 	}
 
-	void Add2DQuadColor1Tex(float x0,float y0,float x1,float y1, float tu0,float tv0,float tu1,float tv1,ui32 color)
+	void Add2DQuadColor1Tex(float x0,float y0,float x1,float y1, float tu0,float tv0,float tu1,float tv1, const TColor32& color)
 	{
 		Add2DVertexColor1Tex(x0,y1,tu0,tv1,color);
 		Add2DVertexColor1Tex(x0,y0,tu0,tv0,color);
@@ -105,7 +123,7 @@ public:
 
 	inline void Add2DQuadColor1Tex(float x0,float y0,float x1,float y1, float tu0,float tv0,float tu1,float tv1)
 	{
-		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1, DefaultDiffuse.GetARGB() );
+		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1, DefaultDiffuse );
 	}
 };
 

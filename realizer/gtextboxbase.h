@@ -20,7 +20,7 @@ public:
 		Character = chr;
 	}
 
-	GCharacterBox(ch32 chr, GFont* fnt, ui32 clr)
+	GCharacterBox(ch32 chr, GFont* fnt,  const TColor32& clr)
 	{
 		Character = chr;
 		SetFont(fnt);
@@ -32,7 +32,7 @@ public:
 	ch32 Character;
 
 	/// Every character can have different color
-	ui32 Color;
+	TColor32 Color;
 
 	int X;
 	int Y;

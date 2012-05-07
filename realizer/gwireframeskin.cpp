@@ -7,10 +7,10 @@ void GWireFrameSkin::RenderWindow( GWindow* window )
 {
 	Engine.Draw.NoTexture();
 
-	Engine.Draw.DrawRectangle(window->ScreenRegion, TColors::maroon);
-	Engine.Draw.DrawRectangle(window->TitleBar->ScreenRegion, TColors::aquamarine);
+	Engine.Draw.DrawRectangle(window->ScreenRegion, TColors::Maroon);
+	Engine.Draw.DrawRectangle(window->TitleBar->ScreenRegion, TColors::Aquamarine);
 
-	window->Font->Render(window->Text,window->TitleBar->ScreenRegion,CA_MiddleLeft, TColors::wheat,10 );
+	window->Font->Render(window->Text,window->TitleBar->ScreenRegion,CA_MiddleLeft, TColors::Wheat,10 );
 
 	//Engine.Draw.DrawQuad(window->ScreenRegion, TColors::aqua);
 	Engine.Draw.Flush();
@@ -19,6 +19,7 @@ void GWireFrameSkin::RenderWindow( GWindow* window )
 void GWireFrameSkin::LayoutWindow( GWindow* window )
 {
 	window->TitleBar->SetSize(0,0,window->Width,20);
+	window->ObjectRegion.SetRectangle(0,0,window->Width,window->Height);
 }
 
 void GWireFrameSkin::RenderLabel( GLabel* label )
@@ -29,7 +30,7 @@ void GWireFrameSkin::RenderLabel( GLabel* label )
 void GWireFrameSkin::RenderSunkEdge( GObject* object )
 {
 	Engine.Draw.NoTexture();
-	Engine.Draw.DrawRectangle(object->ScreenRegion, TColors::cyan);
+	Engine.Draw.DrawRectangle(object->ScreenRegion, TColors::Cyan);
 }
 
 void GWireFrameSkin::RenderTextBox( GTextBox* textbox )
@@ -40,6 +41,84 @@ void GWireFrameSkin::RenderTextBox( GTextBox* textbox )
 void GWireFrameSkin::RenderButton( GButton* button )
 {
 	Engine.Draw.NoTexture();
-	Engine.Draw.DrawRectangle(button->ScreenRegion, TColors::antiquewhite);
+	Engine.Draw.DrawRectangle(button->ScreenRegion, TColors::AntiqueWhite);
 	button->Font->Render(button->Text,button->ScreenRegion,CA_MiddleCenter,button->ForeColor);
+}
+
+void GWireFrameSkin::RenderMenuStrip( GMenuStrip* menustrip )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(menustrip->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::RenderDropDown( GDropDown* dropdown )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(dropdown->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::LayoutDropDown( GDropDown* dropdown )
+{
+	dropdown->ObjectRegion.SetRectangle(0,0,dropdown->Width,dropdown->Height);
+}
+
+void GWireFrameSkin::RenderMenuItem( GMenuItem* menuItem )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(menuItem->ScreenRegion, TColors::Cyan);
+	//menuItem->Font->Render(menuItem->Text,window->TitleBar->ScreenRegion,CA_MiddleLeft, TColors::Wheat,10 );
+}
+
+void GWireFrameSkin::RenderMenuStripItem( GMenuItem* menuItem )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(menuItem->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::LayoutMenuStripItem( GMenuItem* menuItem )
+{
+	menuItem->ObjectRegion.SetRectangle(0,0,menuItem->Width,menuItem->Height);
+}
+
+void GWireFrameSkin::RenderToolStrip( GToolStrip* toolbox )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(toolbox->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::RenderToolButton( GToolStripButton* button )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(button->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::LayoutToolButton( GToolStripButton* button )
+{
+	button->ObjectRegion.SetRectangle(0,0,button->Width,button->Height);
+}
+
+void GWireFrameSkin::RenderScrollBarButton( GScrollBarButton* button )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(button->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::LayoutScrollBarButton( GScrollBarButton* button )
+{
+	button->SetWidth(16);
+	button->SetHeight(16);
+}
+
+void GWireFrameSkin::RenderScrollBar( GScrollBar* scrollbar )
+{
+	Engine.Draw.NoTexture();
+	Engine.Draw.DrawRectangle(scrollbar->ScreenRegion, TColors::Cyan);
+}
+
+void GWireFrameSkin::LayoutScrollBar( GScrollBar* scrollbar )
+{
+	LayoutScrollBarButton(scrollbar->UpButton);
+	LayoutScrollBarButton(scrollbar->DownButton);
+
+	throw NotImplementedException();
 }

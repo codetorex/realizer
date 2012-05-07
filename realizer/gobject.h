@@ -11,6 +11,7 @@
 
 class GFont;
 class VGUI;
+class GLayout;
 
 class GObject: public TListNode< GObject* >, public TList< GObject* >, public TRegion
 {
@@ -31,9 +32,11 @@ public:
 		Parent = 0;
 		Font = 0;
 		TextAlign = CA_TopLeft;
+		Dock = DCK_NODOCK;
 	}
 
 	TRegion ScreenRegion;
+	TRectangle ObjectRegion; // similar to client area
 
 	/*event<NoArgEvent>	MouseEnter;
 	event<NoArgEvent>	MouseExit;
@@ -71,7 +74,8 @@ public:
 	GSkin*	Skin;
 	GFont*	Font;
 	TString	Tooltip;
-	ui32	ClassID;
+	GUIClassID	ClassID;
+	DockType Dock;
 
 	TString	Text;
 	ContentAlignment TextAlign;
@@ -86,9 +90,17 @@ public:
 	virtual void Initialize() { Layout(); };
 	virtual void Update();
 	virtual void Render();
-	virtual void Layout() {}; // done when resize happens
+	virtual void Layout() { ObjectRegion.SetRectangle(0,0,Width,Height); LayoutChilds(); }; // done when resize happens
 
-	void Dock(DockType dock);
+	void LayoutChilds()
+	{
+		TLinkedListEnumerator< GObject* > c(this);
+
+		while(c.MoveNext())
+		{
+			c.Current->Layout();
+		}
+	}
 
 	void ActivateObject(GObject* obj); // makes this object last object.
 
@@ -98,9 +110,9 @@ public:
 	 */
 	void ActivateRoot();
 
-	inline void AddChild(GObject* obj)
+	/*inline void SetParent(GObject* obj)
 	{
-		Add(obj);
+		obj->Parent = this;
 		obj->Master = Master;
 		obj->Skin = Skin;
 		if (obj->Font == 0)
@@ -109,6 +121,36 @@ public:
 			obj->ForeColor = ForeColor;
 		}
 		obj->Initialize();
+	}*/
+
+	/**
+	 * Adopts the objects as child.
+	 */
+	inline void OwnObject(GObject* newChild)
+	{
+		newChild->SetParent(this);
+	}
+
+	/**
+	 * Sets parent of this object.
+	 */
+	inline void SetParent(GObject* newParent)
+	{
+		Parent = newParent;
+		Master = newParent->Master;
+		Skin = newParent->Skin;
+		if (Font == 0)
+		{
+			Font = newParent->Font;
+			ForeColor = newParent->ForeColor;
+		}
+		Initialize();
+	}
+
+	inline void AddChild(GObject* obj)
+	{
+		Add(obj);
+		OwnObject(obj);
 	}
 
 	inline void RemoveChild(GObject* obj)

@@ -20,22 +20,22 @@ void GButton::MouseMove( int x,int y )
 	{
 		if (Master->ButtonState[0] && MouseInside)
 		{
-			GraphicState = 1;
+			GraphicState = 1; // down
 		}
 		else
 		{
-			GraphicState = 3;
+			GraphicState = 3; // move over
 		}
 	}
 	else
 	{
-		GraphicState = 3;
+		GraphicState = 3; // mouse over
 	}
 }
 
 void GButton::MouseExit()
 {
-	GraphicState = 0;
+	GraphicState = 0; // normal
 }
 
 void GButton::MouseUp( int x,int y,int button )

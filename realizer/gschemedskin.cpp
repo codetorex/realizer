@@ -23,7 +23,12 @@ void GSchemedSkin::RenderWindow( GWindow* window )
 
 void GSchemedSkin::LayoutWindow( GWindow* window )
 {
-	window->TitleBar->SetSize(0,0,window->Width,WindowQuad->Top.Height);
+	int windowState = window->IsActive() ? 0 : 1;
+	GScalableQuadParted& q = WindowQuad[windowState];
+
+	window->TitleBar->SetSize(0,-q.Top.Height,window->Width,q.Top.Height);
+
+	q.SetObjectRegion(window);
 }
 
 void GSchemedSkin::RenderButton( GButton* button )
@@ -101,4 +106,113 @@ void GSchemedSkin::RenderSunkEdge( GObject* object )
 {
 	Engine.Draw.SetTexture(SkinTexture);
 	SunkEdge[0].Render(object);
+}
+
+void GSchemedSkin::RenderMenuStrip( GMenuStrip* menustrip )
+{
+	int mod = 1;
+	if (menustrip->Enabled)
+		mod = 0;
+	
+	Engine.Draw.SetTexture(SkinTexture);
+	MenuBarBg[mod].Render(menustrip);
+}
+
+void GSchemedSkin::RenderDropDown( GDropDown* dropdown )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	DropDownBg.Render(dropdown);
+}
+
+void GSchemedSkin::LayoutDropDown( GDropDown* dropdown )
+{
+	DropDownBg.SetObjectRegion(dropdown);
+}
+
+void GSchemedSkin::RenderMenuItem( GMenuItem* menuItem )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	MenuItemBg[menuItem->GraphicState].Render(menuItem);
+}
+
+void GSchemedSkin::RenderMenuStripItem( GMenuItem* menuItem )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	MenuBarButton[menuItem->GraphicState].Render(menuItem);
+}
+
+void GSchemedSkin::LayoutMenuStripItem( GMenuItem* menuItem )
+{
+	MenuBarButton[0].SetObjectRegion(menuItem);
+}
+
+void GSchemedSkin::RenderToolStrip( GToolStrip* toolbox )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	ToolBarBg.Render(toolbox);
+}
+
+void GSchemedSkin::LayoutToolButton( GToolStripButton* button )
+{
+	ToolButton[0].SetObjectRegion(button);
+}
+
+void GSchemedSkin::RenderToolButton( GToolStripButton* button )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	ToolButton[button->GraphicState].Render(button);
+}
+
+void GSchemedSkin::RenderScrollBarButton( GScrollBarButton* button )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	int graphic = (button->Direction * 4) + button->GraphicState;
+	ScrollbarButtons[graphic].Draw((float)button->ScreenRegion.X,(float)button->ScreenRegion.Y, TColors::White);
+}
+
+void GSchemedSkin::LayoutScrollBarButton( GScrollBarButton* button )
+{
+	button->SetWidth(ScrollbarButtons[0].Width);
+	button->SetHeight(ScrollbarButtons[1].Height);
+}
+
+void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	if (scrollbar->Orientation == SBO_VERTICAL)
+	{
+		ScrollbarBgVertical[scrollbar->GraphicState].Render(scrollbar);
+		ScrollbarDragVertical[scrollbar->DragBar->GraphicState].Render(scrollbar->DragBar); // check if we going to render smallest one
+	}
+	else
+	{
+		ScrollbarBgHorizontal[scrollbar->GraphicState].Render(scrollbar);
+	}
+
+	RenderScrollBarButton(scrollbar->UpButton);
+
+	RenderScrollBarButton(scrollbar->DownButton);
+}
+
+void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
+{
+	LayoutScrollBarButton(scrollbar->UpButton);
+	LayoutScrollBarButton(scrollbar->DownButton);
+
+	if (scrollbar->Orientation == SBO_VERTICAL)
+	{
+		scrollbar->SetWidth(ScrollbarButtons[0].Width);
+		scrollbar->DragBar->SetWidth(scrollbar->Width);	
+		scrollbar->DragBar->SetHeight(50);
+
+		scrollbar->UpButton->SetLeftTop(0,0);
+		scrollbar->DownButton->SetLeftTop(0,scrollbar->Height- scrollbar->DownButton->Height);
+		scrollbar->DragBar->SetLeftTop(0,scrollbar->UpButton->Bottom);
+	}
+	else
+	{
+		throw NotImplementedException();
+	}
+
+	scrollbar->ObjectRegion.SetRectangle(0,0,scrollbar->Width,scrollbar->Height);
 }

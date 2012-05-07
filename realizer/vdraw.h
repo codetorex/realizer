@@ -33,50 +33,49 @@ public:
 		SetTexture( 0 );
 	}
 
-	void Flush();
-
 	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,DefaultDiffuse);
 	}
 
-	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, ui32 color)
+	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, const TColor32& color)
 	{
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
 	}
 
-	inline void DrawQuad(const TRegion& reg,ui32 color )
+	inline void DrawQuad(const TRegion& reg,const TColor32& color )
 	{
 		DrawQuad((float)reg.X,(float)reg.Y,(float)reg.Right,(float)reg.Bottom,0,0,1,1,color);
 	}
 
 
+
 	// TODO: FORMAT THESE LINE DRAWING STUFF TO BETTER SPACE?
 
-	inline void DrawLine(float x0,float y0, float x1,float y1,ui32 color)
+	inline void DrawLine(float x0,float y0, float x1,float y1,const TColor32& color)
 	{
-		if (MeshType != RL_LINELIST)
-		{
-			Flush();
-			MeshType = RL_LINELIST; 
-		}
+		ChangeMeshType(RL_LINELIST);
 
 		SetTexture(0);
 		Add2DVertexColor1Tex(x0,y0,0.0f,0.0f,color);
 		Add2DVertexColor1Tex(x1,y1,0.0f,0.0f,color);
 	}
 
-	void DrawRectangle(float x,float y,float width,float height,ui32 color)
+	void DrawRectangle(float x,float y,float width,float height,const TColor32& color)
 	{
+		int mType = MeshType;
+
 		float r = x + width;
 		float b = y + height;
 		DrawLine(x,y,r,y,color);
 		DrawLine(r,y,r,b,color);
 		DrawLine(r,b,x,b,color);
 		DrawLine(x,b,x,y,color);
+
+		ChangeMeshType(mType);
 	}
 
-	inline void DrawRectangle(const TRegion& reg, ui32 color)
+	inline void DrawRectangle(const TRegion& reg, const TColor32& color)
 	{
 		DrawRectangle((float)reg.X,(float)reg.Y,(float)reg.Width,(float)reg.Height,color);
 	}

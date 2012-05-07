@@ -78,6 +78,7 @@ void GCheckBox::MouseUp( int x, int y, int button )
 				CheckState = CS_Unchecked;
 			}
 		}
+		CheckedChanged.call();
 	}
 }
 

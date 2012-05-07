@@ -67,7 +67,7 @@ void GEditableLine::RenderWithSelection( int x,int y, int caret )
 			}
 
 			// TODO: improve this shit
-			DrawRectangle(startX,0,endX,15,0x7F7F7F7F);
+			DrawRectangle(startX,0,endX,15, TColors::Grey);
 		}
 
 		InternalRender();

@@ -31,8 +31,8 @@ public:
 	void Initialize(TRange* range, int x,int y, int _width,int _height)
 	{
 		SetRectangle(x,y,_width,_height);
-		TopLeftCoord = range->GetRatio((float)x,(float)y);
-		BottomRightCoord = range->GetRatio((float)x+_width,(float)y+_height);
+		TopLeftCoord = range->GetRatio(x,y);
+		BottomRightCoord = range->GetRatio(x+_width,y+_height);
 	}
 
 	inline void Initialize(TRange* range, const TRegion& rect)
@@ -57,7 +57,7 @@ public:
 		SetRectangleFrom(othr);
 	}
 
-	inline void Draw(float x,float y,ui32 color)
+	inline void Draw(float x,float y, const TColor32& color)
 	{
 		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
 	}
@@ -67,7 +67,7 @@ public:
 		Draw(x,y,Engine.Draw.DefaultDiffuse);
 	}
 
-	inline void DrawScaled(float x,float y, float w, float h, ui32 color)
+	inline void DrawScaled(float x,float y, float w, float h,  const TColor32& color)
 	{
 		Engine.Draw.Add2DQuadColor1Tex(x,y,x+w,y+h,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
 	}
@@ -78,7 +78,7 @@ public:
 	}
 
 
-	void DrawCropped(float x,float y, float w,float h,ui32 color)
+	void DrawCropped(float x,float y, float w,float h,const TColor32& color)
 	{
 
 	}
@@ -89,7 +89,7 @@ public:
 	}
 
 
-	void DrawTiled(float x,float y, float w,float h,ui32 color)
+	void DrawTiled(float x,float y, float w,float h,const TColor32& color)
 	{
 
 	}
@@ -129,7 +129,7 @@ public:
 		DrawFunction = 0;
 	}
 
-	typedef void (VTexturePartDefined::*PartDrawFncPtr) (float x,float y,float w,float h,ui32 color);
+	typedef void (VTexturePartDefined::*PartDrawFncPtr) (float x,float y,float w,float h, const TColor32& color);
 	PartDrawFncPtr DrawFunction;
 
 	void SetPartType(PartTypes partType)

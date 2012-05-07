@@ -131,7 +131,18 @@ bool VRendererDX9::InitializeDirect3D()
 rtex VRendererDX9::LoadTextureFromBitmap( TBitmap* bmp, bool automipmap /*= true*/ )
 {
 	LPDIRECT3DTEXTURE9 rt;
-	D3DFORMAT texfmt = (D3DFORMAT)((VTextureFormat*)bmp->BufferFormat)->FormatDescriptor; //BitmapToD3DFormat(bmp->format);
+
+	VTextureFormat* format = (VTextureFormat*)bmp->BufferFormat;
+	if (!format->IsSupported)
+	{
+		if (format->FallbackFormat == NULL)
+		{
+			throw Exception("Bitmap format is not supported for texture: %", sfs(format->ShortName));
+		}
+
+		format = (VTextureFormat*)format->FallbackFormat;
+	}
+	D3DFORMAT texfmt = (D3DFORMAT)(format->FormatDescriptor); //BitmapToD3DFormat(bmp->format);
 	DWORD usg = 0;
 
 	if (automipmap)
@@ -157,19 +168,25 @@ void VRendererDX9::LoadSurfaceFromBitmap( void* surf,TBitmap* bmp )
 
 	// TODO: Check format is capable with d3d device
 
-	//int pix = bmp->PixelCount;
-
-	/*while(pix--)
+	VTextureFormat* BitmapFormat = (VTextureFormat*)bmp->BufferFormat;
+	if (!BitmapFormat->IsSupported)
 	{
-		*(dword*)pdata = *(dword*)bmpdata;
-		pdata+=4;
-		bmpdata+=4;
-	}*/
+		if (BitmapFormat->FallbackFormat == NULL)
+		{
+			throw Exception("Bitmap format is not supported for texture: %", sfs(BitmapFormat->ShortName));
+		}
 
-	//memset(pdata,128,pix * 4);
 
-	
-	MemoryDriver::Copy(pdata,bmpdata, bmp->PixelCount * bmp->BufferFormat->BytesPerItem);
+		Log.Output(LG_WRN,"This format % is not supported, fallback is: %", sfs(BitmapFormat->ShortName), sfs(BitmapFormat->FallbackFormat->ShortName));
+
+
+		TCompositeConverter* Converter = bmp->BufferFormat->GetConverter( BitmapFormat->FallbackFormat );
+		Converter->Convert(bmpdata,pdata, bmp->PixelCount);
+	}
+	else
+	{
+		MemoryDriver::Copy(pdata,bmpdata, bmp->PixelCount * bmp->BufferFormat->BytesPerItem);
+	}
 
 	texturesurface->UnlockRect();
 	texturesurface->Release();
@@ -194,8 +211,8 @@ void VRendererDX9::InitializeFormats()
 	((VTextureFormat*)TextureFormats->fRGBA)->UnSupported(TextureFormats->fBGRA); //D3DFMT_A8R8G8B8
 
 	((VTextureFormat*)TextureFormats->fBGRA)->Supported(D3DFMT_A8R8G8B8); // TextureFormats->fABGR);
-	((VTextureFormat*)TextureFormats->fBGRX)->Supported(D3DFMT_X8R8G8B8);
-	((VTextureFormat*)TextureFormats->fBGR)->UnSupported(TextureFormats->fBGRX);
+	//((VTextureFormat*)TextureFormats->fBGRX)->Supported(D3DFMT_X8R8G8B8);
+	((VTextureFormat*)TextureFormats->fBGR)->UnSupported(TextureFormats->fBGRA);
 	
 
 	/*((VTextureFormat*)TextureFormats->fARGB)->Supported(D3DFMT_A8R8G8B8);

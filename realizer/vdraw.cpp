@@ -2,7 +2,9 @@
 #include "vdraw.h"
 #include "vtexture.h"
 
-void VDraw::Flush()
+
+
+void VVertexStream::Flush()
 {
 	if (Used > 0)
 	{

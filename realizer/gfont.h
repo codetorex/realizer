@@ -41,7 +41,7 @@ public:
 		XAdvance = xadv;
 	}
 
-	inline void DrawCharacter(float x,float y,ui32 color)
+	inline void DrawCharacter(float x,float y, const TColor32& color)
 	{
 		x += XOffset;
 		y += YOffset;

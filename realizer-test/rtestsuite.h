@@ -12,6 +12,7 @@ class GFont;
 class VScene;
 class RTestScene;
 class TMappedKeyboard;
+class GDesktop;
 
 class RTestScene: public VScene
 {
@@ -45,7 +46,7 @@ private:
 	TRegion mreg;
 	TRegion topreg;
 	
-	GObject* OldDesktop;
+	GDesktop* OldDesktop;
 	bool OldEnabled;
 	GObject* OldFocused;
 	bool DebugInputEnabled;
@@ -62,7 +63,7 @@ public:
 	/// Second prerequisite is working Gui skin
 	GSkin* DebugSkin;
 
-	GObject* TestDesktop;
+	GDesktop* TestDesktop;
 	GConsole* TestConsole;
 
 	TArray< RTestScene* > Tests;

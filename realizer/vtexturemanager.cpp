@@ -38,22 +38,8 @@ VTexture* VTextureManager::LoadTexture(const TString& path, bool keepBitmap )
 {
 	TBitmap* Loader = LoadToBitmap(path);
 
-	VTextureFormat* BitmapFormat = (VTextureFormat*)Loader->BufferFormat;
 
 	Log.Output(LG_INF,"Loading texture %", sfs(path));
-
-	if (!BitmapFormat->IsSupported)
-	{
-		if (BitmapFormat->FallbackFormat == NULL)
-		{
-			throw Exception("Bitmap format in (%) is not supported: %",sfs(path), sfs(BitmapFormat->ShortName));
-		}
-
-
-		Log.Output(LG_WRN,"This format % is not supported, fallback is: %", sfs(BitmapFormat->ShortName), sfs(BitmapFormat->FallbackFormat->ShortName));
-
-		Loader->Convert( BitmapFormat->FallbackFormat );
-	}
 
 	VTexture* LoadedTexture = CreateTexture(Loader);
 	LoadedTexture->path = path;
@@ -81,7 +67,7 @@ VTexture* VTextureManager::CreateTexture( TBitmap* source )
 	createdTexture->CreateTexture();
 	Add(createdTexture);
 
-	Log.Output(LG_INF,"Created texture out of bitmap with size of %x%", sfu(source->Width),sfu(source->Height));
+	Log.Output(LG_INF,"Created texture out of bitmap with size of %x% Format:%", sfu(source->Width),sfu(source->Height),sfs(source->BufferFormat->ShortName));
 
 	return createdTexture;
 }

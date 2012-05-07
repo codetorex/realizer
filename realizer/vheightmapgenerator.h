@@ -1,0 +1,7 @@
+#ifndef VHEIGHTMAPGENERATOR_H
+#define VHEIGHTMAPGENERATOR_H
+
+
+
+
+#endif

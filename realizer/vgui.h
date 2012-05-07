@@ -2,6 +2,7 @@
 #define VGUI_H
 
 #include "gobject.h"
+#include "gdesktop.h"
 #include "tkeyboard.h"
 #include "tmouse.h"
 
@@ -24,6 +25,7 @@ public:
 		Desktop = 0;
 		Focused = 0;
 		Enabled = false;
+		ConsoleFont = 0;
 	}
 
 	int X;
@@ -33,18 +35,20 @@ public:
 	/// true means active desktop will capture the input
 	bool Enabled;
 
+
+
 	REngine* Parent;
-	GObject* Desktop;
+	GDesktop* Desktop;
 
 	GObject* Focused;
 
-	void ActivateDesktop(GObject* newDesktop);
+	void ActivateDesktop(GDesktop* newDesktop);
 
-	void InitializeDesktop(GObject* _desktop);
+	void InitializeDesktop(GDesktop* _desktop);
 
-	GObject* CreateDesktop(bool activate)
+	GDesktop* CreateDesktop(bool activate)
 	{
-		GObject* newDesktop = new GObject();
+		GDesktop* newDesktop = new GDesktop();
 		newDesktop->Master = this;
 		if (activate)
 		{
@@ -69,7 +73,7 @@ public:
 		Y = y;
 		ButtonState[button] = true;
 
-		GObject* obj = Desktop->FindObject();
+		GObject* obj = Desktop->FindDesktopObject();
 		if (obj)
 		{
 			obj->SetFocus();
@@ -91,7 +95,7 @@ public:
 	{
 		X = x;
 		Y = y;
-		GObject* obj = Desktop->FindObject();
+		GObject* obj = Desktop->FindDesktopObject();
 		if (obj)
 		{
 			obj->MouseWheel(x - obj->ScreenRegion.X,y - obj->ScreenRegion.Y,delta);
@@ -118,19 +122,19 @@ public:
 	* @param defSkin if desktopObj is going to be created, this param will be its skin
 	* @param desktopObj activates this desktop, if 0 then checks if no desktop then creates new and activates it.
 	*/
-	void EnableGUI(GSkin* defSkin = 0,GObject* desktopObj = 0);
+	void EnableGUI(GSkin* defSkin = 0,GDesktop* desktopObj = 0);
 
 	/**
 	* Removes this from MouseObservation and KeyboardObservation.
 	*/
 	void DisableGUI();
 
-	inline void RenderDesktop(GObject* dsktp)
+	inline void RenderDesktop(GDesktop* dsktp)
 	{
 		dsktp->MouseInside = true;
 		dsktp->Update();
 
-		GObject* obj = dsktp->FindObject();
+		GObject* obj = dsktp->FindDesktopObject();
 		if (obj)
 		{
 			obj->MouseMove(X - obj->ScreenRegion.X, Y - obj->ScreenRegion.Y);

@@ -325,7 +325,7 @@ public:
 
 	void KeyPress(ui32 keyID);
 
-	void DrawBg(float x,float y, ui32 color);
+	void DrawBg(float x,float y,  const TColor32& color);
 
 	void Render();
 };

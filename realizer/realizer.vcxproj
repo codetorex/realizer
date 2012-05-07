@@ -101,6 +101,7 @@
     <ClInclude Include="gcheckbox.h" />
     <ClInclude Include="gcomponents.h" />
     <ClInclude Include="gconsole.h" />
+    <ClInclude Include="gdesktop.h" />
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
@@ -108,7 +109,13 @@
     <ClInclude Include="gfontcache.h" />
     <ClInclude Include="gfontloader.h" />
     <ClInclude Include="gfontmanager.h" />
+    <ClInclude Include="gimage.h" />
+    <ClInclude Include="gimagelist.h" />
     <ClInclude Include="glabel.h" />
+    <ClInclude Include="glayout.h" />
+    <ClInclude Include="gdropdown.h" />
+    <ClInclude Include="gmenuitem.h" />
+    <ClInclude Include="gmenustrip.h" />
     <ClInclude Include="gobject.h" />
     <ClInclude Include="gprogressbar.h" />
     <ClInclude Include="gquad.h" />
@@ -119,6 +126,8 @@
     <ClInclude Include="gtextbox.h" />
     <ClInclude Include="gtextboxbase.h" />
     <ClInclude Include="gtimer.h" />
+    <ClInclude Include="gtoolstrip.h" />
+    <ClInclude Include="gscrollbar.h" />
     <ClInclude Include="gwindow.h" />
     <ClInclude Include="gwireframeskin.h" />
     <ClInclude Include="realizer.h" />
@@ -132,6 +141,8 @@
     <ClInclude Include="vanimationbuilder.h" />
     <ClInclude Include="vanimationmulti.h" />
     <ClInclude Include="vanimationsimple.h" />
+    <ClInclude Include="vnodeterrain.h" />
+    <ClInclude Include="vplantgenerator.h" />
     <ClInclude Include="vscenelayered.h" />
     <ClInclude Include="vnodeanimation.h" />
     <ClInclude Include="vnodecanvas.h" />
@@ -146,6 +157,7 @@
     <ClInclude Include="vscenemanager.h" />
     <ClInclude Include="gskinmanager.h" />
     <ClInclude Include="vscenerender.h" />
+    <ClInclude Include="vheightmapgenerator.h" />
     <ClInclude Include="vtexture.h" />
     <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
@@ -154,6 +166,7 @@
     <ClInclude Include="vvertexbuffer.h" />
     <ClInclude Include="vvertexbufferformat.h" />
     <ClInclude Include="vvertexstream.h" />
+    <ClInclude Include="vworldgenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cengine.cpp" />
@@ -162,22 +175,31 @@
     <ClCompile Include="gbutton.cpp" />
     <ClCompile Include="gcheckbox.cpp" />
     <ClCompile Include="gconsole.cpp" />
+    <ClCompile Include="gdeskop.cpp" />
+    <ClCompile Include="gdropdown.cpp" />
     <ClCompile Include="gfont.cpp" />
     <ClCompile Include="gfontbmf.cpp" />
     <ClCompile Include="gfontcache.cpp" />
     <ClCompile Include="gfontloader.cpp" />
     <ClCompile Include="gfontmanager.cpp" />
+    <ClCompile Include="gimage.cpp" />
+    <ClCompile Include="gimagelist.cpp" />
     <ClCompile Include="glabel.cpp" />
+    <ClCompile Include="glayout.cpp" />
+    <ClCompile Include="gmenuitem.cpp" />
+    <ClCompile Include="gmenustrip.cpp" />
     <ClCompile Include="gobject.cpp" />
     <ClCompile Include="gprogressbar.cpp" />
     <ClCompile Include="gquad.cpp" />
     <ClCompile Include="gradiobutton.cpp" />
     <ClCompile Include="gschemedskin.cpp" />
     <ClCompile Include="gschemedskinbuilder.cpp" />
+    <ClCompile Include="gscrollbar.cpp" />
     <ClCompile Include="gskinmanager.cpp" />
     <ClCompile Include="gtextbox.cpp" />
     <ClCompile Include="gtextboxbase.cpp" />
     <ClCompile Include="gtimer.cpp" />
+    <ClCompile Include="gtoolstrip.cpp" />
     <ClCompile Include="gwindow.cpp" />
     <ClCompile Include="gwireframeskin.cpp" />
     <ClCompile Include="realizer.cpp">
@@ -209,6 +231,7 @@
     <ClCompile Include="vvertexbuffer.cpp" />
     <ClCompile Include="vvertexbufferformat.cpp" />
     <ClCompile Include="vvertexstream.cpp" />
+    <ClCompile Include="vworldgenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="important.txt" />

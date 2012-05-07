@@ -73,6 +73,9 @@
     <Filter Include="Source Files\Visual\Scene\Nodes">
       <UniqueIdentifier>{99ad0765-aff8-4772-92cf-cd63ed3ceb99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Tools\Content">
+      <UniqueIdentifier>{596d26ca-8f26-4f3d-8213-2fe65d95787b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -285,6 +288,45 @@
     <ClInclude Include="vnode.h">
       <Filter>Source Files\Visual\Scene\Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="vnodeterrain.h">
+      <Filter>Source Files\Visual\Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="vheightmapgenerator.h">
+      <Filter>Source Files\Tools\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="vworldgenerator.h">
+      <Filter>Source Files\Tools\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="vplantgenerator.h">
+      <Filter>Source Files\Tools\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="gmenustrip.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="glayout.h">
+      <Filter>Source Files\Visual\GUI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="gdropdown.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gdesktop.h">
+      <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="gmenuitem.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gimagelist.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gimage.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gtoolstrip.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="gscrollbar.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -415,6 +457,36 @@
     </ClCompile>
     <ClCompile Include="vnodeanimation.cpp">
       <Filter>Source Files\Visual\Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="vworldgenerator.cpp">
+      <Filter>Source Files\Tools\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="gmenustrip.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="glayout.cpp">
+      <Filter>Source Files\Visual\GUI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="gdropdown.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gmenuitem.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gimagelist.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gimage.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gtoolstrip.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gdeskop.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gscrollbar.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

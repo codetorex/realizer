@@ -80,6 +80,8 @@
   <ItemGroup>
     <ClInclude Include="rtestsuite.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="test_enginecolor.h" />
+    <ClInclude Include="test_gui.h" />
     <ClInclude Include="test_texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +91,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="test_enginecolor.cpp" />
+    <ClCompile Include="test_gui.cpp" />
     <ClCompile Include="test_texture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -11,7 +11,7 @@ class GScalableQuadParted
 public:
 	GScalableQuadParted()
 	{
-		CenterColor = 0xFFFFFFFF;
+		CenterColor = TColors::White;
 	}
 
 	// Static Corners
@@ -30,6 +30,21 @@ public:
 	ui32 CenterColor;
 
 	void Render(GObject* obj);
+
+	inline int GetHeightSpace(int totalHeight)
+	{
+		return totalHeight - (Top.Height + Bottom.Height);
+	}
+
+	inline int GetWidthSpace(int totalWidth)
+	{
+		return totalWidth - (Left.Width + Right.Width);
+	}
+
+	/**
+	 * Adjusts empty space of the object accordingly margins used by skin.
+	 */
+	void SetObjectRegion(GObject* obj);
 };
 
 /**
@@ -64,6 +79,21 @@ public:
 	void Render(TRegion* region);
 
 	void RenderLeftOnly(TRegion* region);
+
+	inline int GetHeightSpace(int totalHeight)
+	{
+		return totalHeight - (TopMargin + BottomMargin);
+	}
+
+	inline int GetWidthSpace(int totalWidth)
+	{
+		return totalWidth - (LeftMargin + RightMargin);
+	}
+
+	/**
+	 * Adjusts empty space of the object accordingly margins used by skin.
+	 */
+	void SetObjectRegion(GObject* obj);
 };
 
 /**

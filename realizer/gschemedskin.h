@@ -20,6 +20,7 @@ class GSchemedSkin: public GSkin
 {
 public:
 	VTexture* SkinTexture;
+	TPackedRectangle* Pack;
 
 	VTexturePart WhitePart;
 
@@ -39,6 +40,27 @@ public:
 	GScalableQuad ProgressBarBlock;
 
 	GScalableQuad SunkEdge[4];
+
+	GScalableQuad MenuBarBg[2];
+	
+	GScalableQuad ToolBarBg;
+
+	GScalableQuad DropDownBg;
+
+	GScalableQuad MenuItemBg[5];
+
+	GScalableQuad MenuBarButton[5];
+
+	GScalableQuad ToolButton[6];
+
+	VTexturePart ScrollbarButtons[23];
+	GScalableQuad ScrollbarBgHorizontal[4];
+	GScalableQuad ScrollbarBgVertical[4];
+	GScalableQuad ScrollbarDragHorizontal[3];
+	GScalableQuad ScrollbarDragVertical[3];
+	GScalableQuad ScrollbarDragHorizontalSmall[3];
+	GScalableQuad ScrollbarDragVerticalSmall[3];
+
 
 
 	void SaveSkin(const TString& path);
@@ -63,6 +85,33 @@ public:
 	void RenderTextBox(GTextBox* textbox);
 
 	void RenderSunkEdge(GObject* object);
+
+	void RenderMenuStrip(GMenuStrip* menustrip);
+
+	void RenderDropDown(GDropDown* dropdown);
+
+	void LayoutDropDown(GDropDown* dropdown);
+
+	void RenderMenuItem(GMenuItem* menuItem);
+
+	void RenderMenuStripItem(GMenuItem* menuItem);
+
+	void LayoutMenuStripItem(GMenuItem* menuItem);
+
+	void RenderToolStrip(GToolStrip* toolbox);
+
+	void RenderToolButton(GToolStripButton* button);
+
+	void LayoutToolButton(GToolStripButton* button);
+
+	void RenderScrollBar(GScrollBar* scrollbar);
+
+	void LayoutScrollBar(GScrollBar* scrollbar);
+
+private:
+	void RenderScrollBarButton( GScrollBarButton* button );
+	void LayoutScrollBarButton( GScrollBarButton* button );
+
 };
 
 

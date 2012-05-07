@@ -82,7 +82,7 @@ void GObject::Render()
 void GObject::Update()
 {
 	GObject* p = (GObject*)Parent;
-	ScreenRegion.SetSize(p->ScreenRegion.X + X,p->ScreenRegion.Y + Y,Width,Height);
+	ScreenRegion.SetSize(p->ScreenRegion.X + X + p->ObjectRegion.X,p->ScreenRegion.Y + Y + p->ObjectRegion.Y,Width,Height);
 
 	GObject* curObj = FirstItem;
 	int i = ItemCount;
@@ -95,6 +95,7 @@ void GObject::Update()
 		curObj = curObj->NextItem;
 	}
 }
+
 
 /*bool GObject::DeliverMove()
 {
@@ -170,21 +171,21 @@ GObject* GObject::FindObject()
 		}
 		else
 		{
-			if (MouseInside)
+			/*if (MouseInside)
 			{
 				MouseEntered = false;
 				MouseExit();
-			}
+			}*/
 			MouseInside = false;
 		}
 	}
 	else
 	{
-		if (MouseInside)
+		/*if (MouseInside)
 		{
 			MouseEntered = false;
 			MouseExit();
-		}
+		}**/
 		MouseInside = false;
 	}
 
@@ -207,11 +208,11 @@ GObject* GObject::FindObject()
 	{
 		if (MouseInside)
 		{
-			if (!MouseEntered)
+			/*if (!MouseEntered)
 			{
 				MouseEntered = true;
 				MouseEnter();
-			}
+			}*/
 			// else?
 			return this;
 		}

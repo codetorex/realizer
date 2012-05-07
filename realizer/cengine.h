@@ -12,10 +12,11 @@
 #include "cloader.h"
 #include "ccommand.h"
 #include "cresourcemanager.h"
+#include "cextension.h"
 
 
 /**
-* Main Realizer engine block.
+* Main Realizer engine block. FAÇADE
 */
 class RDLL REngine
 {
@@ -37,6 +38,7 @@ public:
 	VGUI				GUI;
 	CCommandManager		Command;
 	CResourceManager	Resources;
+	CExtensionManager	Extensions;
 
 	//CMemoryManager	Memory; // for managing memory easily.
 	//TResourceManager	Resources; // GOOD FOR DELAYED LOADING OF ITEMS AND KEEP TRACKING WHAT LOADED WHAT UNLOADED
