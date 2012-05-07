@@ -34,7 +34,7 @@ void GSchemedSkin::LayoutWindow( GWindow* window )
 void GSchemedSkin::RenderButton( GButton* button )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	ButtonQuad[button->GraphicState].Render(button);
+	ButtonQuad[button->ButtonGraphic].Render(button);
 
 	button->Font->Render(button->Text,button->ScreenRegion,button->TextAlign,button->ForeColor,0,-1);
 }
