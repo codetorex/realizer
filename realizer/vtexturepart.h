@@ -50,10 +50,10 @@ public:
 		Initialize(range,source->X + xOffset,source->Y + yOffset,source->Width,source->Height);
 	}
 
-	inline void Initialize(VTexturePart* othr)
+	inline void Initialize(const VTexturePart& othr)
 	{
-		TopLeftCoord = othr->TopLeftCoord;
-		BottomRightCoord = othr->BottomRightCoord;
+		TopLeftCoord = othr.TopLeftCoord;
+		BottomRightCoord = othr.BottomRightCoord;
 		SetRectangleFrom(othr);
 	}
 

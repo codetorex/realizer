@@ -214,9 +214,9 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 
 	}
 
-	Skin->WindowQuad[0].Center.Initialize(whitePart);
+	Skin->WindowQuad[0].Center.Initialize(*whitePart);
 	Skin->WindowQuad[0].CenterColor = Colors.ButtonFace;
-	Skin->WindowQuad[1].Center.Initialize(whitePart);
+	Skin->WindowQuad[1].Center.Initialize(*whitePart);
 	Skin->WindowQuad[1].CenterColor = Colors.ButtonFace;
 	Skin->ButtonFaceWindowBackgroundColor = Colors.ButtonFace;
 
@@ -383,13 +383,27 @@ void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData , bool
 
 void GSchemedSkinBuilder::LoadCheckBox( const GSchemeLayer& checkboxData )
 {
-	LoadGeneric(checkboxData,12,Skin->CheckBoxQuad);
+	VTexturePart checkbox[12];
+	LoadGeneric(checkboxData,12,checkbox);
+
+	for (int i= 0;i<3;i++)
+	{
+		ui32 order[] = {GBG_NORMAL,GBG_OVER, GBG_DOWN,GBG_DISABLED};
+		Skin->CheckBoxGfx[i].Load(checkbox + (i * 4),order,4);
+	}
 }
 
 
 void GSchemedSkinBuilder::LoadRadio( const GSchemeLayer& radioData )
 {
-	LoadGeneric(radioData,8,Skin->RadioQuad);
+	VTexturePart radio[8];
+	LoadGeneric(radioData,8,radio);
+
+	for (int i= 0;i<2;i++)
+	{
+		ui32 order[] = {GBG_NORMAL,GBG_OVER, GBG_DOWN,GBG_DISABLED};
+		Skin->RadioGfx[i].Load(radio + (i * 4),order,4);
+	}
 }
 
 void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imagecount, VTexturePart* output )
@@ -464,19 +478,10 @@ void GSchemedSkinBuilder::LoadToolStripButton( const GSchemeLayer& buttonData )
 
 void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 {
-	TBitmap* image = Engine.Textures.LoadToBitmap(*buttonData.ImagePath);
-	VTexturePart* sub = InsertImage(image);
-
-	int partWidth = sub->Width / 5; // there is 5 different pictures
-	TRegion tmpRegion;
-	tmpRegion.SetFrom( sub );
-	tmpRegion.SetWidth( partWidth );
-	for (int i=0;i<5;i++)
-	{
-		buttonData.CopyTo(&Skin->ButtonQuad[i]);
-		Skin->ButtonQuad[i].Initialize(SkinBitmap, tmpRegion);
-		tmpRegion.SetLeftRelative(partWidth); // increment x of region
-	}
+	GScalableQuad butquads[5];
+	LoadGeneric(buttonData,5,butquads);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN, GBG_DISABLED, GBG_OVER,GBG_FOCUSED};
+	Skin->ButtonGfx.Load(butquads,order,5);
 
 	if (buttonData.UseOSFont == 1)
 	{
@@ -503,8 +508,6 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 		Skin->ButtonFont[3] = GetNumberedEngineFont(buttonData.FocusFont);
 		Skin->ButtonFont[4] = GetNumberedEngineFont(buttonData.DefaultFont);
 	}*/
-
-	delete image;
 }
 
 VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
@@ -695,36 +698,62 @@ void GSchemedSkinBuilder::LoadFontsAndColors()
 
 void GSchemedSkinBuilder::LoadScrollbarButtons( const GSchemeLayer& buttonData )
 {
-	LoadGeneric(buttonData,23,Skin->ScrollbarButtons);
+	VTexturePart sbut[23];
+	LoadGeneric(buttonData,23,sbut);
+
+	for (int i= 0;i<6;i++)
+	{
+		ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+		Skin->ScrollbarButtonGfx[i].Load(sbut + (i * 4),order,4);
+	}
+
+	Skin->SizingCorner.Initialize(sbut[22]);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarBgH( const GSchemeLayer& bgData )
 {
-	LoadGeneric(bgData,4,Skin->ScrollbarBgHorizontal);
+	GScalableQuad sbg[4];
+	LoadGeneric(bgData,4,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->ScrollbarBgHGfx.Load(sbg,order,4);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarBgV( const GSchemeLayer& bgData )
 {
-	LoadGeneric(bgData,4,Skin->ScrollbarBgVertical);
+	GScalableQuad sbg[4];
+	LoadGeneric(bgData,4,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->ScrollbarBgVGfx.Load(sbg,order,4);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragH( const GSchemeLayer& dragData )
 {
-	LoadGeneric(dragData,3,Skin->ScrollbarDragHorizontal);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragHGfx.Load(sbg,order,3);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragV( const GSchemeLayer& dragData )
 {
-	LoadGeneric(dragData,3,Skin->ScrollbarDragVertical);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragVGfx.Load(sbg,order,3);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragHSmall( const GSchemeLayer& dragsData )
 {
-	LoadGeneric(dragsData,3,Skin->ScrollbarDragHorizontalSmall);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragsData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragSmallHGfx.Load(sbg,order,3);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragVSmall( const GSchemeLayer& dragsData )
 {
-	LoadGeneric(dragsData,3,Skin->ScrollbarDragVerticalSmall);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragsData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragSmallVGfx.Load(sbg,order,3);
 }
-

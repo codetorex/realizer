@@ -1,22 +1,18 @@
 #ifndef GBUTTON_H
 #define GBUTTON_H
 
-#include "gobject.h"
+#include "gbuttonbase.h"
 
-class GButton: public GObject
+class GButton: public GButtonBase
 {
 public:
 	GButton();
 
-	void MouseExit();
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
-
 	event<NoArgEvent> Click;
 
-	void Render();
+	void Clicked(int x, int y, int button);
 
-	int GraphicState;
+	void Render();
 };
 
 #endif

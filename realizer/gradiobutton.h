@@ -1,19 +1,14 @@
 #ifndef GRADIOBUTTON_H
 #define GRADIOBUTTON_H
 
-#include "gobject.h"
+#include "gbuttonbase.h"
 
-class GRadioButton: public GObject
+class GRadioButton: public GButtonBase
 {
-private:
-	inline void SetGraphicState(GenericGraphicState id);
-
 public:
 	GRadioButton();
 
-	void MouseMove(int x, int y);
-	void MouseExit();
-	void MouseUp(int x, int y, int button);
+	void Clicked(int x, int y, int button);
 
 	void Render();
 
@@ -21,8 +16,6 @@ public:
 
 	bool Checked;
 	ContentAlignment CheckAlign;
-
-	int GraphicState;
 };
 
 #endif

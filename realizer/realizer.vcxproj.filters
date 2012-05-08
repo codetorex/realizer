@@ -327,6 +327,9 @@
     <ClInclude Include="gscrollbar.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
+    <ClInclude Include="gbuttonbase.h">
+      <Filter>Source Files\Visual\GUI\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -487,6 +490,9 @@
     </ClCompile>
     <ClCompile Include="gscrollbar.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gbuttonbase.cpp">
+      <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

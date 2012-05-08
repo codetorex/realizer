@@ -7,82 +7,19 @@
 
 GScrollBarDrag::GScrollBarDrag()
 {
-	GraphicState = 0;
 	ClassID = GSCROLLBARDRAG_CLASSID;
 }
 
-void GScrollBarDrag::MouseMove( int x,int y )
+void GScrollBarDrag::Clicked( int x, int y, int button )
 {
-	if (Master->Focused == this)
-	{
-		if (Master->ButtonState[0] && MouseInside)
-		{
-			GraphicState = 1;
-		}
-		else
-		{
-			GraphicState = 2;
-		}
-	}
-	else
-	{
-		GraphicState = 2;
-	}
-}
 
-void GScrollBarDrag::MouseExit()
-{
-	GraphicState = 0;
 }
-
-void GScrollBarDrag::MouseUp( int x,int y,int button )
-{
-	if (MouseInside)
-	{
-		
-	}
-}
-
 
 GScrollBarButton::GScrollBarButton()
 {
 	Direction = BD_LEFT;
-	GraphicState = 0;
 	ClassID = GSCROLLBARBUTTON_CLASSID;
 }
-
-void GScrollBarButton::MouseMove( int x,int y )
-{
-	if (Master->Focused == this)
-	{
-		if (Master->ButtonState[0] && MouseInside)
-		{
-			GraphicState = 1;
-		}
-		else
-		{
-			GraphicState = 3;
-		}
-	}
-	else
-	{
-		GraphicState = 3;
-	}
-}
-
-void GScrollBarButton::MouseExit()
-{
-	GraphicState = 0;
-}
-
-void GScrollBarButton::MouseUp( int x,int y,int button )
-{
-	if (MouseInside)
-	{
-		Clicked();
-	}
-}
-
 
 class GScrollBarButtonUp: public GScrollBarButton
 {
@@ -92,7 +29,7 @@ public:
 		Direction = BD_UP;
 	}
 
-	void Clicked()
+	void Clicked(int x, int y, int button)
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 		p->Value -= p->SmallChange;
@@ -111,7 +48,7 @@ public:
 		Direction = BD_DOWN;
 	}
 
-	void Clicked()
+	void Clicked(int x, int y, int button)
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 		p->Value += p->SmallChange;
@@ -135,7 +72,6 @@ GScrollBar::GScrollBar()
 	DownButton = new GScrollBarButtonDown();
 	DragBar = new GScrollBarDrag();
 	Orientation = SBO_VERTICAL;
-	GraphicState = 0;
 }
 
 void GScrollBar::Render()
@@ -155,35 +91,8 @@ void GScrollBar::Layout()
 	Skin->LayoutScrollBar(this);
 }
 
-void GScrollBar::MouseMove( int x,int y )
+void GScrollBar::Clicked( int x, int y, int button )
 {
-	if (Master->Focused == this)
-	{
-		if (Master->ButtonState[0] && MouseInside)
-		{
-			GraphicState = 1;
-		}
-		else
-		{
-			GraphicState = 3;
-		}
-	}
-	else
-	{
-		GraphicState = 3;
-	}
+	// check the click poisition and add or subtract large change to there
 }
 
-void GScrollBar::MouseExit()
-{
-	GraphicState = 0;
-}
-
-void GScrollBar::MouseUp( int x,int y,int button )
-{
-	if (MouseInside)
-	{
-		// check if y is in upper part of the drag sub large change
-		// if its lower than drag add large change
-	}
-}

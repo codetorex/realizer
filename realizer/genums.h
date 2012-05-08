@@ -29,6 +29,7 @@ enum GUIClassID
 	GOBJECT_CLASSID,
 	GDESKTOP_CLASSID,
 	GWINDOW_CLASSID,
+	GBUTTONBASE_CLASSID,
 	GBUTTON_CLASSID,
 	GLABEL_CLASSID,
 	GCHECKBOX_CLASSID,
@@ -60,7 +61,7 @@ enum GenericGraphicState
 	GGS_NORMAL,
 	GGS_OVER,
 	GGS_DOWN,
-	GGS_DISABLED, // TODO: do this
+	GGS_DISABLED,
 };
 
 enum GItemDrawStyles
@@ -70,6 +71,14 @@ enum GItemDrawStyles
 	GDS_IMAGETEXT = 3,
 };
 
+enum GButtonGraphics
+{
+	GBG_NORMAL,
+	GBG_OVER,
+	GBG_DOWN,
+	GBG_DISABLED,
+	GBG_FOCUSED,
+};
 
 
 #endif

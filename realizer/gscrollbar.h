@@ -1,9 +1,9 @@
 #ifndef GSCROLLBAR_H
 #define GSCROLLBAR_H
 
-#include "gobject.h"
+#include "gbuttonbase.h"
 
-class GScrollBarButton: public GObject
+class GScrollBarButton: public GButtonBase
 {
 public:
 	enum SButtonDirection
@@ -12,18 +12,13 @@ public:
 		BD_RIGHT,
 		BD_UP,
 		BD_DOWN,
+		/*BD_HORIZONTALDOT, // these are not really used but loaded in schemed skin
+		BD_VERTICALDOT,*/
 	};
 
 	GScrollBarButton();
 
-	void MouseExit();
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
-
-	virtual void Clicked() = 0;
-
 	SButtonDirection Direction;
-	int GraphicState;
 };
 
 enum GScrollBarOrientation
@@ -32,21 +27,17 @@ enum GScrollBarOrientation
 	SBO_HORIZONTAL,
 };
 
-class GScrollBarDrag: public GObject
+class GScrollBarDrag: public GButtonBase
 {
 public:
 	GScrollBarOrientation Orientation;
 
 	GScrollBarDrag();
 
-	void MouseExit();
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
-
-	int GraphicState;
+	void Clicked(int x, int y, int button);
 };
 
-class GScrollBar: public GObject
+class GScrollBar: public GButtonBase
 {
 public:
 	GScrollBarButton* UpButton;
@@ -66,17 +57,14 @@ public:
 	
 	GScrollBarOrientation Orientation;
 
-	void MouseExit();
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
+
+	void Clicked(int x, int y, int button);
 
 	// event<IntEvent> OnValueChange;
 
 	void Render();
 
 	void Layout();
-
-	int GraphicState;
 };
 
 

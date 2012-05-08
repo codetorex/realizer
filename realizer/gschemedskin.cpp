@@ -34,7 +34,8 @@ void GSchemedSkin::LayoutWindow( GWindow* window )
 void GSchemedSkin::RenderButton( GButton* button )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	ButtonQuad[button->GraphicState].Render(button);
+	ButtonGfx.Render(button);
+	//ButtonQuad[button->ButtonGraphic].Render(button);
 
 	button->Font->Render(button->Text,button->ScreenRegion,button->TextAlign,button->ForeColor,0,-1);
 }
@@ -48,17 +49,18 @@ void GSchemedSkin::RenderLabel( GLabel* label )
 void GSchemedSkin::RenderCheckBox( GCheckBox* checkbox )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	checkbox->Height = CheckBoxQuad[0].Height; // TODO: fix this and use checkalign
-	CheckBoxQuad[checkbox->GraphicState].Draw((float)checkbox->ScreenRegion.X,(float)checkbox->ScreenRegion.Y,0xFFFFFFFF);
-	checkbox->Font->Render(checkbox->Text,checkbox->ScreenRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxQuad[0].Width+5,-1);
+	//checkbox->Height = CheckBoxQuad[0].Height; // TODO: fix this and use checkalign
+	CheckBoxGfx[checkbox->CheckState].Render(checkbox);
+	checkbox->Font->Render(checkbox->Text,checkbox->ScreenRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxGfx[0].Width+5,-1);
 }
 
 void GSchemedSkin::RenderRadioButton( GRadioButton* radiobutton )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	radiobutton->Height = RadioQuad[0].Height; // TODO: fix this and use checkalign
-	RadioQuad[radiobutton->GraphicState].Draw((float)radiobutton->ScreenRegion.X,(float)radiobutton->ScreenRegion.Y,0xFFFFFFFF);
-	radiobutton->Font->Render(radiobutton->Text,radiobutton->ScreenRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioQuad[0].Width+5,-1);
+	//radiobutton->Height = RadioQuad[0].Height; // TODO: fix this and use checkalign
+	//RadioQuad[radiobutton->GraphicState].Draw((float)radiobutton->ScreenRegion.X,(float)radiobutton->ScreenRegion.Y,0xFFFFFFFF);
+	RadioGfx[radiobutton->Checked ? 1 : 0].Render(radiobutton);
+	radiobutton->Font->Render(radiobutton->Text,radiobutton->ScreenRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioGfx[0].Width+5,-1);
 }
 
 void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
@@ -166,14 +168,13 @@ void GSchemedSkin::RenderToolButton( GToolStripButton* button )
 void GSchemedSkin::RenderScrollBarButton( GScrollBarButton* button )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	int graphic = (button->Direction * 4) + button->GraphicState;
-	ScrollbarButtons[graphic].Draw((float)button->ScreenRegion.X,(float)button->ScreenRegion.Y, TColors::White);
+	ScrollbarButtonGfx[button->Direction].Render(button);
 }
 
 void GSchemedSkin::LayoutScrollBarButton( GScrollBarButton* button )
 {
-	button->SetWidth(ScrollbarButtons[0].Width);
-	button->SetHeight(ScrollbarButtons[1].Height);
+	button->SetWidth(ScrollbarButtonGfx[0].Width);
+	button->SetHeight(ScrollbarButtonGfx[1].Height);
 }
 
 void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
@@ -181,12 +182,12 @@ void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
 	Engine.Draw.SetTexture(SkinTexture);
 	if (scrollbar->Orientation == SBO_VERTICAL)
 	{
-		ScrollbarBgVertical[scrollbar->GraphicState].Render(scrollbar);
-		ScrollbarDragVertical[scrollbar->DragBar->GraphicState].Render(scrollbar->DragBar); // check if we going to render smallest one
+		ScrollbarBgVGfx.Render(scrollbar);
+		ScrollbarDragVGfx.Render(scrollbar->DragBar); // check if we going to render smallest one
 	}
 	else
 	{
-		ScrollbarBgHorizontal[scrollbar->GraphicState].Render(scrollbar);
+		ScrollbarBgHGfx.Render(scrollbar);
 	}
 
 	RenderScrollBarButton(scrollbar->UpButton);
@@ -201,7 +202,7 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 
 	if (scrollbar->Orientation == SBO_VERTICAL)
 	{
-		scrollbar->SetWidth(ScrollbarButtons[0].Width);
+		scrollbar->SetWidth(ScrollbarButtonGfx[0].Width);
 		scrollbar->DragBar->SetWidth(scrollbar->Width);	
 		scrollbar->DragBar->SetHeight(50);
 
