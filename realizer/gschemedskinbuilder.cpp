@@ -487,6 +487,9 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 		Skin->ButtonFont = GetNumberedEngineFont(buttonData.NormalFont);
 	}
 
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN, GBG_DISABLED, GBG_OVER,GBG_FOCUSED};
+	SortQuads(Skin->ButtonQuad,order,5);
+
 	/*if (buttonData.UseOSFont == 1)
 	{
 		GFont* systemFont = GetNumberedEngineFont(0,FK_SYSTEMFONTS);
@@ -506,6 +509,14 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 
 	delete image;
 }
+
+#include "tsort.h"
+
+void GSchemedSkinBuilder::SortQuads( GScalableQuad* output, ui32* currentOrder, int imagecount )
+{
+	TSortBubble::Instance.SortObjects(output,sizeof(GScalableQuad),currentOrder,imagecount);
+}
+
 
 VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 {

@@ -3,14 +3,7 @@
 
 #include "gobject.h"
 
-enum GButtonGraphics
-{
-	GBG_NORMAL,
-	GBG_OVER,
-	GBG_DOWN,
-	GBG_DISABLED,
-	GBG_FOCUSED,
-};
+
 
 class GButtonBase: public GObject
 {

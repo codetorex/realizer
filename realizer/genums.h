@@ -71,6 +71,14 @@ enum GItemDrawStyles
 	GDS_IMAGETEXT = 3,
 };
 
+enum GButtonGraphics
+{
+	GBG_NORMAL,
+	GBG_OVER,
+	GBG_DOWN,
+	GBG_DISABLED,
+	GBG_FOCUSED,
+};
 
 
 #endif

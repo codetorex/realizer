@@ -57,6 +57,18 @@ void GScalableQuad::Initialize( TRange* textureRange, const TRegion& rect )
 	TextureCoords[7] = textureRange->GetYRatio((float)rect.Top);
 }
 
+void GScalableQuad::Initialize( const GScalableQuad& other )
+{
+	for (int i=0;i<8;i++)
+	{
+		TextureCoords[i] = other.TextureCoords[i];
+	}
+	LeftMargin = other.LeftMargin;
+	RightMargin = other.RightMargin;
+	TopMargin = other.TopMargin;
+	BottomMargin = other.BottomMargin;
+}
+
 void GScalableQuad::Render( GObject* obj )
 {
 	TRegion tmpRegion;
@@ -131,4 +143,12 @@ void GScalableQuad::RenderLeftOnly( TRegion* region )
 void GScalableQuad::SetObjectRegion( GObject* obj )
 {
 	obj->ObjectRegion.SetRectangle(LeftMargin,RightMargin,GetWidthSpace(obj->Width), GetHeightSpace(obj->Height));
+}
+
+void GScalableQuad::Swap( GScalableQuad& other )
+{
+	GScalableQuad tmp;
+	tmp.Initialize(*this);
+	Initialize(other);
+	other.Initialize(tmp);
 }

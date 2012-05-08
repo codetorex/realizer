@@ -69,6 +69,10 @@ public:
 	*/
 	void Initialize(TRange* textureRange, const TRegion& rect);
 
+	void Initialize(const GScalableQuad& other);
+
+	void Swap(GScalableQuad& other);
+
 	/**
 	* Rotates texture coordinates, so resulting image will be look like rotated.
 	*/

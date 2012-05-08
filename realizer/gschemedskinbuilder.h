@@ -371,6 +371,8 @@ public:
 		LoadGeneric(data,1,output);
 	}
 
+	void SortQuads				(GScalableQuad* output, ui32* currentOrder, int imagecount);
+
 	void LoadFontsAndColors();
 
 	GSchemeFont* GetNumberedFont(int fontID, FontKinds fontKind );
