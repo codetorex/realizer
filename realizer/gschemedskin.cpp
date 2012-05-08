@@ -34,7 +34,8 @@ void GSchemedSkin::LayoutWindow( GWindow* window )
 void GSchemedSkin::RenderButton( GButton* button )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	ButtonQuad[button->ButtonGraphic].Render(button);
+	ButtonGfx.Render(button);
+	//ButtonQuad[button->ButtonGraphic].Render(button);
 
 	button->Font->Render(button->Text,button->ScreenRegion,button->TextAlign,button->ForeColor,0,-1);
 }
@@ -48,17 +49,18 @@ void GSchemedSkin::RenderLabel( GLabel* label )
 void GSchemedSkin::RenderCheckBox( GCheckBox* checkbox )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	checkbox->Height = CheckBoxQuad[0].Height; // TODO: fix this and use checkalign
-	CheckBoxQuad[checkbox->GraphicState].Draw((float)checkbox->ScreenRegion.X,(float)checkbox->ScreenRegion.Y,0xFFFFFFFF);
-	checkbox->Font->Render(checkbox->Text,checkbox->ScreenRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxQuad[0].Width+5,-1);
+	//checkbox->Height = CheckBoxQuad[0].Height; // TODO: fix this and use checkalign
+	CheckBoxGfx[checkbox->CheckState].Render(checkbox);
+	checkbox->Font->Render(checkbox->Text,checkbox->ScreenRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxGfx[0].Normal.Width+5,-1);
 }
 
 void GSchemedSkin::RenderRadioButton( GRadioButton* radiobutton )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	radiobutton->Height = RadioQuad[0].Height; // TODO: fix this and use checkalign
-	RadioQuad[radiobutton->GraphicState].Draw((float)radiobutton->ScreenRegion.X,(float)radiobutton->ScreenRegion.Y,0xFFFFFFFF);
-	radiobutton->Font->Render(radiobutton->Text,radiobutton->ScreenRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioQuad[0].Width+5,-1);
+	//radiobutton->Height = RadioQuad[0].Height; // TODO: fix this and use checkalign
+	//RadioQuad[radiobutton->GraphicState].Draw((float)radiobutton->ScreenRegion.X,(float)radiobutton->ScreenRegion.Y,0xFFFFFFFF);
+	RadioGfx[radiobutton->Checked ? 1 : 0].Render(radiobutton);
+	radiobutton->Font->Render(radiobutton->Text,radiobutton->ScreenRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioGfx[0].Normal.Width+5,-1);
 }
 
 void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )

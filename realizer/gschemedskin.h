@@ -8,13 +8,119 @@
 #include "gquad.h"
 #include "tpackedrectangle.h"
 #include "genums.h"
+#include "gbuttonbase.h"
 
 class VTexture;
 class GFont;
 class TBitmap;
 
+
 // Skin class that can use window blinds skins.
 
+class GScemedSkinButtonPart
+{
+public:
+	union
+	{
+		struct  
+		{
+			VTexturePart Normal;
+			VTexturePart Over;
+			VTexturePart Down;
+			VTexturePart Disabled;
+			VTexturePart Focused;
+		};
+
+		struct
+		{
+			VTexturePart Parts[5];
+		};
+	};
+
+	void Load(VTexturePart* inputParts, ui32* inputOrder, int count)
+	{
+		int loaded[] = {0,0,0,0,0};
+
+		for (int i=0;i<count;i++)
+		{
+			for (int j=0;j<count;j++)
+			{
+				if (inputOrder[j] == i)
+				{
+					Parts[i].Initialize(inputParts[j]);
+					loaded[i] = 1;
+					break;
+				}
+			}
+		}
+
+		for (int i=0;i<5;i++)
+		{
+			if (loaded[i] != 1)
+			{
+				Parts[i].Initialize(inputParts[0]);
+			}
+		}
+	}
+
+	inline void Render(GButtonBase* button)
+	{
+		Parts[button->ButtonGraphic].Draw(button->ScreenRegion.X,button->ScreenRegion.Y,TColors::White);
+	}
+};
+
+class GSchemedSkinButtonQuad
+{
+public:
+
+	union
+	{
+		struct
+		{
+			GScalableQuad Normal;
+			GScalableQuad Over;
+			GScalableQuad Down;
+			GScalableQuad Disabled;
+			GScalableQuad Focused;
+		};
+
+		struct
+		{
+			GScalableQuad Quads[5];
+		};
+	};
+
+	void Load(GScalableQuad* inputQuads, ui32* inputOrder, int count)
+	{
+		int loaded[] = {0,0,0,0,0};
+
+		for (int i=0;i<count;i++)
+		{
+			for (int j=0;j<count;j++)
+			{
+				if (inputOrder[j] == i)
+				{
+					Quads[i].Initialize(inputQuads[j]);
+					loaded[i] = 1;
+					break;
+				}
+			}
+		}
+
+		for (int i=0;i<5;i++)
+		{
+			if (loaded[i] != 1)
+			{
+				Quads[i].Initialize(Quads[0]);
+			}
+		}
+	}
+
+	inline void Render(GButtonBase* button)
+	{
+		Quads[button->ButtonGraphic].Render(button);
+	}
+};
 
 class GSchemedSkin: public GSkin
 {
@@ -30,11 +136,16 @@ public:
 	ContentAlignment WindowTitleAlign;
 	TColor32 WindowTitleColor[2];
 
+	GSchemedSkinButtonQuad ButtonGfx;
+
 	GScalableQuad ButtonQuad[5]; // 0 = Normal, 1 = Pressed, 2 = Disabled, 3 = Mouse Over, 4 = Focus & Default
 	GFont* ButtonFont;
 
-	VTexturePart CheckBoxQuad[12];
-	VTexturePart RadioQuad[8];
+	GScemedSkinButtonPart CheckBoxGfx[3];
+
+	//VTexturePart CheckBoxQuad[12];
+	GScemedSkinButtonPart RadioGfx[2];
+	//VTexturePart RadioQuad[8];
 
 	GScalableQuad ProgressBarBg;
 	GScalableQuad ProgressBarBlock;

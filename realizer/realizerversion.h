@@ -3,8 +3,8 @@
 
 #include "raiseversion.h"
 
-#define REALIZER_BUILD					448
-#define REALIZER_BUILD_STRING			"448"
+#define REALIZER_BUILD					453
+#define REALIZER_BUILD_STRING			"453"
 
 #define REALIZER_PHASE					&TVersionPhase::PreAlpha
 

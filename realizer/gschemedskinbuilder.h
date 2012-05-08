@@ -372,6 +372,7 @@ public:
 	}
 
 	void SortQuads				(GScalableQuad* output, ui32* currentOrder, int imagecount);
+	void SortTextureParts		(VTexturePart* parts, ui32* currentOrder, int partCount);
 
 	void LoadFontsAndColors();
 
