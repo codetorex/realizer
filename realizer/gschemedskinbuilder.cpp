@@ -510,20 +510,6 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 	}*/
 }
 
-#include "tsort.h"
-
-void GSchemedSkinBuilder::SortQuads( GScalableQuad* output, ui32* currentOrder, int imagecount )
-{
-	TSortBubble::Instance.SortObjects(output,sizeof(GScalableQuad),currentOrder,imagecount);
-}
-
-
-void GSchemedSkinBuilder::SortTextureParts( VTexturePart* parts, ui32* currentOrder, int partCount )
-{
-	TSortBubble::Instance.SortObjects(parts,sizeof(VTexturePart),currentOrder,partCount);
-}
-
-
 VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 {
 	TRectangleNode* node = Pack->Insert(bmp);
@@ -712,35 +698,62 @@ void GSchemedSkinBuilder::LoadFontsAndColors()
 
 void GSchemedSkinBuilder::LoadScrollbarButtons( const GSchemeLayer& buttonData )
 {
-	LoadGeneric(buttonData,23,Skin->ScrollbarButtons);
+	VTexturePart sbut[23];
+	LoadGeneric(buttonData,23,sbut);
+
+	for (int i= 0;i<6;i++)
+	{
+		ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+		Skin->ScrollbarButtonGfx[i].Load(sbut + (i * 4),order,4);
+	}
+
+	Skin->SizingCorner.Initialize(sbut[22]);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarBgH( const GSchemeLayer& bgData )
 {
-	LoadGeneric(bgData,4,Skin->ScrollbarBgHorizontal);
+	GScalableQuad sbg[4];
+	LoadGeneric(bgData,4,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->ScrollbarBgHGfx.Load(sbg,order,4);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarBgV( const GSchemeLayer& bgData )
 {
-	LoadGeneric(bgData,4,Skin->ScrollbarBgVertical);
+	GScalableQuad sbg[4];
+	LoadGeneric(bgData,4,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->ScrollbarBgVGfx.Load(sbg,order,4);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragH( const GSchemeLayer& dragData )
 {
-	LoadGeneric(dragData,3,Skin->ScrollbarDragHorizontal);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragHGfx.Load(sbg,order,3);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragV( const GSchemeLayer& dragData )
 {
-	LoadGeneric(dragData,3,Skin->ScrollbarDragVertical);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragVGfx.Load(sbg,order,3);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragHSmall( const GSchemeLayer& dragsData )
 {
-	LoadGeneric(dragsData,3,Skin->ScrollbarDragHorizontalSmall);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragsData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragSmallHGfx.Load(sbg,order,3);
 }
 
 void GSchemedSkinBuilder::LoadScrollbarDragVSmall( const GSchemeLayer& dragsData )
 {
-	LoadGeneric(dragsData,3,Skin->ScrollbarDragVerticalSmall);
+	GScalableQuad sbg[3];
+	LoadGeneric(dragsData,3,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ScrollbarDragSmallVGfx.Load(sbg,order,3);
 }

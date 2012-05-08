@@ -17,7 +17,7 @@ class TBitmap;
 
 // Skin class that can use window blinds skins.
 
-class GScemedSkinButtonPart
+class GScemedSkinButtonPart: public TRange
 {
 public:
 	union
@@ -61,6 +61,9 @@ public:
 				Parts[i].Initialize(inputParts[0]);
 			}
 		}
+
+		Width = Normal.Width;
+		Height = Normal.Height;
 	}
 
 	inline void Render(GButtonBase* button)
@@ -164,15 +167,18 @@ public:
 
 	GScalableQuad ToolButton[6];
 
-	VTexturePart ScrollbarButtons[23];
-	GScalableQuad ScrollbarBgHorizontal[4];
-	GScalableQuad ScrollbarBgVertical[4];
-	GScalableQuad ScrollbarDragHorizontal[3];
-	GScalableQuad ScrollbarDragVertical[3];
-	GScalableQuad ScrollbarDragHorizontalSmall[3];
-	GScalableQuad ScrollbarDragVerticalSmall[3];
 
+	GScemedSkinButtonPart ScrollbarButtonGfx[6];
+	VTexturePart SizingCorner;
 
+	GSchemedSkinButtonQuad ScrollbarBgHGfx;
+	GSchemedSkinButtonQuad ScrollbarBgVGfx;
+
+	GSchemedSkinButtonQuad ScrollbarDragHGfx;
+	GSchemedSkinButtonQuad ScrollbarDragVGfx;
+
+	GSchemedSkinButtonQuad ScrollbarDragSmallHGfx;
+	GSchemedSkinButtonQuad ScrollbarDragSmallVGfx;
 
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
