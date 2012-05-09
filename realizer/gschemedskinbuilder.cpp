@@ -110,6 +110,8 @@ void GSchemeLayer::LoadLayer( GSchemeClass* cls )
 	RightMargin = cls->GetInt("rightwidth");
 	TopMargin = cls->GetInt("topheight");
 	BottomMargin = cls->GetInt("bottomheight");
+	GlyphImage = cls->GetValueOrNull("glyphimage");
+	GlyphTransMode = cls->GetInt("glyphtransmode");
 	PaintStyle = UseMargins;
 	Tiling = (GSchemeTile)cls->GetInt("Tile");
 }
@@ -526,7 +528,7 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 		bmp->Convert(SkinBitmap->BufferFormat);
 	}*/
 
-	Gfx.DrawImage(*bmp,*(TPosition*)node);
+	Gfx.DrawImage2(*bmp,*(TPosition*)node);
 	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
 	return tpart;
 }
@@ -700,6 +702,14 @@ void GSchemedSkinBuilder::LoadScrollbarButtons( const GSchemeLayer& buttonData )
 {
 	VTexturePart sbut[23];
 	LoadGeneric(buttonData,23,sbut);
+
+	if (buttonData.GlyphImage)
+	{
+		TBitmap* glyphs = Engine.Textures.LoadToBitmap(*buttonData.GlyphImage);
+		TBlendMode* curMode = Gfx.GetBlending();
+		Gfx.SetBlending(&TBlendModes::Normal);
+		Gfx.DrawImage2(*glyphs,sbut[0].X,sbut[0].Y);
+	}
 
 	for (int i= 0;i<6;i++)
 	{

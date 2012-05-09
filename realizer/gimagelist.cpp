@@ -32,7 +32,7 @@ int GImageList::AddImage( TBitmap* bmp )
 	TRectangleNode* place = Pack->Insert(bmp);
 
 	TBitmapGraphics g(BaseTexture->bitmap);
-	g.DrawImage(*bmp,*place);
+	g.DrawImage2(*bmp,*place);
 	BaseTexture->UpdateTexture();
 
 	GImage* r = new GImage();

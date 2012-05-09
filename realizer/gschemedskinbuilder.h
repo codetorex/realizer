@@ -26,7 +26,7 @@ public:
 	
 	inline TString* GetValueOrNull(const TString& key)
 	{
-		TString* rv = Variables.GetValue(key);
+		TString* rv = Variables.GetValueOrNull(key);
 		return rv;
 	}
 
@@ -109,6 +109,9 @@ public:
 	int RightMargin;
 	int TopMargin;
 	int BottomMargin;
+
+	TString* GlyphImage;
+	int GlyphTransMode;
 
 	inline bool IsVertical() const
 	{
