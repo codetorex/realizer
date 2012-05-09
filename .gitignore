@@ -52,3 +52,4 @@ log*.txt
 *.gz
 lib/
 doxyfile
+everything.suo
