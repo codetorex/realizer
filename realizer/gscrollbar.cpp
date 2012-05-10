@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "gscrollbar.h"
 #include "vgui.h"
-
-// normal, pressed, disabled, mouseover
-
+#include "gfont.h"
 
 GScrollBarDrag::GScrollBarDrag()
 {
@@ -37,6 +35,8 @@ public:
 		{
 			p->Value = p->MinValue;
 		}
+
+		p->Layout();
 	}
 };
 
@@ -56,6 +56,8 @@ public:
 		{
 			p->Value = p->MaxValue;
 		}
+
+		p->Layout();
 	}
 };
 
@@ -77,6 +79,21 @@ GScrollBar::GScrollBar()
 void GScrollBar::Render()
 {
 	Skin->RenderScrollBar(this);
+
+	byte tmp[512];
+	TStringBuilder sb(tmp,512);
+	sb.Append("Value:");
+	sb.Append(Value);
+	sb.Append("  ");
+	sb.Append("DragY:");
+	sb.Append(DragBar->Top);
+	sb.Append("  ");
+	sb.Append("DragHeight:");
+	sb.Append(DragBar->Height);
+
+	Font->Render(sb,100,100,TColors::Wheat);
+
+	sb.UnbindByteArray();
 }
 
 void GScrollBar::Layout()
@@ -89,10 +106,45 @@ void GScrollBar::Layout()
 	}
 
 	Skin->LayoutScrollBar(this);
+
+	int TotalValues = MaxValue - MinValue;
+	int AvailableHeight = DownButton->Top - UpButton->Bottom;
+	float DragHeight = ((float)LargeChange / (float)TotalValues) * (float)AvailableHeight;
+
+	float AvailableHeight2 = (float)AvailableHeight - DragHeight;
+	float PixelPerItem = AvailableHeight2 / (float)TotalValues;
+	//float DragHeight = PixelPerItem * (float)LargeChange;
+	float DragY = (float)UpButton->Bottom + (((float)Value - (float)MinValue) * PixelPerItem);
+
+	/*if (DragHeight < Skin->smallestDrag)
+	{
+		DragHeight = skin->SmallestDragHeight;
+	}*/
+
+	DragBar->SetHeight(DragHeight);
+	DragBar->SetTop(DragY);
 }
 
 void GScrollBar::Clicked( int x, int y, int button )
 {
+	if (y < DragBar->Top)
+	{
+		Value -= LargeChange;
+		if (Value < MinValue)
+		{
+			Value = MinValue;
+		}
+	}
+	else
+	{
+		Value += LargeChange;
+		if (Value > MaxValue)
+		{
+			Value = MaxValue;
+		}
+	}
+
+	Layout();
 	// check the click poisition and add or subtract large change to there
 }
 

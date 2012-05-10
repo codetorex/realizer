@@ -202,6 +202,8 @@ public:
 	void RenderTextBox(GTextBox* textbox);
 
 	void RenderSunkEdge(GObject* object);
+	
+	void LayoutSunkEdge(GObject* object);
 
 	void RenderMenuStrip(GMenuStrip* menustrip);
 

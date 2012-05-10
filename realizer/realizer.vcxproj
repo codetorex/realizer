@@ -115,6 +115,7 @@
     <ClInclude Include="glabel.h" />
     <ClInclude Include="glayout.h" />
     <ClInclude Include="gdropdown.h" />
+    <ClInclude Include="glistbox.h" />
     <ClInclude Include="gmenuitem.h" />
     <ClInclude Include="gmenustrip.h" />
     <ClInclude Include="gobject.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="gimagelist.cpp" />
     <ClCompile Include="glabel.cpp" />
     <ClCompile Include="glayout.cpp" />
+    <ClCompile Include="glistbox.cpp" />
     <ClCompile Include="gmenuitem.cpp" />
     <ClCompile Include="gmenustrip.cpp" />
     <ClCompile Include="gobject.cpp" />

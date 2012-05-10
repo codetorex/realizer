@@ -44,6 +44,8 @@ public:
 
 	virtual void RenderSunkEdge(GObject* object) = 0;
 
+	virtual void LayoutSunkEdge(GObject* object) = 0;
+
 	virtual void RenderMenuStrip(GMenuStrip* menustrip) = 0;
 
 	virtual void RenderDropDown(GDropDown* dropdown) = 0;

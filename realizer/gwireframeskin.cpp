@@ -122,3 +122,8 @@ void GWireFrameSkin::LayoutScrollBar( GScrollBar* scrollbar )
 
 	throw NotImplementedException();
 }
+
+void GWireFrameSkin::LayoutSunkEdge( GObject* object )
+{
+	object->ObjectRegion.SetRectangle(0,0,object->Width,object->Height);
+}

@@ -34,6 +34,8 @@ public:
 
 	void RenderSunkEdge( GObject* object );
 
+	void LayoutSunkEdge(GObject* object);
+
 	void RenderMenuStrip(GMenuStrip* menustrip);
 
 	void RenderDropDown(GDropDown* dropdown);

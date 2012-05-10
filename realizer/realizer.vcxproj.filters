@@ -330,6 +330,9 @@
     <ClInclude Include="gbuttonbase.h">
       <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClInclude>
+    <ClInclude Include="glistbox.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -493,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="gbuttonbase.cpp">
       <Filter>Source Files\Visual\GUI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="glistbox.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

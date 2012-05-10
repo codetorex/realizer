@@ -707,8 +707,10 @@ void GSchemedSkinBuilder::LoadScrollbarButtons( const GSchemeLayer& buttonData )
 	{
 		TBitmap* glyphs = Engine.Textures.LoadToBitmap(*buttonData.GlyphImage);
 		TBlendMode* curMode = Gfx.GetBlending();
-		Gfx.SetBlending(&TBlendModes::Normal);
+		Gfx.SetBlending(&TBlendModes::Normal); // we are drawing things over other things
 		Gfx.DrawImage2(*glyphs,sbut[0].X,sbut[0].Y);
+		Gfx.SetBlending(curMode); // copying is enough for building stuff like this
+		delete glyphs;
 	}
 
 	for (int i= 0;i<6;i++)

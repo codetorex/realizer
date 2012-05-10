@@ -110,6 +110,12 @@ void GSchemedSkin::RenderSunkEdge( GObject* object )
 	SunkEdge[0].Render(object);
 }
 
+
+void GSchemedSkin::LayoutSunkEdge( GObject* object )
+{
+	SunkEdge[0].SetObjectRegion(object);
+}
+
 void GSchemedSkin::RenderMenuStrip( GMenuStrip* menustrip )
 {
 	int mod = 1;
