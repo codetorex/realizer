@@ -6,11 +6,50 @@
 GScrollBarDrag::GScrollBarDrag()
 {
 	ClassID = GSCROLLBARDRAG_CLASSID;
+	Dragging = false;
 }
 
 void GScrollBarDrag::Clicked( int x, int y, int button )
 {
+	
+}
 
+void GScrollBarDrag::MouseDown( int x,int y, int button )
+{
+	DragPoint.Set(Master->X,Master->Y);
+	DragPos = this->Y;
+	Dragging = true;
+}
+
+void GScrollBarDrag::MouseUp( int x,int y,int button )
+{
+	Dragging = false;
+}
+
+void GScrollBarDrag::Update()
+{
+	if (Dragging)
+	{
+		vec2i Diff(Master->X,Master->Y);
+		Diff -= DragPoint;
+
+		SetTop(DragPos + Diff.y);
+
+		GScrollBar* p = (GScrollBar*)Parent;
+		p->SetValueFromDragPos();
+	}
+
+	this->GObject::Update();
+	/*if (moving)
+	{
+		int dx,dy;
+		dx = Master->X - gx;
+		dy = Master->Y - gy;
+
+		GObject* p = (GObject*)Parent;
+		p->SetLeft(windowX + dx);
+		p->SetTop(windowY + dy);
+	}*/
 }
 
 GScrollBarButton::GScrollBarButton()
@@ -148,3 +187,28 @@ void GScrollBar::Clicked( int x, int y, int button )
 	// check the click poisition and add or subtract large change to there
 }
 
+void GScrollBar::SetValueFromDragPos()
+{
+	int TotalValues = MaxValue - MinValue;
+	int AvailableHeight = DownButton->Top - UpButton->Bottom;
+
+	float AvailableHeight2 = (float)AvailableHeight - (float)DragBar->Height;
+	float PixelPerItem = AvailableHeight2 / (float)TotalValues;
+
+	int rtop = DragBar->Top - UpButton->Bottom;
+	float rval = (float)rtop / PixelPerItem;
+	rval += (float)MinValue;
+	
+	if (rval < MinValue)
+	{
+		rval = MinValue;
+	}
+
+	if (rval > MaxValue)
+	{
+		rval = MaxValue;
+	}
+	
+	Value = rval;
+	Layout(); // Self fixing lol
+}

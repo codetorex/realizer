@@ -29,16 +29,30 @@ enum GScrollBarOrientation
 
 class GScrollBarDrag: public GButtonBase
 {
+private:
+	bool Dragging;
+	vec2i DragPoint;
+	int DragPos;
+
 public:
 	GScrollBarOrientation Orientation;
 
 	GScrollBarDrag();
+
+	void MouseDown(int x,int y, int button);
+	void MouseUp(int x,int y,int button);
+
+	void Update();
 
 	void Clicked(int x, int y, int button);
 };
 
 class GScrollBar: public GButtonBase
 {
+private:
+	friend class GScrollBarDrag;
+	void SetValueFromDragPos();
+
 public:
 	GScrollBarButton* UpButton;
 	GScrollBarButton* DownButton;

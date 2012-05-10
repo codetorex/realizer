@@ -36,7 +36,7 @@ void VMapGenerator::GenerateLands()
 	for (int i=0;i< 5;i++)
 	{
 		VLand* land = new VLand();
-		land->Mass.set(RandomGenerator->NextSingle(),RandomGenerator->NextSingle());
+		land->Mass.Set(RandomGenerator->NextSingle(),RandomGenerator->NextSingle());
 		land->Mass.Radius = RandomGenerator->NextSingle();
 		Generation.Lands.Add(land);
 	}
