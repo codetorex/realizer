@@ -189,7 +189,14 @@ void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
 	if (scrollbar->Orientation == SBO_VERTICAL)
 	{
 		ScrollbarBgVGfx.Render(scrollbar);
-		ScrollbarDragVGfx.Render(scrollbar->DragBar); // check if we going to render smallest one
+		if (scrollbar->DragBar->Height <= ScrollbarDragSmallVGfx.Height)
+		{
+			ScrollbarDragSmallVGfx.Render(scrollbar->DragBar);
+		}
+		else
+		{
+			ScrollbarDragVGfx.Render(scrollbar->DragBar); // check if we going to render smallest one
+		}
 	}
 	else
 	{
@@ -206,15 +213,25 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 	LayoutScrollBarButton(scrollbar->UpButton);
 	LayoutScrollBarButton(scrollbar->DownButton);
 
+	GScrollbarLayout st(*scrollbar);
+
+	st.Calculate();
+	st.SetDragSize();
+
 	if (scrollbar->Orientation == SBO_VERTICAL)
 	{
 		scrollbar->SetWidth(ScrollbarButtonGfx[0].Width);
 		scrollbar->DragBar->SetWidth(scrollbar->Width);	
-		scrollbar->DragBar->SetHeight(50);
 
 		scrollbar->UpButton->SetLeftTop(0,0);
 		scrollbar->DownButton->SetLeftTop(0,scrollbar->Height- scrollbar->DownButton->Height);
 		scrollbar->DragBar->SetLeftTop(0,scrollbar->UpButton->Bottom);
+
+		if (scrollbar->DragBar->Height < ScrollbarDragSmallVGfx.Height)
+		{
+			scrollbar->DragBar->SetHeight(ScrollbarDragSmallVGfx.Height);
+			st.Calculate(false);
+		}
 	}
 	else
 	{
@@ -222,4 +239,7 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 	}
 
 	scrollbar->ObjectRegion.SetRectangle(0,0,scrollbar->Width,scrollbar->Height);
+
+	st.CalculateDragPosition();
+	st.SetDragPos();
 }

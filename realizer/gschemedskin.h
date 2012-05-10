@@ -177,8 +177,8 @@ public:
 	GSchemedSkinButtonQuad ScrollbarDragHGfx;
 	GSchemedSkinButtonQuad ScrollbarDragVGfx;
 
-	GSchemedSkinButtonQuad ScrollbarDragSmallHGfx;
-	GSchemedSkinButtonQuad ScrollbarDragSmallVGfx;
+	GScemedSkinButtonPart ScrollbarDragSmallHGfx;
+	GScemedSkinButtonPart ScrollbarDragSmallVGfx;
 
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);

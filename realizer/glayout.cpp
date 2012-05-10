@@ -34,12 +34,10 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				int oldHeight = cur->Height;
 				cur->SetSize(remainingArea.X,remainingArea.Y,remainingArea.Width,cur->Height);
-				cur->Layout(); // so its hieght probably changed. better be re layout?
+				cur->Layout();
 			}
 			
-			// TODO: error use SetTop
 			remainingArea.Y += cur->Height;
 			remainingArea.Height -= cur->Height;
 		}
@@ -48,6 +46,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 			if (!measureOnly)
 			{
 				cur->SetSize(remainingArea.X,remainingArea.Y,cur->Width,remainingArea.Height);
+				cur->Layout();
 			}
 			
 			remainingArea.X += cur->Width;
@@ -58,6 +57,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 			if (!measureOnly)
 			{
 				cur->SetSize(remainingArea.Width - cur->Width,remainingArea.Y,cur->Width,remainingArea.Height);
+				cur->Layout();
 			}
 			
 			remainingArea.Width -= cur->Width;
@@ -67,6 +67,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 			if (!measureOnly)
 			{
 				cur->SetSize(remainingArea.X,remainingArea.Height - cur->Height,remainingArea.Width,cur->Height);
+				cur->Layout();
 			}
 			
 			remainingArea.Height -= cur->Height;
@@ -76,6 +77,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 			if (!measureOnly)
 			{
 				cur->SetSize(remainingArea.X,remainingArea.Y,remainingArea.Width,remainingArea.Height);
+				cur->Layout();
 			}
 
 			// fill should be done last so it wont use all the space up

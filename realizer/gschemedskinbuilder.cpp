@@ -756,7 +756,7 @@ void GSchemedSkinBuilder::LoadScrollbarDragV( const GSchemeLayer& dragData )
 
 void GSchemedSkinBuilder::LoadScrollbarDragHSmall( const GSchemeLayer& dragsData )
 {
-	GScalableQuad sbg[3];
+	VTexturePart sbg[3];
 	LoadGeneric(dragsData,3,sbg);
 	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
 	Skin->ScrollbarDragSmallHGfx.Load(sbg,order,3);
@@ -764,7 +764,7 @@ void GSchemedSkinBuilder::LoadScrollbarDragHSmall( const GSchemeLayer& dragsData
 
 void GSchemedSkinBuilder::LoadScrollbarDragVSmall( const GSchemeLayer& dragsData )
 {
-	GScalableQuad sbg[3];
+	VTexturePart sbg[3];
 	LoadGeneric(dragsData,3,sbg);
 	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
 	Skin->ScrollbarDragSmallVGfx.Load(sbg,order,3);

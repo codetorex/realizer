@@ -145,23 +145,6 @@ void GScrollBar::Layout()
 	}
 
 	Skin->LayoutScrollBar(this);
-
-	int TotalValues = MaxValue - MinValue;
-	int AvailableHeight = DownButton->Top - UpButton->Bottom;
-	float DragHeight = ((float)LargeChange / (float)TotalValues) * (float)AvailableHeight;
-
-	float AvailableHeight2 = (float)AvailableHeight - DragHeight;
-	float PixelPerItem = AvailableHeight2 / (float)TotalValues;
-	//float DragHeight = PixelPerItem * (float)LargeChange;
-	float DragY = (float)UpButton->Bottom + (((float)Value - (float)MinValue) * PixelPerItem);
-
-	/*if (DragHeight < Skin->smallestDrag)
-	{
-		DragHeight = skin->SmallestDragHeight;
-	}*/
-
-	DragBar->SetHeight(DragHeight);
-	DragBar->SetTop(DragY);
 }
 
 void GScrollBar::Clicked( int x, int y, int button )
@@ -189,26 +172,11 @@ void GScrollBar::Clicked( int x, int y, int button )
 
 void GScrollBar::SetValueFromDragPos()
 {
-	int TotalValues = MaxValue - MinValue;
-	int AvailableHeight = DownButton->Top - UpButton->Bottom;
+	GScrollbarLayout st(*this);
+	st.Calculate(false);
+	st.CalculateValue(); // calculate value first
+	st.CalculateDragPosition(); // then calculate position from just calculated value to fix itself
+	st.SetDragPos(); // set it
 
-	float AvailableHeight2 = (float)AvailableHeight - (float)DragBar->Height;
-	float PixelPerItem = AvailableHeight2 / (float)TotalValues;
-
-	int rtop = DragBar->Top - UpButton->Bottom;
-	float rval = (float)rtop / PixelPerItem;
-	rval += (float)MinValue;
-	
-	if (rval < MinValue)
-	{
-		rval = MinValue;
-	}
-
-	if (rval > MaxValue)
-	{
-		rval = MaxValue;
-	}
-	
-	Value = rval;
-	Layout(); // Self fixing lol
+	//Layout(); // Self fixing lol
 }
