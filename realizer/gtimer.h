@@ -23,7 +23,7 @@ public:
 		set_RealTime(_realTime);
 	}
 
-	virtual void Update() = 0;
+	virtual void UpdateTimeEffect() = 0;
 };
 
 
@@ -36,25 +36,66 @@ public:
 	ui32 ActivationDelay;
 	ui32 RepeatDelay;
 
-	ui32 ActivationStart;
-	bool Enabled;
+	ui32 LastCheck;
+	bool TimeEffectEnabled;
 	bool Activated;
+	bool InitialPulse;
+
+	GTimeEffectActivation(bool _realTime = false): GTimeEffect(_realTime)
+	{
+		InitialPulse = true;
+		TimeEffectEnabled = false;
+	}
+
+	inline void InitializeTimeEffect(ui32 _activationDelay, ui32 _repeatDelay)
+	{
+		ActivationDelay = _activationDelay;
+		RepeatDelay = _repeatDelay;
+	}
 
 	inline void EnableTimeEffect()
 	{
-		ActivationStart = *ReadReference;
-		Enabled = true;
+		LastCheck = *ReadReference;
+		TimeEffectEnabled = true;
 		Activated = false;
+		if (InitialPulse)
+		{
+			Pulse();
+		}
 	}
 
 	inline void DisableTimeEffect()
 	{
-		Enabled = false;
+		TimeEffectEnabled = false;
+		Activated = false;
 	}
 
-	void Update()
+	inline void UpdateTimeEffect()
 	{
+		if (!TimeEffectEnabled) return;
 
+		int timeDifference = *ReadReference - LastCheck;
+
+		if (Activated)
+		{ 
+			// REPEAT STAGE
+			if (timeDifference > RepeatDelay)
+			{
+				LastCheck = *ReadReference;
+				Pulse();
+				Activated = true;
+			}
+		}
+		else
+		{
+			// ACTIVATION STAGE
+			if (timeDifference > ActivationDelay)
+			{
+				LastCheck = *ReadReference;
+				Pulse();
+				Activated = true;
+			}
+		}
 	}
 
 	virtual void Pulse() = 0;
@@ -95,7 +136,7 @@ public:
 		LastCheck = *ReadReference;
 	}
 
-	inline void Update()
+	inline void UpdateTimeEffect()
 	{
 		if (*ReadReference - LastCheck >= Delay)
 		{

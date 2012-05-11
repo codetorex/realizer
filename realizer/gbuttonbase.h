@@ -14,7 +14,7 @@ public:
 	virtual void MouseUp(int x,int y,int button);
 	virtual void MouseMove(int x,int y); 
 
-	virtual void Clicked(int x, int y, int button) = 0;
+	virtual void Clicked(int x, int y, int button) { };
 
 	inline void SetGraphic(GButtonGraphics graphic)
 	{

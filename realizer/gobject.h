@@ -87,10 +87,10 @@ public:
 		return Parent->LastItem == this;
 	}
 
-	virtual void Initialize() { Layout(); };
-	virtual void Update();
-	virtual void Render();
-	virtual void Layout() { ObjectRegion.SetRectangle(0,0,Width,Height); LayoutChilds(); }; // done when resize happens
+	inline virtual void Initialize() { Layout(); };
+	inline virtual void Update();
+	inline virtual void Render();
+	inline virtual void Layout() { ObjectRegion.SetRectangle(0,0,Width,Height); LayoutChilds(); }; // done when resize happens
 
 	void LayoutChilds()
 	{

@@ -9,11 +9,6 @@ GScrollBarDrag::GScrollBarDrag()
 	Dragging = false;
 }
 
-void GScrollBarDrag::Clicked( int x, int y, int button )
-{
-	
-}
-
 void GScrollBarDrag::MouseDown( int x,int y, int button )
 {
 	DragPoint.Set(Master->X,Master->Y);
@@ -42,12 +37,31 @@ void GScrollBarDrag::Update()
 	this->GObject::Update();
 }
 
-GScrollBarButton::GScrollBarButton()
+GScrollBarButton::GScrollBarButton(): GTimeEffectActivation(true)
 {
+	InitializeTimeEffect(400,60);
 	Direction = BD_LEFT;
 	ClassID = GSCROLLBARBUTTON_CLASSID;
 }
 
+void GScrollBarButton::Update()
+{
+	this->GObject::Update();
+	if (MouseInside)
+	{
+		UpdateTimeEffect(); // TODO: these timing stuff should kept somewhere we sure about going to updated regularly?
+	}
+}
+
+void GScrollBarButton::MouseUp( int x,int y,int button )
+{
+	DisableTimeEffect();
+}
+
+void GScrollBarButton::MouseDown( int x,int y, int button )
+{
+	EnableTimeEffect();
+}
 class GScrollBarButtonUp: public GScrollBarButton
 {
 public:
@@ -56,7 +70,7 @@ public:
 		Direction = BD_UP;
 	}
 
-	void Clicked(int x, int y, int button)
+	void Pulse()
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 		p->setValue(p->Value - p->SmallChange);
@@ -71,7 +85,7 @@ public:
 		Direction = BD_DOWN;
 	}
 
-	void Clicked(int x, int y, int button)
+	void Pulse()
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 		p->setValue(p->Value + p->SmallChange);
@@ -79,8 +93,9 @@ public:
 };
 
 
-GScrollBar::GScrollBar()
+GScrollBar::GScrollBar(): GTimeEffectActivation(true)
 {
+	InitializeTimeEffect(400,60);
 	MinValue = 0;
 	MaxValue = 100;
 	Value = 0;
@@ -125,19 +140,6 @@ void GScrollBar::Layout()
 	Skin->LayoutScrollBar(this);
 }
 
-void GScrollBar::Clicked( int x, int y, int button )
-{
-	if (y < DragBar->Top)
-	{
-		setValue(Value - LargeChange);
-	}
-	else
-	{
-		setValue(Value + LargeChange);
-	}
-	// check the click position and add or subtract large change to there
-}
-
 void GScrollBar::SetValueFromDragPos()
 {
 	GScrollbarLayout st(*this);
@@ -156,5 +158,57 @@ void GScrollBar::setValue( int newValue )
 	if (Value != oldVal)
 	{
 		Layout();
+		ValueChanged.call();
 	}
+}
+
+void GScrollBar::Pulse()
+{
+	if (Orientation == SBO_VERTICAL)
+	{
+		if (mY < DragBar->Top)
+		{
+			setValue(Value - LargeChange);
+		}
+		else
+		{
+			setValue(Value + LargeChange);
+		}
+	}
+	else
+	{
+		throw NotImplementedException();
+	}
+}
+
+void GScrollBar::Update()
+{
+	this->GObject::Update();
+	if (MouseInside)
+	{
+		UpdateTimeEffect(); // TODO: these timing stuff should kept somewhere we sure about going to updated regularly?
+	}
+}
+
+void GScrollBar::MouseMove( int x,int y )
+{
+	this->GButtonBase::MouseMove(x,y);
+	mX = x;
+	mY = y;
+}
+
+void GScrollBar::MouseExit()
+{
+	this->GButtonBase::MouseExit();
+	DisableTimeEffect();
+}
+
+void GScrollBar::MouseUp( int x,int y,int button )
+{
+	DisableTimeEffect();
+}
+
+void GScrollBar::MouseDown( int x,int y, int button )
+{
+	EnableTimeEffect();
 }

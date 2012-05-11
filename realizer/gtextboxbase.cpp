@@ -252,7 +252,7 @@ void GTextBoxBase::Update()
 	Line.DefaultFont = Font;
 	Line.DefaultColor.color = ForeColor.color;
 
-	CaretEffect.Update();
+	CaretEffect.UpdateTimeEffect();
 	/*if (AutoSize)
 	{
 		this->Height = Font->Height;

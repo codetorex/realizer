@@ -2,8 +2,9 @@
 #define GSCROLLBAR_H
 
 #include "gbuttonbase.h"
+#include "gtimer.h"
 
-class GScrollBarButton: public GButtonBase
+class GScrollBarButton: public GButtonBase, public GTimeEffectActivation
 {
 public:
 	enum SButtonDirection
@@ -19,6 +20,11 @@ public:
 	GScrollBarButton();
 
 	SButtonDirection Direction;
+
+	void MouseDown(int x,int y, int button);
+	void MouseUp(int x,int y,int button);
+
+	void Update();
 };
 
 enum GScrollBarOrientation
@@ -43,15 +49,13 @@ public:
 	void MouseUp(int x,int y,int button);
 
 	void Update();
-
-	void Clicked(int x, int y, int button);
 };
 
-class GScrollBar: public GButtonBase
+class GScrollBar: public GButtonBase, public GTimeEffectActivation
 {
 protected:
 	friend class GScrollBarDrag;
-
+	int mX, mY;
 	void SetValueFromDragPos();
 
 public:
@@ -74,13 +78,18 @@ public:
 
 	void setValue(int newValue);
 
-	void Clicked(int x, int y, int button);
-
-	// event<IntEvent> OnValueChange;
+	void MouseMove(int x,int y);
+	void MouseDown(int x,int y, int button);
+	void MouseUp(int x,int y,int button);
+	void MouseExit();
+	
+	event<NoArgEvent> ValueChanged;
 
 	void Render();
-
 	void Layout();
+	void Update();
+	
+	void Pulse();
 };
 
 /**
@@ -120,10 +129,12 @@ public:
 		}
 		/////////////////////////////////////////////////////////
 		
-		// TODO: total values should be something like - LargeChange if we consider LargeChange as size of dragbar
+		// OLDDO: total values should be something like - LargeChange if we consider LargeChange as size of dragbar
 		// Or we should do this in master application by setting maxValue = availableValues - screenSpace like thing
 
 		// IMPLEMENT NEW TECHNIQUES AND IDEAS YOU ACQUIRED FROM ORIGINAL IMPLEMENTATION
+
+		// DONE!
 
 
 		if (calculateDragSize)
