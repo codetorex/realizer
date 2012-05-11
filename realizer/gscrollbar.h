@@ -72,6 +72,7 @@ public:
 	
 	GScrollBarOrientation Orientation;
 
+	void setValue(int newValue);
 
 	void Clicked(int x, int y, int button);
 
@@ -106,6 +107,8 @@ public:
 
 	inline void Calculate(bool calculateDragSize = true)
 	{
+
+		
 		TotalValues = base.MaxValue - base.MinValue;
 		if (Vertical)
 		{
@@ -115,6 +118,14 @@ public:
 		{
 			DragRange = base.DownButton->Left - base.UpButton->Right;
 		}
+		/////////////////////////////////////////////////////////
+		
+		// TODO: total values should be something like - LargeChange if we consider LargeChange as size of dragbar
+		// Or we should do this in master application by setting maxValue = availableValues - screenSpace like thing
+
+		// IMPLEMENT NEW TECHNIQUES AND IDEAS YOU ACQUIRED FROM ORIGINAL IMPLEMENTATION
+
+
 		if (calculateDragSize)
 		{
 			DragSize = ((base.LargeChange * DragRange) / TotalValues);
@@ -124,7 +135,7 @@ public:
 			DragSize = GetDragSize();
 		}
 		RemainingSpace = DragRange - DragSize;
-		PixelPerItem = (float)RemainingSpace / (float)TotalValues;
+		PixelPerItem = (float)RemainingSpace / (float)(TotalValues - base.LargeChange);
 	}
 
 	inline void CalculateDragPosition()
@@ -137,8 +148,7 @@ public:
 		int cDragPos = GetDragPos();
 		int cValue = ((float)cDragPos / PixelPerItem);
 		cValue -= base.MinValue;
-		cValue = MathDriver::Clamp<int>(base.MinValue,base.MaxValue,cValue);
-		base.Value = cValue;
+		base.setValue(cValue);
 	}
 
 	inline void SetDragPos()

@@ -7,3 +7,6 @@ sequently because GPU takes them as DWORD's and which is endianness is getting d
 ...........
 
 * Do we need to do something about it?
+
+*** I named everything about color order by their byte order. And default order is now R G B A.
+When its uploaded to GPU it is automatically converted to appropriate data format.

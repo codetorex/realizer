@@ -13,6 +13,7 @@ public:
 	/// Current time difference from last frame
 	float TimeDiff;
 
+	/// Timescale adjusted current total time
 	ui32 CurrentTimeMS;
 	float TimeScale;
 

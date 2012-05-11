@@ -40,16 +40,6 @@ void GScrollBarDrag::Update()
 	}
 
 	this->GObject::Update();
-	/*if (moving)
-	{
-		int dx,dy;
-		dx = Master->X - gx;
-		dy = Master->Y - gy;
-
-		GObject* p = (GObject*)Parent;
-		p->SetLeft(windowX + dx);
-		p->SetTop(windowY + dy);
-	}*/
 }
 
 GScrollBarButton::GScrollBarButton()
@@ -69,13 +59,7 @@ public:
 	void Clicked(int x, int y, int button)
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
-		p->Value -= p->SmallChange;
-		if (p->Value < p->MinValue)
-		{
-			p->Value = p->MinValue;
-		}
-
-		p->Layout();
+		p->setValue(p->Value - p->SmallChange);
 	}
 };
 
@@ -90,13 +74,7 @@ public:
 	void Clicked(int x, int y, int button)
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
-		p->Value += p->SmallChange;
-		if (p->Value > p->MaxValue)
-		{
-			p->Value = p->MaxValue;
-		}
-
-		p->Layout();
+		p->setValue(p->Value + p->SmallChange);
 	}
 };
 
@@ -151,23 +129,13 @@ void GScrollBar::Clicked( int x, int y, int button )
 {
 	if (y < DragBar->Top)
 	{
-		Value -= LargeChange;
-		if (Value < MinValue)
-		{
-			Value = MinValue;
-		}
+		setValue(Value - LargeChange);
 	}
 	else
 	{
-		Value += LargeChange;
-		if (Value > MaxValue)
-		{
-			Value = MaxValue;
-		}
+		setValue(Value + LargeChange);
 	}
-
-	Layout();
-	// check the click poisition and add or subtract large change to there
+	// check the click position and add or subtract large change to there
 }
 
 void GScrollBar::SetValueFromDragPos()
@@ -179,4 +147,14 @@ void GScrollBar::SetValueFromDragPos()
 	st.SetDragPos(); // set it
 
 	//Layout(); // Self fixing lol
+}
+
+void GScrollBar::setValue( int newValue )
+{
+	int oldVal = Value;
+	Value = MathDriver::Clamp<int>(MinValue,MaxValue - LargeChange,newValue);
+	if (Value != oldVal)
+	{
+		Layout();
+	}
 }

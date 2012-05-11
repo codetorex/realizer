@@ -26,6 +26,40 @@ public:
 	virtual void Update() = 0;
 };
 
+
+/**
+ * It starts repeating after activation delay passed.
+ */
+class GTimeEffectActivation: public GTimeEffect
+{
+public:
+	ui32 ActivationDelay;
+	ui32 RepeatDelay;
+
+	ui32 ActivationStart;
+	bool Enabled;
+	bool Activated;
+
+	inline void EnableTimeEffect()
+	{
+		ActivationStart = *ReadReference;
+		Enabled = true;
+		Activated = false;
+	}
+
+	inline void DisableTimeEffect()
+	{
+		Enabled = false;
+	}
+
+	void Update()
+	{
+
+	}
+
+	virtual void Pulse() = 0;
+};
+
 class GTimeEffectBool: public GTimeEffect
 {
 public:
