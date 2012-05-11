@@ -56,7 +56,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize(remainingArea.Width - cur->Width,remainingArea.Y,cur->Width,remainingArea.Height);
+				cur->SetSize((remainingArea.Width - cur->Width) + remainingArea.X,remainingArea.Y,cur->Width,remainingArea.Height);
 				cur->Layout();
 			}
 			
@@ -66,7 +66,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize(remainingArea.X,remainingArea.Height - cur->Height,remainingArea.Width,cur->Height);
+				cur->SetSize(remainingArea.X,(remainingArea.Height - cur->Height) + remainingArea.Y,remainingArea.Width,cur->Height);
 				cur->Layout();
 			}
 			

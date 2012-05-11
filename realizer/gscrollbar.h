@@ -38,7 +38,7 @@ class GScrollBarDrag: public GButtonBase
 private:
 	bool Dragging;
 	vec2i DragPoint;
-	int DragPos;
+	vec2i DragPos;
 
 public:
 	GScrollBarOrientation Orientation;
@@ -77,6 +77,7 @@ public:
 	GScrollBarOrientation Orientation;
 
 	void setValue(int newValue);
+	void setOrientation( GScrollBarOrientation newOrientation );
 
 	void MouseMove(int x,int y);
 	void MouseDown(int x,int y, int button);

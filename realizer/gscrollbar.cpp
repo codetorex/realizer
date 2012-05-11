@@ -12,7 +12,7 @@ GScrollBarDrag::GScrollBarDrag()
 void GScrollBarDrag::MouseDown( int x,int y, int button )
 {
 	DragPoint.Set(Master->X,Master->Y);
-	DragPos = this->Y;
+	DragPos.Set(this->X,this->Y);
 	Dragging = true;
 }
 
@@ -25,12 +25,20 @@ void GScrollBarDrag::Update()
 {
 	if (Dragging)
 	{
+		GScrollBar* p = (GScrollBar*)Parent;
+
 		vec2i Diff(Master->X,Master->Y);
 		Diff -= DragPoint;
 
-		SetTop(DragPos + Diff.y);
-
-		GScrollBar* p = (GScrollBar*)Parent;
+		if (p->Orientation == SBO_VERTICAL)
+		{
+			SetTop(DragPos.y + Diff.y);
+		}
+		else
+		{
+			SetLeft(DragPos.x + Diff.x);
+		}
+		
 		p->SetValueFromDragPos();
 	}
 
@@ -65,11 +73,6 @@ void GScrollBarButton::MouseDown( int x,int y, int button )
 class GScrollBarButtonUp: public GScrollBarButton
 {
 public:
-	GScrollBarButtonUp()
-	{
-		Direction = BD_UP;
-	}
-
 	void Pulse()
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
@@ -80,18 +83,12 @@ public:
 class GScrollBarButtonDown: public GScrollBarButton
 {
 public:
-	GScrollBarButtonDown()
-	{
-		Direction = BD_DOWN;
-	}
-
 	void Pulse()
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 		p->setValue(p->Value + p->SmallChange);
 	}
 };
-
 
 GScrollBar::GScrollBar(): GTimeEffectActivation(true)
 {
@@ -105,14 +102,14 @@ GScrollBar::GScrollBar(): GTimeEffectActivation(true)
 	UpButton = new GScrollBarButtonUp();
 	DownButton = new GScrollBarButtonDown();
 	DragBar = new GScrollBarDrag();
-	Orientation = SBO_VERTICAL;
+	setOrientation(SBO_VERTICAL);
 }
 
 void GScrollBar::Render()
 {
 	Skin->RenderScrollBar(this);
 
-	byte tmp[512];
+	/*byte tmp[512];
 	TStringBuilder sb(tmp,512);
 	sb.Append("Value:");
 	sb.Append(Value);
@@ -123,9 +120,9 @@ void GScrollBar::Render()
 	sb.Append("DragHeight:");
 	sb.Append(DragBar->Height);
 
-	Font->Render(sb,100,100,TColors::Wheat);
+	Font->Render(sb,ScreenRegion.X +150,ScreenRegion.Y+150,TColors::Wheat);
 
-	sb.UnbindByteArray();
+	sb.UnbindByteArray();*/
 }
 
 void GScrollBar::Layout()
@@ -177,7 +174,14 @@ void GScrollBar::Pulse()
 	}
 	else
 	{
-		throw NotImplementedException();
+		if (mX < DragBar->Left)
+		{
+			setValue(Value - LargeChange);
+		}
+		else
+		{
+			setValue(Value + LargeChange);
+		}
 	}
 }
 
@@ -211,4 +215,19 @@ void GScrollBar::MouseUp( int x,int y,int button )
 void GScrollBar::MouseDown( int x,int y, int button )
 {
 	EnableTimeEffect();
+}
+
+void GScrollBar::setOrientation( GScrollBarOrientation newOrientation )
+{
+	Orientation = newOrientation;
+	if (newOrientation == SBO_VERTICAL)
+	{
+		UpButton->Direction = GScrollBarButton::BD_UP;
+		DownButton->Direction = GScrollBarButton::BD_DOWN;
+	}
+	else
+	{
+		UpButton->Direction = GScrollBarButton::BD_LEFT;
+		DownButton->Direction = GScrollBarButton::BD_RIGHT;
+	}
 }

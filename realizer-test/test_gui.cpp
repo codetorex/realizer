@@ -101,6 +101,13 @@ void RTestGUI::Initialize()
 	sb->Dock = DCK_RIGHT;
 	testWin->AddChild(sb);
 
+	GScrollBar* sb2 = new GScrollBar();
+	sb2->setOrientation(SBO_HORIZONTAL);
+	sb2->SetSize(300,100,200,20);
+	sb2->Dock = DCK_BOTTOM;
+	testWin->AddChild(sb2);
+	sb2->Layout();
+
 	GWindow* otherWin = new GWindow();
 	otherWin->SetSize(500,70,300,250);
 	otherWin->Text = "Other Window";

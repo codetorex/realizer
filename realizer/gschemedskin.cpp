@@ -201,6 +201,14 @@ void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
 	else
 	{
 		ScrollbarBgHGfx.Render(scrollbar);
+		if (scrollbar->DragBar->Width <= ScrollbarDragSmallHGfx.Width)
+		{
+			ScrollbarDragSmallHGfx.Render(scrollbar->DragBar);
+		}
+		else
+		{
+			ScrollbarDragHGfx.Render(scrollbar->DragBar);
+		}
 	}
 
 	RenderScrollBarButton(scrollbar->UpButton);
@@ -235,7 +243,18 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 	}
 	else
 	{
-		throw NotImplementedException();
+		scrollbar->SetHeight(ScrollbarButtonGfx[0].Height);
+		scrollbar->DragBar->SetHeight(scrollbar->Height);	
+
+		scrollbar->UpButton->SetLeftTop(0,0);
+		scrollbar->DownButton->SetLeftTop(scrollbar->Width- scrollbar->DownButton->Width,0);
+		scrollbar->DragBar->SetLeftTop(scrollbar->UpButton->Right,0);
+
+		if (scrollbar->DragBar->Width < ScrollbarDragSmallHGfx.Width)
+		{
+			scrollbar->DragBar->SetWidth(ScrollbarDragSmallHGfx.Width);
+			st.Calculate(false);
+		}
 	}
 
 	scrollbar->ObjectRegion.SetRectangle(0,0,scrollbar->Width,scrollbar->Height);
