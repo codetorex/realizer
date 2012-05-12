@@ -16,6 +16,10 @@ void RTestGUI::testBut_Click()
 void RTestGUI::testBut2_Click()
 {
 	Log.Output(LG_INF, "Test button 2 clicked");
+
+	TString dop = TString::Format("New item with id %",sfu(lb->Items.Count)); 
+	lb->AddItem(dop);
+	Log.Output(LG_INF,dop);
 }
 
 void RTestGUI::Initialize()
@@ -109,8 +113,11 @@ void RTestGUI::Initialize()
 	sb2->Layout();
 
 	GWindow* otherWin = new GWindow();
-	otherWin->SetSize(500,70,300,250);
+	otherWin->SetSize(500,70,400,350);
 	otherWin->Text = "Other Window";
+
+	lb = new GListBox();
+	lb->SetSize(50,100,250,200);
 
 	GLabel* testLabel = new GLabel();
 	testLabel->SetSize(50,50,100,27);
@@ -157,6 +164,7 @@ void RTestGUI::Initialize()
 	otherWin->AddChild(testTimer);
 	otherWin->AddChild(testText);
 	otherWin->AddChild(testCbox2);
+	otherWin->AddChild(lb);
 
 	Engine.GUI.Desktop->Layout();
 

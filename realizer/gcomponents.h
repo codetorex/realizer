@@ -15,5 +15,6 @@
 #include "gimagelist.h"
 #include "gtoolstrip.h"
 #include "gscrollbar.h"
+#include "glistbox.h"
 
 #endif

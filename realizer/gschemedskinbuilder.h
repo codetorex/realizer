@@ -239,46 +239,6 @@ public:
 	void LoadTextLayer(GSchemeClass* cls);
 };
 
-/**
-* Used for holding system color info of skin.
-*/
-class GSchemeColors
-{
-public:
-	TColor32 Scrollbar;
-	TColor32 ActiveTitle;
-	TColor32 InactiveTitle;
-	TColor32 Menu;
-	TColor32 Window;
-	TColor32 MenuText;
-	TColor32 WindowText;
-	TColor32 TitleText;
-	TColor32 ActiveBorder;
-	TColor32 InactiveBorder;
-	TColor32 AppWorkSpace;
-	TColor32 Hilight;
-	TColor32 HilightText;
-	TColor32 ButtonFace;
-	TColor32 ButtonShadow;
-	TColor32 GrayText;
-	TColor32 ButtonText;
-	TColor32 InactiveTitleText;
-	TColor32 ButtonHilight;
-	TColor32 ButtonDkShadow;
-	TColor32 ButtonLight;
-	TColor32 InfoText;
-	TColor32 InfoWindow;
-	TColor32 ButtonAlternateFace;
-	TColor32 HotTrackingColor;
-	TColor32 GradientActiveTitle;
-	TColor32 GradientInactiveTitle;
-	TColor32 MenuHilight;
-	TColor32 MenuBar;
-	TColor32 Background;
-	TColor32 WindowFrame;
-
-	void LoadColorsClass(GSchemeClass* cls);
-};
 
 class GSchemeFile: public TINIParser
 {
@@ -300,7 +260,7 @@ private:
 	TPackedRectangle* Pack;
 
 	GSchemeFile* Scheme;
-	GSchemeColors Colors;
+	//GSchemeColors Colors;
 
 	TArray< GSchemeColor* > NumberedColors;
 	TArray< GSchemeFont* > NumberedFonts;
@@ -365,6 +325,8 @@ public:
 	void LoadScrollbarDragV		(const GSchemeLayer& dragData);
 	void LoadScrollbarDragHSmall(const GSchemeLayer& dragsData);
 	void LoadScrollbarDragVSmall(const GSchemeLayer& dragsData);
+
+	void LoadColors				(GSchemeClass* cls, GSchemeColors& colors);
 
 	void LoadGeneric	        (const GSchemeLayer& data, int imagecount, VTexturePart* output);
 	void LoadGeneric			(const GSchemeLayer& data, int imageCount, GScalableQuad* output);

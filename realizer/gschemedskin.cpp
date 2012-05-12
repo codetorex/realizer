@@ -16,8 +16,10 @@ void GSchemedSkin::RenderWindow( GWindow* window )
 	Engine.Draw.SetTexture(SkinTexture);
 	WindowQuad[windowState].Render(window);
 	
+	TColor32 renColor = window->IsActive() ? Colors.TitleText : Colors.InactiveTitleText;
+
 	// TODO: cache string pixel width in somewhere
-	WindowTitleFont->Render(window->Text,window->TitleBar->ScreenRegion,WindowTitleAlign,WindowTitleColor[windowState] , WindowQuad->TopLeft.Width ,-1 );
+	WindowTitleFont->Render(window->Text,window->TitleBar->ScreenRegion,WindowTitleAlign, renColor , WindowQuad->TopLeft.Width ,-1 );
 	//WindowTitleFont->Render(window->Text,window->TitleBar->ScreenRegion,CA_MiddleLeft,WindowTitleColor[windowState] );
 }
 
@@ -261,4 +263,10 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 
 	st.CalculateDragPosition();
 	st.SetDragPos();
+}
+
+void GSchemedSkin::RenderHilight( int x,int y, int w,int h )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	WhitePart.DrawScaled(x,y,w,h,Colors.Hilight);
 }

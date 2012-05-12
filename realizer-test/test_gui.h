@@ -27,6 +27,7 @@ public:
 
 	GProgressBar* testPbar;
 	GCheckBox* testCbox;
+	GListBox* lb;
 
 	void testTimer_Elapsed();
 	void testCbox_CheckedChanged();

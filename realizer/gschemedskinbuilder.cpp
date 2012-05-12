@@ -217,10 +217,10 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	}
 
 	Skin->WindowQuad[0].Center.Initialize(*whitePart);
-	Skin->WindowQuad[0].CenterColor = Colors.ButtonFace;
+	Skin->WindowQuad[0].CenterColor = Skin->Colors.ButtonFace;
 	Skin->WindowQuad[1].Center.Initialize(*whitePart);
-	Skin->WindowQuad[1].CenterColor = Colors.ButtonFace;
-	Skin->ButtonFaceWindowBackgroundColor = Colors.ButtonFace;
+	Skin->WindowQuad[1].CenterColor = Skin->Colors.ButtonFace;
+	Skin->ButtonFaceWindowBackgroundColor = Skin->Colors.ButtonFace;
 
 	LoadButtons            (Scheme->GetTextLayer("buttons"));
 
@@ -564,42 +564,6 @@ GFont* GSchemedSkinBuilder::GetNumberedEngineFont( int fontID , FontKinds fontKi
 	throw Exception("Font not found");
 }
 
-
-void GSchemeColors::LoadColorsClass( GSchemeClass* cls )
-{
-	Scrollbar             = cls->GetColor("scrollbar");
-	ActiveTitle           = cls->GetColor("activetitle");
-	InactiveTitle         = cls->GetColor("inactivetitle");
-	Menu                  = cls->GetColor("menu");
-	Window                = cls->GetColor("window");
-	MenuText              = cls->GetColor("menutext");
-	WindowText            = cls->GetColor("windowtext");
-	TitleText             = cls->GetColor("titletext");
-	ActiveBorder          = cls->GetColor("activeborder");
-	InactiveBorder        = cls->GetColor("inactiveborder");
-	AppWorkSpace          = cls->GetColor("appworkspace");
-	Hilight               = cls->GetColor("hilight");
-	HilightText           = cls->GetColor("hilighttext");
-	ButtonFace            = cls->GetColor("buttonface");
-	ButtonShadow          = cls->GetColor("buttonshadow");
-	GrayText              = cls->GetColor("graytext");
-	ButtonText            = cls->GetColor("buttontext");
-	InactiveTitleText     = cls->GetColor("inactivetitletext");
-	ButtonHilight         = cls->GetColor("buttonhilight");
-	ButtonDkShadow        = cls->GetColor("buttondkshadow");
-	ButtonLight           = cls->GetColor("buttonlight");
-	InfoText              = cls->GetColor("infotext");
-	InfoWindow            = cls->GetColor("infowindow");
-	ButtonAlternateFace   = cls->GetColor("buttonalternateface");
-	HotTrackingColor      = cls->GetColor("hottrackingcolor");
-	GradientActiveTitle   = cls->GetColor("gradientactivetitle");
-	GradientInactiveTitle = cls->GetColor("gradientinactivetitle");
-	MenuHilight           = cls->GetColor("menuhilight");
-	MenuBar               = cls->GetColor("menubar");
-	Background            = cls->GetColor("background");
-	WindowFrame           = cls->GetColor("windowframe");
-}
-
 void GSchemeColor::LoadColor( GSchemeClass* cls )
 {
 	if ( cls->Variables.ContainsKey("colour") )
@@ -651,7 +615,7 @@ void GSchemedSkinBuilder::LoadFontsAndColors()
 		{
 			if (curClass->Name.GetLast() == 's') // Loading colours class is another story, so just do it and get back here.
 			{
-				Colors.LoadColorsClass((GSchemeClass*)curClass);
+				LoadColors((GSchemeClass*)curClass,Skin->Colors);
 				continue;
 			}
 
@@ -693,9 +657,7 @@ void GSchemedSkinBuilder::LoadFontsAndColors()
 	}
 
 	Skin->SystemFont = GetNumberedEngineFont(0,FK_SYSTEMFONTS);
-	Skin->DefaultFontColor = Colors.ButtonText;
-	Skin->WindowTitleColor[0] = Colors.TitleText;
-	Skin->WindowTitleColor[1] = Colors.InactiveTitleText;
+	Skin->DefaultFontColor = Skin->Colors.ButtonText;
 }
 
 void GSchemedSkinBuilder::LoadScrollbarButtons( const GSchemeLayer& buttonData )
@@ -768,4 +730,39 @@ void GSchemedSkinBuilder::LoadScrollbarDragVSmall( const GSchemeLayer& dragsData
 	LoadGeneric(dragsData,3,sbg);
 	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
 	Skin->ScrollbarDragSmallVGfx.Load(sbg,order,3);
+}
+
+void GSchemedSkinBuilder::LoadColors( GSchemeClass* cls, GSchemeColors& colors )
+{
+	colors.Scrollbar             = cls->GetColor("scrollbar");
+	colors.ActiveTitle           = cls->GetColor("activetitle");
+	colors.InactiveTitle         = cls->GetColor("inactivetitle");
+	colors.Menu                  = cls->GetColor("menu");
+	colors.Window                = cls->GetColor("window");
+	colors.MenuText              = cls->GetColor("menutext");
+	colors.WindowText            = cls->GetColor("windowtext");
+	colors.TitleText             = cls->GetColor("titletext");
+	colors.ActiveBorder          = cls->GetColor("activeborder");
+	colors.InactiveBorder        = cls->GetColor("inactiveborder");
+	colors.AppWorkSpace          = cls->GetColor("appworkspace");
+	colors.Hilight               = cls->GetColor("hilight");
+	colors.HilightText           = cls->GetColor("hilighttext");
+	colors.ButtonFace            = cls->GetColor("buttonface");
+	colors.ButtonShadow          = cls->GetColor("buttonshadow");
+	colors.GrayText              = cls->GetColor("graytext");
+	colors.ButtonText            = cls->GetColor("buttontext");
+	colors.InactiveTitleText     = cls->GetColor("inactivetitletext");
+	colors.ButtonHilight         = cls->GetColor("buttonhilight");
+	colors.ButtonDkShadow        = cls->GetColor("buttondkshadow");
+	colors.ButtonLight           = cls->GetColor("buttonlight");
+	colors.InfoText              = cls->GetColor("infotext");
+	colors.InfoWindow            = cls->GetColor("infowindow");
+	colors.ButtonAlternateFace   = cls->GetColor("buttonalternateface");
+	colors.HotTrackingColor      = cls->GetColor("hottrackingcolor");
+	colors.GradientActiveTitle   = cls->GetColor("gradientactivetitle");
+	colors.GradientInactiveTitle = cls->GetColor("gradientinactivetitle");
+	colors.MenuHilight           = cls->GetColor("menuhilight");
+	colors.MenuBar               = cls->GetColor("menubar");
+	colors.Background            = cls->GetColor("background");
+	colors.WindowFrame           = cls->GetColor("windowframe");
 }

@@ -26,6 +26,8 @@ public:
 	GFont*	 SystemFont;
 	TColor32 DefaultFontColor;
 
+	virtual void RenderHilight(int x, int y, int w, int h) = 0;
+
 	virtual void RenderWindow(GWindow* window) = 0;
 
 	virtual void LayoutWindow(GWindow* window) = 0;

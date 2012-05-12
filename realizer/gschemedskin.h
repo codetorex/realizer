@@ -15,6 +15,46 @@ class GFont;
 class TBitmap;
 
 
+/**
+ * Used for holding system color info of skin.
+ */
+class GSchemeColors
+{
+public:
+	TColor32 Scrollbar;
+	TColor32 ActiveTitle;
+	TColor32 InactiveTitle;
+	TColor32 Menu;
+	TColor32 Window;
+	TColor32 MenuText;
+	TColor32 WindowText;
+	TColor32 TitleText;
+	TColor32 ActiveBorder;
+	TColor32 InactiveBorder;
+	TColor32 AppWorkSpace;
+	TColor32 Hilight;
+	TColor32 HilightText;
+	TColor32 ButtonFace;
+	TColor32 ButtonShadow;
+	TColor32 GrayText;
+	TColor32 ButtonText;
+	TColor32 InactiveTitleText;
+	TColor32 ButtonHilight;
+	TColor32 ButtonDkShadow;
+	TColor32 ButtonLight;
+	TColor32 InfoText;
+	TColor32 InfoWindow;
+	TColor32 ButtonAlternateFace;
+	TColor32 HotTrackingColor;
+	TColor32 GradientActiveTitle;
+	TColor32 GradientInactiveTitle;
+	TColor32 MenuHilight;
+	TColor32 MenuBar;
+	TColor32 Background;
+	TColor32 WindowFrame;
+};
+
+
 // Skin class that can use window blinds skins.
 
 class GScemedSkinButtonPart: public TRange
@@ -137,7 +177,6 @@ public:
 	TColor32 ButtonFaceWindowBackgroundColor;
 	GFont* WindowTitleFont; // normal font, pressed font
 	ContentAlignment WindowTitleAlign;
-	TColor32 WindowTitleColor[2];
 
 	GSchemedSkinButtonQuad ButtonGfx;
 
@@ -180,10 +219,14 @@ public:
 	GScemedSkinButtonPart ScrollbarDragSmallHGfx;
 	GScemedSkinButtonPart ScrollbarDragSmallVGfx;
 
+	GSchemeColors Colors;
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
 
 public:
+
+	void RenderHilight(int x,int y, int w,int h);
 
 	// Implementation
 	void RenderWindow(GWindow* window);

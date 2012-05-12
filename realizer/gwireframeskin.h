@@ -7,6 +7,8 @@
 class GWireFrameSkin: public GSkin
 {
 public:
+	void RenderHilight(int x,int y, int w,int h);
+
 	void RenderWindow( GWindow* window );
 
 	void LayoutWindow( GWindow* window );
