@@ -114,10 +114,10 @@ void RTestSuite::Render()
 	Engine.GUI.RenderDesktop(TestDesktop);
 
 	mreg.SetSize(10,10,Engine.Renderer.vWidth,10);
-	topreg.SetSize(Engine.Renderer.vWidth - 210,10,100,10);
+	topreg.SetSize(10,10,Engine.Renderer.vWidth-20,10);
 
 	WriteText(Application.IdentifyText,mreg);
-	WriteText(Application.Modules.Item[0]->IdentifyText,topreg);
+	WriteText(Application.Modules.Item[0]->IdentifyText,topreg,CA_TopRight);
 
 	sb.Clear();
 	sb.Append("Current test: ");
@@ -138,6 +138,35 @@ void RTestSuite::Render()
 	sb.Append(" ]");
 	
 	WriteText(sb,mreg);
+
+	// TODO: make these functions to a class named FPSCounter.Update
+	ui32 frameMS = Engine.Time.RealTimeMS - LastFrame;
+	LastFrame = Engine.Time.RealTimeMS;
+
+	if(Engine.Time.RealTimeMS - LastFPS > 1000)
+	{
+		LastFPS = Engine.Time.RealTimeMS;
+		FPS = FrameCount;
+		FrameCount = 0;
+	}
+	FrameCount++;
+
+	sb.Clear();
+	sb.Append("FPS: ");
+	sb.Append(sfu(FPS,-6));
+	WriteText(sb,topreg, CA_TopRight);
+	
+	sb.Clear();
+	sb.Append("Average Frame Time: ");
+	sb.Append(sfu(1000/FPS,-4));
+	sb.Append("ms");
+	WriteText(sb,topreg, CA_TopRight);
+
+	sb.Clear();
+	sb.Append("Frame Time: ");
+	sb.Append(sfu(frameMS,-4));
+	sb.Append("ms");
+	WriteText(sb,topreg, CA_TopRight);
 
 	Engine.Draw.Flush();
 	Engine.Renderer.Exit2D();

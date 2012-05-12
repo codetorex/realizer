@@ -258,15 +258,8 @@ public:
 		int result = 0;
 		while(schars.MoveNext())
 		{
-			GCharacter* plane = Characters[schars.Current >> 8];
-			if (plane != 0)
-			{
-				result += plane[schars.Current & 0xFF].XAdvance;
-			}
-			else
-			{
-				result += DefaultCharacter.XAdvance;
-			}
+			GCharacter* chr = GetCharacter(schars.Current);
+			result += chr->XAdvance;
 		}
 		schars.Reset();
 		return result;

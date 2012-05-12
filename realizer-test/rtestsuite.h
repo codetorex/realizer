@@ -51,10 +51,19 @@ private:
 	GObject* OldFocused;
 	bool DebugInputEnabled;
 
+	ui32 LastFrame;
+	ui32 LastFPS;
+	ui32 FrameCount;
+	ui32 FPS;
+
 public:
 	RTestSuite()
 	{
 		Flags.Set( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
+		LastFrame = 0;
+		LastFPS = 0;
+		FrameCount = 0;
+		FPS = 100;
 	}
 
 	/// First prerequisite is working font stuff
