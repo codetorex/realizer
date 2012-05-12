@@ -88,8 +88,38 @@ public:
 	}
 
 	inline virtual void Initialize() { Layout(); };
-	inline virtual void Update();
-	inline virtual void Render();
+	
+	inline virtual void Update()
+	{
+		GObject* p = (GObject*)Parent;
+		ScreenRegion.SetSize(p->ScreenRegion.X + X + p->ObjectRegion.X,p->ScreenRegion.Y + Y + p->ObjectRegion.Y,Width,Height);
+
+		GObject* curObj = FirstItem;
+		int i = ItemCount;
+		while(i--)
+		{
+			if (curObj->Visible)
+			{
+				curObj->Update();
+			}
+			curObj = curObj->NextItem;
+		}
+	}
+
+	inline virtual void Render()
+	{
+		GObject* curObj = FirstItem;
+		int i = ItemCount;
+		while(i--)
+		{
+			if (curObj->Visible)
+			{
+				curObj->Render();
+			}
+			curObj = curObj->NextItem;
+		}
+	}
+
 	inline virtual void Layout() { ObjectRegion.SetRectangle(0,0,Width,Height); LayoutChilds(); }; // done when resize happens
 
 	void LayoutChilds()

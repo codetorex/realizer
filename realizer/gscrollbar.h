@@ -47,6 +47,7 @@ public:
 
 	void MouseDown(int x,int y, int button);
 	void MouseUp(int x,int y,int button);
+	void MouseWheel(int x,int y, int delta);
 
 	void Update();
 };
@@ -82,6 +83,7 @@ public:
 	void MouseMove(int x,int y);
 	void MouseDown(int x,int y, int button);
 	void MouseUp(int x,int y,int button);
+	void MouseWheel(int x,int y, int delta);
 	void MouseExit();
 	
 	event<NoArgEvent> ValueChanged;

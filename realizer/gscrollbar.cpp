@@ -45,6 +45,12 @@ void GScrollBarDrag::Update()
 	this->GObject::Update();
 }
 
+void GScrollBarDrag::MouseWheel( int x,int y, int delta )
+{
+	GScrollBar* p = (GScrollBar*)Parent;
+	p->MouseWheel(x,y,delta); // forward to parent
+}
+
 GScrollBarButton::GScrollBarButton(): GTimeEffectActivation(true)
 {
 	InitializeTimeEffect(400,60);
@@ -230,4 +236,9 @@ void GScrollBar::setOrientation( GScrollBarOrientation newOrientation )
 		UpButton->Direction = GScrollBarButton::BD_LEFT;
 		DownButton->Direction = GScrollBarButton::BD_RIGHT;
 	}
+}
+
+void GScrollBar::MouseWheel( int x,int y, int delta )
+{
+	setValue(Value - (delta * SmallChange));
 }

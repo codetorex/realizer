@@ -18,6 +18,8 @@ public:
 
 	void AddItem( TString& value );
 
+	void MouseWheel(int x,int y, int delta);
+
 	int SelectedIndex;
 
 	// TODO: implement multi select stuff

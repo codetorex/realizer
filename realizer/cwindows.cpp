@@ -4,8 +4,9 @@
 #include "gevent.h"
 #include "cengine.h"
 
-#ifdef WIN32
 
+#ifdef WIN32
+#include <WindowsX.h>
 bool CWin32RenderWindow::Create( int _width,int _height,const TString& _title,bool fullscr,int bits )
 {
 	SetViewportSize(_width,_height);
@@ -126,6 +127,13 @@ int CWin32RenderWindow::DummyWndProc( HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM
 
 int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 {
+	int zDelta;
+
+	int mX = GET_X_LPARAM(lParam);
+	int mY = GET_Y_LPARAM(lParam);
+
+	/*int mX = GET_X_LPARAM(lParam);
+	int mY = GET_Y_LPARAM(lParam);*/
 	switch (uMsg)								
 	{
 	case WM_ACTIVATE:						
@@ -169,7 +177,7 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;							
 
 	case WM_LBUTTONDOWN:
-		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),MouseButtons::Left);
+		Engine.Inputs.Mouse.MouseDown(mX,mY,MouseButtons::Left);
 		break;
 
 	case WM_LBUTTONDBLCLK:
@@ -177,40 +185,41 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 		break;
 
 	case WM_LBUTTONUP:
-		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),MouseButtons::Left);
+		Engine.Inputs.Mouse.MouseUp(mX,mY,MouseButtons::Left);
 		break;
 
 	case WM_RBUTTONDOWN:
-		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),MouseButtons::Right);
+		Engine.Inputs.Mouse.MouseDown(mX,mY,MouseButtons::Right);
 		break;
 
 	case WM_RBUTTONUP:
-		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),MouseButtons::Right);
+		Engine.Inputs.Mouse.MouseUp(mX,mY,MouseButtons::Right);
 		break;
 
 	case WM_MBUTTONDOWN:
-		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),MouseButtons::Middle);
+		Engine.Inputs.Mouse.MouseDown(mX,mY,MouseButtons::Middle);
 		break;
 
 	case WM_MBUTTONUP:
-		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),MouseButtons::Middle);
+		Engine.Inputs.Mouse.MouseUp(mX,mY,MouseButtons::Middle);
 		break;
 
 	case WM_XBUTTONDOWN:
-		Engine.Inputs.Mouse.MouseDown(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam) == XBUTTON1 ? MouseButtons::XButton1 : MouseButtons::XButton2);
+		Engine.Inputs.Mouse.MouseDown(mX,mY,HIWORD(wParam) == XBUTTON1 ? MouseButtons::XButton1 : MouseButtons::XButton2);
 		break;
 
 	case WM_XBUTTONUP:
-		Engine.Inputs.Mouse.MouseUp(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam) == XBUTTON1 ? MouseButtons::XButton1 : MouseButtons::XButton2);
+		Engine.Inputs.Mouse.MouseUp(mX,mY,HIWORD(wParam) == XBUTTON1 ? MouseButtons::XButton1 : MouseButtons::XButton2);
 		break;
 
 	case WM_MOUSEMOVE:
-		Engine.Inputs.Mouse.MouseMove(LOWORD(lParam),HIWORD(lParam));
+		Engine.Inputs.Mouse.MouseMove(mX,mY);
 		break;
 
 
 	case WM_MOUSEWHEEL:
-		Engine.Inputs.Mouse.MouseWheel(LOWORD(lParam),HIWORD(lParam),(int)wParam / 120);
+		zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+		Engine.Inputs.Mouse.MouseWheel(mX,mY,zDelta / WHEEL_DELTA);
 		break;
 
 	case WM_SIZE:							

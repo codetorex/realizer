@@ -65,36 +65,15 @@ void GObject::SetFocus()
 	GotFocus();
 }
 
-void GObject::Render()
+/*void GObject::Render()
 {
-	GObject* curObj = FirstItem;
-	int i = ItemCount;
-	while(i--)
-	{
-		if (curObj->Visible)
-		{
-			curObj->Render();
-		}
-		curObj = curObj->NextItem;
-	}
-}
 
-void GObject::Update()
+}*/
+
+/*void GObject::Update()
 {
-	GObject* p = (GObject*)Parent;
-	ScreenRegion.SetSize(p->ScreenRegion.X + X + p->ObjectRegion.X,p->ScreenRegion.Y + Y + p->ObjectRegion.Y,Width,Height);
 
-	GObject* curObj = FirstItem;
-	int i = ItemCount;
-	while(i--)
-	{
-		if (curObj->Visible)
-		{
-			curObj->Update();
-		}
-		curObj = curObj->NextItem;
-	}
-}
+}*/
 
 
 /*bool GObject::DeliverMove()

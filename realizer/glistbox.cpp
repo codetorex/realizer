@@ -105,3 +105,11 @@ void GListBox::MouseDown( int x,int y, int button )
 	int realIndex = pickedItem + VScrollBar.Value;
 	SelectedIndex = MathDriver::Clamp<int>(0,Items.Count-1,realIndex);
 }
+
+void GListBox::MouseWheel( int x,int y, int delta )
+{
+	if (VScrollBar.Visible)
+	{
+		VScrollBar.MouseWheel(VScrollBar.Width / 2,y,delta);
+	}
+}
