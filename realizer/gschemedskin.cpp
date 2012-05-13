@@ -291,6 +291,9 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 		{
 			TabPage.Render((GButtonBase*)btn.Current);
 		}
+
+		tabc->Font->Render(btn.Current->Text,btn.Current->ScreenRegion,CA_MiddleCenter,tabc->ForeColor);
+		Engine.Draw.SetTexture(SkinTexture);
 	}
 
 

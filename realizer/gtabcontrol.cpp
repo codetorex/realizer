@@ -13,6 +13,7 @@ GTabControl::GTabControl()
 {
 	ClassID = GTABCONTROL_CLASSID;
 	CurrentPage = 0;
+	Alignment = GTB_TOP;
 }
 
 void GTabControl::Render()
@@ -23,16 +24,26 @@ void GTabControl::Render()
 	{
 		CurrentPage->Render();
 	}
+
+
+	byte tmp[512];
+	TStringBuilder k(tmp,512);
+	k.Append("Current page: ");
+	k.Append(sfx((ui32)CurrentPage));
+
+	Font->Render(k,50,50,TColors::Wheat);
+
+	k.UnbindByteArray();
 }
 
 void GTabControl::Update()
 {
+	this->GObject::Update();
+	
 	if (CurrentPage)
 	{
 		CurrentPage->Update();
 	}
-
-	this->GObject::Update();
 }
 
 void GTabControl::Layout()
@@ -42,7 +53,9 @@ void GTabControl::Layout()
 		AddChild(&TabPageButtons);
 	}
 
-	// 5 soldan sagdan 2 yukardan assagidan
+	ObjectRegion.SetRectangle(0,0,Width,Height); // initialize region
+
+	// 5 soldan sagdan 4 yukardan assagidan
 
 	TabPageButtons.Clear();
 
@@ -52,9 +65,12 @@ void GTabControl::Layout()
 		GButtonBase* pageButton = &(curPage->BaseButton);
 		TabPageButtons.AddChild(pageButton);
 		TCharacterEnumerator sb(pageButton->Text);
-		pageButton->SetSize(0,0, Font->GetStringWidth(sb)+ 10,Font->Height + 4 );
+		pageButton->SetSize(0,0, Font->GetStringWidth(sb)+ 10,Font->Height + 8 );
 
 	}
+
+	TabPageButtons.SetSize(0,0,Width,Height);
+	//TabPageButtons.ObjectRegion.SetRectangle(0,0,Width,Height);
 
 	// TODO: support other aligments by layouting tabpagebuttons
 	if (Alignment == GTB_TOP)
@@ -62,7 +78,6 @@ void GTabControl::Layout()
 		GLayoutHorizontalOverflow::Instance.Layout(&TabPageButtons,false);
 		TabPageButtons.Dock = DCK_TOP;
 	}
-	
 
 	PageArea = GLayout::Instance.Layout(this,false);
 
@@ -85,7 +100,7 @@ GTabPage* GTabControl::AddPage( const TString& pageName )
 	Layout();
 	if (CurrentPage == 0)
 	{
-		SelectPage(CurrentPage);
+		SelectPage(page);
 	}
 	return page;
 }
@@ -123,15 +138,17 @@ void GTabControl::SelectPage( GTabPage* page )
 
 GObject* GTabControl::FindObject()
 {
-	GObject* result;
+	GObject* result = 0;
 	if (CurrentPage)
 	{
 		 result = CurrentPage->FindObject();
 	}
 
-	if (result == 0)
+	if (result != 0)
 	{
-		return this->GObject::FindObject();
+		return result;
 	}
+
+	return this->GObject::FindObject();
 }
 

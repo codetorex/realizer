@@ -113,36 +113,38 @@ void RTestGUI::Initialize()
 	sb2->Layout();
 
 	GWindow* otherWin = new GWindow();
-	otherWin->SetSize(500,70,400,350);
+	otherWin->SetSize(500,70,400,370);
 	otherWin->Text = "Other Window";
+	Engine.GUI.Desktop->AddChild(otherWin);
 
-	lb = new GListBox();
-	lb->SetSize(50,100,250,200);
+
+	GTabControl* tabc = new GTabControl();
+	tabc->SetSize(20,20,340,300);
+	otherWin->AddChild(tabc);
+	GTabPage* p1 = tabc->AddPage("Initial Tests");
 
 	GLabel* testLabel = new GLabel();
-	testLabel->SetSize(50,50,100,27);
+	testLabel->SetSize(10,10,100,20);
 	testLabel->Text = "Test label here";
 
 	testCbox = new GCheckBox();
-	testCbox->SetSize(50,80,100,20);
+	testCbox->SetSize(10,30,100,20);
 	//testCbox->Text = "A";
 	testCbox->CheckedChanged += GetHandler(this, &RTestGUI::testCbox_CheckedChanged);
 	testCbox->Text = "Debug Mode";
 
-	GCheckBox* testCbox2 = new GCheckBox();
-	testCbox2->SetSize(0,0,100,20);
-	testCbox2->Text = "BOKTURR";
+
 
 	GRadioButton* testRadio = new GRadioButton();
-	testRadio->SetSize(50,100,100,20);
+	testRadio->SetSize(10,50,100,20);
 	testRadio->Text = "option 1";
 
 	GRadioButton* testRadio2 = new GRadioButton();
-	testRadio2->SetSize(50,120,100,20);
+	testRadio2->SetSize(10,70,100,20);
 	testRadio2->Text = "option 2";
 
 	testPbar = new GProgressBar();
-	testPbar->SetSize(50,145,200,32);
+	testPbar->SetSize(10,100,200,32);
 	testPbar->Value = 50;
 	testPbar->ShowPercent = true;
 
@@ -152,19 +154,21 @@ void RTestGUI::Initialize()
 	testTimer->Elapsed += GetHandler(this, &RTestGUI::testTimer_Elapsed);
 
 	GTextBox* testText = new GTextBox();
-	testText->SetSize(50,180,200,20);
+	testText->SetSize(10,140,200,20);
+
+	lb = new GListBox();
+	lb->SetSize(10,170,200,100);
 
 
-	Engine.GUI.Desktop->AddChild(otherWin);
-	otherWin->AddChild(testLabel);
-	otherWin->AddChild(testCbox);
-	otherWin->AddChild(testRadio);
-	otherWin->AddChild(testRadio2);
-	otherWin->AddChild(testPbar);
-	otherWin->AddChild(testTimer);
-	otherWin->AddChild(testText);
-	otherWin->AddChild(testCbox2);
-	otherWin->AddChild(lb);
+	
+	p1->AddChild(testLabel);
+	p1->AddChild(testCbox);
+	p1->AddChild(testRadio);
+	p1->AddChild(testRadio2);
+	p1->AddChild(testPbar);
+	p1->AddChild(testTimer);
+	p1->AddChild(testText);
+	p1->AddChild(lb);
 
 	Engine.GUI.Desktop->Layout();
 
