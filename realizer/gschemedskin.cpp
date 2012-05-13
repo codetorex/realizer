@@ -275,6 +275,10 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 {
 	Engine.Draw.SetTexture(SkinTexture);
 
+	TRegion borderRegion;
+	borderRegion.SetSize(tabc->ScreenRegion.X+tabc->PageArea.X,tabc->ScreenRegion.Y + tabc->PageArea.Y - 1,tabc->PageArea.Width,tabc->PageArea.Height);
+	TabBorder.Render(&borderRegion);
+
 	// lets render tab pages
 	TLinkedListEnumerator<GObject*> btn(&tabc->TabPageButtons);
 	while(btn.MoveNext())
@@ -292,12 +296,8 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 			TabPage.Render((GButtonBase*)btn.Current);
 		}
 
+		// TODO: we can move this to another loop
 		tabc->Font->Render(btn.Current->Text,btn.Current->ScreenRegion,CA_MiddleCenter,tabc->ForeColor);
 		Engine.Draw.SetTexture(SkinTexture);
 	}
-
-
-	TRegion borderRegion;
-	borderRegion.SetSize(tabc->ScreenRegion.X+tabc->PageArea.X,tabc->ScreenRegion.Y + tabc->PageArea.Y,tabc->PageArea.Width,tabc->PageArea.Height);
-	TabBorder.Render(&borderRegion);
 }

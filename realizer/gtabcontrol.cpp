@@ -7,6 +7,7 @@
 GTabPage::GTabPage()
 {
 	ClassID = GTABPAGE_CLASSID;
+	TabButton.Page = this;
 }
 
 GTabControl::GTabControl()
@@ -62,7 +63,7 @@ void GTabControl::Layout()
 	for (int i=0;i<TabPages.Count;i++)
 	{
 		GTabPage* curPage = TabPages.Item[i];
-		GButtonBase* pageButton = &(curPage->BaseButton);
+		GButtonBase* pageButton = &(curPage->TabButton);
 		TabPageButtons.AddChild(pageButton);
 		TCharacterEnumerator sb(pageButton->Text);
 		pageButton->SetSize(0,0, Font->GetStringWidth(sb)+ 10,Font->Height + 8 );
@@ -70,7 +71,7 @@ void GTabControl::Layout()
 	}
 
 	TabPageButtons.SetSize(0,0,Width,Height);
-	//TabPageButtons.ObjectRegion.SetRectangle(0,0,Width,Height);
+	TabPageButtons.ObjectRegion.SetRectangle(0,0,Width,Height);
 
 	// TODO: support other aligments by layouting tabpagebuttons
 	if (Alignment == GTB_TOP)
@@ -94,8 +95,8 @@ GTabPage* GTabControl::AddPage( const TString& pageName )
 {
 	GTabPage* page = new GTabPage();
 	page->Text = pageName;
-	page->BaseButton.Text = pageName;
-	TabPageButtons.AddChild(&page->BaseButton);
+	page->TabButton.Text = pageName;
+	TabPageButtons.AddChild(&page->TabButton);
 	TabPages.Add(page);
 	Layout();
 	if (CurrentPage == 0)
@@ -109,7 +110,7 @@ void GTabControl::RemovePage( GTabPage* page )
 {
 	int pageIndex = TabPages.IndexOf(page);
 	TabPages.RemoveAt(pageIndex);
-	TabPageButtons.Remove(&page->BaseButton);
+	TabPageButtons.Remove(&page->TabButton);
 	if (CurrentPage == page)
 	{
 		SelectPage(pageIndex);
@@ -133,7 +134,12 @@ void GTabControl::SelectPage( int index )
 
 void GTabControl::SelectPage( GTabPage* page )
 {
+	if (CurrentPage != 0)
+	{
+		CurrentPage->TabButton.SetGraphic(GBG_NORMAL);
+	}
 	CurrentPage = page;
+	CurrentPage->TabButton.SetGraphic(GBG_DOWN);
 }
 
 GObject* GTabControl::FindObject()
@@ -152,3 +158,38 @@ GObject* GTabControl::FindObject()
 	return this->GObject::FindObject();
 }
 
+
+void GTabButton::MouseExit()
+{
+	if (IsSelectedPage())
+	{
+		SetGraphic(GBG_DOWN);
+	}
+	else
+	{
+		SetGraphic(GBG_NORMAL);
+	}
+}
+
+void GTabButton::Clicked( int x, int y, int button )
+{
+	GTabControl* tc = GetTabControl();
+	tc->SelectPage(Page);
+}
+
+bool GTabButton::IsSelectedPage()
+{
+	GTabControl* tc = GetTabControl();
+	if (tc->CurrentPage == Page)
+	{
+		return true;
+	}
+	return false;
+}
+
+GTabControl* GTabButton::GetTabControl()
+{
+	GObject* p = (GObject*)Parent;
+	GTabControl* rp = (GTabControl*)p->Parent;
+	return rp;
+}

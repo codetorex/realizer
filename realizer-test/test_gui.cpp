@@ -122,6 +122,7 @@ void RTestGUI::Initialize()
 	tabc->SetSize(20,20,340,300);
 	otherWin->AddChild(tabc);
 	GTabPage* p1 = tabc->AddPage("Initial Tests");
+	GTabPage* p2 = tabc->AddPage("Another Tests");
 
 	GLabel* testLabel = new GLabel();
 	testLabel->SetSize(10,10,100,20);

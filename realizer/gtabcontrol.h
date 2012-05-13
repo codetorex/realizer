@@ -4,12 +4,29 @@
 #include "gobject.h"
 #include "gbuttonbase.h"
 
+class GTabPage;
+class GTabControl;
+
+class GTabButton: public GButtonBase
+{
+public:
+	/// Associated page with this button
+	GTabPage* Page;
+
+	GTabControl* GetTabControl();
+
+	bool IsSelectedPage();
+
+	void MouseExit();
+	void Clicked(int x, int y, int button);
+};
+
 class GTabPage: public GObject
 {
 public:
 	GTabPage();
 
-	GButtonBase BaseButton;
+	GTabButton TabButton;
 };
 
 enum GTabAlignment
