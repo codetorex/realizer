@@ -198,12 +198,12 @@ public:
 	* Takes parameters from Master VGUI.
 	* Basically Chain of responsibility pattern used for mouse events.
 	*/
-	GObject* FindObject();
+	virtual GObject* FindObject();
 
 	/**
 	* Doesn't have any relation with VGUI. Only for tool and design usage.
 	*/
-	GObject* FindObject(int x,int y);
+	GObject* FindObjectByCoord(int x,int y);
 };
 
 typedef TLinkedListEnumerator<GObject*> GObjectEnumerator;

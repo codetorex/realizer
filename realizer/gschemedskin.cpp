@@ -270,3 +270,31 @@ void GSchemedSkin::RenderHilight( int x,int y, int w,int h )
 	Engine.Draw.SetTexture(SkinTexture);
 	WhitePart.DrawScaled(x,y,w,h,Colors.Hilight);
 }
+
+void GSchemedSkin::RenderTabControl( GTabControl* tabc )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+
+	// lets render tab pages
+	TLinkedListEnumerator<GObject*> btn(&tabc->TabPageButtons);
+	while(btn.MoveNext())
+	{
+		if (btn.Current == btn.mList->FirstItem)
+		{
+			TabPageLeft.Render((GButtonBase*)btn.Current);
+		}
+		else if (btn.Current == btn.mList->LastItem)
+		{
+			TabPageRight.Render((GButtonBase*)btn.Current);
+		}
+		else
+		{
+			TabPage.Render((GButtonBase*)btn.Current);
+		}
+	}
+
+
+	TRegion borderRegion;
+	borderRegion.SetSize(tabc->ScreenRegion.X+tabc->PageArea.X,tabc->ScreenRegion.Y + tabc->PageArea.Y,tabc->PageArea.Width,tabc->PageArea.Height);
+	TabBorder.Render(&borderRegion);
+}

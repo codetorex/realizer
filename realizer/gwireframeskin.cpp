@@ -133,3 +133,8 @@ void GWireFrameSkin::RenderHilight( int x,int y, int w,int h )
 	Engine.Draw.NoTexture();
 	Engine.Draw.DrawQuad(x,y,x+w,y+h,0,0,1,1, TColors::Cyan);
 }
+
+void GWireFrameSkin::RenderTabControl( GTabControl* tabc )
+{
+	throw NotImplementedException();
+}

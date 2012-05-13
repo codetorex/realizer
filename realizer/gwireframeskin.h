@@ -60,6 +60,8 @@ public:
 	
 	void LayoutScrollBar(GScrollBar* scrollbar);
 
+	void RenderTabControl(GTabControl* tabc);
+
 private:
 	void RenderScrollBarButton(GScrollBarButton* button);
 	void LayoutScrollBarButton(GScrollBarButton* button);

@@ -32,7 +32,7 @@ void GObject::ActivateObject( GObject* obj )
 	}
 }
 
-GObject* GObject::FindObject( int x,int y )
+GObject* GObject::FindObjectByCoord( int x,int y )
 {
 	if (!Visible)
 	{
@@ -48,7 +48,7 @@ GObject* GObject::FindObject( int x,int y )
 	int i = ItemCount;
 	while(i--)
 	{
-		GObject* found = curObj->FindObject(x , y ); // hmm was tried relative finding like x - X
+		GObject* found = curObj->FindObjectByCoord(x , y ); // hmm was tried relative finding like x - X
 		if (found) return found;
 		curObj = curObj->PrevItem;
 	}
@@ -167,6 +167,8 @@ GObject* GObject::FindObject()
 		}**/
 		MouseInside = false;
 	}
+
+	// if not in parent why not return 0 immediately?
 
 	GObject* subResult = 0;
 	GObject* curObj = LastItem;

@@ -326,12 +326,23 @@ public:
 	void LoadScrollbarDragHSmall(const GSchemeLayer& dragsData);
 	void LoadScrollbarDragVSmall(const GSchemeLayer& dragsData);
 
+	void LoadTabBorder			(const GSchemeLayer& tabData);
+	void LoadTabBackground		(const GSchemeLayer& tabData);
+	void LoadTabPageButton		(const GSchemeLayer& tabData);
+	void LoadTabPageLeftButton	(const GSchemeLayer& tabData);
+	void LoadTabPageRightButton	(const GSchemeLayer& tabData);
+
 	void LoadColors				(GSchemeClass* cls, GSchemeColors& colors);
 
 	void LoadGeneric	        (const GSchemeLayer& data, int imagecount, VTexturePart* output);
 	void LoadGeneric			(const GSchemeLayer& data, int imageCount, GScalableQuad* output);
 
 	inline void LoadGeneric		(const GSchemeLayer& data, GScalableQuad* output)
+	{
+		LoadGeneric(data,1,output);
+	}
+
+	inline void LoadGeneric		(const GSchemeLayer& data, VTexturePart* output)
 	{
 		LoadGeneric(data,1,output);
 	}

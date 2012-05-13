@@ -66,7 +66,7 @@ public:
 		}
 	}
 
-	inline GObject* FindDesktopObject()
+	GObject* FindObject()
 	{
 		GObject* found;
 
@@ -81,7 +81,7 @@ public:
 			}
 		}
 
-		found = FindObject();
+		found = this->GObject::FindObject();
 		if (found)
 		{
 			MouseIsOn(found);

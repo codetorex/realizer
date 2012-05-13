@@ -35,8 +35,6 @@ public:
 	/// true means active desktop will capture the input
 	bool Enabled;
 
-
-
 	REngine* Parent;
 	GDesktop* Desktop;
 
@@ -73,7 +71,7 @@ public:
 		Y = y;
 		ButtonState[button] = true;
 
-		GObject* obj = Desktop->FindDesktopObject();
+		GObject* obj = Desktop->FindObject();
 		if (obj)
 		{
 			obj->SetFocus();
@@ -95,7 +93,7 @@ public:
 	{
 		X = x;
 		Y = y;
-		GObject* obj = Desktop->FindDesktopObject();
+		GObject* obj = Desktop->FindObject();
 		if (obj)
 		{
 			obj->MouseWheel(x - obj->ScreenRegion.X,y - obj->ScreenRegion.Y,delta);
@@ -134,7 +132,7 @@ public:
 		dsktp->MouseInside = true;
 		dsktp->Update();
 
-		GObject* obj = dsktp->FindDesktopObject();
+		GObject* obj = dsktp->FindObject();
 		if (obj)
 		{
 			obj->MouseMove(X - obj->ScreenRegion.X, Y - obj->ScreenRegion.Y);

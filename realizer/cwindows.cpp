@@ -218,8 +218,12 @@ int CWin32RenderWindow::ProcessEvent( UINT uMsg,WPARAM wParam, LPARAM lParam )
 
 
 	case WM_MOUSEWHEEL:
+		POINT wh;
+		wh.x = mX;
+		wh.y = mY;
+		ScreenToClient(hWnd,&wh);
 		zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
-		Engine.Inputs.Mouse.MouseWheel(mX,mY,zDelta / WHEEL_DELTA);
+		Engine.Inputs.Mouse.MouseWheel(wh.x,wh.y,zDelta / WHEEL_DELTA);
 		break;
 
 	case WM_SIZE:							

@@ -221,6 +221,12 @@ public:
 
 	GSchemeColors Colors;
 
+	GScalableQuad			TabBorder;
+	VTexturePart			TabBackground; // system button face color or this
+	GSchemedSkinButtonQuad	TabPage;
+	GSchemedSkinButtonQuad	TabPageLeft;
+	GSchemedSkinButtonQuad	TabPageRight;
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
 
@@ -269,6 +275,8 @@ public:
 	void RenderScrollBar(GScrollBar* scrollbar);
 
 	void LayoutScrollBar(GScrollBar* scrollbar);
+
+	void RenderTabControl(GTabControl* tabc);
 
 private:
 	void RenderScrollBarButton( GScrollBarButton* button );

@@ -244,6 +244,12 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	LoadScrollbarDragHSmall(Scheme->GetLayer("smallhscrollthumb"));
 	LoadScrollbarDragVSmall(Scheme->GetLayer("smallvscrollthumb"));
 
+	LoadTabBorder          (Scheme->GetLayer("tabs.border"));
+	LoadTabBackground      (Scheme->GetLayer("tabs.page"));
+	LoadTabPageButton      (Scheme->GetLayer("tabs"));
+	LoadTabPageLeftButton  (Scheme->GetLayer("tabs.left"));
+	LoadTabPageRightButton (Scheme->GetLayer("tabs.right"));
+
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
 }
 
@@ -765,4 +771,38 @@ void GSchemedSkinBuilder::LoadColors( GSchemeClass* cls, GSchemeColors& colors )
 	colors.MenuBar               = cls->GetColor("menubar");
 	colors.Background            = cls->GetColor("background");
 	colors.WindowFrame           = cls->GetColor("windowframe");
+}
+
+void GSchemedSkinBuilder::LoadTabBorder( const GSchemeLayer& tabData )
+{
+	LoadGeneric(tabData,&Skin->TabBorder);
+}
+
+void GSchemedSkinBuilder::LoadTabBackground( const GSchemeLayer& tabData )
+{
+	LoadGeneric(tabData,&Skin->TabBackground);
+}
+
+void GSchemedSkinBuilder::LoadTabPageButton( const GSchemeLayer& tabData )
+{
+	GScalableQuad sbg[5];
+	LoadGeneric(tabData,5,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->TabPage.Load(sbg,order,4);
+}
+
+void GSchemedSkinBuilder::LoadTabPageLeftButton( const GSchemeLayer& tabData )
+{
+	GScalableQuad sbg[5];
+	LoadGeneric(tabData,5,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->TabPageLeft.Load(sbg,order,4);
+}
+
+void GSchemedSkinBuilder::LoadTabPageRightButton( const GSchemeLayer& tabData )
+{
+	GScalableQuad sbg[5];
+	LoadGeneric(tabData,5,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
+	Skin->TabPageRight.Load(sbg,order,4);
 }

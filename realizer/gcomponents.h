@@ -16,5 +16,6 @@
 #include "gtoolstrip.h"
 #include "gscrollbar.h"
 #include "glistbox.h"
+#include "gtabcontrol.h"
 
 #endif
