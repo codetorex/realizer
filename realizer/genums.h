@@ -50,6 +50,7 @@ enum GUIClassID
 	GLISTBOX_CLASSID,
 	GTABCONTROL_CLASSID,
 	GTABPAGE_CLASSID,
+	GSPLITCONTAINER_CLASSID,
 };
 
 enum CheckStates
@@ -81,6 +82,12 @@ enum GButtonGraphics
 	GBG_DOWN,
 	GBG_DISABLED,
 	GBG_FOCUSED,
+};
+
+enum GOrientation
+{
+	GO_HORIZONTAL,
+	GO_VERTICAL,
 };
 
 

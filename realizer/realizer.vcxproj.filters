@@ -336,6 +336,9 @@
     <ClInclude Include="gtabcontrol.h">
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="gsplitcontainer.h">
+      <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -504,6 +507,9 @@
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
     <ClCompile Include="gtabcontrol.cpp">
+      <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="gsplitcontainer.cpp">
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClCompile>
   </ItemGroup>

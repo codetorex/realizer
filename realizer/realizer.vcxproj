@@ -125,6 +125,7 @@
     <ClInclude Include="gschemedskin.h" />
     <ClInclude Include="gschemedskinbuilder.h" />
     <ClInclude Include="gskin.h" />
+    <ClInclude Include="gsplitcontainer.h" />
     <ClInclude Include="gtabcontrol.h" />
     <ClInclude Include="gtextbox.h" />
     <ClInclude Include="gtextboxbase.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="gschemedskinbuilder.cpp" />
     <ClCompile Include="gscrollbar.cpp" />
     <ClCompile Include="gskinmanager.cpp" />
+    <ClCompile Include="gsplitcontainer.cpp" />
     <ClCompile Include="gtabcontrol.cpp" />
     <ClCompile Include="gtextbox.cpp" />
     <ClCompile Include="gtextboxbase.cpp" />

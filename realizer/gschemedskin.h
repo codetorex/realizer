@@ -163,6 +163,11 @@ public:
 	{
 		Quads[button->ButtonGraphic].Render(button);
 	}
+
+	inline void Render(GButtonBase* button, TRegion* region)
+	{
+		Quads[button->ButtonGraphic].Render(region);
+	}
 };
 
 class GSchemedSkin: public GSkin

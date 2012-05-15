@@ -27,12 +27,6 @@ public:
 	void Update();
 };
 
-enum GScrollBarOrientation
-{
-	SBO_VERTICAL,
-	SBO_HORIZONTAL,
-};
-
 class GScrollBarDrag: public GButtonBase
 {
 private:
@@ -41,7 +35,7 @@ private:
 	vec2i DragPos;
 
 public:
-	GScrollBarOrientation Orientation;
+	GOrientation Orientation;
 
 	GScrollBarDrag();
 
@@ -75,10 +69,10 @@ public:
 	int SmallChange;
 	int LargeChange;
 	
-	GScrollBarOrientation Orientation;
+	GOrientation Orientation;
 
 	void setValue(int newValue);
-	void setOrientation( GScrollBarOrientation newOrientation );
+	void setOrientation( GOrientation newOrientation );
 
 	void MouseMove(int x,int y);
 	void MouseDown(int x,int y, int button);
@@ -114,7 +108,7 @@ public:
 
 	inline GScrollbarLayout(GScrollBar& sb): base(sb)
 	{
-		Vertical = base.Orientation == SBO_VERTICAL ? true : false;
+		Vertical = base.Orientation == GO_VERTICAL ? true : false;
 	}
 
 	inline void Calculate(bool calculateDragSize = true)

@@ -3,6 +3,7 @@
 
 #include "gobject.h"
 #include "gbuttonbase.h"
+#include "glayout.h"
 
 class GTabPage;
 class GTabControl;
@@ -24,9 +25,13 @@ public:
 class GTabPage: public GObject
 {
 public:
+	GLayout* Layouter;
+
 	GTabPage();
 
 	GTabButton TabButton;
+
+	void Layout();
 };
 
 enum GTabAlignment

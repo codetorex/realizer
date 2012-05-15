@@ -11,7 +11,6 @@ public:
 
 	GLayout* Layouter;
 
-
 	GWindow();
 
 	string Text;

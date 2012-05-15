@@ -17,5 +17,7 @@
 #include "gscrollbar.h"
 #include "glistbox.h"
 #include "gtabcontrol.h"
+#include "gsplitcontainer.h"
+
 
 #endif

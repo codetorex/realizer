@@ -106,7 +106,7 @@ void RTestGUI::Initialize()
 	testWin->AddChild(sb);
 
 	GScrollBar* sb2 = new GScrollBar();
-	sb2->setOrientation(SBO_HORIZONTAL);
+	sb2->setOrientation(GO_HORIZONTAL);
 	sb2->SetSize(300,100,200,20);
 	sb2->Dock = DCK_BOTTOM;
 	testWin->AddChild(sb2);
@@ -120,6 +120,7 @@ void RTestGUI::Initialize()
 
 	GTabControl* tabc = new GTabControl();
 	tabc->SetSize(20,20,340,300);
+	//tabc->Dock = DCK_FILL;
 	otherWin->AddChild(tabc);
 	GTabPage* p1 = tabc->AddPage("Initial Tests");
 	GTabPage* p2 = tabc->AddPage("Another Tests");
@@ -159,8 +160,6 @@ void RTestGUI::Initialize()
 
 	lb = new GListBox();
 	lb->SetSize(10,170,200,100);
-
-
 	
 	p1->AddChild(testLabel);
 	p1->AddChild(testCbox);
@@ -170,6 +169,13 @@ void RTestGUI::Initialize()
 	p1->AddChild(testTimer);
 	p1->AddChild(testText);
 	p1->AddChild(lb);
+
+
+	GSplitContainer* sc = new GSplitContainer();
+	sc->Dock = DCK_FILL;
+	sc->SetSize(0,0,100,100);
+	p2->AddChild(sc);
+
 
 	Engine.GUI.Desktop->Layout();
 

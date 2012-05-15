@@ -188,7 +188,7 @@ void GSchemedSkin::LayoutScrollBarButton( GScrollBarButton* button )
 void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	if (scrollbar->Orientation == SBO_VERTICAL)
+	if (scrollbar->Orientation == GO_VERTICAL)
 	{
 		ScrollbarBgVGfx.Render(scrollbar);
 		if (scrollbar->DragBar->Height <= ScrollbarDragSmallVGfx.Height)
@@ -228,7 +228,7 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 	st.Calculate();
 	st.SetDragSize();
 
-	if (scrollbar->Orientation == SBO_VERTICAL)
+	if (scrollbar->Orientation == GO_VERTICAL)
 	{
 		scrollbar->SetWidth(ScrollbarButtonGfx[0].Width);
 		scrollbar->DragBar->SetWidth(scrollbar->Width);	
@@ -276,25 +276,43 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 	Engine.Draw.SetTexture(SkinTexture);
 
 	TRegion borderRegion;
-	borderRegion.SetSize(tabc->ScreenRegion.X+tabc->PageArea.X,tabc->ScreenRegion.Y + tabc->PageArea.Y - 1,tabc->PageArea.Width,tabc->PageArea.Height);
+	borderRegion.SetSize(tabc->ScreenRegion.X+tabc->PageArea.X,tabc->ScreenRegion.Y + tabc->PageArea.Y,tabc->PageArea.Width,tabc->PageArea.Height);
 	TabBorder.Render(&borderRegion);
 
 	// lets render tab pages
 	TLinkedListEnumerator<GObject*> btn(&tabc->TabPageButtons);
 	while(btn.MoveNext())
 	{
+		GTabButton* curButton = (GTabButton*)btn.Current;
+
+		GSchemedSkinButtonQuad* qd;
 		if (btn.Current == btn.mList->FirstItem)
 		{
-			TabPageLeft.Render((GButtonBase*)btn.Current);
+			qd = &TabPageLeft;
 		}
 		else if (btn.Current == btn.mList->LastItem)
 		{
-			TabPageRight.Render((GButtonBase*)btn.Current);
+			qd = &TabPageRight;
 		}
 		else
 		{
-			TabPage.Render((GButtonBase*)btn.Current);
+			qd = &TabPage;
 		}
+
+		if (curButton->Page == tabc->CurrentPage)
+		{
+			TRegion tmpRegion;
+			tmpRegion.SetFrom(&curButton->ScreenRegion);
+			tmpRegion.RegionInflate(1);
+			tmpRegion.SetHeight(tmpRegion.Height+1);
+			tmpRegion.SetTopRelative(-1);
+			qd->Render(curButton,&tmpRegion);
+		}
+		else
+		{
+			qd->Render(curButton);
+		}
+		
 
 		// TODO: we can move this to another loop
 		tabc->Font->Render(btn.Current->Text,btn.Current->ScreenRegion,CA_MiddleCenter,tabc->ForeColor);

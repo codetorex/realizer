@@ -8,6 +8,14 @@ GTabPage::GTabPage()
 {
 	ClassID = GTABPAGE_CLASSID;
 	TabButton.Page = this;
+	Layouter = &GLayout::Instance;
+}
+
+void GTabPage::Layout()
+{
+	this->GObject::Layout();
+	Layouter->Layout(this,false);
+	LayoutChilds();
 }
 
 GTabControl::GTabControl()
@@ -81,6 +89,7 @@ void GTabControl::Layout()
 	}
 
 	PageArea = GLayout::Instance.Layout(this,false);
+	TabPageButtons.ObjectRegion.SetRectangle(2,0,Width-2,Height);
 
 	for (int i=0;i< TabPages.Count;i++)
 	{
@@ -88,6 +97,7 @@ void GTabControl::Layout()
 		curPage->SetSize(PageArea.X,PageArea.Y,PageArea.Width,PageArea.Height);
 		this->OwnObject(curPage);
 		curPage->ObjectRegion.RectangleShrink(3); // 3 px padding TODO: make this changable
+		curPage->Layout();
 	}
 }
 
