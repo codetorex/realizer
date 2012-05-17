@@ -25,8 +25,8 @@ public:
 
 	}
 
-	vec2 TopLeftCoord;
-	vec2 BottomRightCoord;
+	Vector2 TopLeftCoord;
+	Vector2 BottomRightCoord;
 
 	void Initialize(TRange* range, int x,int y, int _width,int _height)
 	{

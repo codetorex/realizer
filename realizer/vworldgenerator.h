@@ -19,7 +19,7 @@ public:
 	/// Defines center of mass and radius
 	Circle2 Mass;
 
-	TArray < vec2 > OuterPoints;
+	TArray < Vector2 > OuterPoints;
 
 	TArray < Line > OuterLines;
 
@@ -106,8 +106,8 @@ class VMapView: public TRange
 public:
 	VMap* View;
 
-	vec2 TopLeftCoord;
-	vec2 BottomRightCoord;
+	Vector2 TopLeftCoord;
+	Vector2 BottomRightCoord;
 
 	void Initialize(int _width, int _height, int x, int y, int subwidth, int subheight)
 	{

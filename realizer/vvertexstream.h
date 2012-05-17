@@ -9,7 +9,7 @@
 class VVertexStream: public VVertexBuffer
 {
 public:
-	vec3 PreTranslation;
+	Vector3 PreTranslation;
 	TColor32 DefaultDiffuse;
 
 	VVertexStream()

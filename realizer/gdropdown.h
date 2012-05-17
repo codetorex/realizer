@@ -17,8 +17,16 @@ public:
 	void Update();
 	void Layout();
 
+	/**
+	 * Popups at given position
+	 */
 	void Show(int x,int y);
+	
+	/**
+	 * Popups at current cursor position
+	 */
 	void Show();
+
 	void Hide();
 };
 

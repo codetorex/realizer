@@ -31,8 +31,8 @@ class GScrollBarDrag: public GButtonBase
 {
 private:
 	bool Dragging;
-	vec2i DragPoint;
-	vec2i DragPos;
+	Vector2i DragPoint;
+	Vector2i DragPos;
 
 public:
 	GOrientation Orientation;

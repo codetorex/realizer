@@ -15,7 +15,7 @@ class GSplitContainer: public GObject
 private:
 	bool Dragging;
 	int DragDistance;
-	vec2i DragPoint;
+	Vector2i DragPoint;
 
 public:
 	GSplitContainer();

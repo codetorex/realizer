@@ -8,10 +8,83 @@
 #include "gskin.h"
 #include <tregion.h>
 #include "tenumerator.h"
+#include "glayout.h"
 
 class GFont;
 class VGUI;
 class GLayout;
+
+class GPadding
+{
+public:
+	int Left;
+	int Top;
+	int Right;
+	int Bottom;
+
+	GPadding()
+	{
+		Set(0);
+	}
+
+	GPadding& operator += (const GPadding& other)
+	{
+		Left += other.Left;
+		Top += other.Top;
+		Right += other.Right;
+		Bottom += other.Bottom;
+		return *this;
+	}
+
+	inline void Set(int pad)
+	{
+		Left = pad;
+		Top = pad;
+		Right = pad;
+		Bottom = pad;
+	}
+};
+
+/**
+ * Region defines total width, total height
+ */
+class GBoxModel: public TRegion
+{
+public:
+	GPadding Margin; // margin around
+	GPadding Padding; // client rect padding
+	GPadding Border; // skin border
+
+	/// Relative content rectangle
+	TRectangle Content;
+
+	/// Where actual draw and event handling occurs
+	TRegion DrawRegion;
+
+	/**
+	 * Call this after Margin, Padding or Border changes.
+	 */
+	void UpdateContent()
+	{
+		GPadding sum = Margin;
+		sum += Padding;
+		sum += Border;
+
+		Content.SetRectangle(sum.Left,sum.Top,Width - (sum.Right + sum.Left),Height - (sum.Top + sum.Bottom));
+	}
+
+	/**
+	 * Updates draw region by parents draw region
+	 * You should call this whenever greatest parent's draw region changes.
+	 * @param p is parent
+	 */
+	void UpdateDrawRegion(GBoxModel& p)
+	{
+		int nX = p.DrawRegion.X + p.Content.X + X;
+		int nY = p.DrawRegion.Y + p.Content.Y + Y;
+		DrawRegion.SetSize(nX,nY,Width,Height);
+	}
+};
 
 class GObject: public TListNode< GObject* >, public TList< GObject* >, public TRegion
 {
@@ -33,6 +106,7 @@ public:
 		Font = 0;
 		TextAlign = CA_TopLeft;
 		Dock = DCK_NODOCK;
+		Layouter = &GLayout::Instance;
 	}
 
 	TRegion ScreenRegion;
@@ -82,12 +156,17 @@ public:
 	int	TextPixelWidth;
 	TColor32 ForeColor;
 
+	GLayout* Layouter;
+
 	inline bool IsActive()
 	{
 		return Parent->LastItem == this;
 	}
 
-	inline virtual void Initialize() { Layout(); };
+	inline virtual void Initialize() 
+	{ 
+		Layout(); 
+	};
 	
 	inline virtual void Update()
 	{
@@ -120,7 +199,11 @@ public:
 		}
 	}
 
-	inline virtual void Layout() { ObjectRegion.SetRectangle(0,0,Width,Height); LayoutChilds(); }; // done when resize happens
+	inline virtual void Layout() 
+	{ 
+		ObjectRegion.SetRectangle(0,0,Width,Height);
+		LayoutChilds(); 
+	}; // done when resize happens
 
 	void LayoutChilds()
 	{

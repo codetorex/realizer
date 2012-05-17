@@ -16,8 +16,8 @@ void VMapView::Visualize(TBitmap* bmp)
 	{
 		Circle2* c = &le.Current->Mass;
 
-		vec2i cp = GetPositionFromRatio(c->x,c->y);
-		vec2 right = c->PointOnCircle(0.0f);
+		Vector2i cp = GetPositionFromRatio(c->x,c->y);
+		Vector2 right = c->PointOnCircle(0.0f);
 		int rad = GetXFromRatio(right.x) - cp.x;
 		/*cp.x -= rad;
 		cp.y -= rad;

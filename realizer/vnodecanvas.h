@@ -14,9 +14,9 @@ class VNodeCanvasItem
 public:
 	TString		ItemName;
 	
-	vec3		Position;
-	vec3		Rotation;
-	vec3		Scale;
+	Vector3		Position;
+	Vector3		Rotation;
+	Vector3		Scale;
 	TColor32	Color;
 	
 	virtual void Render() = 0;

@@ -27,7 +27,7 @@ void GScrollBarDrag::Update()
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 
-		vec2i Diff(Master->X,Master->Y);
+		Vector2i Diff(Master->X,Master->Y);
 		Diff -= DragPoint;
 
 		if (p->Orientation == GO_VERTICAL)

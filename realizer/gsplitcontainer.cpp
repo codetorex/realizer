@@ -33,7 +33,7 @@ void GSplitContainer::Update()
 {
 	if (Dragging)
 	{
-		vec2i Diff(Master->X,Master->Y);
+		Vector2i Diff(Master->X,Master->Y);
 		Diff -= DragPoint;
 
 		int MaxSplitterDistance;
