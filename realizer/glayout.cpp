@@ -21,9 +21,9 @@ enum DockType
 };
 */
 
-TRectangle GLayout::Layout( GObject* container, bool measureOnly )
+IRectangle GLayout::Layout( GObject* container, bool measureOnly )
 {
-	TRectangle remainingArea(0,0,container->ObjectRegion.Width,container->ObjectRegion.Height);
+	IRectangle remainingArea(0,0,container->Content.Width,container->Content.Height);
 
 	TLinkedListEnumerator< GObject* > c(container);
 	while(c.MoveNext())
@@ -34,7 +34,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize(remainingArea.X,remainingArea.Y,remainingArea.Width,cur->Height);
+				cur->SetRectangle(remainingArea.X,remainingArea.Y,remainingArea.Width,cur->Height);
 				cur->Layout();
 			}
 			
@@ -45,7 +45,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize(remainingArea.X,remainingArea.Y,cur->Width,remainingArea.Height);
+				cur->SetRectangle(remainingArea.X,remainingArea.Y,cur->Width,remainingArea.Height);
 				cur->Layout();
 			}
 			
@@ -56,7 +56,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize((remainingArea.Width - cur->Width) + remainingArea.X,remainingArea.Y,cur->Width,remainingArea.Height);
+				cur->SetRectangle((remainingArea.Width - cur->Width) + remainingArea.X,remainingArea.Y,cur->Width,remainingArea.Height);
 				cur->Layout();
 			}
 			
@@ -66,7 +66,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize(remainingArea.X,(remainingArea.Height - cur->Height) + remainingArea.Y,remainingArea.Width,cur->Height);
+				cur->SetRectangle(remainingArea.X,(remainingArea.Height - cur->Height) + remainingArea.Y,remainingArea.Width,cur->Height);
 				cur->Layout();
 			}
 			
@@ -76,7 +76,7 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 		{
 			if (!measureOnly)
 			{
-				cur->SetSize(remainingArea.X,remainingArea.Y,remainingArea.Width,remainingArea.Height);
+				cur->SetRectangle(remainingArea.X,remainingArea.Y,remainingArea.Width,remainingArea.Height);
 				cur->Layout();
 			}
 
@@ -87,10 +87,10 @@ TRectangle GLayout::Layout( GObject* container, bool measureOnly )
 	return remainingArea;
 }
 
-TRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOnly )
+IRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOnly )
 {
 	int rowHeight;
-	TRectangle remainingArea(0,0,container->ObjectRegion.Width,container->ObjectRegion.Height);
+	IRectangle remainingArea(0,0,container->Content.Width,container->Content.Height);
 
 	int heightMargins = container->Height - remainingArea.Height;
 
@@ -102,7 +102,7 @@ TRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOn
 	{
 		GObject* cur = c.Current;
 
-		if (cur->Width > remainingArea.Width && cur->Width < container->ObjectRegion.Width)
+		if (cur->Width > remainingArea.Width && cur->Width < container->Content.Width)
 		{
 			finalObjectHeight += thisRow;
 
@@ -110,7 +110,7 @@ TRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOn
 			// CREATE NEW LINE CUZ OVERFLOW
 			remainingArea.Y += thisRow;
 			//remainingArea.Height += rowHeight;
-			remainingArea.Width = container->ObjectRegion.Width;
+			remainingArea.Width = container->Content.Width;
 
 			thisRow = 0;
 
@@ -128,7 +128,7 @@ TRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOn
 			thisRow = cur->Height; // find min object size in this row.
 		}
 
-		cur->SetSize(remainingArea.X,remainingArea.Y,cur->Width,cur->Height);
+		cur->SetRectangle(remainingArea.X,remainingArea.Y,cur->Width,cur->Height);
 		remainingArea.X += cur->Width;
 		remainingArea.Width -= cur->Width;
 	}
@@ -138,7 +138,7 @@ TRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOn
 		finalObjectHeight += thisRow;
 	}
 
-	container->SetHeight(finalObjectHeight + heightMargins);
+	container->ChangeHeight(finalObjectHeight + heightMargins);
 
 	return remainingArea;
 }

@@ -25,7 +25,7 @@ public:
 class GTabPage: public GObject
 {
 public:
-	GLayout* Layouter;
+	//GLayout* Layouter;
 
 	GTabPage();
 
@@ -46,7 +46,7 @@ class GTabControl: public GObject
 {
 public:
 	GObject TabPageButtons;
-	TRectangle PageArea;
+	IRectangle PageArea;
 
 	GTabControl();
 

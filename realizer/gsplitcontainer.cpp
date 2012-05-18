@@ -18,7 +18,7 @@ GSplitContainer::GSplitContainer()
 void GSplitContainer::MouseDown( int x,int y, int button )
 {
 	// WE CAN CHANGE CURSOR AT THIS POINT
-	DragPoint.Set(Master->X,Master->Y);
+	DragPoint.SetVector(Master->X,Master->Y);
 	DragDistance = SplitterDistance;
 	Dragging = true;
 }
@@ -33,19 +33,19 @@ void GSplitContainer::Update()
 {
 	if (Dragging)
 	{
-		Vector2i Diff(Master->X,Master->Y);
+		IPosition Diff(Master->X,Master->Y);
 		Diff -= DragPoint;
 
 		int MaxSplitterDistance;
 
 		if (Orientation == GO_VERTICAL)
 		{
-			SplitterDistance = DragDistance + Diff.x;
+			SplitterDistance = DragDistance + Diff.X;
 			MaxSplitterDistance = (Width - Panel2MinSize) - SplitterWidth;
 		}
 		else
 		{
-			SplitterDistance = DragDistance + Diff.y;
+			SplitterDistance = DragDistance + Diff.Y;
 			MaxSplitterDistance = (Height - Panel2MinSize) - SplitterWidth;
 		}
 
@@ -69,7 +69,7 @@ void GSplitContainer::Layout()
 		AddChild(&Panel2);
 	}
 
-	ObjectRegion.SetRectangle(0,0,Width,Height);
+	Content.SetRectangle(0,0,Width,Height);
 
 	switch (View)
 	{
@@ -82,13 +82,13 @@ void GSplitContainer::Layout()
 
 			if (Orientation == GO_VERTICAL)
 			{
-				Panel1.SetSize(0,0,SplitterDistance,Height);
-				Panel2.SetSize(otherStart,0,Width-otherStart,Height);
+				Panel1.SetRectangle(0,0,SplitterDistance,Height);
+				Panel2.SetRectangle(otherStart,0,Width-otherStart,Height);
 			}
 			else
 			{
-				Panel1.SetSize(0,0,Width,SplitterDistance);
-				Panel2.SetSize(0,otherStart,Width,Height-otherStart);
+				Panel1.SetRectangle(0,0,Width,SplitterDistance);
+				Panel2.SetRectangle(0,otherStart,Width,Height-otherStart);
 			}
 
 			Panel1.Layout();
@@ -101,7 +101,7 @@ void GSplitContainer::Layout()
 			Panel1.Visible = true;
 			Panel2.Visible = false;
 
-			Panel1.SetSize(0,0,Width,Height);
+			Panel1.SetRectangle(0,0,Width,Height);
 			Panel1.Layout();
 		}
 		break;
@@ -111,7 +111,7 @@ void GSplitContainer::Layout()
 			Panel1.Visible = false;
 			Panel2.Visible = true;
 
-			Panel2.SetSize(0,0,Width,Height);
+			Panel2.SetRectangle(0,0,Width,Height);
 			Panel2.Layout();
 		}
 		break;
@@ -122,15 +122,17 @@ void GSplitContainer::Render()
 {
 	this->GObject::Render();
 
+	const IRectangle& dRect = DrawRegion;
+
 	//if (Dragging)
 	{
 		if (Orientation == GO_VERTICAL)
 		{
-			Skin->RenderHilight(ScreenRegion.X + SplitterDistance, ScreenRegion.Y,SplitterWidth,Height);
+			Skin->RenderHilight(dRect.X + SplitterDistance, dRect.Y,SplitterWidth,Height);
 		}
 		else
 		{
-			Skin->RenderHilight(ScreenRegion.X,ScreenRegion.Y + SplitterDistance,Width,SplitterWidth);
+			Skin->RenderHilight(dRect.X,dRect.Y + SplitterDistance,Width,SplitterWidth);
 		}
 	}
 }

@@ -133,7 +133,9 @@ void GTextBoxBase::Render()
 	{
 		ShowCaret = -1;
 	}
-	Line.RenderWithSelection(ScreenRegion.X,ScreenRegion.Y, ShowCaret);
+
+	const IRectangle& dRect = DrawRegion;
+	Line.RenderWithSelection(dRect.X,dRect.Y, ShowCaret);
 }
 
 void GTextBoxBase::KeyDown( ui32 keyID )

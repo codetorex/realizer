@@ -7,10 +7,10 @@
 #include "cengine.h"
 #include "vtextureformats.h"
 #include "mvector2.h"
-#include "trange.h"
+#include "msize2.h"
 
 
-class RDLL VTexture: public Resource, public TRange
+class RDLL VTexture: public Resource, public ISize
 {
 public:
 	ui32		pathHash;

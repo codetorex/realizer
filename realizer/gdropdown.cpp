@@ -16,8 +16,8 @@ void GDropDown::Render()
 
 void GDropDown::Layout()
 {
-	SetWidth(100);
-	SetHeight(100);
+	ChangeWidth(100);
+	ChangeHeight(100);
 	Skin->LayoutDropDown(this);
 
 	int reqWidth = 0;
@@ -33,7 +33,7 @@ void GDropDown::Layout()
 			reqWidth = cur->Width;
 		}
 
-		cur->SetTop(reqHeight+1);
+		cur->MoveY(reqHeight+1);
 		reqHeight += cur->Height+2;
 	}
 
@@ -41,11 +41,11 @@ void GDropDown::Layout()
 	while(c.MoveNext())
 	{
 		GObject* cur = c.Current;
-		cur->SetWidth(reqWidth);
+		cur->ChangeWidth(reqWidth);
 	}
 
-	SetWidth( reqWidth + (Width - ObjectRegion.Width) );
-	SetHeight(reqHeight + (Height - ObjectRegion.Height));
+	ChangeWidth( reqWidth + (Width - Content.Width) );
+	ChangeHeight(reqHeight + (Height - Content.Height));
 	Skin->LayoutDropDown(this);
 }
 
@@ -57,8 +57,8 @@ void GDropDown::Show()
 
 void GDropDown::Show( int x,int y )
 {
-	SetLeft(x);
-	SetTop(y);
+	MoveX(x);
+	MoveY(y);
 
 	if (Visible)
 	{

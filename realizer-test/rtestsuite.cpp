@@ -113,8 +113,8 @@ void RTestSuite::Render()
 
 	Engine.GUI.RenderDesktop(TestDesktop);
 
-	mreg.SetSize(10,10,Engine.Renderer.vWidth,10);
-	topreg.SetSize(10,10,Engine.Renderer.vWidth-20,10);
+	mreg.SetRegion(10,10,Engine.Renderer.vWidth,10);
+	topreg.SetRegion(10,10,Engine.Renderer.vWidth-20,10);
 
 	WriteText(Application.IdentifyText,mreg);
 	WriteText(Application.Modules.Item[0]->IdentifyText,topreg,CA_TopRight);
@@ -191,10 +191,10 @@ void RTestSuite::Update()
 	}
 }
 
-void RTestSuite::WriteText( TCharacterEnumerator schars , TRegion& reg, ContentAlignment alg)
+void RTestSuite::WriteText( TCharacterEnumerator schars , IRegion& reg, ContentAlignment alg)
 {
 	TestSuite.DebugFont->Render(schars, reg, alg, TColors::White);
-	reg.SetTopRelative( DebugFont->Height );
+	reg.MoveYDiff( DebugFont->Height );
 }
 
 void RTestSuite::ActivateConsole(bool value)

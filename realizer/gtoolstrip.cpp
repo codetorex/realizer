@@ -15,7 +15,8 @@ void GToolStripButton::Render()
 
 	if (DrawStyle == GDS_TEXT || DrawStyle == GDS_IMAGETEXT)
 	{
-		Font->Render(Text,ScreenRegion.X + ObjectRegion.X + TextX,ScreenRegion.Y + ObjectRegion.Y + TextY,ForeColor);
+		const IRectangle& dRect = DrawRegion;
+		Font->Render(Text,dRect.X + Content.X + TextX,dRect.Y + Content.Y + TextY,ForeColor);
 	}
 
 }
@@ -78,15 +79,15 @@ void GToolStripButton::Layout()
 	}
 
 	Skin->LayoutToolButton(this); // get the margins?
-	SetHeight((Height - ObjectRegion.Height) + reqHeight);
-	SetWidth((Width - ObjectRegion.Width) + reqWidth);
+	ChangeHeight((Height - Content.Height) + reqHeight);
+	ChangeWidth((Width - Content.Width) + reqWidth);
 	Skin->LayoutToolButton(this); // reset the margins?
 	
-	Image.SetLeftTop(0,(ObjectRegion.Height - Image.Height) / 2);
+	Image.Move(0,(Content.Height - Image.Height) / 2);
 	Image.SetParent(this);
 
-	TextX = Image.Right + 4;
-	TextY = (ObjectRegion.Height - Font->Height) / 2;
+	TextX = Image.Right() + 4;
+	TextY = (Content.Height - Font->Height) / 2;
 }
 
 void GToolStripButton::Update()
@@ -109,14 +110,14 @@ void GToolStrip::Render()
 
 void GToolStrip::Layout()
 {
-	ObjectRegion.SetRectangle(2,2,Width,Height-4);
+	Content.SetRectangle(2,2,Width,Height-4);
 	Layouter->Layout(this,false);
 }
 
 GToolStripButton* GToolStrip::AddButton( const TString& buttonName, GImage& image, NoArgEvent* event, bool imageOnly /*= true*/ )
 {
 	GToolStripButton* nb = new GToolStripButton();
-	nb->SetSize(0,0,16,16);
+	nb->SetRectangle(0,0,16,16);
 	nb->Text = buttonName;
 	nb->Image.SetImage(image);
 	if (event)

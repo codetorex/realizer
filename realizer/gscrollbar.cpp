@@ -11,8 +11,8 @@ GScrollBarDrag::GScrollBarDrag()
 
 void GScrollBarDrag::MouseDown( int x,int y, int button )
 {
-	DragPoint.Set(Master->X,Master->Y);
-	DragPos.Set(this->X,this->Y);
+	DragPoint.SetVector(Master->X,Master->Y);
+	DragPos.SetVector(this->X,this->Y);
 	Dragging = true;
 }
 
@@ -27,16 +27,16 @@ void GScrollBarDrag::Update()
 	{
 		GScrollBar* p = (GScrollBar*)Parent;
 
-		Vector2i Diff(Master->X,Master->Y);
+		IPosition Diff(Master->X,Master->Y);
 		Diff -= DragPoint;
 
 		if (p->Orientation == GO_VERTICAL)
 		{
-			SetTop(DragPos.y + Diff.y);
+			MoveY(DragPos.Y + Diff.Y);
 		}
 		else
 		{
-			SetLeft(DragPos.x + Diff.x);
+			MoveX(DragPos.X + Diff.X);
 		}
 		
 		p->SetValueFromDragPos();
@@ -169,7 +169,7 @@ void GScrollBar::Pulse()
 {
 	if (Orientation == GO_VERTICAL)
 	{
-		if (mY < DragBar->Top)
+		if (mY < DragBar->Y)
 		{
 			setValue(Value - LargeChange);
 		}
@@ -180,7 +180,7 @@ void GScrollBar::Pulse()
 	}
 	else
 	{
-		if (mX < DragBar->Left)
+		if (mX < DragBar->X)
 		{
 			setValue(Value - LargeChange);
 		}

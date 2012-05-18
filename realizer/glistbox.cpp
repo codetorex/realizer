@@ -15,7 +15,7 @@ void GListBox::Layout()
 {
 	if (ItemCount < 1)
 	{
-		VScrollBar.SetSize(0,0,100,100);
+		VScrollBar.SetRectangle(0,0,100,100);
 		VScrollBar.Dock = DCK_RIGHT;
 		AddChild(&VScrollBar);
 		VScrollBar.SmallChange = 1;
@@ -25,7 +25,7 @@ void GListBox::Layout()
 	Skin->LayoutSunkEdge(this);
 
 	ItemHeight = Font->Height + 4;
-	int screenSpace = ObjectRegion.Height / ItemHeight;
+	int screenSpace = Content.Height / ItemHeight;
 	VScrollBar.LargeChange = screenSpace;
 
 	if (Items.Count > screenSpace)
@@ -53,8 +53,8 @@ void GListBox::Render()
 
 	int itemStart = VScrollBar.Value;
 	int itemEnd = itemStart + VScrollBar.LargeChange;
-	int drawX = ScreenRegion.X + ObjectRegion.X + 2; // 2px FROM me
-	int drawY = ScreenRegion.Y + ObjectRegion.Y;
+	int drawX = DrawRegion.X() + Content.X + 2; // 2px FROM me
+	int drawY = DrawRegion.Y() + Content.Y;
 	
 	
 
@@ -69,7 +69,7 @@ void GListBox::Render()
 	
 		if (i == SelectedIndex)
 		{
-			int HilightWidth = VScrollBar.Visible ? VScrollBar.Left : ObjectRegion.Width;
+			int HilightWidth = VScrollBar.Visible ? VScrollBar.X : Content.Width;
 			Skin->RenderHilight(drawX-2,drawY,HilightWidth,ItemHeight);
 		}
 
@@ -101,7 +101,7 @@ void GListBox::AddItem( TString& value )
 
 void GListBox::MouseDown( int x,int y, int button )
 {
-	int pickedItem = (y - ObjectRegion.Y) / ItemHeight;
+	int pickedItem = (y - Content.Y) / ItemHeight;
 	int realIndex = pickedItem + VScrollBar.Value;
 	SelectedIndex = MathDriver::Clamp<int>(0,Items.Count-1,realIndex);
 }

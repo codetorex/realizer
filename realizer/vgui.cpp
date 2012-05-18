@@ -8,7 +8,7 @@ void VGUI::InitializeDesktop( GDesktop* _desktop )
 	_desktop->Master = this;
 	Focused = _desktop;
 	_desktop->Parent = _desktop;
-	_desktop->SetSize(0,0,Engine.Renderer.vWidth,Engine.Renderer.vHeight);
+	_desktop->SetRectangle(0,0,Engine.Renderer.vWidth,Engine.Renderer.vHeight);
 }
 
 void VGUI::ActivateDesktop(GDesktop* newDesktop)

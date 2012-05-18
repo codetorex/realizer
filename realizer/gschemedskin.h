@@ -55,9 +55,7 @@ public:
 };
 
 
-// Skin class that can use window blinds skins.
-
-class GScemedSkinButtonPart: public TRange
+class GScemedSkinButtonPart: public ISize
 {
 public:
 	union
@@ -108,7 +106,8 @@ public:
 
 	inline void Render(GButtonBase* button)
 	{
-		Parts[button->ButtonGraphic].Draw(button->ScreenRegion.X,button->ScreenRegion.Y,TColors::White);
+		const IRectangle& bRect = button->DrawRegion;
+		Parts[button->ButtonGraphic].Draw(bRect.X,bRect.Y,TColors::White);
 	}
 };
 
@@ -164,9 +163,9 @@ public:
 		Quads[button->ButtonGraphic].Render(button);
 	}
 
-	inline void Render(GButtonBase* button, TRegion* region)
+	inline void Render(GButtonBase* button, const IRectangle& rect)
 	{
-		Quads[button->ButtonGraphic].Render(region);
+		Quads[button->ButtonGraphic].Render(rect);
 	}
 };
 
@@ -282,6 +281,8 @@ public:
 	void LayoutScrollBar(GScrollBar* scrollbar);
 
 	void RenderTabControl(GTabControl* tabc);
+
+	void LayoutTabPage(GTabPage* tabp);
 
 private:
 	void RenderScrollBarButton( GScrollBarButton* button );

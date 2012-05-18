@@ -3,7 +3,7 @@
 
 #include "rtestsuite.h"
 #include "tstringbuilder.h"
-#include "tregion.h"
+#include "mregion2.h"
 
 
 
@@ -22,7 +22,7 @@ private:
 	TStringBuilder sb;
 	int x;
 	int y;
-	TRegion texreg;
+	IRegion texreg;
 
 public:
 	RTestColor()

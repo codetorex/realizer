@@ -14,17 +14,16 @@
 void GConsole::Render()
 {
 	Engine.Draw.NoTexture();
-	//Engine.Draw.DrawRectangle(ScreenRegion.X,ScreenRegion.Y,ScreenRegion.Width,ScreenRegion.Height, );
-	Engine.Draw.DrawQuad(ScreenRegion.X,ScreenRegion.Y,ScreenRegion.Right,ScreenRegion.Bottom,0,0,0,0,TColor32(128,128,128,32).color);
+	Engine.Draw.FillRectangle(DrawRegion,TColor32(128,128,128,32));
 	Engine.Draw.Flush();
 
 	int drawX;
-	int drawY = ScreenRegion.Bottom;
+	int drawY = DrawRegion.Bottom();
 
 	if (Focused)
 	{
-		int cursorX = ScreenRegion.Left + (Buffer.Cursor.X * Font->SpaceWidth);
-		int cursorY = ScreenRegion.Top + (Buffer.Cursor.Y * Font->Size);
+		int cursorX = DrawRegion.Left() + (Buffer.Cursor.X * Font->SpaceWidth);
+		int cursorY = DrawRegion.Top() + (Buffer.Cursor.Y * Font->Size);
 		DrawBg(cursorX,cursorY,TColors::Green);
 	}
 
@@ -39,7 +38,7 @@ void GConsole::Render()
 		}
 		GConsoleCell* currentLine = &Buffer.Cells[ curLine * Buffer.Size.Width ];
 
-		drawX = ScreenRegion.X;
+		drawX = DrawRegion.X();
 		drawY -= Font->Size;
 
 		for( int cx = 0;cx < Buffer.Size.Width; cx++)
@@ -69,8 +68,8 @@ void GConsole::DrawBg( float x,float y, const TColor32& color )
 void GConsole::InitializeConsole( int _width, int _height, int _bufferheight /*= 0*/ )
 {
 	Buffer.InitializeBuffer(_width,_height,_bufferheight);
-	SetWidth( _width * Font->SpaceWidth );
-	SetHeight( _height * Font->Size );
+	ChangeWidth( _width * Font->SpaceWidth );
+	ChangeHeight( _height * Font->Size );
 }
 
 void GConsole::KeyPress( ui32 keyID )

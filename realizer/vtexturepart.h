@@ -1,23 +1,23 @@
 #ifndef VTEXTUREPART_H
 #define VTEXTUREPART_H
 
-#include "tregion.h"
+#include "mregion2.h"
 #include "mvector2.h"
 #include "cengine.h"
 
 class VTexture;
 
-class VTexturePart: public TRectangle
+class VTexturePart: public IRectangle
 {
 public:
-	VTexturePart( TRange* range, int x,int y, int _width,int _height)
+	VTexturePart( const ISize& range, int x,int y, int _width,int _height)
 	{
 		Initialize(range,x,y,_width,_height);
 	}
 
-	VTexturePart( TRange* range, TRectangle* reg)
+	VTexturePart( const ISize& range, const IRectangle& reg)
 	{
-		Initialize(range,reg->X,reg->Y,reg->Width,reg->Height);
+		Initialize(range,reg.X,reg.Y,reg.Width,reg.Height);
 	}
 
 	VTexturePart()
@@ -28,38 +28,38 @@ public:
 	Vector2 TopLeftCoord;
 	Vector2 BottomRightCoord;
 
-	void Initialize(TRange* range, int x,int y, int _width,int _height)
+	void Initialize(const ISize& size, int x,int y, int _width,int _height)
 	{
 		SetRectangle(x,y,_width,_height);
-		TopLeftCoord = range->GetRatio(x,y);
-		BottomRightCoord = range->GetRatio(x+_width,y+_height);
+		TopLeftCoord = size.Ratio(x,y);
+		BottomRightCoord = size.Ratio(x+_width,y+_height);
 	}
 
-	inline void Initialize(TRange* range, const TRegion& rect)
+	inline void Initialize(const ISize& range, const IRectangle& rect)
 	{
 		Initialize(range,rect.X,rect.Y,rect.Width,rect.Height);
 	}
 
-	inline void InitializeRelative(TRange* range, TPosition* relation, int x,int y,int _width, int _height)
+	inline void InitializeRelative(const ISize& range,const IPosition& relation, int x,int y,int _width, int _height)
 	{
-		Initialize(range,relation->X + x,relation->Y +y,_width,_height);
+		Initialize(range,relation.X + x,relation.Y +y,_width,_height);
 	}
 
-	inline void InitializeOffset(TRange* range, TRectangle* source, int xOffset, int yOffset )
+	inline void InitializeOffset(const ISize& range, const IRectangle& source, int xOffset, int yOffset )
 	{
-		Initialize(range,source->X + xOffset,source->Y + yOffset,source->Width,source->Height);
+		Initialize(range,source.X + xOffset,source.Y + yOffset,source.Width,source.Height);
 	}
 
 	inline void Initialize(const VTexturePart& othr)
 	{
 		TopLeftCoord = othr.TopLeftCoord;
 		BottomRightCoord = othr.BottomRightCoord;
-		SetRectangleFrom(othr);
+		SetRectangle(othr);
 	}
 
 	inline void Draw(float x,float y, const TColor32& color)
 	{
-		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
+		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
 	}
 	
 	inline void Draw(float x,float y)
@@ -69,7 +69,7 @@ public:
 
 	inline void DrawScaled(float x,float y, float w, float h,  const TColor32& color)
 	{
-		Engine.Draw.Add2DQuadColor1Tex(x,y,x+w,y+h,TopLeftCoord.x,TopLeftCoord.y,BottomRightCoord.x,BottomRightCoord.y,color);
+		Engine.Draw.Add2DQuadColor1Tex(x,y,x+w,y+h,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
 	}
 
 	inline void DrawScaled(float x,float y, float w, float h)
@@ -119,12 +119,12 @@ public:
 	}
 
 
-	VTexturePartDefined(TRange* range, int x,int y, int w,int h): VTexturePart(range,x,y,w,h)
+	VTexturePartDefined(const ISize& range, int x,int y, int w,int h): VTexturePart(range,x,y,w,h)
 	{
 		DrawFunction = 0;
 	}
 
-	VTexturePartDefined(TRange* range, TRegion* reg): VTexturePart(range,reg)
+	VTexturePartDefined(const ISize& range, const IRectangle& reg): VTexturePart(range,reg)
 	{
 		DrawFunction = 0;
 	}

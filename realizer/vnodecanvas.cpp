@@ -12,7 +12,7 @@ VNodeCanvasImage* VNodeCanvas::DrawImage( VTexture* Texture, int dstX,int dstY, 
 	img->Scale.z = scale;
 
 	img->Texture = Texture;
-	img->Part.Initialize(Texture,0,0,Texture->Width,Texture->Height);
+	img->Part.Initialize(*Texture,0,0,Texture->Width,Texture->Height);
 
 	img->Position.x = (float)dstX;
 	img->Position.y = (float)dstY;

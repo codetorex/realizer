@@ -30,19 +30,20 @@ public:
 		TexturePart = other.TexturePart;
 		Texture = other.Texture;
 		Visible = true;
-		SetWidth(other.Width);
-		SetHeight(other.Height);
+		Width = other.Width;
+		Height = other.Height;
 	}
 
 	inline void Render()
 	{
+		const IRectangle& dRect = DrawRegion;
 		if (Stretch)
 		{
-			Render(ScreenRegion.X,ScreenRegion.Y,ScreenRegion.Width,ScreenRegion.Height);
+			Render(dRect.X,dRect.Y,dRect.Width,dRect.Height);
 		}
 		else
 		{
-			Render(ScreenRegion.X,ScreenRegion.Y);
+			Render(dRect.X,dRect.Y);
 		}
 	}
 

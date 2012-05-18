@@ -19,7 +19,7 @@ void GSchemedSkin::RenderWindow( GWindow* window )
 	TColor32 renColor = window->IsActive() ? Colors.TitleText : Colors.InactiveTitleText;
 
 	// TODO: cache string pixel width in somewhere
-	WindowTitleFont->Render(window->Text,window->TitleBar->ScreenRegion,WindowTitleAlign, renColor , WindowQuad->TopLeft.Width ,-1 );
+	WindowTitleFont->Render(window->Text,window->TitleBar->DrawRegion,WindowTitleAlign, renColor , WindowQuad->TopLeft.Width ,-1 );
 	//WindowTitleFont->Render(window->Text,window->TitleBar->ScreenRegion,CA_MiddleLeft,WindowTitleColor[windowState] );
 }
 
@@ -28,9 +28,9 @@ void GSchemedSkin::LayoutWindow( GWindow* window )
 	int windowState = window->IsActive() ? 0 : 1;
 	GScalableQuadParted& q = WindowQuad[windowState];
 
-	window->TitleBar->SetSize(0,-q.Top.Height,window->Width,q.Top.Height);
+	window->TitleBar->SetRectangle(0,-q.Top.Height,window->Width,q.Top.Height);
 
-	q.SetObjectRegion(window);
+	q.SetObjectContent(window);
 }
 
 void GSchemedSkin::RenderButton( GButton* button )
@@ -39,13 +39,13 @@ void GSchemedSkin::RenderButton( GButton* button )
 	ButtonGfx.Render(button);
 	//ButtonQuad[button->ButtonGraphic].Render(button);
 
-	button->Font->Render(button->Text,button->ScreenRegion,button->TextAlign,button->ForeColor,0,-1);
+	button->Font->Render(button->Text,button->DrawRegion,button->TextAlign,button->ForeColor,0,-1);
 }
 
 void GSchemedSkin::RenderLabel( GLabel* label )
 {
 	Engine.Draw.SetTexture(SkinTexture); // TODO: wtf is this shit?
-	label->Font->Render(label->Text,label->ScreenRegion,label->TextAlign,label->ForeColor,0,-1);
+	label->Font->Render(label->Text,label->DrawRegion,label->TextAlign,label->ForeColor,0,-1);
 }
 
 void GSchemedSkin::RenderCheckBox( GCheckBox* checkbox )
@@ -53,7 +53,7 @@ void GSchemedSkin::RenderCheckBox( GCheckBox* checkbox )
 	Engine.Draw.SetTexture(SkinTexture);
 	//checkbox->Height = CheckBoxQuad[0].Height; // TODO: fix this and use checkalign
 	CheckBoxGfx[checkbox->CheckState].Render(checkbox);
-	checkbox->Font->Render(checkbox->Text,checkbox->ScreenRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxGfx[0].Width+5,-1);
+	checkbox->Font->Render(checkbox->Text,checkbox->DrawRegion,checkbox->TextAlign,checkbox->ForeColor,CheckBoxGfx[0].Width+5,-1);
 }
 
 void GSchemedSkin::RenderRadioButton( GRadioButton* radiobutton )
@@ -62,7 +62,7 @@ void GSchemedSkin::RenderRadioButton( GRadioButton* radiobutton )
 	//radiobutton->Height = RadioQuad[0].Height; // TODO: fix this and use checkalign
 	//RadioQuad[radiobutton->GraphicState].Draw((float)radiobutton->ScreenRegion.X,(float)radiobutton->ScreenRegion.Y,0xFFFFFFFF);
 	RadioGfx[radiobutton->Checked ? 1 : 0].Render(radiobutton);
-	radiobutton->Font->Render(radiobutton->Text,radiobutton->ScreenRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioGfx[0].Width+5,-1);
+	radiobutton->Font->Render(radiobutton->Text,radiobutton->DrawRegion,radiobutton->TextAlign,radiobutton->ForeColor,RadioGfx[0].Width+5,-1);
 }
 
 void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
@@ -74,10 +74,10 @@ void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
 	{
 		if (progressbar->Value != progressbar->Maximum)
 		{
-			TRegion progressRegion;
-			progressRegion.SetFrom(&progressbar->ScreenRegion);
-			progressRegion.SetWidth(progressbar->GetPercentWidth());
-			ProgressBarBlock.Render(&progressRegion);
+			IRegion progressRegion;
+			progressRegion.SetRegion(progressbar->DrawRegion);
+			progressRegion.ChangeWidth(progressbar->GetPercentWidth());
+			ProgressBarBlock.Render(progressRegion);
 		}
 		else
 		{
@@ -95,7 +95,7 @@ void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
 		pbstr->AppendASCIIFast(' ');
 		pbstr->AppendASCIIFast('%');
 
-		progressbar->Font->Render(progressbar->Text,progressbar->ScreenRegion,progressbar->PercentAlign,progressbar->ForeColor,0,-1);
+		progressbar->Font->Render(progressbar->Text,progressbar->DrawRegion,progressbar->PercentAlign,progressbar->ForeColor,0,-1);
 	}
 }
 
@@ -181,8 +181,9 @@ void GSchemedSkin::RenderScrollBarButton( GScrollBarButton* button )
 
 void GSchemedSkin::LayoutScrollBarButton( GScrollBarButton* button )
 {
-	button->SetWidth(ScrollbarButtonGfx[0].Width);
-	button->SetHeight(ScrollbarButtonGfx[1].Height);
+	button->ChangeWidth(ScrollbarButtonGfx[0].Width);
+	button->ChangeHeight(ScrollbarButtonGfx[1].Height);
+	button->UpdateContent();
 }
 
 void GSchemedSkin::RenderScrollBar( GScrollBar* scrollbar )
@@ -230,36 +231,36 @@ void GSchemedSkin::LayoutScrollBar( GScrollBar* scrollbar )
 
 	if (scrollbar->Orientation == GO_VERTICAL)
 	{
-		scrollbar->SetWidth(ScrollbarButtonGfx[0].Width);
-		scrollbar->DragBar->SetWidth(scrollbar->Width);	
+		scrollbar->ChangeWidth(ScrollbarButtonGfx[0].Width);
+		scrollbar->DragBar->ChangeWidth(scrollbar->Width);	
 
-		scrollbar->UpButton->SetLeftTop(0,0);
-		scrollbar->DownButton->SetLeftTop(0,scrollbar->Height- scrollbar->DownButton->Height);
-		scrollbar->DragBar->SetLeftTop(0,scrollbar->UpButton->Bottom);
+		scrollbar->UpButton->Move(0,0);
+		scrollbar->DownButton->Move(0,scrollbar->Height- scrollbar->DownButton->Height);
+		scrollbar->DragBar->Move(0,scrollbar->UpButton->Bottom());
 
 		if (scrollbar->DragBar->Height < ScrollbarDragSmallVGfx.Height)
 		{
-			scrollbar->DragBar->SetHeight(ScrollbarDragSmallVGfx.Height);
+			scrollbar->DragBar->ChangeHeight(ScrollbarDragSmallVGfx.Height);
 			st.Calculate(false);
 		}
 	}
 	else
 	{
-		scrollbar->SetHeight(ScrollbarButtonGfx[0].Height);
-		scrollbar->DragBar->SetHeight(scrollbar->Height);	
+		scrollbar->ChangeHeight(ScrollbarButtonGfx[0].Height);
+		scrollbar->DragBar->ChangeHeight(scrollbar->Height);	
 
-		scrollbar->UpButton->SetLeftTop(0,0);
-		scrollbar->DownButton->SetLeftTop(scrollbar->Width- scrollbar->DownButton->Width,0);
-		scrollbar->DragBar->SetLeftTop(scrollbar->UpButton->Right,0);
+		scrollbar->UpButton->Move(0,0);
+		scrollbar->DownButton->Move(scrollbar->Width- scrollbar->DownButton->Width,0);
+		scrollbar->DragBar->Move(scrollbar->UpButton->Right(),0);
 
 		if (scrollbar->DragBar->Width < ScrollbarDragSmallHGfx.Width)
 		{
-			scrollbar->DragBar->SetWidth(ScrollbarDragSmallHGfx.Width);
+			scrollbar->DragBar->ChangeWidth(ScrollbarDragSmallHGfx.Width);
 			st.Calculate(false);
 		}
 	}
 
-	scrollbar->ObjectRegion.SetRectangle(0,0,scrollbar->Width,scrollbar->Height);
+	scrollbar->Content.SetRectangle(0,0,scrollbar->Width,scrollbar->Height);
 
 	st.CalculateDragPosition();
 	st.SetDragPos();
@@ -275,9 +276,9 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 {
 	Engine.Draw.SetTexture(SkinTexture);
 
-	TRegion borderRegion;
-	borderRegion.SetSize(tabc->ScreenRegion.X+tabc->PageArea.X,tabc->ScreenRegion.Y + tabc->PageArea.Y,tabc->PageArea.Width,tabc->PageArea.Height);
-	TabBorder.Render(&borderRegion);
+	IRegion borderRegion;
+	borderRegion.SetRegion(tabc->DrawRegion.X()+tabc->PageArea.X,tabc->DrawRegion.Y() + tabc->PageArea.Y,tabc->PageArea.Width,tabc->PageArea.Height);
+	TabBorder.Render(borderRegion);
 
 	// lets render tab pages
 	TLinkedListEnumerator<GObject*> btn(&tabc->TabPageButtons);
@@ -301,12 +302,12 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 
 		if (curButton->Page == tabc->CurrentPage)
 		{
-			TRegion tmpRegion;
-			tmpRegion.SetFrom(&curButton->ScreenRegion);
-			tmpRegion.RegionInflate(1);
-			tmpRegion.SetHeight(tmpRegion.Height+1);
-			tmpRegion.SetTopRelative(-1);
-			qd->Render(curButton,&tmpRegion);
+			IRegion tmpRegion;
+			tmpRegion.SetRegion(curButton->DrawRegion);
+			tmpRegion.Inflate(1);
+			tmpRegion.ChangeHeightDiff(1);
+			tmpRegion.MoveYDiff(-1);
+			qd->Render(curButton,tmpRegion);
 		}
 		else
 		{
@@ -315,7 +316,12 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 		
 
 		// TODO: we can move this to another loop
-		tabc->Font->Render(btn.Current->Text,btn.Current->ScreenRegion,CA_MiddleCenter,tabc->ForeColor);
+		tabc->Font->Render(btn.Current->Text,btn.Current->DrawRegion,CA_MiddleCenter,tabc->ForeColor);
 		Engine.Draw.SetTexture(SkinTexture);
 	}
+}
+
+void GSchemedSkin::LayoutTabPage( GTabPage* tabp )
+{
+	
 }

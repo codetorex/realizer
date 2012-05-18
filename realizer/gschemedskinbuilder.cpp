@@ -118,10 +118,10 @@ void GSchemeLayer::LoadLayer( GSchemeClass* cls )
 
 void GSchemeLayer::CopyTo( GScalableQuad* qd ) const
 {
-	qd->LeftMargin = LeftMargin;
-	qd->TopMargin = TopMargin;
-	qd->RightMargin = RightMargin;
-	qd->BottomMargin = BottomMargin;
+	qd->Left = LeftMargin;
+	qd->Top = TopMargin;
+	qd->Right = RightMargin;
+	qd->Bottom = BottomMargin;
 }
 
 void GSchemeText::LoadTextLayer( GSchemeClass* cls )
@@ -199,7 +199,7 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	//ui32 white = 0xFFFFFFFF;
 	TRectangleNode* whiteNode = Pack->Insert(16,16);
 	Gfx.FillRectangle(TBrush(TColors::White),whiteNode->X,whiteNode->Y,16,16);
-	VTexturePart* whitePart = new VTexturePart( SkinBitmap, whiteNode );
+	VTexturePart* whitePart = new VTexturePart( *SkinBitmap, *whiteNode );
 	Skin->WhitePart = *whitePart;
 
 	LoadFontsAndColors();
@@ -264,21 +264,21 @@ void GSchemedSkinBuilder::LoadProgress( const GSchemeLayer& pbarbg, const GSchem
 	TBitmap* image = Engine.Textures.LoadToBitmap(*pbarbg.ImagePath);
 	VTexturePart* sub = InsertImage(image);
 
-	TRegion tmpRegion;
-	tmpRegion.SetFrom( sub );
+	IRegion tmpRegion;
+	tmpRegion.SetRegion( *sub );
 
 	pbarbg.CopyTo(&Skin->ProgressBarBg);
-	Skin->ProgressBarBg.Initialize(SkinBitmap,tmpRegion);
+	Skin->ProgressBarBg.Initialize(*SkinBitmap,tmpRegion);
 
 	delete image;
 
 	image = Engine.Textures.LoadToBitmap(*pbarblk.ImagePath);
 	sub = InsertImage(image);
 
-	tmpRegion.SetFrom( sub );
+	tmpRegion.SetRegion( *sub );
 
 	pbarblk.CopyTo(&Skin->ProgressBarBlock);
-	Skin->ProgressBarBlock.Initialize(SkinBitmap,tmpRegion);
+	Skin->ProgressBarBlock.Initialize(*SkinBitmap,tmpRegion);
 
 	delete image;
 }
@@ -292,18 +292,18 @@ void GSchemedSkinBuilder::LoadWindowTop( const GSchemeText& borderData, bool cor
 
 	if (corners)
 	{
-		Skin->WindowQuad[0].TopLeft.InitializeRelative(SkinBitmap,sub,0,0,borderData.LeftMargin,halfHeight);
-		Skin->WindowQuad[0].Top.InitializeRelative(SkinBitmap,sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
-		Skin->WindowQuad[0].TopRight.InitializeRelative(SkinBitmap,sub, sub->Width - borderData.RightMargin,0,borderData.RightMargin,halfHeight);
+		Skin->WindowQuad[0].TopLeft.InitializeRelative(*SkinBitmap,*sub,0,0,borderData.LeftMargin,halfHeight);
+		Skin->WindowQuad[0].Top.InitializeRelative(*SkinBitmap,*sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
+		Skin->WindowQuad[0].TopRight.InitializeRelative(*SkinBitmap,*sub, sub->Width - borderData.RightMargin,0,borderData.RightMargin,halfHeight);
 
-		Skin->WindowQuad[1].TopLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopLeft,0,halfHeight);
-		Skin->WindowQuad[1].Top.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Top,0,halfHeight);
-		Skin->WindowQuad[1].TopRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopRight,0,halfHeight);
+		Skin->WindowQuad[1].TopLeft.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].TopLeft,0,halfHeight);
+		Skin->WindowQuad[1].Top.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Top,0,halfHeight);
+		Skin->WindowQuad[1].TopRight.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].TopRight,0,halfHeight);
 	}
 	else
 	{
-		Skin->WindowQuad[0].Top.InitializeRelative(SkinBitmap,sub,0,0,sub->Width,halfHeight);
-		Skin->WindowQuad[1].Top.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Top,0,halfHeight);
+		Skin->WindowQuad[0].Top.InitializeRelative(*SkinBitmap,*sub,0,0,sub->Width,halfHeight);
+		Skin->WindowQuad[1].Top.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Top,0,halfHeight);
 	}
 
 	Skin->WindowTitleFont = GetNumberedEngineFont(borderData.NormalFont);
@@ -322,18 +322,18 @@ void GSchemedSkinBuilder::LoadWindowBottom( const GSchemeLayer& borderData , boo
 	int halfHeight = sub->Height/2;
 	if (corners)
 	{
-		Skin->WindowQuad[0].BottomLeft.InitializeRelative(SkinBitmap,sub,0,0,borderData.LeftMargin,halfHeight);
-		Skin->WindowQuad[0].Bottom.InitializeRelative(SkinBitmap,sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
-		Skin->WindowQuad[0].BottomRight.InitializeRelative(SkinBitmap,sub, sub->Width - borderData.RightMargin,0,borderData.RightMargin,halfHeight);
+		Skin->WindowQuad[0].BottomLeft.InitializeRelative(*SkinBitmap,*sub,0,0,borderData.LeftMargin,halfHeight);
+		Skin->WindowQuad[0].Bottom.InitializeRelative(*SkinBitmap,*sub,borderData.LeftMargin,0,sub->Width-borderData.LeftMargin - borderData.RightMargin,halfHeight);
+		Skin->WindowQuad[0].BottomRight.InitializeRelative(*SkinBitmap,*sub, sub->Width - borderData.RightMargin,0,borderData.RightMargin,halfHeight);
 
-		Skin->WindowQuad[1].BottomLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomLeft,0,halfHeight);
-		Skin->WindowQuad[1].Bottom.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Bottom,0,halfHeight);
-		Skin->WindowQuad[1].BottomRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomRight,0,halfHeight);
+		Skin->WindowQuad[1].BottomLeft.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].BottomLeft,0,halfHeight);
+		Skin->WindowQuad[1].Bottom.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Bottom,0,halfHeight);
+		Skin->WindowQuad[1].BottomRight.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].BottomRight,0,halfHeight);
 	}
 	else
 	{
-		Skin->WindowQuad[0].Bottom.InitializeRelative(SkinBitmap,sub,0,0,sub->Width,halfHeight);
-		Skin->WindowQuad[1].Bottom.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Bottom,0,halfHeight);
+		Skin->WindowQuad[0].Bottom.InitializeRelative(*SkinBitmap,*sub,0,0,sub->Width,halfHeight);
+		Skin->WindowQuad[1].Bottom.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Bottom,0,halfHeight);
 	}
 
 	delete image;
@@ -347,18 +347,18 @@ void GSchemedSkinBuilder::LoadWindowLeft( const GSchemeLayer& borderData, bool c
 	int halfWidth = sub->Width/2;
 	if (corners)
 	{
-		Skin->WindowQuad[0].TopLeft.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,borderData.TopMargin);
-		Skin->WindowQuad[0].Left.InitializeRelative(SkinBitmap,sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
-		Skin->WindowQuad[0].BottomLeft.InitializeRelative(SkinBitmap,sub,0,sub->Height-borderData.BottomMargin,halfWidth,borderData.BottomMargin);
+		Skin->WindowQuad[0].TopLeft.InitializeRelative(*SkinBitmap,*sub,0,0,halfWidth,borderData.TopMargin);
+		Skin->WindowQuad[0].Left.InitializeRelative(*SkinBitmap,*sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
+		Skin->WindowQuad[0].BottomLeft.InitializeRelative(*SkinBitmap,*sub,0,sub->Height-borderData.BottomMargin,halfWidth,borderData.BottomMargin);
 
-		Skin->WindowQuad[1].TopLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopLeft,halfWidth,0);
-		Skin->WindowQuad[1].Left.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Left,halfWidth,0);
-		Skin->WindowQuad[1].BottomLeft.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomLeft,halfWidth,0);
+		Skin->WindowQuad[1].TopLeft.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].TopLeft,halfWidth,0);
+		Skin->WindowQuad[1].Left.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Left,halfWidth,0);
+		Skin->WindowQuad[1].BottomLeft.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].BottomLeft,halfWidth,0);
 	}
 	else
 	{
-		Skin->WindowQuad[0].Left.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,sub->Height);
-		Skin->WindowQuad[1].Left.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Left,halfWidth,0);
+		Skin->WindowQuad[0].Left.InitializeRelative(*SkinBitmap,*sub,0,0,halfWidth,sub->Height);
+		Skin->WindowQuad[1].Left.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Left,halfWidth,0);
 	}
 
 	delete image;
@@ -372,18 +372,18 @@ void GSchemedSkinBuilder::LoadWindowRight( const GSchemeLayer& borderData , bool
 	int halfWidth = sub->Width/2;
 	if (corners)
 	{
-		Skin->WindowQuad[0].TopRight.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,borderData.TopMargin);
-		Skin->WindowQuad[0].Right.InitializeRelative(SkinBitmap,sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
-		Skin->WindowQuad[0].BottomRight.InitializeRelative(SkinBitmap,sub,0,sub->Height-borderData.BottomMargin,halfWidth,borderData.BottomMargin);
+		Skin->WindowQuad[0].TopRight.InitializeRelative(*SkinBitmap,*sub,0,0,halfWidth,borderData.TopMargin);
+		Skin->WindowQuad[0].Right.InitializeRelative(*SkinBitmap,*sub,0,borderData.TopMargin,halfWidth,sub->Height-borderData.TopMargin-borderData.BottomMargin);
+		Skin->WindowQuad[0].BottomRight.InitializeRelative(*SkinBitmap,*sub,0,sub->Height-borderData.BottomMargin,halfWidth,borderData.BottomMargin);
 
-		Skin->WindowQuad[1].TopRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].TopRight,halfWidth,0);
-		Skin->WindowQuad[1].Right.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Right,halfWidth,0);
-		Skin->WindowQuad[1].BottomRight.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].BottomRight,halfWidth,0);
+		Skin->WindowQuad[1].TopRight.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].TopRight,halfWidth,0);
+		Skin->WindowQuad[1].Right.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Right,halfWidth,0);
+		Skin->WindowQuad[1].BottomRight.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].BottomRight,halfWidth,0);
 	}
 	else
 	{
-		Skin->WindowQuad[0].Right.InitializeRelative(SkinBitmap,sub,0,0,halfWidth,sub->Height);
-		Skin->WindowQuad[1].Right.InitializeOffset(SkinBitmap,&Skin->WindowQuad[0].Right,halfWidth,0);
+		Skin->WindowQuad[0].Right.InitializeRelative(*SkinBitmap,*sub,0,0,halfWidth,sub->Height);
+		Skin->WindowQuad[1].Right.InitializeOffset(*SkinBitmap,Skin->WindowQuad[0].Right,halfWidth,0);
 	}
 
 	delete image;
@@ -420,14 +420,14 @@ void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imagecount,
 	VTexturePart* sub = InsertImage(image);
 
 	int partWidth = sub->Width / imagecount;
-	TRegion tmpRegion;
-	tmpRegion.SetFrom( sub );
-	tmpRegion.SetWidth(partWidth);
+	IRegion tmpRegion;
+	tmpRegion.SetRegion( *sub );
+	tmpRegion.ChangeWidth(partWidth);
 
 	for (int i=0;i<imagecount;i++)
 	{
-		output[i].Initialize(SkinBitmap, tmpRegion);
-		tmpRegion.SetLeftRelative(partWidth);
+		output[i].Initialize(*SkinBitmap, tmpRegion);
+		tmpRegion.MoveXDiff(partWidth);
 	}
 
 	delete image;
@@ -439,14 +439,14 @@ void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imageCount,
 	VTexturePart* sub = InsertImage(image);
 
 	int partWidth = sub->Width / imageCount; // there is 5 different pictures
-	TRegion tmpRegion;
-	tmpRegion.SetFrom( sub );
-	tmpRegion.SetWidth( partWidth );
+	IRegion tmpRegion;
+	tmpRegion.SetRegion( *sub );
+	tmpRegion.ChangeWidth( partWidth );
 	for (int i=0;i<imageCount;i++)
 	{
 		data.CopyTo(&output[i]);
-		output[i].Initialize(SkinBitmap, tmpRegion);
-		tmpRegion.SetLeftRelative(partWidth); // increment x of region
+		output[i].Initialize(*SkinBitmap, tmpRegion);
+		tmpRegion.MoveXDiff(partWidth); // increment x of region
 	}
 
 	delete image;
@@ -534,8 +534,8 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 		bmp->Convert(SkinBitmap->BufferFormat);
 	}*/
 
-	Gfx.DrawImage2(*bmp,*(TPosition*)node);
-	VTexturePart* tpart = new VTexturePart( SkinBitmap, node );
+	Gfx.DrawImage2(*bmp,*(IPosition*)node);
+	VTexturePart* tpart = new VTexturePart( *SkinBitmap, *node );
 	return tpart;
 }
 

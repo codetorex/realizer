@@ -9,7 +9,7 @@ class GWindow: public GObject
 public:
 	GObject* TitleBar;
 
-	GLayout* Layouter;
+	//GLayout* Layouter;
 
 	GWindow();
 

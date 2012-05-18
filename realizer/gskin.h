@@ -20,6 +20,7 @@ class GToolStripButton;
 class GScrollBarButton;
 class GScrollBar;
 class GTabControl;
+class GTabPage;
 
 class GSkin
 {
@@ -72,6 +73,8 @@ public:
 	virtual void LayoutScrollBar(GScrollBar* scrollbar) = 0;
 	
 	virtual void RenderTabControl(GTabControl* tabc) = 0;
+
+	virtual void LayoutTabPage(GTabPage* tabp) = 0;
 };
 
 #endif

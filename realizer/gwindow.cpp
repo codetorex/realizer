@@ -45,8 +45,8 @@ public:
 			dy = Master->Y - gy;
 			
 			GObject* p = (GObject*)Parent;
-			p->SetLeft(windowX + dx);
-			p->SetTop(windowY + dy);
+			p->X = windowX + dx;
+			p->Y = windowY + dy;
 		}
 	}
 };
@@ -90,7 +90,7 @@ void GWindow::Layout()
 	// this->GObject::Layout(); TODO: use this for layouting the objects like docked, padded, 
 	Skin->LayoutWindow(this);
 	Layouter->Layout(this,false);
-	LayoutChilds(); // let them resize
+	//LayoutChilds(); // let them resize
 	//TRectangle usage = Layouter->Layout(this,false);
 	//ObjectRegion.SetRectangle(ObjectRegion.X + usage.X, ObjectRegion.Y + usage.Y,usage.Width,usage.Height);
 }
@@ -100,6 +100,6 @@ void GWindow::CenterToScreen()
 	int newX = (((GObject*)Parent)->Width - Width) / 2;
 	int newY = (((GObject*)Parent)->Height - Height) / 2;
 
-	SetLeft(newX);
-	SetTop(newY);
+	X = newX;
+	Y = newY;
 }

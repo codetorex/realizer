@@ -14,12 +14,12 @@ GImageList::GImageList( VTexture* _baseTexture, TPackedRectangle* _pack )
 
 	BaseTexture = _baseTexture;
 	Pack = _pack;
-	TextureSize.SetRange(*BaseTexture);
+	TextureSize.SetSize(*BaseTexture);
 }
 
 void GImageList::Initialize( int _width, int _height )
 {
-	TextureSize.SetRange(_width,_height);
+	TextureSize.SetSize(_width,_height);
 }
 
 int GImageList::AddImage( TBitmap* bmp )
@@ -36,9 +36,9 @@ int GImageList::AddImage( TBitmap* bmp )
 	BaseTexture->UpdateTexture();
 
 	GImage* r = new GImage();
-	r->SetSize(0,0,bmp->Width,bmp->Height);
+	r->SetRectangle(0,0,bmp->Width,bmp->Height);
 	r->Texture = BaseTexture;
-	r->TexturePart.Initialize(BaseTexture, *place);
+	r->TexturePart.Initialize(*BaseTexture, *place);
 	Images.Add(r);
 
 	return (Images.Count - 1);

@@ -75,7 +75,8 @@ public:
 		if (obj)
 		{
 			obj->SetFocus();
-			obj->MouseDown(x - obj->ScreenRegion.X, y - obj->ScreenRegion.Y, button);
+			const IRectangle& dRect = obj->DrawRegion;
+			obj->MouseDown(x - dRect.X, y - dRect.Y, button);
 			obj->ActivateRoot();
 		}
 	}
@@ -86,7 +87,8 @@ public:
 		Y = y;
 		ButtonState[button] = false;
 
-		Focused->MouseUp(x - Focused->ScreenRegion.X,y - Focused->ScreenRegion.Y,button);
+		const IRectangle& dRect = Focused->DrawRegion;
+		Focused->MouseUp(x - dRect.X,y - dRect.Y,button);
 	}
 
 	void MouseWheel(int x,int y,int delta)
@@ -96,7 +98,8 @@ public:
 		GObject* obj = Desktop->FindObject();
 		if (obj)
 		{
-			obj->MouseWheel(x - obj->ScreenRegion.X,y - obj->ScreenRegion.Y,delta);
+			const IRectangle& dRect = obj->DrawRegion;
+			obj->MouseWheel(x - dRect.X,y - dRect.Y,delta);
 		}
 	}
 
@@ -135,7 +138,8 @@ public:
 		GObject* obj = dsktp->FindObject();
 		if (obj)
 		{
-			obj->MouseMove(X - obj->ScreenRegion.X, Y - obj->ScreenRegion.Y);
+			const IRectangle& dRect = obj->DrawRegion;
+			obj->MouseMove(X - dRect.X, Y - dRect.Y);
 		}
 
 		dsktp->Render();

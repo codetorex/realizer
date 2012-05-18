@@ -31,16 +31,16 @@ void RTestGUI::Initialize()
 	OnActivated();
 
 	GWindow* testWin = new GWindow();
-	testWin->SetSize(100,100,300,200);
+	testWin->SetRectangle(100,100,300,200);
 	testWin->Text = "Testing Window";
 
 	GButton* testBut = new GButton();
-	testBut->SetSize(50,50,100,27);
+	testBut->SetRectangle(50,50,100,27);
 	testBut->Text = "Testing Button";
 	testBut->Click += GetHandler(this, &RTestGUI::testBut_Click);
 
 	GButton* testBut2 = new GButton();
-	testBut2->SetSize(50,85,100,27);
+	testBut2->SetRectangle(50,85,100,27);
 	testBut2->Text = "Log Button 2";
 	testBut2->Click += GetHandler(this, &RTestGUI::testBut2_Click);
 
@@ -48,7 +48,7 @@ void RTestGUI::Initialize()
 
 
 	GMenuStrip* testMenu = new GMenuStrip();
-	testMenu->SetSize(0,0,100,20);
+	testMenu->SetRectangle(0,0,100,20);
 	testMenu->Dock = DCK_TOP;
 
 
@@ -68,7 +68,7 @@ void RTestGUI::Initialize()
 	testMenu->Layout();
 
 	dropDown = new GDropDown();
-	dropDown->SetSize(0,0,100,100);
+	dropDown->SetRectangle(0,0,100,100);
 
 	GImageList* imgList = new GImageList(TestSkin->SkinTexture, TestSkin->Pack);
 	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/wand.png") );
@@ -76,11 +76,11 @@ void RTestGUI::Initialize()
 	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/disk.png") );
 	
 	GMenuItem* menuItem1 = new GMenuItem();
-	menuItem1->SetSize(0,0,10,20);
+	menuItem1->SetRectangle(0,0,10,20);
 	menuItem1->Text = "Menu Item test 1";
 
 	GMenuItem* menuItem2 = new GMenuItem();
-	menuItem2->SetSize(0,0,10,20);
+	menuItem2->SetRectangle(0,0,10,20);
 	menuItem2->Text = "Another menu item";
 	menuItem2->Image.SetImage( imgList->GetImage(0) );
 	
@@ -91,7 +91,7 @@ void RTestGUI::Initialize()
 	dropDown->Layout();
 
 	GToolStrip* toolBar = new GToolStrip();
-	toolBar->SetSize(0,0,100,25);
+	toolBar->SetRectangle(0,0,100,25);
 	toolBar->Dock = DCK_TOP;
 	testWin->AddChild(toolBar);
 
@@ -101,36 +101,36 @@ void RTestGUI::Initialize()
 	toolBar->Layout();
 
 	GScrollBar* sb = new GScrollBar();
-	sb->SetSize(300,100,20,200);
+	sb->SetRectangle(300,100,20,200);
 	sb->Dock = DCK_RIGHT;
 	testWin->AddChild(sb);
 
 	GScrollBar* sb2 = new GScrollBar();
 	sb2->setOrientation(GO_HORIZONTAL);
-	sb2->SetSize(300,100,200,20);
+	sb2->SetRectangle(300,100,200,20);
 	sb2->Dock = DCK_BOTTOM;
 	testWin->AddChild(sb2);
 	sb2->Layout();
 
 	GWindow* otherWin = new GWindow();
-	otherWin->SetSize(500,70,400,370);
+	otherWin->SetRectangle(500,70,400,370);
 	otherWin->Text = "Other Window";
 	Engine.GUI.Desktop->AddChild(otherWin);
 
 
 	GTabControl* tabc = new GTabControl();
-	tabc->SetSize(20,20,340,300);
+	tabc->SetRectangle(20,20,340,300);
 	//tabc->Dock = DCK_FILL;
 	otherWin->AddChild(tabc);
 	GTabPage* p1 = tabc->AddPage("Initial Tests");
 	GTabPage* p2 = tabc->AddPage("Another Tests");
 
 	GLabel* testLabel = new GLabel();
-	testLabel->SetSize(10,10,100,20);
+	testLabel->SetRectangle(10,10,100,20);
 	testLabel->Text = "Test label here";
 
 	testCbox = new GCheckBox();
-	testCbox->SetSize(10,30,100,20);
+	testCbox->SetRectangle(10,30,100,20);
 	//testCbox->Text = "A";
 	testCbox->CheckedChanged += GetHandler(this, &RTestGUI::testCbox_CheckedChanged);
 	testCbox->Text = "Debug Mode";
@@ -138,15 +138,15 @@ void RTestGUI::Initialize()
 
 
 	GRadioButton* testRadio = new GRadioButton();
-	testRadio->SetSize(10,50,100,20);
+	testRadio->SetRectangle(10,50,100,20);
 	testRadio->Text = "option 1";
 
 	GRadioButton* testRadio2 = new GRadioButton();
-	testRadio2->SetSize(10,70,100,20);
+	testRadio2->SetRectangle(10,70,100,20);
 	testRadio2->Text = "option 2";
 
 	testPbar = new GProgressBar();
-	testPbar->SetSize(10,100,200,32);
+	testPbar->SetRectangle(10,100,200,32);
 	testPbar->Value = 50;
 	testPbar->ShowPercent = true;
 
@@ -156,10 +156,10 @@ void RTestGUI::Initialize()
 	testTimer->Elapsed += GetHandler(this, &RTestGUI::testTimer_Elapsed);
 
 	GTextBox* testText = new GTextBox();
-	testText->SetSize(10,140,200,20);
+	testText->SetRectangle(10,140,200,20);
 
 	lb = new GListBox();
-	lb->SetSize(10,170,200,100);
+	lb->SetRectangle(10,170,200,100);
 	
 	p1->AddChild(testLabel);
 	p1->AddChild(testCbox);
@@ -173,7 +173,7 @@ void RTestGUI::Initialize()
 
 	GSplitContainer* sc = new GSplitContainer();
 	sc->Dock = DCK_FILL;
-	sc->SetSize(0,0,100,100);
+	sc->SetRectangle(0,0,100,100);
 	p2->AddChild(sc);
 
 

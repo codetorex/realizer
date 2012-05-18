@@ -239,11 +239,11 @@ public:
 		Engine.GUI.EnableGUI(SkinTest);
 
 		GWindow* testWin = new GWindow();
-		testWin->SetSize(100,100,300,200);
+		testWin->SetRegion(100,100,300,200);
 		testWin->Text = "Testing Window";
 
 		GButton* testBut = new GButton();
-		testBut->SetSize(50,50,100,27);
+		testBut->SetRegion(50,50,100,27);
 		testBut->Text = "Testing Button";
 		testBut->Click += GetHandler(this, &IntroScene::tstBut_Click);
 		
@@ -251,28 +251,28 @@ public:
 		testWin->AddChild(testBut);
 
 		GWindow* otherWin = new GWindow();
-		otherWin->SetSize(500,70,300,250);
+		otherWin->SetRegion(500,70,300,250);
 		otherWin->Text = "Other Window";
 
 		GLabel* testLabel = new GLabel();
-		testLabel->SetSize(50,50,100,27);
+		testLabel->SetRegion(50,50,100,27);
 		testLabel->Text = "Test label here";
 
 		GCheckBox* testCbox = new GCheckBox();
-		testCbox->SetSize(50,80,100,20);
+		testCbox->SetRegion(50,80,100,20);
 		//testCbox->Text = "A";
 		testCbox->Text += L"йельский";
 
 		GRadioButton* testRadio = new GRadioButton();
-		testRadio->SetSize(50,100,100,20);
+		testRadio->SetRegion(50,100,100,20);
 		testRadio->Text = "option 1";
 
 		GRadioButton* testRadio2 = new GRadioButton();
-		testRadio2->SetSize(50,120,100,20);
+		testRadio2->SetRegion(50,120,100,20);
 		testRadio2->Text = "option 2";
 
 		GProgressBar* testPbar = new GProgressBar();
-		testPbar->SetSize(50,145,200,32);
+		testPbar->SetRegion(50,145,200,32);
 		testPbar->Value = 50;
 		testPbar->ShowPercent = true;
 		pb = testPbar;
@@ -283,7 +283,7 @@ public:
 		testTimer->Elapsed += GetHandler(this, &IntroScene::testTimer_Elapsed);
 
 		GTextBox* testText = new GTextBox();
-		testText->SetSize(50,180,200,20);
+		testText->SetRegion(50,180,200,20);
 
 
 		Engine.GUI.Desktop->AddChild(otherWin);

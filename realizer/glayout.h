@@ -1,7 +1,7 @@
 #ifndef GLAYOUT_H
 #define GLAYOUT_H
 
-#include "trectangle.h"
+#include "mrectangle.h"
 
 class GObject;
 
@@ -13,7 +13,7 @@ class GLayout
 public:
 	static GLayout Instance;
 
-	virtual TRectangle Layout(GObject* container, bool measureOnly);
+	virtual IRectangle Layout(GObject* container, bool measureOnly);
 };
 
 class GLayoutHorizontalOverflow: public GLayout
@@ -21,7 +21,7 @@ class GLayoutHorizontalOverflow: public GLayout
 public:
 	static GLayoutHorizontalOverflow Instance;
 
-	virtual TRectangle Layout(GObject* container, bool measureOnly);
+	virtual IRectangle Layout(GObject* container, bool measureOnly);
 };
 
 class GLayoutVertical: public GLayout
@@ -29,7 +29,7 @@ class GLayoutVertical: public GLayout
 public:
 	static GLayoutVertical Instance;
 
-	virtual TRectangle Layout(GObject* container, bool measureOnly);
+	virtual IRectangle Layout(GObject* container, bool measureOnly);
 };
 
 #endif

@@ -31,8 +31,8 @@ class GScrollBarDrag: public GButtonBase
 {
 private:
 	bool Dragging;
-	Vector2i DragPoint;
-	Vector2i DragPos;
+	IPosition DragPoint;
+	IPosition DragPos;
 
 public:
 	GOrientation Orientation;
@@ -118,11 +118,11 @@ public:
 		TotalValues = base.MaxValue - base.MinValue;
 		if (Vertical)
 		{
-			DragRange = base.DownButton->Top - base.UpButton->Bottom;
+			DragRange = base.DownButton->Y - base.UpButton->Bottom();
 		}
 		else
 		{
-			DragRange = base.DownButton->Left - base.UpButton->Right;
+			DragRange = base.DownButton->X - base.UpButton->Right();
 		}
 		/////////////////////////////////////////////////////////
 		
@@ -163,11 +163,11 @@ public:
 	{
 		if (Vertical)
 		{
-			base.DragBar->SetTop( base.UpButton->Bottom + DragPosition );
+			base.DragBar->Y =  base.UpButton->Bottom() + DragPosition ;
 		}
 		else
 		{
-			base.DragBar->SetLeft( base.UpButton->Right + DragPosition );
+			base.DragBar->X = base.UpButton->Right() + DragPosition;
 		}
 	}
 
@@ -175,11 +175,11 @@ public:
 	{
 		if (Vertical)
 		{
-			base.DragBar->SetHeight(DragSize); 
+			base.DragBar->Height = DragSize; 
 		}
 		else
 		{
-			base.DragBar->SetWidth(DragSize);
+			base.DragBar->Width = DragSize;
 		}
 	}
 
@@ -199,11 +199,11 @@ public:
 	{
 		if (Vertical)
 		{
-			return base.DragBar->Top - base.UpButton->Bottom;
+			return base.DragBar->Y - base.UpButton->Bottom();
 		}
 		else
 		{
-			return base.DragBar->Left - base.UpButton->Right;
+			return base.DragBar->X - base.UpButton->Right();
 		}
 	}
 };

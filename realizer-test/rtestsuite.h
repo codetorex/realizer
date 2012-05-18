@@ -3,7 +3,7 @@
 
 #include "tarray.h"
 #include "vscene.h"
-#include "tregion.h"
+#include "mregion2.h"
 #include "genums.h"
 #include "gconsole.h"
 
@@ -43,8 +43,8 @@ class RTestSuite: public VScene
 {
 private:
 	TStringBuilder sb;
-	TRegion mreg;
-	TRegion topreg;
+	IRegion mreg;
+	IRegion topreg;
 	
 	GDesktop* OldDesktop;
 	bool OldEnabled;
@@ -94,7 +94,7 @@ public:
 
 	void LoadResources();
 
-	void WriteText( TCharacterEnumerator schars, TRegion& reg, ContentAlignment alg = CA_TopLeft);
+	void WriteText( TCharacterEnumerator schars, IRegion& reg, ContentAlignment alg = CA_TopLeft);
 
 	void Render();
 

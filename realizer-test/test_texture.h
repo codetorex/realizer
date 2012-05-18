@@ -3,7 +3,7 @@
 
 #include "rtestsuite.h"
 #include "tstringbuilder.h"
-#include "tregion.h"
+#include "mregion2.h"
 
 class VTexture;
 class TComposition;
@@ -27,7 +27,7 @@ private:
 	TStringBuilder sb;
 	int x;
 	int y;
-	TRegion texreg;
+	IRegion texreg;
 
 public:
 	RTestTexture()

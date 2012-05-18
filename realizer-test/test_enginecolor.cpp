@@ -40,7 +40,7 @@ void RTestColor::Render()
 	TArrayEnumerator<VColorTest*> te(Tests);
 	while (te.MoveNext())
 	{
-		texreg.SetSize(x+padding,y + texSize + (4 * padding),texSize,10);
+		texreg.SetRegion(x+padding,y + texSize + (4 * padding),texSize,10);
 
 		Engine.Draw.NoTexture();
 		Engine.Draw.DrawRectangle(x,y,texSize + (padding *2),texSize + (padding*2), TColors::White);

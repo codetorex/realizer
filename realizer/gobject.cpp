@@ -39,7 +39,7 @@ GObject* GObject::FindObjectByCoord( int x,int y )
 		return 0;
 	}
 
-	if (!ScreenRegion.IsInside(x,y))
+	if (!DrawRegion.IsInside(x,y))
 	{
 		return 0;
 	}
@@ -144,7 +144,7 @@ GObject* GObject::FindObject()
 	GObject* p = (GObject*)Parent;
 	if (p->MouseInside)
 	{
-		if (ScreenRegion.IsInside(Master->X,Master->Y))
+		if (DrawRegion.IsInside(Master->X,Master->Y))
 		{
 			MouseInside = true;
 		}

@@ -10,7 +10,7 @@ class GImageList
 private:
 	VTexture* BaseTexture;
 	TPackedRectangle* Pack;
-	Size TextureSize;
+	ISize TextureSize;
 
 public:
 

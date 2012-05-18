@@ -6,13 +6,15 @@
 
 void GMenuItem::Render()
 {
+	const IRectangle& dRect = DrawRegion;
+
 	if (IsParentDropDown())
 	{
 		Skin->RenderMenuItem(this);	
 
 		if (!Seperator)
 		{
-			Font->Render(Text,TextX + ScreenRegion.X,TextY + ScreenRegion.Y, ForeColor);
+			Font->Render(Text,TextX + dRect.X,TextY + dRect.Y, ForeColor);
 		}
 
 		if (Image.Visible)
@@ -24,7 +26,7 @@ void GMenuItem::Render()
 	{
 		Skin->RenderMenuStripItem(this);
 
-		Font->Render(Text,TextX + ScreenRegion.X,TextY + ScreenRegion.Y, ForeColor);
+		Font->Render(Text,TextX + dRect.X,TextY + dRect.Y, ForeColor);
 	}
 }
 
@@ -96,29 +98,29 @@ void GMenuItem::Layout()
 	{
 		TextX = 16 + 8; // 4px margin 16 px for icon
 		TextY = 3;
-		SetWidth( strWidth + 16 + TextX );
-		SetHeight( Font->Height + 10);
-		Image.SetLeftTop(2,(Height - Image.Height)/2);
+		ChangeWidth( strWidth + 16 + TextX );
+		ChangeHeight( Font->Height + 10);
+		Image.Move(2,(Height - Image.Height)/2);
 	}
 	else
 	{
 		GObject* p = (GObject*)Parent;
-		SetHeight(Font->Height + 8);
-		SetWidth(strWidth+12);
+		ChangeHeight(Font->Height + 8);
+		ChangeWidth(strWidth+12);
 		// text is on middle
 		TextX = (Width - strWidth) / 2;
 		TextY = (Height - Font->Height) / 2;
 		Skin->LayoutMenuStripItem(this);
 	}
 
-	ObjectRegion.SetRectangle(0,0,Width,Height);
+	Content.SetRectangle(0,0,Width,Height);
 	Image.SetParent(this);
 }
 
 GMenuItem* GMenuItem::AddSeperator()
 {
 	GMenuItem* r = new GMenuItem();
-	r->SetSize(0,0,20,10);
+	r->SetRectangle(0,0,20,10);
 	r->set_Seperator(true);
 	AddChild(r);
 	return r;

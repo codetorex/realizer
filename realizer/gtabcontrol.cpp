@@ -13,9 +13,8 @@ GTabPage::GTabPage()
 
 void GTabPage::Layout()
 {
+
 	this->GObject::Layout();
-	Layouter->Layout(this,false);
-	LayoutChilds();
 }
 
 GTabControl::GTabControl()
@@ -62,7 +61,7 @@ void GTabControl::Layout()
 		AddChild(&TabPageButtons);
 	}
 
-	ObjectRegion.SetRectangle(0,0,Width,Height); // initialize region
+	Content.SetRectangle(0,0,Width,Height); // initialize region
 
 	// 5 soldan sagdan 4 yukardan assagidan
 
@@ -74,12 +73,12 @@ void GTabControl::Layout()
 		GButtonBase* pageButton = &(curPage->TabButton);
 		TabPageButtons.AddChild(pageButton);
 		TCharacterEnumerator sb(pageButton->Text);
-		pageButton->SetSize(0,0, Font->GetStringWidth(sb)+ 10,Font->Height + 8 );
+		pageButton->SetRectangle(0,0, Font->GetStringWidth(sb)+ 10,Font->Height + 8 );
 
 	}
 
-	TabPageButtons.SetSize(0,0,Width,Height);
-	TabPageButtons.ObjectRegion.SetRectangle(0,0,Width,Height);
+	TabPageButtons.SetRectangle(0,0,Width,Height);
+	TabPageButtons.Content.SetRectangle(0,0,Width,Height);
 
 	// TODO: support other aligments by layouting tabpagebuttons
 	if (Alignment == GTB_TOP)
@@ -89,14 +88,14 @@ void GTabControl::Layout()
 	}
 
 	PageArea = GLayout::Instance.Layout(this,false);
-	TabPageButtons.ObjectRegion.SetRectangle(2,0,Width-2,Height);
+	TabPageButtons.Content.SetRectangle(2,0,Width-2,Height);
 
 	for (int i=0;i< TabPages.Count;i++)
 	{
 		GTabPage* curPage = TabPages.Item[i];
-		curPage->SetSize(PageArea.X,PageArea.Y,PageArea.Width,PageArea.Height);
+		curPage->SetRectangle(PageArea.X,PageArea.Y,PageArea.Width,PageArea.Height);
 		this->OwnObject(curPage);
-		curPage->ObjectRegion.RectangleShrink(3); // 3 px padding TODO: make this changable
+		curPage->Content.Shrink(3); // 3 px padding TODO: make this changable
 		curPage->Layout();
 	}
 }

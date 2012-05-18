@@ -106,7 +106,7 @@ public:
 		CurrentCell = &Cells[ bufferIndex ];
 	}
 
-	void SetPosition(TPosition& pos)
+	void SetPosition(IPosition& pos)
 	{
 		if (pos.X >= Size.Width)
 		{
@@ -151,7 +151,7 @@ public:
 
 		Head = Size.Height-1;
 
-		Cursor.SetPosition(0,0);
+		Cursor.SetVector(0,0);
 		CurrentCell = Cells;
 
 		set_NewLine("\n");
@@ -260,7 +260,7 @@ public:
 	TConsoleDriver* cinput;
 
 	TArray<ch32> Chars;
-	TPosition CursorStart;
+	IPosition CursorStart;
 	int Cursor;
 
 	void BeginInput()

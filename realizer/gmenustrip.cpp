@@ -19,14 +19,14 @@ void GMenuStrip::Render()
 
 void GMenuStrip::Layout()
 {
-	ObjectRegion.SetRectangle(5,0,Width,Height-3);
+	Content.SetRectangle(5,0,Width,Height-3);
 	Layouter->Layout(this,false);
 }
 
 GMenuItem* GMenuStrip::AddItem( const TString& menuItem )
 {
 	GMenuItem* r = new GMenuItem();
-	r->SetSize(0,0,20,10);
+	r->SetRectangle(0,0,20,10);
 	r->Text = menuItem;
 	AddChild(r);
 	return r;

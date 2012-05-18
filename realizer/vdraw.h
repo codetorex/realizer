@@ -2,7 +2,7 @@
 #define VDRAW_H
 
 #include "vvertexstream.h"
-#include "tregion.h"
+#include "mregion2.h"
 
 class VTexture;
 
@@ -43,9 +43,9 @@ public:
 		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
 	}
 
-	inline void DrawQuad(const TRegion& reg,const TColor32& color )
+	inline void DrawQuad(const IRegion& reg,const TColor32& color )
 	{
-		DrawQuad((float)reg.X,(float)reg.Y,(float)reg.Right,(float)reg.Bottom,0,0,1,1,color);
+		DrawQuad((float)reg.X(),(float)reg.Y(),(float)reg.Right(),(float)reg.Bottom(),0,0,1,1,color);
 	}
 
 
@@ -75,9 +75,19 @@ public:
 		ChangeMeshType(mType);
 	}
 
-	inline void DrawRectangle(const TRegion& reg, const TColor32& color)
+	inline void DrawRectangle(const IRectangle& reg, const TColor32& color)
 	{
 		DrawRectangle((float)reg.X,(float)reg.Y,(float)reg.Width,(float)reg.Height,color);
+	}
+
+	inline void FillRectangle(float x,float y, float w,float h, const TColor32& color)
+	{
+		DrawQuad(x,y,x+w,y+h,0.0f,0.0f,1.0f,1.0f,color);
+	}
+
+	inline void FillRectangle( const IRectangle& rect, const TColor32& color)
+	{
+		DrawQuad((float)rect.X, (float)rect.Y,(float)(rect.Right()),(float)(rect.Bottom()),0.0f,0.0f,1.0f,1.0f,color);
 	}
 
 	/**

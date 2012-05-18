@@ -16,14 +16,14 @@ void VMapView::Visualize(TBitmap* bmp)
 	{
 		Circle2* c = &le.Current->Mass;
 
-		Vector2i cp = GetPositionFromRatio(c->x,c->y);
+		IPosition cp = VectorFromRatio(c->X,c->Y);
 		Vector2 right = c->PointOnCircle(0.0f);
-		int rad = GetXFromRatio(right.x) - cp.x;
+		int rad = XFromRatio(right.X) - cp.X;
 		/*cp.x -= rad;
 		cp.y -= rad;
 		rad *= 2;*/
 
-		bg.SetPixel(cp.x,cp.y, TColors::Lime);
+		bg.SetPixel(cp.X,cp.Y, TColors::Lime);
 
 		//bg.DrawEllipse(massPen, cp.x, cp.y,rad,rad);
 	}
@@ -36,7 +36,7 @@ void VMapGenerator::GenerateLands()
 	for (int i=0;i< 5;i++)
 	{
 		VLand* land = new VLand();
-		land->Mass.Set(RandomGenerator->NextSingle(),RandomGenerator->NextSingle());
+		land->Mass.SetVector(RandomGenerator->NextSingle(),RandomGenerator->NextSingle());
 		land->Mass.Radius = RandomGenerator->NextSingle();
 		Generation.Lands.Add(land);
 	}

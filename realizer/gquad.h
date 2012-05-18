@@ -44,22 +44,17 @@ public:
 	/**
 	 * Adjusts empty space of the object accordingly margins used by skin.
 	 */
-	void SetObjectRegion(GObject* obj);
+	void SetObjectContent(GObject* obj);
 };
 
 /**
 * Optimized scalable quad (48 bytes)
 * It created by equal border size definitions.
 */
-class GScalableQuad
+class GScalableQuad: public IPadding
 {
 public:
 	float TextureCoords[8];
-
-	int LeftMargin;
-	int RightMargin;
-	int TopMargin;
-	int BottomMargin;
 
 	/**
 	* Calculates texture coordinates
@@ -67,7 +62,8 @@ public:
 	* @param tx texture pointer to be referenced
 	* @param rect texture rect that this quad going to be use
 	*/
-	void Initialize(TRange* textureRange, const TRegion& rect);
+
+	void Initialize(const ISize& textureRange, const IRectangle& rect);
 
 	void Initialize(const GScalableQuad& other);
 
@@ -80,24 +76,25 @@ public:
 
 	void Render(GObject* obj);
 
-	void Render(TRegion* region);
+	void Render( const IRectangle& rect );
 
-	void RenderLeftOnly(TRegion* region);
+	void RenderLeftOnly( const IRectangle& rect);
 
 	inline int GetHeightSpace(int totalHeight)
 	{
-		return totalHeight - (TopMargin + BottomMargin);
+		return totalHeight - (Top + Bottom);
 	}
 
 	inline int GetWidthSpace(int totalWidth)
 	{
-		return totalWidth - (LeftMargin + RightMargin);
+		return totalWidth - (Left + Right);
 	}
 
 	/**
 	 * Adjusts empty space of the object accordingly margins used by skin.
 	 */
 	void SetObjectRegion(GObject* obj);
+
 };
 
 /**
@@ -111,7 +108,7 @@ public:
 	int LeftMargin;
 	int RightMargin;
 
-	void Initialize(VTexture* tx, const TRegion& rect);
+	void Initialize(VTexture* tx, const IRegion& rect);
 
 	void Render(GObject* obj);
 };
@@ -127,7 +124,7 @@ public:
 	int TopMargin;
 	int BottomMargin;
 
-	void Initialize(VTexture* tx, const TRegion& rect);
+	void Initialize(VTexture* tx, const IRegion& rect);
 
 	void Render(GObject* obj);
 };

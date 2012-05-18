@@ -4,7 +4,7 @@
 
 void GFontLoader::SetChar( GCharacter* gchr,int x, int y, int w,int h,int xoffset, int yoffset, int xadvance )
 {
-	gchr->Initialize(font->FontTexture,x,y,w,h);
+	gchr->Initialize(*font->FontTexture,x,y,w,h);
 	gchr->SetCharacter(xoffset,yoffset,xadvance);
 }
 

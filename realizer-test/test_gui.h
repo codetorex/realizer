@@ -3,7 +3,7 @@
 
 #include "rtestsuite.h"
 #include "tstringbuilder.h"
-#include "tregion.h"
+#include "mregion2.h"
 
 #include "gcomponents.h"
 

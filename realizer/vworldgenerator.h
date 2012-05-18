@@ -101,7 +101,7 @@ public:
 /**
  * Captured image of a map.
  */
-class VMapView: public TRange
+class VMapView: public ISize
 {
 public:
 	VMap* View;
@@ -114,8 +114,8 @@ public:
 		Width = _width;
 		Height = _height;
 
-		TopLeftCoord = GetRatio(x,y);
-		BottomRightCoord = GetRatio(x + subwidth , y + subheight);
+		TopLeftCoord = Ratio(x,y);
+		BottomRightCoord = Ratio(x + subwidth , y + subheight);
 	}
 
 	VMapView( VMap* map , ui32 pWidth, ui32 pHeight)
