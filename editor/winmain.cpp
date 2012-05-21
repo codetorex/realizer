@@ -17,11 +17,11 @@
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
-	Application.Begin("Realizer Test Suite", TVersion(REALIZER_BUILD,REALIZER_PHASE), RAISE_DEFAULT_COMPANYNAME );
+	Application.Begin("Realizer Editor", TVersion(REALIZER_BUILD,REALIZER_PHASE), RAISE_DEFAULT_COMPANYNAME );
 	USESRAISE;
 	USESREALIZER;
 
-	Engine.Renderer.InitializeRenderer(1280,720,"Realizer Editor",false,24);
+	Engine.Renderer.InitializeRenderer(1776,1000,"Realizer Editor",false,24);
 
 	Engine.Inputs.CreateMappedKeyboard();
 	TTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.Running);

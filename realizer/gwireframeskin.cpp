@@ -143,3 +143,8 @@ void GWireFrameSkin::LayoutTabPage( GTabPage* tabp )
 {
 	throw NotImplementedException();
 }
+
+void GWireFrameSkin::RenderTabButton( GButtonBase* tabb, bool active )
+{
+	throw NotImplementedException();
+}

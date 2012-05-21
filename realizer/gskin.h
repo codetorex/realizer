@@ -5,6 +5,7 @@
 
 class GWindow;
 class GButton;
+class GButtonBase;
 class GObject;
 class GFont;
 class GLabel;
@@ -21,6 +22,8 @@ class GScrollBarButton;
 class GScrollBar;
 class GTabControl;
 class GTabPage;
+class GTabButton;
+
 
 class GSkin
 {
@@ -72,6 +75,8 @@ public:
 
 	virtual void LayoutScrollBar(GScrollBar* scrollbar) = 0;
 	
+	virtual void RenderTabButton(GButtonBase* tabb, bool active) = 0;
+
 	virtual void RenderTabControl(GTabControl* tabc) = 0;
 
 	virtual void LayoutTabPage(GTabPage* tabp) = 0;

@@ -5,8 +5,11 @@
 #include "gfont.h"
 #include "gschemedskin.h"
 #include "gconsole.h"
+#include "gcomponents.h"
 
 REditor Editor;
+
+REditorResources Resources;
 
 
 void REditor::LoadResources()
@@ -22,9 +25,6 @@ void REditor::LoadResources()
 		EditorSkin = (GSchemedSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
 		Engine.GUI.EnableGUI(EditorSkin);
 
-		/*EditorSkin = new GWireFrameSkin();
-		DebugSkin->SystemFont = DebugFont;
-		DebugSkin->DefaultFontColor = TColors::White;*/
 
 		Engine.Renderer.EnableBlending();
 		Engine.Renderer.EnableTextureAlphaVertexColorAlpha(0);
@@ -44,6 +44,11 @@ void REditor::LoadResources()
 
 		Engine.Command.Start(&DebugConsole->Buffer);
 		Engine.Command.ConnectAsLogOutput(); // TODO: make this somewhere internal?
+
+		Resources.RealizerLogo = Engine.Textures.LoadTexture("realizer.png");
+		Resources.StartPageTexture = Engine.Textures.LoadTexture("editor/start-page.png");
+
+		InitializeMainGui();
 	}
 	catch( Exception& e )
 	{
@@ -84,4 +89,33 @@ void REditor::ActivateConsole( bool value )
 		OldFocused->SetFocus();
 		DebugInputEnabled = false;
 	}
+}
+
+void REditor::InitializeMainGui()
+{
+	GMenuStrip* mainMenu = new GMenuStrip();
+	mainMenu->SetRectangle(0,0,100,20);
+	mainMenu->Dock = DCK_TOP;
+	Engine.GUI.Desktop->AddChild(mainMenu);
+
+	mainMenu->AddItem("File");
+	mainMenu->AddItem("Edit");
+	mainMenu->AddItem("View");
+	mainMenu->AddItem("Project");
+	mainMenu->AddItem("Debug");
+	mainMenu->AddItem("Tools");
+	mainMenu->AddItem("Help");
+
+	EditorImages = new GImageList(EditorSkin->SkinTexture, EditorSkin->Pack);
+
+
+
+	MainPanel.SetRectangle(0,0,100,100);
+	MainPanel.Dock = DCK_FILL;
+	Engine.GUI.Desktop->AddChild(&MainPanel);
+
+	MainPanel.AddPage(&StartPage,0,true);
+
+	Engine.GUI.Desktop->Layout();
+	Engine.GUI.Desktop->Layout();
 }

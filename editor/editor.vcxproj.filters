@@ -21,6 +21,18 @@
     <ClInclude Include="reditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rviewpanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rdocumentview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rdocument.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rstartpage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -30,6 +42,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="reditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rviewpanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rdocumentview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rstartpage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -281,47 +281,53 @@ void GSchemedSkin::RenderTabControl( GTabControl* tabc )
 	TabBorder.Render(borderRegion);
 
 	// lets render tab pages
-	TLinkedListEnumerator<GObject*> btn(&tabc->TabPageButtons);
+	/*TLinkedListEnumerator<GObject*> btn(&tabc->TabPageButtons);
 	while(btn.MoveNext())
 	{
 		GTabButton* curButton = (GTabButton*)btn.Current;
-
-		GSchemedSkinButtonQuad* qd;
-		if (btn.Current == btn.mList->FirstItem)
-		{
-			qd = &TabPageLeft;
-		}
-		else if (btn.Current == btn.mList->LastItem)
-		{
-			qd = &TabPageRight;
-		}
-		else
-		{
-			qd = &TabPage;
-		}
-
-		if (curButton->Page == tabc->CurrentPage)
-		{
-			IRegion tmpRegion;
-			tmpRegion.SetRegion(curButton->DrawRegion);
-			tmpRegion.Inflate(1);
-			tmpRegion.ChangeHeightDiff(1);
-			tmpRegion.MoveYDiff(-1);
-			qd->Render(curButton,tmpRegion);
-		}
-		else
-		{
-			qd->Render(curButton);
-		}
-		
-
-		// TODO: we can move this to another loop
-		tabc->Font->Render(btn.Current->Text,btn.Current->DrawRegion,CA_MiddleCenter,tabc->ForeColor);
-		Engine.Draw.SetTexture(SkinTexture);
-	}
+		bool active = curButton->Page == tabc->CurrentPage;
+		RenderTabButton(curButton,active);
+	}*/
 }
 
 void GSchemedSkin::LayoutTabPage( GTabPage* tabp )
 {
 	
+}
+
+void GSchemedSkin::RenderTabButton( GButtonBase* tabb, bool active )
+{
+	Engine.Draw.SetTexture(SkinTexture);
+	GSchemedSkinButtonQuad* qd;
+	if (tabb == tabb->Parent->FirstItem)
+	{
+		qd = &TabPageLeft;
+	}
+	else if (tabb == tabb->Parent->LastItem)
+	{
+		qd = &TabPageRight;
+	}
+	else
+	{
+		qd = &TabPage;
+	}
+
+	if (active)
+	{
+		IRegion tmpRegion;
+		tmpRegion.SetRegion(tabb->DrawRegion);
+		tmpRegion.Inflate(1);
+		tmpRegion.ChangeHeightDiff(1);
+		tmpRegion.MoveYDiff(-1);
+		qd->Render(tabb,tmpRegion);
+	}
+	else
+	{
+		qd->Render(tabb);
+	}
+
+
+	// TODO: we can move this to another loop
+	tabb->Font->Render(tabb->Text,tabb->DrawRegion,CA_MiddleCenter,tabb->ForeColor);
+	Engine.Draw.SetTexture(SkinTexture);
 }

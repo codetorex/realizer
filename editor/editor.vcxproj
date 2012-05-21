@@ -78,11 +78,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="rdocument.h" />
+    <ClInclude Include="rdocumentview.h" />
+    <ClInclude Include="rstartpage.h" />
+    <ClInclude Include="rviewpanel.h" />
     <ClInclude Include="reditor.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="rdocumentview.cpp" />
     <ClCompile Include="reditor.cpp" />
+    <ClCompile Include="rstartpage.cpp" />
+    <ClCompile Include="rviewpanel.cpp" />
     <ClCompile Include="winmain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -8,6 +8,8 @@
 class GTabPage;
 class GTabControl;
 
+
+
 class GTabButton: public GButtonBase
 {
 public:
@@ -20,6 +22,10 @@ public:
 
 	void MouseExit();
 	void Clicked(int x, int y, int button);
+
+	void Render();
+	
+	bool Active;
 };
 
 class GTabPage: public GObject
@@ -30,8 +36,6 @@ public:
 	GTabPage();
 
 	GTabButton TabButton;
-
-	void Layout();
 };
 
 enum GTabAlignment

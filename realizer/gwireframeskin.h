@@ -62,6 +62,8 @@ public:
 
 	void RenderTabControl(GTabControl* tabc);
 
+	void RenderTabButton(GButtonBase* tabb, bool active);
+
 	void LayoutTabPage(GTabPage* tabp);
 
 private:

@@ -11,12 +11,6 @@ GTabPage::GTabPage()
 	Layouter = &GLayout::Instance;
 }
 
-void GTabPage::Layout()
-{
-
-	this->GObject::Layout();
-}
-
 GTabControl::GTabControl()
 {
 	ClassID = GTABCONTROL_CLASSID;
@@ -27,6 +21,7 @@ GTabControl::GTabControl()
 void GTabControl::Render()
 {
 	Skin->RenderTabControl(this);
+	TabPageButtons.Render();
 
 	if (CurrentPage)
 	{
@@ -34,14 +29,14 @@ void GTabControl::Render()
 	}
 
 
-	byte tmp[512];
+	/*byte tmp[512];
 	TStringBuilder k(tmp,512);
 	k.Append("Current page: ");
 	k.Append(sfx((ui32)CurrentPage));
 
 	Font->Render(k,50,50,TColors::Wheat);
 
-	k.UnbindByteArray();
+	k.UnbindByteArray();*/
 }
 
 void GTabControl::Update()
@@ -146,9 +141,11 @@ void GTabControl::SelectPage( GTabPage* page )
 	if (CurrentPage != 0)
 	{
 		CurrentPage->TabButton.SetGraphic(GBG_NORMAL);
+		CurrentPage->TabButton.Active = false;
 	}
 	CurrentPage = page;
 	CurrentPage->TabButton.SetGraphic(GBG_DOWN);
+	CurrentPage->TabButton.Active = true;
 }
 
 GObject* GTabControl::FindObject()
@@ -201,4 +198,9 @@ GTabControl* GTabButton::GetTabControl()
 	GObject* p = (GObject*)Parent;
 	GTabControl* rp = (GTabControl*)p->Parent;
 	return rp;
+}
+
+void GTabButton::Render()
+{
+	Skin->RenderTabButton(this,Active);
 }

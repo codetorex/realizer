@@ -4,6 +4,22 @@
 #include "vscene.h"
 #include "genums.h"
 #include "gconsole.h"
+#include "rviewpanel.h"
+#include "rstartpage.h"
+
+class GSchemedSkin;
+class GImageList;
+class VTexture;
+
+class REditorResources
+{
+public:
+	VTexture* RealizerLogo;
+	VTexture* StartPageTexture;
+
+};
+
+extern REditorResources Resources;
 
 class REditor: public VScene
 {
@@ -19,7 +35,13 @@ public:
 	}
 
 
-	GSkin* EditorSkin;
+	GSchemedSkin* EditorSkin;
+
+	GImageList* EditorImages;
+
+	RViewPanel MainPanel;
+
+	RStartPage StartPage;
 
 	/// Monospaced font that is good for console and debug stuff
 	GFont* DebugFont;
@@ -27,6 +49,8 @@ public:
 	GConsole* DebugConsole;
 
 	void LoadResources();
+
+	void InitializeMainGui();
 
 	void Render();
 

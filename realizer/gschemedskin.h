@@ -280,6 +280,8 @@ public:
 
 	void LayoutScrollBar(GScrollBar* scrollbar);
 
+	void RenderTabButton(GButtonBase* tabb, bool active);
+
 	void RenderTabControl(GTabControl* tabc);
 
 	void LayoutTabPage(GTabPage* tabp);

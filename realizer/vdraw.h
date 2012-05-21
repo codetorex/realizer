@@ -49,6 +49,9 @@ public:
 	}
 
 
+	void DrawImage(VTexture* image, float x, float y);
+
+	void DrawImage(VTexture* image, float x, float y, float scale);
 
 	// TODO: FORMAT THESE LINE DRAWING STUFF TO BETTER SPACE?
 
