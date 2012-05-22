@@ -13,8 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="GUI">
+    <Filter Include="Editors">
+      <UniqueIdentifier>{8f742142-c924-4ea3-a350-50b5eafbfe22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors\Text Editor">
+      <UniqueIdentifier>{c023f826-c10d-48b0-9f6b-25196d4b845a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
       <UniqueIdentifier>{d26c2061-2f14-452c-8686-9b815f87ccf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors\Binary Editor">
+      <UniqueIdentifier>{acaf84dd-9b38-444c-afa6-7a04905582ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors\GUI Editor">
+      <UniqueIdentifier>{d15106b9-fb54-4577-aa99-276843a34363}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -25,19 +37,22 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rstartpage.h">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="rdocumentview.h">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="rdocument.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="rtextview.h">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="rpageview.h">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="rtextview.h">
+      <Filter>Editors\Text Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="rtextdocument.h">
+      <Filter>Editors\Text Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,16 +66,22 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="rstartpage.cpp">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="rdocumentview.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="rtextview.cpp">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="rpageview.cpp">
-      <Filter>GUI</Filter>
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="rtextview.cpp">
+      <Filter>Editors\Text Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="rtextdocument.cpp">
+      <Filter>Editors\Text Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="rdocument.cpp">
+      <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

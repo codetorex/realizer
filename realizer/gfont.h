@@ -255,13 +255,18 @@ public:
 		RenderText(schars,x,y,color.color);
 	}
 
+	inline int GetCharacterWidth(ch32 character)
+	{
+		GCharacter* chr = GetCharacter(character);
+		return chr->XAdvance;
+	}
+
 	int GetStringWidth(TCharacterEnumerator& schars)
 	{
 		int result = 0;
 		while(schars.MoveNext())
 		{
-			GCharacter* chr = GetCharacter(schars.Current);
-			result += chr->XAdvance;
+			result += GetCharacterWidth(schars.Current);
 		}
 		schars.Reset();
 		return result;

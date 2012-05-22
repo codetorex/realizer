@@ -81,15 +81,18 @@
     <ClInclude Include="rdocument.h" />
     <ClInclude Include="rdocumentview.h" />
     <ClInclude Include="rstartpage.h" />
+    <ClInclude Include="rtextdocument.h" />
     <ClInclude Include="rtextview.h" />
     <ClInclude Include="rpageview.h" />
     <ClInclude Include="reditor.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="rdocument.cpp" />
     <ClCompile Include="rdocumentview.cpp" />
     <ClCompile Include="reditor.cpp" />
     <ClCompile Include="rstartpage.cpp" />
+    <ClCompile Include="rtextdocument.cpp" />
     <ClCompile Include="rtextview.cpp" />
     <ClCompile Include="rpageview.cpp" />
     <ClCompile Include="winmain.cpp" />

@@ -38,7 +38,7 @@ public:
 		PreTranslation.set(x,y,z);
 	}
 
-	void PreTranslate()
+	void ResetTranslation()
 	{
 		PreTranslation.set(0.0f,0.0f,0.0f);
 	}

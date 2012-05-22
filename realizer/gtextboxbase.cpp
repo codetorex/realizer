@@ -32,7 +32,7 @@ void GEditableLine::Render( int x,int y )
 {
 	Engine.Draw.PreTranslate((float)x,(float)y,0.0f);
 	InternalRender();
-	Engine.Draw.PreTranslate();
+	Engine.Draw.ResetTranslation();
 }
 
 void GEditableLine::RenderWithSelection( int x,int y, int caret )
@@ -94,7 +94,7 @@ void GEditableLine::RenderWithSelection( int x,int y, int caret )
 		DrawRectangleSize(drawPos,0,1,15,DefaultColor.color);
 	}
 
-	Engine.Draw.PreTranslate();
+	Engine.Draw.ResetTranslation();
 }
 
 void GEditableLine::InternalRender()

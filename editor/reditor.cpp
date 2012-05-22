@@ -6,7 +6,9 @@
 #include "gschemedskin.h"
 #include "gconsole.h"
 #include "gcomponents.h"
+
 #include "rtextview.h"
+#include "rtextdocument.h"
 
 REditor Editor;
 
@@ -118,10 +120,14 @@ void REditor::InitializeMainGui()
 	MainPages.AddPage(&StartPage,0,true);
 
 	RTextView* tv = new RTextView();
-	MainPages.AddPage(tv,0,false);
+	RTextDocument* doc = new RTextDocument();
+
+
+
+	MainPages.AddPage(tv,doc,false);
 	
 	Engine.GUI.Desktop->Layout();
 	Engine.GUI.Desktop->Layout();
 
-	//Engine.GUI.Desktop->DebugMode = GDB_MOUSEON;
+	// Engine.GUI.Desktop->DebugMode = GDB_MOUSEON;
 }

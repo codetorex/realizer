@@ -102,7 +102,7 @@ void GScalableQuad::Render( const IRectangle& rect )
 	Engine.Draw.Add2DQuadColor1Tex((float)Left,q2,q1,(float)rect.Height,TextureCoords[1],TextureCoords[5],TextureCoords[2],TextureCoords[6]); // orta alt
 	Engine.Draw.Add2DQuadColor1Tex(q1,q2,(float)rect.Width,(float)rect.Height,TextureCoords[2],TextureCoords[5],TextureCoords[3],TextureCoords[6]); // sag alt
 
-	Engine.Draw.PreTranslate();
+	Engine.Draw.ResetTranslation();
 	Engine.Draw.Flush();
 }
 
@@ -115,7 +115,7 @@ void GScalableQuad::RenderLeftOnly( const IRectangle& rect )
 	Engine.Draw.Add2DQuadColor1Tex(0,(float)Top,(float)Left,q,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5]); // sol
 	Engine.Draw.Add2DQuadColor1Tex(0,q,(float)Left,(float)rect.Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6]); // sol alt
 
-	Engine.Draw.PreTranslate();
+	Engine.Draw.ResetTranslation();
 	Engine.Draw.Flush();
 }
 

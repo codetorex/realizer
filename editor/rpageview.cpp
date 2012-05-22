@@ -25,18 +25,19 @@ RPageView::RPageView()
 
 GObject* RPageView::FindObject()
 {
-	GObject* fd = GObject::FindObject();
 
-	if (fd)
+
+	GObject* fd = GObject::FindObject();
+	if (fd != this)
 	{
 		return fd;
 	}
-
 
 	if (ActivePage)
 	{
 		return ActivePage->View->FindObject();
 	}
+
 
 	return this;
 }
@@ -112,6 +113,7 @@ void RPageView::ActivatePage( RPage* page )
 		page->View->SetRectangle(ViewRectangle);
 		page->View->Layout();
 	}
+	page->View->Document = page->Document;
 	ActivePage->Button.SetGraphic(GBG_DOWN);
 }
 
@@ -192,6 +194,17 @@ RPageView* RPageButton::GetPageView()
 
 void RPageButton::Render()
 {
+	if (Page->Document)
+	{
+		if (Page->Document->Changed)
+		{
+			ForeColor = TColors::Red;
+		}
+		else
+		{
+			ForeColor = TColors::Black;
+		}
+	}
 	Skin->RenderTabButton(this,IsSelected());
 	GObject::Render();
 }
