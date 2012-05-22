@@ -81,7 +81,8 @@
     <ClInclude Include="rdocument.h" />
     <ClInclude Include="rdocumentview.h" />
     <ClInclude Include="rstartpage.h" />
-    <ClInclude Include="rviewpanel.h" />
+    <ClInclude Include="rtextview.h" />
+    <ClInclude Include="rpageview.h" />
     <ClInclude Include="reditor.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -89,7 +90,8 @@
     <ClCompile Include="rdocumentview.cpp" />
     <ClCompile Include="reditor.cpp" />
     <ClCompile Include="rstartpage.cpp" />
-    <ClCompile Include="rviewpanel.cpp" />
+    <ClCompile Include="rtextview.cpp" />
+    <ClCompile Include="rpageview.cpp" />
     <ClCompile Include="winmain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

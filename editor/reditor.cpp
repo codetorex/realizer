@@ -6,6 +6,7 @@
 #include "gschemedskin.h"
 #include "gconsole.h"
 #include "gcomponents.h"
+#include "rtextview.h"
 
 REditor Editor;
 
@@ -33,8 +34,8 @@ void REditor::LoadResources()
 		TestDesktop->Font = DebugFont;*/
 
 		DebugConsole = new GConsole();
-		Engine.GUI.Desktop->AddChild(DebugConsole); // auto sets font
-
+		Engine.GUI.Desktop->OwnObject(DebugConsole);
+		Engine.GUI.Desktop->OnTopObjects.Add(DebugConsole); 
 		DebugConsole->Font = DebugFont;
 
 		//DebugConsole->Font = DebugFont;
@@ -110,12 +111,15 @@ void REditor::InitializeMainGui()
 
 
 
-	MainPanel.SetRectangle(0,0,100,100);
-	MainPanel.Dock = DCK_FILL;
-	Engine.GUI.Desktop->AddChild(&MainPanel);
+	MainPages.SetRectangle(0,0,100,100);
+	MainPages.Dock = DCK_FILL;
+	Engine.GUI.Desktop->AddChild(&MainPages);
 
-	MainPanel.AddPage(&StartPage,0,true);
+	MainPages.AddPage(&StartPage,0,true);
 
+	RTextView* tv = new RTextView();
+	MainPages.AddPage(tv,0,false);
+	
 	Engine.GUI.Desktop->Layout();
 	Engine.GUI.Desktop->Layout();
 }

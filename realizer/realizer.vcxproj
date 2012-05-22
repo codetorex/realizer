@@ -120,6 +120,7 @@
     <ClInclude Include="gmenustrip.h" />
     <ClInclude Include="gobject.h" />
     <ClInclude Include="gprogressbar.h" />
+    <ClInclude Include="gproxy.h" />
     <ClInclude Include="gquad.h" />
     <ClInclude Include="gradiobutton.h" />
     <ClInclude Include="gschemedskin.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="gmenustrip.cpp" />
     <ClCompile Include="gobject.cpp" />
     <ClCompile Include="gprogressbar.cpp" />
+    <ClCompile Include="gproxy.cpp" />
     <ClCompile Include="gquad.cpp" />
     <ClCompile Include="gradiobutton.cpp" />
     <ClCompile Include="gschemedskin.cpp" />

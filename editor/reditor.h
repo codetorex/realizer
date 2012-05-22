@@ -4,7 +4,7 @@
 #include "vscene.h"
 #include "genums.h"
 #include "gconsole.h"
-#include "rviewpanel.h"
+#include "rpageview.h"
 #include "rstartpage.h"
 
 class GSchemedSkin;
@@ -39,7 +39,7 @@ public:
 
 	GImageList* EditorImages;
 
-	RViewPanel MainPanel;
+	RPageView MainPages; // TODO: make this splittable by attaching split container?
 
 	RStartPage StartPage;
 

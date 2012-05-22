@@ -7,7 +7,12 @@
 // TODO: make these guys enum
 
 
-
+/**
+ * Why we dont make this template?
+ * and define some structs to hold the data
+ * and use structs as template parameter?
+ * so we can vertices.Add(new VertexPositionColor(new Vector3(x, y, 0),Color.Green));
+ */
 class VVertexBuffer: public TCompositeBuffer
 {
 public:

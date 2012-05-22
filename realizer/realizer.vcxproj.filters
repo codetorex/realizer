@@ -339,6 +339,9 @@
     <ClInclude Include="gsplitcontainer.h">
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="gproxy.h">
+      <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -510,6 +513,9 @@
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClCompile>
     <ClCompile Include="gsplitcontainer.cpp">
+      <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="gproxy.cpp">
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClCompile>
   </ItemGroup>
