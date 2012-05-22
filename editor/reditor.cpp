@@ -122,4 +122,6 @@ void REditor::InitializeMainGui()
 	
 	Engine.GUI.Desktop->Layout();
 	Engine.GUI.Desktop->Layout();
+
+	//Engine.GUI.Desktop->DebugMode = GDB_MOUSEON;
 }

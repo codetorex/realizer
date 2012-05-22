@@ -148,3 +148,13 @@ void GWireFrameSkin::RenderTabButton( GButtonBase* tabb, bool active )
 {
 	throw NotImplementedException();
 }
+
+void GWireFrameSkin::RenderSystemButton( GSystemButton* sysb )
+{
+	throw NotImplementedException();
+}
+
+void GWireFrameSkin::LayoutSystemButton( GSystemButton* sysb )
+{
+	throw NotImplementedException();
+}

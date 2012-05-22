@@ -4,11 +4,22 @@
 #include "gobject.h"
 #include "gbuttonbase.h"
 #include "gproxy.h"
+#include "gsystembutton.h"
 
 class RPage;
 class RPageView;
 class RDocumentView;
 class RDocument;
+
+class GPageCloseButton: public GSystemButton
+{
+public:
+	RPage* Page;
+
+	GPageCloseButton();
+
+	void Clicked(int x, int y, int button);
+};
 
 /**
  * GTabButton like control for easily switching views and documents.
@@ -16,7 +27,7 @@ class RDocument;
 class RPageButton: public GButtonBase
 {
 public:
-	RPageButton();
+	GPageCloseButton Closer;
 
 	/**
 	 * Page pointer attached to this button.
@@ -29,6 +40,7 @@ public:
 	bool IsSelected();
 
 	void Render();
+	void Layout();
 
 	void MouseExit();
 };
@@ -41,6 +53,7 @@ class RPage
 public:
 	RPage();
 
+	RPageView*		PageViewer; // TODO: change this when tab is moved to another PageView!
 	RPageButton		Button;
 	RDocumentView*	View;
 	RDocument*		Document;
@@ -66,6 +79,10 @@ public:
 	 * Closing a page maybe problematic.
 	 */
 	RPage* AddPage( RDocumentView* view, RDocument* doc, bool activate = false );
+
+	void ClosePage( RPage* page );
+
+	void MovePage(RPage* page, RPageView* newView);
 
 	void ActivatePage( RPage* page );
 

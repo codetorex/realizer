@@ -326,8 +326,36 @@ void GSchemedSkin::RenderTabButton( GButtonBase* tabb, bool active )
 		qd->Render(tabb);
 	}
 
+	IRegion tmpRegion = tabb->DrawRegion;
+	tmpRegion.Shrink( tabb->Padding );
 
 	// TODO: we can move this to another loop
-	tabb->Font->Render(tabb->Text,tabb->DrawRegion,CA_MiddleCenter,tabb->ForeColor);
+	tabb->Font->Render(tabb->Text,tmpRegion,tabb->TextAlign,tabb->ForeColor);
 	Engine.Draw.SetTexture(SkinTexture);
+}
+
+void GSchemedSkin::RenderSystemButton( GSystemButton* sysb )
+{
+	switch(sysb->ButtonType)
+	{
+	case GSystemButton::BT_TOOLWINDOW_CLOSE:
+		ToolWindowClose.Render(sysb);
+		return;
+
+	default:
+		throw NotImplementedException();
+	}
+}
+
+void GSchemedSkin::LayoutSystemButton( GSystemButton* sysb )
+{
+	switch(sysb->ButtonType)
+	{
+	case GSystemButton::BT_TOOLWINDOW_CLOSE:
+		sysb->SetSize(ToolWindowClose.Width,ToolWindowClose.Height);
+		return;
+
+	default:
+		throw NotImplementedException();
+	}
 }

@@ -23,6 +23,7 @@ class GScrollBar;
 class GTabControl;
 class GTabPage;
 class GTabButton;
+class GSystemButton;
 
 
 class GSkin
@@ -80,6 +81,10 @@ public:
 	virtual void RenderTabControl(GTabControl* tabc) = 0;
 
 	virtual void LayoutTabPage(GTabPage* tabp) = 0;
+
+	virtual void RenderSystemButton(GSystemButton* sysb) = 0;
+
+	virtual void LayoutSystemButton(GSystemButton* sysb) = 0;
 };
 
 #endif

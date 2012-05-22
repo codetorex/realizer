@@ -250,6 +250,8 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	LoadTabPageLeftButton  (Scheme->GetLayer("tabs.left"));
 	LoadTabPageRightButton (Scheme->GetLayer("tabs.right"));
 
+	LoadToolWindowClose	   (Scheme->GetLayer("toolwindow.closebutton"));
+
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
 }
 
@@ -738,6 +740,14 @@ void GSchemedSkinBuilder::LoadScrollbarDragVSmall( const GSchemeLayer& dragsData
 	Skin->ScrollbarDragSmallVGfx.Load(sbg,order,3);
 }
 
+void GSchemedSkinBuilder::LoadToolWindowClose( const GSchemeLayer& butData )
+{
+	VTexturePart sbg[6];
+	LoadGeneric(butData,6,sbg);
+	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_OVER};
+	Skin->ToolWindowClose.Load(sbg,order,3);
+}
+
 void GSchemedSkinBuilder::LoadColors( GSchemeClass* cls, GSchemeColors& colors )
 {
 	colors.Scrollbar             = cls->GetColor("scrollbar");
@@ -806,3 +816,4 @@ void GSchemedSkinBuilder::LoadTabPageRightButton( const GSchemeLayer& tabData )
 	ui32 order[] = {GBG_NORMAL,GBG_DOWN,GBG_DISABLED,GBG_OVER};
 	Skin->TabPageRight.Load(sbg,order,4);
 }
+

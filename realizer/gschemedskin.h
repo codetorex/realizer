@@ -231,6 +231,8 @@ public:
 	GSchemedSkinButtonQuad	TabPageLeft;
 	GSchemedSkinButtonQuad	TabPageRight;
 
+	GScemedSkinButtonPart	ToolWindowClose;
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
 
@@ -285,6 +287,10 @@ public:
 	void RenderTabControl(GTabControl* tabc);
 
 	void LayoutTabPage(GTabPage* tabp);
+
+	void RenderSystemButton(GSystemButton* sysb);
+
+	void LayoutSystemButton(GSystemButton* sysb);
 
 private:
 	void RenderScrollBarButton( GScrollBarButton* button );

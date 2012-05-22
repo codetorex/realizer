@@ -332,6 +332,8 @@ public:
 	void LoadTabPageLeftButton	(const GSchemeLayer& tabData);
 	void LoadTabPageRightButton	(const GSchemeLayer& tabData);
 
+	void LoadToolWindowClose	(const GSchemeLayer& butData);
+
 	void LoadColors				(GSchemeClass* cls, GSchemeColors& colors);
 
 	void LoadGeneric	        (const GSchemeLayer& data, int imagecount, VTexturePart* output);

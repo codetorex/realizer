@@ -8,6 +8,7 @@ GTabPage::GTabPage()
 {
 	ClassID = GTABPAGE_CLASSID;
 	TabButton.Page = this;
+	TabButton.TextAlign = CA_MiddleCenter;
 	Layouter = &GLayout::Instance;
 }
 

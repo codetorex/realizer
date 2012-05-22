@@ -11,6 +11,8 @@
 RPage::RPage()
 {
 	Button.Page = this;
+	Button.Closer.Page = this;
+	Button.TextAlign = CA_MiddleLeft;
 }
 
 RPageView::RPageView()
@@ -41,9 +43,16 @@ GObject* RPageView::FindObject()
 
 void RPageView::Render()
 {
-	Engine.Draw.NoTexture();
 	GSchemedSkin* ss = (GSchemedSkin*)Skin;
+
+	Engine.Draw.NoTexture();
 	Engine.Draw.FillRectangle(DrawRegion, ss->Colors.ButtonFace);
+
+	Engine.Draw.SetTexture(ss->SkinTexture);
+	
+	IRegion borderRegion;
+	borderRegion.SetRegion(DrawRegion.X()+ViewRectangle.X,DrawRegion.Y() + ViewRectangle.Y - 1,ViewRectangle.Width,ViewRectangle.Height);
+	ss->TabBorder.Render(borderRegion);
 
 	GObject::Render(); // render childs
 
@@ -112,6 +121,7 @@ RPage* RPageView::AddPage( RDocumentView* view, RDocument* doc , bool activate )
 	RPage* pg = new RPage();
 	pg->View = view;
 	pg->Document = doc;
+	pg->PageViewer = this;
 	if (doc == 0)
 	{
 		pg->Button.Text = view->Name;
@@ -123,12 +133,13 @@ RPage* RPageView::AddPage( RDocumentView* view, RDocument* doc , bool activate )
 	}
 
 	TCharacterEnumerator sb(pg->Button.Text);
-	int nw = Font->GetStringWidth(sb)+ 10;
-	int nh = Font->Height + 8;
-	pg->Button.SetRectangle(0,0,nw,nh);
-
+	pg->Button.Padding.SetPadding(5,3,4,4);
+	pg->Button.SetRectangle(0,0,10,10);
 	PageButtons.AddChild(&pg->Button);
+	pg->Button.Layout();
 	Layout();
+
+	Pages.Add(pg);
 
 	if (activate)
 	{
@@ -138,10 +149,38 @@ RPage* RPageView::AddPage( RDocumentView* view, RDocument* doc , bool activate )
 	return pg;
 }
 
-
-RPageButton::RPageButton()
+void RPageView::MovePage( RPage* page, RPageView* newView )
 {
-	// TODO: add ToolWindow close button here
+	throw NotImplementedException();
+}
+
+void RPageView::ClosePage( RPage* page )
+{
+	PageButtons.RemoveChild(&page->Button);
+	Pages.Remove(page);
+
+	if (ActivePage == page)
+	{
+		if (Pages.Count > 0)
+		{
+			ActivatePage(Pages.Item[0]);
+		}
+		else
+		{
+			ActivePage = 0;
+		}
+	}
+
+	/*
+	 * TODO:
+	 *
+	if (page->Document->Views.Count < 0)
+	{
+		delete it
+	}*/
+
+
+	Layout();
 }
 
 RPageView* RPageButton::GetPageView()
@@ -185,3 +224,31 @@ bool RPageButton::IsSelected()
 	return false;
 }
 
+void RPageButton::Layout()
+{
+	if (ItemCount < 1)
+	{
+		AddChild(&Closer);
+	}
+	OwnObject(&Closer);
+	Closer.Layout();
+
+	TCharacterEnumerator ce(Text); // TODO: fix this
+	int stringWidth = Font->GetStringWidth(ce);
+	SetContentWidth(stringWidth + 4 + Closer.Width);
+	SetContentHeight( MathDriver::Max(Closer.Height,Font->Height) );
+
+	UpdateContent();
+
+	Closer.SetVector(Content.Width-Closer.Width, (Content.Height - Closer.Height) / 2);
+}
+
+GPageCloseButton::GPageCloseButton()
+{
+	ButtonType = GSystemButton::BT_TOOLWINDOW_CLOSE;
+}
+
+void GPageCloseButton::Clicked( int x, int y, int button )
+{
+	Page->PageViewer->ClosePage(Page);
+}
