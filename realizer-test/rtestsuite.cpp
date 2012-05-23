@@ -43,7 +43,7 @@ void RTestSuite::LoadResources()
 	}
 	catch( Exception& e )
 	{
-		TStringBuilder sb;
+		TStringBuilderStack<1024> sb;
 		sb.AppendLine("Error when loading most basic stuff:");
 		sb.Append(e.Message);
 

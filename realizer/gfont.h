@@ -148,6 +148,13 @@ public:
 		return ((int)x - totalWidth);
 	}
 
+	inline int RenderChar(ch32 chr, float x, float y, const TColor32& clr)
+	{
+		GCharacter* charData = GetCharacter(chr);
+		charData->DrawCharacter(x,y,clr);
+		return charData->XAdvance;
+	}
+
 	void Render(TCharacterEnumerator& text, const IRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
 		if (stringPixelWidth == -1)

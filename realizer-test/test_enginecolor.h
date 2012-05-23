@@ -19,7 +19,7 @@ public:
 class RTestColor: public RTestScene
 {
 private:
-	TStringBuilder sb;
+	TStringBuilderStack<512> sb;
 	int x;
 	int y;
 	IRegion texreg;

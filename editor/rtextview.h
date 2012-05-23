@@ -3,8 +3,10 @@
 
 #include "rdocumentview.h"
 #include "rdocument.h"
+#include "gscrollbar.h"
 
 class TStream;
+class RTextDocument;
 
 class RTextViewStyle
 {
@@ -42,14 +44,26 @@ private:
 	TColor32 LineNumberBackColor;
 	TColor32 LineNumberForeColor;
 
+	GScrollBar VertBar;
+
 public:
 	RTextView();
 
 	RTextViewStyle* Style;
 
+	inline RTextDocument* GetTextDocument()
+	{
+		return (RTextDocument*)Document;
+	}
+
+	void MouseWheel(int x,int y, int delta);
+
 	void KeyDown(ui32 keyID);
 
 	void Render();
+	
+	void DocumentChanged();
+
 	void Layout();
 };
 

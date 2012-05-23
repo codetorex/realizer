@@ -55,7 +55,7 @@ void REditor::LoadResources()
 	}
 	catch( Exception& e )
 	{
-		TStringBuilder sb;
+		TStringBuilderStack<1024> sb;
 		sb.AppendLine("Error when loading most basic stuff:");
 		sb.Append(e.Message);
 
@@ -121,6 +121,8 @@ void REditor::InitializeMainGui()
 
 	RTextView* tv = new RTextView();
 	RTextDocument* doc = new RTextDocument();
+	doc->FilePath = "C:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
+	doc->LoadDocument();
 
 
 

@@ -42,7 +42,7 @@ public:
 class RTestSuite: public VScene
 {
 private:
-	TStringBuilder sb;
+	TStringBuilderStack<512> sb;
 	IRegion mreg;
 	IRegion topreg;
 	

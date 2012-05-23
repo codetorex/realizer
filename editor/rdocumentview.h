@@ -10,12 +10,24 @@ class RDocument;
  */
 class RDocumentView: public GObject
 {
+protected:
+	RDocument* Document;
+
 public:
 	RDocumentView();
 
 	TString Name;
 
-	RDocument* Document;
+	virtual void DocumentChanged() { };
+
+	void SetDocument( RDocument* doc )
+	{
+		if (doc != Document)
+		{
+			Document = doc;
+			DocumentChanged();
+		}
+	}
 
 };
 

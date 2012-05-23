@@ -263,7 +263,7 @@ void GTextBoxBase::Update()
 
 TString GTextBoxBase::get_Text()
 {
-	TStringBuilder sb;
+	TStringBuilderStack<1024> sb;
 	for (ui32 i=0;i<Line.Characters.Count;i++)
 	{
 		GCharacterBox& cb = Line.Characters.Item[i];

@@ -113,7 +113,7 @@ void RPageView::ActivatePage( RPage* page )
 		page->View->SetRectangle(ViewRectangle);
 		page->View->Layout();
 	}
-	page->View->Document = page->Document;
+	page->View->SetDocument( page->Document );
 	ActivePage->Button.SetGraphic(GBG_DOWN);
 }
 

@@ -11,7 +11,7 @@ void RTextDocument::LoadDocument()
 	TStream* fs = TFile::OpenRead(FilePath);
 	TStreamReader* sr = new TStreamReader(fs);
 
-	while(sr->EndOfStream)
+	while(!sr->EndOfStream)
 	{
 		TString curLine = sr->ReadLine();
 		if (sr->EndOfStream && curLine.Length == 0)
