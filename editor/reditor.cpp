@@ -119,12 +119,18 @@ void REditor::InitializeMainGui()
 
 	MainPages.AddPage(&StartPage,0,true);
 
+	RTextViewStyle* defStyle = new RTextViewStyle();
+	TStream* styleStream = Engine.FileSystem.Open("editor/styles/vs2010/soft-metro.htm", fm_Read);
+	RTextViewStyleVS2010Loader::Instance.LoadStyle(defStyle,styleStream);
+	defStyle->Font = Engine.GUI.Fonts.GetFont("Dina",12);
+	RTextView::DefaultStyle = defStyle;
+	
 	RTextView* tv = new RTextView();
 	RTextDocument* doc = new RTextDocument();
 	doc->FilePath = "C:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
 	doc->LoadDocument();
 
-
+	
 
 	MainPages.AddPage(tv,doc,false);
 	

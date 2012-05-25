@@ -7,15 +7,62 @@
 
 class TStream;
 class RTextDocument;
+class RTextViewStyle;
+class TXMLNode;
+
+class RTextViewStyleColor
+{
+public:
+	TColor32 ForeColor;
+	TColor32 BackColor;
+};
+
+
+/**
+ * Style loader interface
+ */
+class RTextViewStyleLoader
+{
+public:
+	virtual void LoadStyle(RTextViewStyle* style,TStream* srcStream) = 0;
+};
+
+/**
+ * Visual studio 2010 style loader.
+ * Styles from: http://studiostyl.es/
+ */
+class RTextViewStyleVS2010Loader: public RTextViewStyleLoader
+{
+public:
+	static RTextViewStyleVS2010Loader Instance;
+
+	TXMLNode* colorsNode;
+	void GetColor(const TString& item, TColor32& fore, TColor32& back);
+
+	void GetColor(const TString& item, RTextViewStyleColor& clr)
+	{
+		GetColor(item,clr.ForeColor,clr.BackColor);
+	}
+
+	void LoadStyle(RTextViewStyle* style,TStream* srcStream);
+};
+
 
 class RTextViewStyle
 {
 public:
 	GFont* Font;
 
-	void LoadStyle(TStream* styleStream);
+	RTextViewStyleColor Text;
+	RTextViewStyleColor SelectedText;
 
-	void LoadVisualStudioStyle(TStream* visualStudio);
+	RTextViewStyleColor LineNumber;
+	
+
+	inline void LoadStyle(RTextViewStyleLoader* loader, TStream* styleStream)
+	{
+		loader->LoadStyle(this,styleStream);
+	}
 };
 
 // THERE SHOULD BE GLOBAL STYLE
@@ -41,12 +88,12 @@ private:
 
 	bool ShowLineNumbers;
 
-	TColor32 LineNumberBackColor;
-	TColor32 LineNumberForeColor;
-
 	GScrollBar VertBar;
 
 public:
+
+	static RTextViewStyle* DefaultStyle;
+
 	RTextView();
 
 	RTextViewStyle* Style;

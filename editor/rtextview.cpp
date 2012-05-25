@@ -4,24 +4,19 @@
 #include "cengine.h"
 #include "rtextdocument.h"
 
+RTextViewStyle* RTextView::DefaultStyle = 0;
+
 RTextView::RTextView()
 {
 	Document = 0;
 	Name = "Text Editor";
 
-	Style = new RTextViewStyle();
-	Style->Font = Engine.GUI.Fonts.GetFont("Dina",12);
+	Style = DefaultStyle;
 	LineNumberWidth = 4;
 
 	ShowLineNumbers = true;
 
-	LineNumberBackColor = TColors::White;
-	LineNumberForeColor = TColor32(43,145,175);
-
 	VertBar.Dock = DCK_RIGHT;
-
-	/*LineNumberBackColor = 0xFF343129;
-	LineNumberForeColor = 0xFF494E3F;*/
 }
 
 void RTextView::Render()
@@ -34,6 +29,9 @@ void RTextView::Render()
 
 	Engine.Draw.PreTranslate((float)realContent.X,(float)realContent.Y,0.0f);
 
+	Engine.Draw.NoTexture();
+	Engine.Draw.FillRectangle(0,0,(float)Content.Width,(float)Content.Height, Style->Text.BackColor);
+
 	if (ShowLineNumbers)
 	{
 		IRectangle lnRect;
@@ -41,7 +39,7 @@ void RTextView::Render()
 		lnRect.SetSize(LineNumberPixelWidth,Height);
 
 		Engine.Draw.NoTexture();
-		Engine.Draw.FillRectangle(lnRect,LineNumberBackColor);
+		Engine.Draw.FillRectangle(lnRect,Style->LineNumber.BackColor);
 
 		/*IRegion numReg;
 		numReg.SetRegion(0,0,LineNumberPixelWidth-1,LineHeight);
@@ -88,7 +86,7 @@ void RTextView::Render()
 
 			int lineNumberX = (LineNumberPixelWidth - slen) -zeroWidth;
 
-			cf->Render(sb,lineNumberX,textReg.Y(), LineNumberForeColor);
+			cf->Render(sb,lineNumberX,textReg.Y(), Style->LineNumber.ForeColor);
 			lineX += LineNumberPixelWidth;
 		}
 
@@ -102,7 +100,7 @@ void RTextView::Render()
 				continue;
 			}
 			
-			lineX += cf->RenderChar(ce.Current,lineX,textReg.Y(),TColors::Black);
+			lineX += cf->RenderChar(ce.Current,lineX,textReg.Y(), Style->Text.ForeColor);
 		}
 
 		//Style->Font->Render(,textReg, CA_MiddleLeft, TColors::Black);
@@ -150,9 +148,17 @@ void RTextView::Layout()
 	GObject::Layout();
 	VertBar.Layout();
 
-	LineHeight = Style->Font->Height + 2; // 1 pixel top 1 pixel bottom
-	LineCount = Height / LineHeight;
-	LineNumberPixelWidth = Style->Font->GetCharacterWidth('0') * LineNumberWidth;
+	if (!Style)
+	{
+		Style = DefaultStyle;
+	}
+
+	if (Style)
+	{
+		LineHeight = Style->Font->Height + 2; // 1 pixel top 1 pixel bottom
+		LineCount = Height / LineHeight;
+		LineNumberPixelWidth = Style->Font->GetCharacterWidth('0') * LineNumberWidth;
+	}
 }
 
 void RTextView::KeyDown( ui32 keyID )
@@ -169,3 +175,89 @@ void RTextView::MouseWheel( int x,int y, int delta )
 {
 	VertBar.MouseWheel(10,y,delta * 3);
 }
+
+#include "txmlreader.h"
+
+RTextViewStyleVS2010Loader RTextViewStyleVS2010Loader::Instance;
+
+void RTextViewStyleVS2010Loader::GetColor( const TString& item, TColor32& fore, TColor32& back )
+{
+	TArrayEnumerator< TXMLNode* > ae(colorsNode->Nodes);
+	while(ae.MoveNext())
+	{
+		TString* attrib = ae.Current->Attributes["Name"];
+
+		if (attrib == 0)
+		{
+			continue;
+		}
+
+		if (*attrib == item)
+		{
+			TString* sfore = ae.Current->Attributes["Foreground"];
+			TString* sback = ae.Current->Attributes["Background"];
+
+			fore = TConvert::ToUInt32Hex(*sfore);
+			back = TConvert::ToUInt32Hex(*sback);
+
+			if (back.color == 0x02000000)
+			{
+				back.color = 0;
+			}
+			else
+			{
+				back.a = 255;
+			}
+
+			fore.a = 255;			
+			return;
+		}
+	}
+}
+
+void RTextViewStyleVS2010Loader::LoadStyle( RTextViewStyle* style,TStream* srcStream )
+{
+	TXMLReader xr(srcStream);
+	xr.Parse();
+
+	TXMLNode* cnode = xr.RootNode.SelectSingleNode("Category");
+
+	if (cnode == 0)
+	{
+		throw Exception("something went wrong");
+	}
+
+	TString* aname = cnode->Attributes["name"];
+
+	if (*aname != "Environment_Group")
+	{
+		throw Exception("Unkown (yet) format");
+	}
+
+	cnode = cnode->SelectSingleNode("Category");
+	if (cnode == 0)
+	{
+		throw Exception("something went wrong");
+	}
+
+	aname = cnode->Attributes["name"];
+	if (*aname != "Environment_FontsAndColors")
+	{
+		throw Exception("Unkown (yet) format");
+	}
+
+	cnode = cnode->SelectSingleNode("FontsAndColors/Categories/Category/Items");
+
+	if (cnode == 0)
+	{
+		throw Exception("Unkown (yet) format");
+	}
+
+	colorsNode = cnode;
+
+	// load colors from here
+	GetColor("Line Numbers",style->LineNumber);
+	GetColor("Plain Text",style->Text);
+	GetColor("Selected Text",style->SelectedText);
+}
+
