@@ -19,5 +19,6 @@
 #include "gtabcontrol.h"
 #include "gsplitcontainer.h"
 #include "gsystembutton.h"
+#include "gtreeview.h"
 
 #endif

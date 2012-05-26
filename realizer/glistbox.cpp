@@ -9,16 +9,15 @@ GListBox::GListBox()
 	ClassID = GLISTBOX_CLASSID;
 	ForeColor = TColors::Black;
 	SelectedIndex = 0;
+	VScrollBar.SetRectangle(0,0,100,100);
+	VScrollBar.Dock = DCK_RIGHT;
 }
 
 void GListBox::Layout()
 {
 	if (ItemCount < 1)
 	{
-		VScrollBar.SetRectangle(0,0,100,100);
-		VScrollBar.Dock = DCK_RIGHT;
 		AddChild(&VScrollBar);
-		VScrollBar.SmallChange = 1;
 	}
 
 	OwnObject(&VScrollBar);

@@ -71,9 +71,10 @@ void RTestGUI::Initialize()
 	dropDown->SetRectangle(0,0,100,100);
 
 	GImageList* imgList = new GImageList(TestSkin->SkinTexture, TestSkin->Pack);
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/wand.png") );
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/page_white.png") );
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/disk.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/wand.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/page_white.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/disk.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/fugue/folder.png") );
 	
 	GMenuItem* menuItem1 = new GMenuItem();
 	menuItem1->SetRectangle(0,0,10,20);
@@ -123,7 +124,8 @@ void RTestGUI::Initialize()
 	//tabc->Dock = DCK_FILL;
 	otherWin->AddChild(tabc);
 	GTabPage* p1 = tabc->AddPage("Initial Tests");
-	GTabPage* p2 = tabc->AddPage("Another Tests");
+	GTabPage* p2 = tabc->AddPage("Split Test");
+	GTabPage* p3 = tabc->AddPage("TreeView Test");
 
 	GLabel* testLabel = new GLabel();
 	testLabel->SetRectangle(10,10,100,20);
@@ -176,6 +178,24 @@ void RTestGUI::Initialize()
 	sc->SetRectangle(0,0,100,100);
 	p2->AddChild(sc);
 
+	GTreeView* tv = new GTreeView();
+	//tv->Dock = DCK_FILL;
+	tv->ImageList = imgList;
+	tv->ImageIndex = 3;
+	tv->ShowRoot = true;
+	tv->SetRectangle(10,10,200,200);
+	tv->RootNode.Image = &imgList->GetImage(3);
+	p3->AddChild(tv);
+
+	GTreeNode* nod = tv->RootNode.AddNode("Burak");
+	nod->Expanded = true;
+	nod->AddNode("Child 1");
+	nod->AddNode("Child 2");
+
+
+	tv->RootNode.AddNode("Karub");
+	tv->RootNode.AddNode("Alex");
+	tv->RootNode.Expanded = true;
 
 	Engine.GUI.Desktop->Layout();
 

@@ -134,6 +134,7 @@
     <ClInclude Include="gtimer.h" />
     <ClInclude Include="gtoolstrip.h" />
     <ClInclude Include="gscrollbar.h" />
+    <ClInclude Include="gtreeview.h" />
     <ClInclude Include="gwindow.h" />
     <ClInclude Include="gwireframeskin.h" />
     <ClInclude Include="realizer.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="gtextboxbase.cpp" />
     <ClCompile Include="gtimer.cpp" />
     <ClCompile Include="gtoolstrip.cpp" />
+    <ClCompile Include="gtreeview.cpp" />
     <ClCompile Include="gwindow.cpp" />
     <ClCompile Include="gwireframeskin.cpp" />
     <ClCompile Include="realizer.cpp">

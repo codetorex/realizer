@@ -345,6 +345,9 @@
     <ClInclude Include="gsystembutton.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
+    <ClInclude Include="gtreeview.h">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -522,6 +525,9 @@
       <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClCompile>
     <ClCompile Include="gsystembutton.cpp">
+      <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gtreeview.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
   </ItemGroup>
