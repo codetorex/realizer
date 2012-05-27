@@ -252,6 +252,8 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 
 	LoadToolWindowClose	   (Scheme->GetLayer("toolwindow.closebutton"));
 
+	LoadDottedLines		   ();
+
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
 }
 
@@ -817,3 +819,41 @@ void GSchemedSkinBuilder::LoadTabPageRightButton( const GSchemeLayer& tabData )
 	Skin->TabPageRight.Load(sbg,order,4);
 }
 
+void GSchemedSkinBuilder::LoadDottedLines()
+{
+	//TColor32 dclr = Skin->Colors.ButtonShadow;
+
+	TColor32 dclr = TColor32::Black;
+
+	TBitmap* dot = new TBitmap(48,20);
+	TBitmapGraphics g(dot);
+	g.Clear(0);
+
+
+	IRectangle dr(0,0,16,20); // |
+	g.DrawDottedVerticalLine(dclr,dr.CenterX(),0,20);
+
+	dr.AddVector(16,0); // |-
+	g.DrawDottedVerticalLine(dclr,dr.CenterX(),0,20);
+	g.DrawDottedHorizontalLine(dclr,dr.CenterX()+1,dr.CenterY(),(dr.Width/2)-1);
+
+	dr.AddVector(16,0); // |_
+	g.DrawDottedVerticalLine(dclr,dr.CenterX(),0,dr.Height/2);
+	g.DrawDottedHorizontalLine(dclr,dr.CenterX(),dr.CenterY(),dr.Width/2);
+
+	
+	VTexturePart* sub = InsertImage(dot);
+
+	int partWidth = sub->Width / 3;
+	IRegion tmpRegion;
+	tmpRegion.SetRegion( *sub );
+	tmpRegion.ChangeWidth(partWidth);
+
+	for (int i=0;i<3;i++)
+	{
+		Skin->DotLine[i].Initialize(*SkinBitmap, tmpRegion);
+		tmpRegion.MoveXDiff(partWidth);
+	}
+
+	delete dot;
+}

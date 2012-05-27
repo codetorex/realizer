@@ -158,3 +158,13 @@ void GWireFrameSkin::LayoutSystemButton( GSystemButton* sysb )
 {
 	throw NotImplementedException();
 }
+
+void GWireFrameSkin::DrawDottedHorizontalLine( int x,int y, int width )
+{
+	throw NotImplementedException();
+}
+
+void GWireFrameSkin::DrawDottedVerticalLine( int x, int y, int height )
+{
+	throw NotImplementedException();
+}

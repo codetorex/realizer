@@ -70,6 +70,10 @@ public:
 
 	void LayoutSystemButton(GSystemButton* sysb);
 
+	void DrawDottedHorizontalLine(int x,int y, int width);
+
+	void DrawDottedVerticalLine(int x, int y, int height);
+
 private:
 	void RenderScrollBarButton(GScrollBarButton* button);
 	void LayoutScrollBarButton(GScrollBarButton* button);

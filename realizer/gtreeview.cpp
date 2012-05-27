@@ -90,8 +90,44 @@ void GTreeView::Render()
 	Engine.Draw.ResetTranslation();
 }
 
+#include "gschemedskin.h"
+
 void GTreeView::RenderNode( GTreeNode* nd)
 {
+	GSchemedSkin* ss = (GSchemedSkin*)Skin;
+	Engine.Draw.SetTexture(ss->SkinTexture);
+	int lineimg = 1;
+	if (nd->Parent)
+	{
+		if (nd == nd->Parent->Nodes.GetLast())
+		{
+			lineimg = 2;
+		}
+		else
+		{
+			lineimg = 1;
+		}
+
+		int lvl = nd->Level-1;
+		if (!ShowRoot)
+		{
+			lvl--;
+		}
+
+		int dx = drawX - 32;
+		while(lvl-- > 0)
+		{
+			ss->DotLine[0].Draw(dx,drawY);
+			dx -= 16;
+		}
+		bool isRootChild = nd->Parent == &RootNode;
+		if ((isRootChild && ShowRoot) || !isRootChild)
+		{
+			ss->DotLine[lineimg].Draw(drawX-16,drawY);
+		}
+		
+	}
+
 	int curX = drawX;
 
 	if (nd->Image)
@@ -154,9 +190,11 @@ void GTreeView::Layout()
 
 void GTreeNode::AddNode( GTreeNode* node )
 {
+	node->Index = Nodes.Count;
 	Nodes.Add(node);
 	node->Parent = this;
 	node->TreeView = TreeView;
+	node->Level = Level + 1;
 }
 
 GTreeNode* GTreeNode::AddNode( const TString& nodeText, ui32 image, ui32 selectedImage )

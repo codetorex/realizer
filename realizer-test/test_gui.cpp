@@ -182,7 +182,7 @@ void RTestGUI::Initialize()
 	//tv->Dock = DCK_FILL;
 	tv->ImageList = imgList;
 	tv->ImageIndex = 3;
-	tv->ShowRoot = true;
+	//tv->ShowRoot = true;
 	tv->SetRectangle(10,10,200,200);
 	tv->RootNode.Image = &imgList->GetImage(3);
 	p3->AddChild(tv);
@@ -190,7 +190,14 @@ void RTestGUI::Initialize()
 	GTreeNode* nod = tv->RootNode.AddNode("Burak");
 	nod->Expanded = true;
 	nod->AddNode("Child 1");
-	nod->AddNode("Child 2");
+	GTreeNode* nod2 = nod->AddNode("Child 2");
+	nod2->Expanded = true;
+	nod2->AddNode("Grandchild 1");
+	nod2->AddNode("Grandchild 2");
+	nod2->AddNode("Grandchild 3");
+
+	nod->AddNode("Child 3");
+	nod->AddNode("Child 4");
 
 
 	tv->RootNode.AddNode("Karub");

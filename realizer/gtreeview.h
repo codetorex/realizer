@@ -19,6 +19,7 @@ public:
 		TreeView = 0;
 		Image = 0;
 		SelectedImage = 0;
+		Level = 0;
 	}
 
 	void AddNode(GTreeNode* node);
@@ -35,6 +36,7 @@ public:
 	bool Expanded;
 
 	ui32 Index;
+	ui32 Level;
 
 	GImage* Image;
 	GImage* SelectedImage;

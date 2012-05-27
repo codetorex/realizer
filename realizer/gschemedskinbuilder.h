@@ -334,6 +334,8 @@ public:
 
 	void LoadToolWindowClose	(const GSchemeLayer& butData);
 
+	void LoadDottedLines		();
+
 	void LoadColors				(GSchemeClass* cls, GSchemeColors& colors);
 
 	void LoadGeneric	        (const GSchemeLayer& data, int imagecount, VTexturePart* output);

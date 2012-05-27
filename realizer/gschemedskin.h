@@ -233,6 +233,8 @@ public:
 
 	GScemedSkinButtonPart	ToolWindowClose;
 
+	VTexturePart DotLine[3];
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
 
