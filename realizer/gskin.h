@@ -24,7 +24,7 @@ class GTabControl;
 class GTabPage;
 class GTabButton;
 class GSystemButton;
-
+class GTreeNode;
 
 class GSkin
 {
@@ -85,6 +85,8 @@ public:
 	virtual void RenderSystemButton(GSystemButton* sysb) = 0;
 
 	virtual void LayoutSystemButton(GSystemButton* sysb) = 0;
+
+	virtual void RenderTreeNode(GTreeNode* n, int x, int y) = 0;
 };
 
 #endif

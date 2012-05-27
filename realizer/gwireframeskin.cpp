@@ -168,3 +168,8 @@ void GWireFrameSkin::DrawDottedVerticalLine( int x, int y, int height )
 {
 	throw NotImplementedException();
 }
+
+void GWireFrameSkin::RenderTreeNode( GTreeNode* n, int x, int y )
+{
+	throw NotImplementedException();
+}

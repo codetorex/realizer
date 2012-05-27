@@ -48,6 +48,15 @@ public:
 		DrawQuad((float)reg.X(),(float)reg.Y(),(float)reg.Right(),(float)reg.Bottom(),0,0,1,1,color);
 	}
 
+	void SetClip(const IRectangle& rect);
+
+	void TranslateClip(int x, int y)
+	{
+		throw NotImplementedException();
+	}
+
+	void ResetClip();
+
 
 	void DrawImage(VTexture* image, float x, float y);
 

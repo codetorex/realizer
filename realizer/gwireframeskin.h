@@ -74,6 +74,8 @@ public:
 
 	void DrawDottedVerticalLine(int x, int y, int height);
 
+	void RenderTreeNode(GTreeNode* n, int x, int y);
+
 private:
 	void RenderScrollBarButton(GScrollBarButton* button);
 	void LayoutScrollBarButton(GScrollBarButton* button);

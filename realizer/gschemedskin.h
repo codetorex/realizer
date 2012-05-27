@@ -235,6 +235,8 @@ public:
 
 	VTexturePart DotLine[3];
 
+	VTexturePart TreeViewPlusMinus[4];
+
 	void SaveSkin(const TString& path);
 	void LoadSkin(const TString& path);
 
@@ -293,6 +295,8 @@ public:
 	void RenderSystemButton(GSystemButton* sysb);
 
 	void LayoutSystemButton(GSystemButton* sysb);
+
+	void RenderTreeNode(GTreeNode* n, int x, int y);
 
 private:
 	void RenderScrollBarButton( GScrollBarButton* button );

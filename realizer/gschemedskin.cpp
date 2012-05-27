@@ -359,3 +359,89 @@ void GSchemedSkin::LayoutSystemButton( GSystemButton* sysb )
 		throw NotImplementedException();
 	}
 }
+
+void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
+{
+	Engine.Draw.SetTexture(SkinTexture);
+
+	int curX = x; // 0 this time
+
+	GTreeView* tv = n->TreeView;
+	bool ShowRoot = tv->ShowRoot;
+
+	if (ShowRoot)
+	{
+		curX += 16;
+	}
+
+	int lineimg = 1;
+	if (n->Parent)
+	{
+		if (n == n->Parent->Nodes.GetLast())
+		{
+			lineimg = 2;
+		}
+		else
+		{
+			lineimg = 1;
+		}
+
+		int lvl = n->Level-1;
+		/*if (!ShowRoot)
+		{
+			lvl--;
+		}*/
+
+		while(lvl-- > 0)
+		{
+			DotLine[0].Draw(curX,y);
+			curX += 16;
+		}
+		bool isRootChild = n->Parent == &(n->TreeView->RootNode);
+		if ((isRootChild && ShowRoot) || !isRootChild)
+		{
+			DotLine[lineimg].Draw(curX,y);
+			curX += 16;
+		}
+	}
+
+
+
+	if (tv->ShowPlusMinus && (n->Nodes.Count > 0))
+	{
+		int pmimg = 0;
+		if (n->Expanded)
+		{
+			if (n->MouseOver)
+			{
+				pmimg = 3;
+			}
+			else
+			{
+				pmimg = 1;
+			}
+		}
+		else
+		{
+			if (n->MouseOver)
+			{
+				pmimg = 2;
+			}
+		}
+
+		// draw on middle
+		int expX = (curX - 16) + ((16 - TreeViewPlusMinus->Width) / 2) + 1;
+		int expY = y + ((tv->NodeHeight - TreeViewPlusMinus->Height) /2)+ 1;
+
+		TreeViewPlusMinus[pmimg].Draw(expX,expY);	
+	}
+
+	if (n->Image)
+	{
+		int imageY = ((int)tv->NodeHeight - n->Image->Height) / 2;
+		n->Image->Render(curX,y + imageY);
+		curX += n->Image->Width + 3;
+	}
+
+	tv->Font->Render(n->Text,curX,tv->TextYOffset + y,tv->ForeColor);
+}

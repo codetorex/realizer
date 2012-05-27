@@ -52,3 +52,13 @@ void VDraw::DrawImage( VTexture* image, float x, float y, float scale )
 	int newH = (float)image->Height * scale;
 	DrawQuad(x,y,x+newW,y+newH,0.0f,0.0f,1.0f,1.0f);
 }
+
+void VDraw::SetClip( const IRectangle& rect )
+{
+	Engine.Renderer.EnableScissor(rect);
+}
+
+void VDraw::ResetClip()
+{
+	Engine.Renderer.DisableScissor();
+}

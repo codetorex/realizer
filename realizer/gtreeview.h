@@ -34,6 +34,7 @@ public:
 	TString Text;
 	TArray< GTreeNode* > Nodes;
 	bool Expanded;
+	bool MouseOver;
 
 	ui32 Index;
 	ui32 Level;
@@ -74,32 +75,46 @@ private:
 
 	TArray< GTreeNode* > RenderNodes;
 
-	ui32 NodeHeight;
+	
 	ui32 ScreenSpace;
 	ui32 ViewHeight;
-	ui32 TextYOffset;
+	
 
 	int drawX;
 	int drawY;
 
+	int moX, moY;
+
 	int updateY;
 
 	void RenderNode(GTreeNode* nd);
-	void RenderChildNodes(GTreeNode* nd);
+	//void RenderChildNodes(GTreeNode* nd);
 
 	/**
 	 * Recursively creates a rendering list of visible nodes
 	 */
 	void UpdateRenderNode(GTreeNode* nd);
 
+	/**
+	 * Finds node using RenderNodes
+	 */
+	GTreeNode* FindNode(int x, int y);
+
 	friend class GTreeNode;
 
 public:
 	GTreeView();
 
+	//GTreeNode* MouseOverNode;
 	GTreeNode* SelectedNode;
 	GTreeNode RootNode;
 	bool CheckBoxes;
+
+	/// Node height will be determined by font size
+	ui32 NodeHeight;
+
+	/// This will be used for making text appear middle of node
+	ui32 TextYOffset;
 
 	GImageList* ImageList;
 	ui32 ImageIndex; // default index
@@ -107,6 +122,11 @@ public:
 	bool ShowRoot;
 	bool ShowPlusMinus;
 	bool ShowLines;
+
+	
+	void MouseWheel(int x,int y, int delta);
+	void MouseUp(int x,int y,int button);
+	void MouseMove(int x,int y);
 
 
 	void Render();

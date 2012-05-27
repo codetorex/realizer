@@ -112,6 +112,7 @@ void GSchemeLayer::LoadLayer( GSchemeClass* cls )
 	BottomMargin = cls->GetInt("bottomheight");
 	GlyphImage = cls->GetValueOrNull("glyphimage");
 	GlyphTransMode = cls->GetInt("glyphtransmode");
+	FrameCount = cls->GetInt("framecount");
 	PaintStyle = UseMargins;
 	Tiling = (GSchemeTile)cls->GetInt("Tile");
 }
@@ -251,7 +252,8 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	LoadTabPageRightButton (Scheme->GetLayer("tabs.right"));
 
 	LoadToolWindowClose	   (Scheme->GetLayer("toolwindow.closebutton"));
-
+	
+	LoadPlusMinus		   (Scheme->GetLayer("treeview"));
 	LoadDottedLines		   ();
 
 	// TODO: load default font, code GSchemeFont loadFont, loadFont from SYSTEMFONT0 class
@@ -833,13 +835,13 @@ void GSchemedSkinBuilder::LoadDottedLines()
 	IRectangle dr(0,0,16,20); // |
 	g.DrawDottedVerticalLine(dclr,dr.CenterX(),0,20);
 
-	dr.AddVector(16,0); // |-
+	dr.TranslateVector(16,0); // |-
 	g.DrawDottedVerticalLine(dclr,dr.CenterX(),0,20);
 	g.DrawDottedHorizontalLine(dclr,dr.CenterX()+1,dr.CenterY(),(dr.Width/2)-1);
 
-	dr.AddVector(16,0); // |_
+	dr.TranslateVector(16,0); // |_
 	g.DrawDottedVerticalLine(dclr,dr.CenterX(),0,dr.Height/2);
-	g.DrawDottedHorizontalLine(dclr,dr.CenterX(),dr.CenterY(),dr.Width/2);
+	g.DrawDottedHorizontalLine(dclr,dr.CenterX()+1,dr.CenterY(),(dr.Width/2)-1);
 
 	
 	VTexturePart* sub = InsertImage(dot);
@@ -856,4 +858,47 @@ void GSchemedSkinBuilder::LoadDottedLines()
 	}
 
 	delete dot;
+}
+
+void GSchemedSkinBuilder::LoadPlusMinus( const GSchemeLayer& buttonData )
+{
+	if (buttonData.FrameCount != 2 && buttonData.FrameCount != 4)
+	{
+		throw Exception("Treeview frame count should 2 or 4");
+	}
+
+
+	VTexturePart* sbut = new VTexturePart [ buttonData.FrameCount ];
+	LoadGeneric(buttonData,buttonData.FrameCount,sbut);
+	
+	/**
+	 * Embed glyph
+	 */
+	if (buttonData.GlyphImage)
+	{
+		TBitmap* glyphs = Engine.Textures.LoadToBitmap(*buttonData.GlyphImage);
+		TBlendMode* curMode = Gfx.GetBlending();
+		Gfx.SetBlending(&TBlendModes::Normal); // we are drawing things over other things
+		Gfx.DrawImage2(*glyphs,sbut[0].X,sbut[0].Y);
+		Gfx.SetBlending(curMode); // copying is enough for building stuff like this
+		delete glyphs;
+	}
+
+	if (buttonData.FrameCount == 2)
+	{
+		Skin->TreeViewPlusMinus[0].Initialize( sbut[0] );
+		Skin->TreeViewPlusMinus[1].Initialize( sbut[1] );
+
+		Skin->TreeViewPlusMinus[2].Initialize( sbut[0] );
+		Skin->TreeViewPlusMinus[3].Initialize( sbut[1] );
+	}
+	else
+	{
+		Skin->TreeViewPlusMinus[0].Initialize( sbut[0] );
+		Skin->TreeViewPlusMinus[1].Initialize( sbut[1] );
+		Skin->TreeViewPlusMinus[2].Initialize( sbut[2] );
+		Skin->TreeViewPlusMinus[3].Initialize( sbut[3] );
+	}
+
+	delete [] sbut;
 }

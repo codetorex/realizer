@@ -44,8 +44,6 @@ public:
 		{
 			Current = Current->NextNode();
 		}
-
-
 	}
 };
 
@@ -71,8 +69,13 @@ void GTreeView::Render()
 
 	Engine.Draw.PreTranslate( (float)DrawRegion.X(), (float)DrawRegion.Y(), 0.0f );
 
+	IRectangle clipRect (Content);
+	clipRect += DrawRegion;
+
+	//Engine.Draw.SetClip(clipRect); CURRENTLY DISABLED FOR DEBUG PURPOSES
+
 	drawX = 0;
-	drawY = -VBar.Value;
+	drawY = -(VBar.Value % NodeHeight);
 
 	// lets test it first
 	//RenderNode(&RootNode,startX,startY);
@@ -80,24 +83,35 @@ void GTreeView::Render()
 	// 
 	if (ShowRoot)
 	{
-		RenderNode(&RootNode);
+		TArrayEnumerator< GTreeNode* > rn(RenderNodes);
+		while(rn.MoveNext())
+		{
+			Skin->RenderTreeNode(rn.Current,drawX,drawY);
+			drawY += NodeHeight;
+			//RenderNode(rn.Current);
+		}	
 	}
 	else
 	{
-		RenderChildNodes(&RootNode);
+		//RenderChildNodes(&RootNode);
 	}
 
 	Engine.Draw.ResetTranslation();
 
 	this->GObject::Render();
+
+	Engine.Draw.ResetClip();
 }
 
 #include "gschemedskin.h"
 
-void GTreeView::RenderNode( GTreeNode* nd)
+void GTreeView::RenderNode( GTreeNode* nd )
 {
 	GSchemedSkin* ss = (GSchemedSkin*)Skin;
 	Engine.Draw.SetTexture(ss->SkinTexture);
+
+	int curX = drawX; // 0 this time
+
 	int lineimg = 1;
 	if (nd->Parent)
 	{
@@ -116,19 +130,36 @@ void GTreeView::RenderNode( GTreeNode* nd)
 			lvl--;
 		}
 
-		int dx = drawX - 32;
 		while(lvl-- > 0)
 		{
-			ss->DotLine[0].Draw(dx,drawY);
-			dx -= 16;
+			ss->DotLine[0].Draw(curX,drawY);
+			curX += 16;
 		}
 		bool isRootChild = nd->Parent == &RootNode;
 		if ((isRootChild && ShowRoot) || !isRootChild)
 		{
-			ss->DotLine[lineimg].Draw(drawX-16,drawY);
+			ss->DotLine[lineimg].Draw(curX,drawY);
+			curX += 16;
 		}
-		
+
 	}
+
+	if (nd->Image)
+	{
+		int imageY = ((int)NodeHeight - nd->Image->Height) / 2;
+		nd->Image->Render(curX,drawY + imageY);
+		curX += nd->Image->Width + 3;
+	}
+
+	Font->Render(nd->Text,curX,TextYOffset + drawY,ForeColor);
+	drawY += NodeHeight;
+}
+
+/*void GTreeView::RenderNode( GTreeNode* nd)
+{
+	
+	
+	
 
 	int curX = drawX;
 
@@ -157,7 +188,7 @@ void GTreeView::RenderChildNodes( GTreeNode* nd)
 	{
 		RenderNode(ae.Current);
 	}
-}
+}*/
 
 void GTreeView::Layout()
 {
@@ -178,7 +209,7 @@ void GTreeView::Layout()
 	
 	if (ViewHeight > Content.Height)
 	{
-		VBar.SmallChange = NodeHeight/2;
+		VBar.SmallChange = NodeHeight;
 		VBar.MaxValue = ViewHeight;
 		VBar.Visible = true;
 		GLayout::Instance.Layout(this,false);
@@ -194,9 +225,17 @@ void GTreeView::Layout()
 void GTreeView::UpdateRenderNode( GTreeNode* nd )
 {
 	updateY += NodeHeight;
-	if (updateY > 0 && updateY < Content.Height)
+	if (updateY > 0 && updateY < (Content.Height + NodeHeight))
 	{
 		RenderNodes.Add(nd);
+		if (moY < updateY && moY > (updateY - NodeHeight))
+		{
+			nd->MouseOver = true;
+		}
+		else
+		{
+			nd->MouseOver = false;
+		}
 	}
 
 	if (nd->Expanded)
@@ -214,14 +253,60 @@ void GTreeView::Update()
 	GObject::Update();
 
 	/// Updates render list when required.
-	if (UpdateRender)
+	//if (UpdateRender)
 	{
+		RenderNodes.Clear();
 		updateY = -VBar.Value;
 		UpdateRenderNode(&RootNode);
 		UpdateRender = false;
 	}
 }
 
+void GTreeView::MouseUp( int x,int y,int button )
+{
+	GTreeNode* cNode = FindNode(x,y);
+	if (!cNode)
+	{
+		return;
+	}
+
+	if (button == 0)
+	{
+		cNode->Expanded = !cNode->Expanded;
+		Layout();
+	}
+	
+}
+
+GTreeNode* GTreeView::FindNode( int x, int y )
+{
+	int my = -(VBar.Value % NodeHeight);
+
+	TArrayEnumerator< GTreeNode* > ae(RenderNodes);
+	while(ae.MoveNext())
+	{
+		my += NodeHeight;
+		if (y < my)
+		{
+			return ae.Current;
+		}
+	}
+	return 0;
+}
+
+void GTreeView::MouseWheel( int x,int y, int delta )
+{
+	if (VBar.Visible)
+	{
+		VBar.MouseWheel(x,y,delta);
+	}
+}
+
+void GTreeView::MouseMove( int x,int y )
+{
+	moX = x;
+	moY = y;
+}
 
 void GTreeNode::AddNode( GTreeNode* node )
 {

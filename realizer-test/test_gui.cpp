@@ -17,6 +17,9 @@ void RTestGUI::testBut2_Click()
 {
 	Log.Output(LG_INF, "Test button 2 clicked");
 
+	Log.Output(LG_INF, "Sizeof GObject is %", sfu(sizeof(GObject)));
+	Log.Output(LG_INF, "Sizeof GTreeNode is %", sfu(sizeof(GTreeNode)));
+
 	TString dop = TString::Format("New item with id %",sfu(lb->Items.Count)); 
 	lb->AddItem(dop);
 	Log.Output(LG_INF,dop);
@@ -182,7 +185,7 @@ void RTestGUI::Initialize()
 	//tv->Dock = DCK_FILL;
 	tv->ImageList = imgList;
 	tv->ImageIndex = 3;
-	//tv->ShowRoot = true;
+	tv->ShowRoot = true;
 	tv->SetRectangle(10,10,200,200);
 	tv->RootNode.Image = &imgList->GetImage(3);
 	p3->AddChild(tv);

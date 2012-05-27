@@ -179,6 +179,23 @@ public:
 		D3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	}
 
+	inline void EnableScissor(const IRectangle& clipRect)
+	{
+		RECT cwinRect;
+		cwinRect.left = clipRect.X;
+		cwinRect.top = clipRect.Y;
+		cwinRect.right = clipRect.Right();
+		cwinRect.bottom = clipRect.Bottom();
+
+		D3DDevice->SetScissorRect(&cwinRect);
+		D3DDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE );
+	}
+
+	inline void DisableScissor()
+	{
+		D3DDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	}
+
 	rtex LoadTextureFromBitmap(TBitmap* bmp, bool automipmap = true);
 	void UpdateTextureFromBitmap(rtex tx, TBitmap* bmp);
 	

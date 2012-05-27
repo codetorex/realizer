@@ -112,6 +112,7 @@ public:
 
 	TString* GlyphImage;
 	int GlyphTransMode;
+	int FrameCount;
 
 	inline bool IsVertical() const
 	{
@@ -335,6 +336,7 @@ public:
 	void LoadToolWindowClose	(const GSchemeLayer& butData);
 
 	void LoadDottedLines		();
+	void LoadPlusMinus			(const GSchemeLayer& butData);
 
 	void LoadColors				(GSchemeClass* cls, GSchemeColors& colors);
 
