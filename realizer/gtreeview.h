@@ -70,6 +70,10 @@ private:
 	// vertical scrollbar
 	GScrollBar VBar;
 
+	bool UpdateRender;
+
+	TArray< GTreeNode* > RenderNodes;
+
 	ui32 NodeHeight;
 	ui32 ScreenSpace;
 	ui32 ViewHeight;
@@ -78,8 +82,15 @@ private:
 	int drawX;
 	int drawY;
 
+	int updateY;
+
 	void RenderNode(GTreeNode* nd);
 	void RenderChildNodes(GTreeNode* nd);
+
+	/**
+	 * Recursively creates a rendering list of visible nodes
+	 */
+	void UpdateRenderNode(GTreeNode* nd);
 
 	friend class GTreeNode;
 
@@ -100,6 +111,7 @@ public:
 
 	void Render();
 	void Layout();
+	void Update();
 
 };
 

@@ -196,6 +196,11 @@ void RTestGUI::Initialize()
 	nod2->AddNode("Grandchild 2");
 	nod2->AddNode("Grandchild 3");
 
+	for (int i=0;i<20;i++)
+	{
+		nod2->AddNode("More Grandchilds");
+	}
+
 	nod->AddNode("Child 3");
 	nod->AddNode("Child 4");
 

@@ -72,7 +72,7 @@ void GTreeView::Render()
 	Engine.Draw.PreTranslate( (float)DrawRegion.X(), (float)DrawRegion.Y(), 0.0f );
 
 	drawX = 0;
-	drawY = 0;
+	drawY = -VBar.Value;
 
 	// lets test it first
 	//RenderNode(&RootNode,startX,startY);
@@ -88,6 +88,8 @@ void GTreeView::Render()
 	}
 
 	Engine.Draw.ResetTranslation();
+
+	this->GObject::Render();
 }
 
 #include "gschemedskin.h"
@@ -162,6 +164,7 @@ void GTreeView::Layout()
 	if (ItemCount < 1)
 	{
 		AddChild(&VBar);
+		VBar.Value = 0;
 	}
 
 	OwnObject(&VBar);
@@ -175,8 +178,8 @@ void GTreeView::Layout()
 	
 	if (ViewHeight > Content.Height)
 	{
-		VBar.SmallChange = NodeHeight;
-		VBar.MaxValue = ViewHeight/2;
+		VBar.SmallChange = NodeHeight/2;
+		VBar.MaxValue = ViewHeight;
 		VBar.Visible = true;
 		GLayout::Instance.Layout(this,false);
 		VBar.Layout();
@@ -187,6 +190,38 @@ void GTreeView::Layout()
 		VBar.Visible = false;
 	}
 }
+
+void GTreeView::UpdateRenderNode( GTreeNode* nd )
+{
+	updateY += NodeHeight;
+	if (updateY > 0 && updateY < Content.Height)
+	{
+		RenderNodes.Add(nd);
+	}
+
+	if (nd->Expanded)
+	{
+		TArrayEnumerator< GTreeNode* > ae(nd->Nodes);
+		while(ae.MoveNext())
+		{
+			UpdateRenderNode(ae.Current);
+		}
+	}
+}
+
+void GTreeView::Update()
+{
+	GObject::Update();
+
+	/// Updates render list when required.
+	if (UpdateRender)
+	{
+		updateY = -VBar.Value;
+		UpdateRenderNode(&RootNode);
+		UpdateRender = false;
+	}
+}
+
 
 void GTreeNode::AddNode( GTreeNode* node )
 {
@@ -222,7 +257,9 @@ ui32 GTreeNode::GetHeight()
 	ui32 result = TreeView->NodeHeight;
 	if (Nodes.Count == 0)
 		return result;
-
+	
+	result += Nodes.Count * TreeView->NodeHeight;
+	
 	TArrayEnumerator< GTreeNode* > nd(Nodes);
 	while(nd.MoveNext())
 	{
