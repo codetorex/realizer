@@ -29,8 +29,16 @@ public:
 	GCheckBox* testCbox;
 	GListBox* lb;
 
+	GTreeView* tv;
+	GCheckBox* showRoot;
+	GCheckBox* showPlus;
+	GCheckBox* showLines;
+
 	void testTimer_Elapsed();
 	void testCbox_CheckedChanged();
+	void showRoot_CheckedChanged();
+	void showPlus_CheckedChanged();
+	void showLines_CheckedChanged();
 
 	GDropDown* dropDown;
 

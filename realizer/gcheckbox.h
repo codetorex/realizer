@@ -18,6 +18,8 @@ public:
 	CheckStates CheckState;
 	bool Checked;
 
+	void setChecked(bool checked);
+
 	ContentAlignment CheckAlign;
 };
 #endif

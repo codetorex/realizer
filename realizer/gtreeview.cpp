@@ -81,20 +81,15 @@ void GTreeView::Render()
 	//RenderNode(&RootNode,startX,startY);
 	// 
 	// 
-	if (ShowRoot)
+
+	TArrayEnumerator< GTreeNode* > rn(RenderNodes);
+	while(rn.MoveNext())
 	{
-		TArrayEnumerator< GTreeNode* > rn(RenderNodes);
-		while(rn.MoveNext())
-		{
-			Skin->RenderTreeNode(rn.Current,drawX,drawY);
-			drawY += NodeHeight;
-			//RenderNode(rn.Current);
-		}	
-	}
-	else
-	{
-		//RenderChildNodes(&RootNode);
-	}
+		Skin->RenderTreeNode(rn.Current,drawX,drawY);
+		drawY += NodeHeight;
+		//RenderNode(rn.Current);
+	}	
+
 
 	Engine.Draw.ResetTranslation();
 
@@ -224,17 +219,20 @@ void GTreeView::Layout()
 
 void GTreeView::UpdateRenderNode( GTreeNode* nd )
 {
-	updateY += NodeHeight;
-	if (updateY > 0 && updateY < (Content.Height + NodeHeight))
+	if (!(!ShowRoot && nd == &RootNode))
 	{
-		RenderNodes.Add(nd);
-		if (moY < updateY && moY > (updateY - NodeHeight))
+		updateY += NodeHeight;
+		if (updateY > 0 && updateY < (Content.Height + NodeHeight))
 		{
-			nd->MouseOver = true;
-		}
-		else
-		{
-			nd->MouseOver = false;
+			RenderNodes.Add(nd);
+			if (moY < updateY && moY > (updateY - NodeHeight))
+			{
+				nd->MouseOver = true;
+			}
+			else
+			{
+				nd->MouseOver = false;
+			}
 		}
 	}
 

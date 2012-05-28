@@ -369,46 +369,68 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 	GTreeView* tv = n->TreeView;
 	bool ShowRoot = tv->ShowRoot;
 
-	if (ShowRoot)
+	if (ShowRoot && tv->ShowPlusMinus)
 	{
 		curX += 16;
 	}
-
-	int lineimg = 1;
-	if (n->Parent)
+	if (tv->ShowLines)
 	{
-		if (n == n->Parent->Nodes.GetLast())
+		int lineimg = 1;
+		if (n->Parent)
 		{
-			lineimg = 2;
+			if (n == n->Parent->Nodes.GetLast())
+			{
+				lineimg = 2;
+			}
+			else
+			{
+				lineimg = 1;
+			}
+
+			int lvl = n->Level-1;
+			if (!ShowRoot)
+			{
+				lvl--;
+			}
+
+			if (tv->ShowPlusMinus && !ShowRoot)
+			{
+				curX += 16;
+			}
+
+			while(lvl-- > 0)
+			{
+				DotLine[0].Draw(curX,y);
+				curX += 16;
+			}
+			bool isRootChild = n->Parent == &(n->TreeView->RootNode);
+			if ((isRootChild && ShowRoot) || !isRootChild)
+			{
+				DotLine[lineimg].Draw(curX,y);
+				curX += 16;
+			}
+		}
+	}
+	else
+	{
+		if (!tv->ShowRoot && !tv->ShowPlusMinus)
+		{
+			curX += (n->Level-1) * 16;
 		}
 		else
 		{
-			lineimg = 1;
+			curX += (n->Level) * 16;
 		}
-
-		int lvl = n->Level-1;
-		/*if (!ShowRoot)
-		{
-			lvl--;
-		}*/
-
-		while(lvl-- > 0)
-		{
-			DotLine[0].Draw(curX,y);
-			curX += 16;
-		}
-		bool isRootChild = n->Parent == &(n->TreeView->RootNode);
-		if ((isRootChild && ShowRoot) || !isRootChild)
-		{
-			DotLine[lineimg].Draw(curX,y);
-			curX += 16;
-		}
+		
 	}
-
-
 
 	if (tv->ShowPlusMinus && (n->Nodes.Count > 0))
 	{
+		/*if (!ShowRoot)
+		{
+			curX += 16;
+		}*/
+		
 		int pmimg = 0;
 		if (n->Expanded)
 		{
@@ -433,7 +455,7 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 		int expX = (curX - 16) + ((16 - TreeViewPlusMinus->Width) / 2) + 1;
 		int expY = y + ((tv->NodeHeight - TreeViewPlusMinus->Height) /2)+ 1;
 
-		TreeViewPlusMinus[pmimg].Draw(expX,expY);	
+		TreeViewPlusMinus[pmimg].Draw(expX,expY);
 	}
 
 	if (n->Image)

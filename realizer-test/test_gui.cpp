@@ -181,7 +181,29 @@ void RTestGUI::Initialize()
 	sc->SetRectangle(0,0,100,100);
 	p2->AddChild(sc);
 
-	GTreeView* tv = new GTreeView();
+	showRoot = new GCheckBox();
+	showRoot->SetRectangle(220,10,100,20);
+	showRoot->Text = "Show root";
+	showRoot->setChecked(true);
+	showRoot->CheckedChanged += GetHandler(this,&RTestGUI::showRoot_CheckedChanged);
+	p3->AddChild(showRoot);
+
+	showLines = new GCheckBox();
+	showLines->SetRectangle(220,30,100,20);
+	showLines->Text = "Show lines";
+	showLines->setChecked(true);
+	showLines->CheckedChanged += GetHandler(this,&RTestGUI::showLines_CheckedChanged);
+	p3->AddChild(showLines);
+
+	showPlus = new GCheckBox();
+	showPlus->SetRectangle(220,50,100,20);
+	showPlus->Text = "Show plus minus";
+	showPlus->setChecked(true);
+	showPlus->CheckedChanged += GetHandler(this, &RTestGUI::showPlus_CheckedChanged);
+	p3->AddChild(showPlus);
+	
+
+	tv = new GTreeView();
 	//tv->Dock = DCK_FILL;
 	tv->ImageList = imgList;
 	tv->ImageIndex = 3;
@@ -260,4 +282,19 @@ void RTestGUI::testCbox_CheckedChanged()
 	{
 		Engine.GUI.Desktop->DebugMode = GDB_DISABLED;
 	}
+}
+
+void RTestGUI::showRoot_CheckedChanged()
+{
+	tv->ShowRoot = showRoot->Checked;
+}
+
+void RTestGUI::showPlus_CheckedChanged()
+{
+	tv->ShowPlusMinus = showPlus->Checked;
+}
+
+void RTestGUI::showLines_CheckedChanged()
+{
+	tv->ShowLines = showLines->Checked;
 }

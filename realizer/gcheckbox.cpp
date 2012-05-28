@@ -52,3 +52,22 @@ void GCheckBox::Clicked( int x,int y, int button )
 	}
 	CheckedChanged.call();
 }
+
+void GCheckBox::setChecked( bool checked )
+{
+	if (checked == this->Checked)
+		return;
+
+	if(checked)
+	{
+		this->Checked = true;
+		CheckState = CS_Checked;
+	}
+	else
+	{
+		this->Checked = false;
+		CheckState = CS_Unchecked;
+	}
+
+	CheckedChanged.call();
+}
