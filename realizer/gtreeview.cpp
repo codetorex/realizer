@@ -198,7 +198,7 @@ void GTreeView::Layout()
 	UpdateContent();
 
 	NodeHeight = 16 + 4; // 2 px from top 2 px from bottom
-	ViewHeight = RootNode.GetHeight();
+	//ViewHeight = RootNode.GetHeight();
 	VBar.LargeChange = Content.Height;
 	TextYOffset = (NodeHeight - Font->Height) / 2;
 	
@@ -255,7 +255,16 @@ void GTreeView::Update()
 	{
 		RenderNodes.Clear();
 		updateY = -VBar.Value;
+		int updateYStart = updateY;
 		UpdateRenderNode(&RootNode);
+		int updateYDiff = updateY - updateYStart;
+		if (updateYDiff != ViewHeight)
+		{
+			ViewHeight = updateYDiff;
+			Layout();
+
+			// TODO: fix scrollbar 1 px bug
+		}
 		UpdateRender = false;
 	}
 }
