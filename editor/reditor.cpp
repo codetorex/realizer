@@ -35,13 +35,6 @@ void REditorSkin::LoadEditorSkin()
 	StartPageButton.Over.Initialize(*Builder.SkinBitmap,*HoverPart);
 
 	Builder.Finish();
-
-#ifdef _DEBUG
-	// DEBUG PURPOSES ONLY
-	fs = Engine.FileSystem.Open("outputEDITOR.png",fm_Write);
-	SkinTexture->bitmap->Save(fs,TBitmapCodecs::Png);
-	fs->Close();
-#endif // _DEBUG
 }
 
 void REditor::LoadResources()
@@ -131,7 +124,7 @@ void REditor::InitializeMainGui()
 	EditorImages = new GImageList(Skin->SkinTexture, Skin->Pack);
 	EditorImages->AddImage("editor/newproject.png");
 	EditorImages->AddImage("editor/project.png");
-	EditorImages->AddImage("icons/fugue/32/blue-folder-horizontal.png");
+	EditorImages->AddImage("icons/fugue/32/folder-horizontal.png");
 
 	StartPage.NewProjectButton.Image.SetImage(EditorImages->GetImage(0));
 	StartPage.NewProjectButton.Margin.SetPadding(4,2);
@@ -157,9 +150,6 @@ void REditor::InitializeMainGui()
 
 	MainPages.AddPage(&StartPage,0,true);
 
-
-
-
 	RTextViewStyle* defStyle = new RTextViewStyle();
 	TStream* styleStream = Engine.FileSystem.Open("editor/styles/vs2010/soft-metro.htm", fm_Read);
 	RTextViewStyleVS2010Loader::Instance.LoadStyle(defStyle,styleStream);
@@ -179,4 +169,11 @@ void REditor::InitializeMainGui()
 	Engine.GUI.Desktop->Layout();
 
 	// Engine.GUI.Desktop->DebugMode = GDB_MOUSEON;
+
+#ifdef _DEBUG
+	// DEBUG PURPOSES ONLY
+	TStream* fs = Engine.FileSystem.Open("outputEDITOR.png",fm_Write);
+	Skin->SkinTexture->bitmap->Save(fs,TBitmapCodecs::Png);
+	fs->Close();
+#endif // _DEBUG
 }

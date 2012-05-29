@@ -336,6 +336,7 @@ void GSchemedSkin::RenderTabButton( GButtonBase* tabb, bool active )
 
 void GSchemedSkin::RenderSystemButton( GSystemButton* sysb )
 {
+	Engine.Draw.SetTexture(SkinTexture);
 	switch(sysb->ButtonType)
 	{
 	case GSystemButton::BT_TOOLWINDOW_CLOSE:

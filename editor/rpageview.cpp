@@ -243,6 +243,8 @@ void RPageButton::Layout()
 	{
 		AddChild(&Closer);
 	}
+	this->GObject::Layout();
+
 	OwnObject(&Closer);
 	Closer.Layout();
 

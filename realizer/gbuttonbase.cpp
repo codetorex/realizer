@@ -10,8 +10,6 @@ GButtonBase::GButtonBase()
 	//Image = 0;
 	TextAlign = CA_MiddleCenter;
 	ImageAlign = CA_MiddleLeft;
-	Image.Layouter = 0;
-	AddChild(&Image);
 }
 
 void GButtonBase::MouseMove( int x,int y )
@@ -91,4 +89,13 @@ void GButtonBase::setText( const TString& newText )
 {
 	Text = newText;
 	Layout();
+}
+
+void GButtonBase::Update()
+{
+	this->GObject::Update();
+	if (Image.Visible)
+	{
+		Image.Update();
+	}
 }

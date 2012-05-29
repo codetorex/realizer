@@ -37,6 +37,7 @@ public:
 	virtual void setText(const TString& newText);
 
 	void Layout();
+	void Update();
 
 	int ButtonGraphic;
 };
