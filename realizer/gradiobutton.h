@@ -15,7 +15,7 @@ public:
 	void set_Checked(bool value);
 
 	bool Checked;
-	ContentAlignment CheckAlign;
+	Alignment CheckAlign;
 };
 
 #endif

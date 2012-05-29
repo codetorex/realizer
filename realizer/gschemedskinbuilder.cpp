@@ -4,22 +4,30 @@
 #include "tconvert.h"
 
 
-void GSchemedSkinBuilder::Begin( int w,int h , bool _keeppack )
+void GSchemedSkinBuilder::Begin( int w,int h , bool _keeppack , GSchemedSkin* lskin)
 {
 	SkinBitmap = new TBitmap(w,h);
 	Gfx.Initialize(SkinBitmap);
 	Pack = new TPackedRectangle(w,h);
-	Skin = new GSchemedSkin();
+	Skin = lskin;
+	if (!Skin)
+	{
+		Skin = new GSchemedSkin();
+	}
 	KeepPack = _keeppack;
 	Gfx.Clear(0);
 }
 
-void GSchemedSkinBuilder::Begin( TBitmap* bmp, TPackedRectangle* pck )
+void GSchemedSkinBuilder::Begin( TBitmap* bmp, TPackedRectangle* pck , GSchemedSkin* lskin)
 {
 	SkinBitmap = bmp;
 	Gfx.Initialize(SkinBitmap);
 	Pack = pck;
-	Skin = new GSchemedSkin();
+	Skin = lskin;
+	if (!Skin)
+	{
+		Skin = new GSchemedSkin();
+	}
 }
 
 GSchemedSkin* GSchemedSkinBuilder::Finish()
@@ -199,9 +207,15 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	// This optimization allows rendering "just" color things easily without changing texture.
 	//ui32 white = 0xFFFFFFFF;
 	TRectangleNode* whiteNode = Pack->Insert(16,16);
-	Gfx.FillRectangle(TBrush(TColors::White),whiteNode->X,whiteNode->Y,16,16);
+	Gfx.FillRectangle2(TBrush(TColors::White),*whiteNode);
 	VTexturePart* whitePart = new VTexturePart( *SkinBitmap, *whiteNode );
 	Skin->WhitePart = *whitePart;
+
+
+	TRectangleNode* transNode = Pack->Insert(16,16);
+	Gfx.FillRectangle2(TBrush(0),*transNode);
+	Skin->TransparentPart.Initialize(*SkinBitmap,*transNode);
+
 
 	LoadFontsAndColors();
 
@@ -437,6 +451,7 @@ void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imagecount,
 	}
 
 	delete image;
+	// TODO: should delete sub?
 }
 
 void GSchemedSkinBuilder::LoadGeneric( const GSchemeLayer& data, int imageCount, GScalableQuad* output )
@@ -522,6 +537,14 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 		Skin->ButtonFont[3] = GetNumberedEngineFont(buttonData.FocusFont);
 		Skin->ButtonFont[4] = GetNumberedEngineFont(buttonData.DefaultFont);
 	}*/
+}
+
+VTexturePart* GSchemedSkinBuilder::LoadInsertImage( const TString& path )
+{
+	TBitmap* image = Engine.Textures.LoadToBitmap(path);
+	VTexturePart* tp = InsertImage(image);
+	delete image;
+	return tp;
 }
 
 VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
@@ -902,3 +925,4 @@ void GSchemedSkinBuilder::LoadPlusMinus( const GSchemeLayer& buttonData )
 
 	delete [] sbut;
 }
+

@@ -1,19 +1,6 @@
 #ifndef GENUMS_H
 #define GENUMS_H
 
-enum ContentAlignment
-{
-	CA_TopLeft,
-	CA_TopCenter,
-	CA_TopRight,
-	CA_MiddleLeft,
-	CA_MiddleCenter,
-	CA_MiddleRight,
-	CA_BottomLeft,
-	CA_BottomCenter,
-	CA_BottomRight,
-};
-
 enum DockType
 {
 	DCK_NODOCK,

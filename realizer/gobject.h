@@ -82,7 +82,7 @@ public:
 	DockType Dock;
 
 	TString	Text;
-	ContentAlignment TextAlign;
+	Alignment TextAlign;
 	int	TextPixelWidth;
 	TColor32 ForeColor;
 

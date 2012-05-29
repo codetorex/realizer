@@ -2,6 +2,7 @@
 #define RSTARTPAGE_H
 
 #include "rdocumentview.h"
+#include "rstartpagebutton.h"
 
 /**
  * It just start page looks like in visual studio 2010.
@@ -11,7 +12,12 @@ class RStartPage: public RDocumentView
 public:
 	RStartPage();
 
+	RStartPageButton NewProjectButton;
+	RStartPageButton OpenProjectButton;
+
 	void Render();
+
+	void Layout();
 };
 
 #endif

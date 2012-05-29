@@ -13,7 +13,7 @@ public:
 	int Maximum;
 
 	bool ShowPercent;
-	ContentAlignment PercentAlign;
+	Alignment PercentAlign;
 
 	void Render();
 	void Update();

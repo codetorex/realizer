@@ -54,6 +54,15 @@
     <ClInclude Include="rtextdocument.h">
       <Filter>Editors\Text Editor</Filter>
     </ClInclude>
+    <ClInclude Include="rproject.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="reditorskin.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="rstartpagebutton.h">
+      <Filter>Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -81,6 +90,12 @@
       <Filter>Editors\Text Editor</Filter>
     </ClCompile>
     <ClCompile Include="rdocument.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="rproject.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="rstartpagebutton.cpp">
       <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>

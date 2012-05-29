@@ -33,6 +33,8 @@ public:
 
 	int AddImage(TBitmap* bmp);
 
+	int AddImage(const TString& path);
+
 	GImage& GetImage(int index)
 	{
 		return *Images[index];

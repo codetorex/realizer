@@ -94,7 +94,7 @@ public:
 
 	void LoadResources();
 
-	void WriteText( TCharacterEnumerator schars, IRegion& reg, ContentAlignment alg = CA_TopLeft);
+	void WriteText( TCharacterEnumerator schars, IRegion& reg, Alignment alg = CA_TopLeft);
 
 	void Render();
 

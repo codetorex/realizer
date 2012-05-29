@@ -36,6 +36,11 @@ public:
 	bool Expanded;
 	bool MouseOver;
 
+	/**
+	 * So nodes can hold other objects.
+	 */
+	void* Tag;
+
 	ui32 Index;
 	ui32 Level;
 
@@ -86,9 +91,6 @@ private:
 	int moX, moY;
 
 	int updateY;
-
-	void RenderNode(GTreeNode* nd);
-	//void RenderChildNodes(GTreeNode* nd);
 
 	/**
 	 * Recursively creates a rendering list of visible nodes

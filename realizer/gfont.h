@@ -155,88 +155,40 @@ public:
 		return charData->XAdvance;
 	}
 
-	void Render(TCharacterEnumerator& text, const IRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
+	void Render(TCharacterEnumerator& text, const IRegion& screenRegion, Alignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
 		if (stringPixelWidth == -1)
 		{
 			stringPixelWidth = GetStringWidth(text);
 		}
 
-		const IRectangle& dRect = screenRegion;
+		IRectangle textRect(0,0,stringPixelWidth,Size);
+		screenRegion.AlignOutside(textRect,align);
+		textRect.X += xOffset;
+		textRect.Y += xOffset;
 
-		int x,y;
-		switch(align)
-		{
-		case CA_TopLeft:
-			x = dRect.X;
-			y = dRect.Y;
-			break;
-
-		case CA_TopCenter:
-			x = dRect.X + ((dRect.Width - stringPixelWidth) / 2);
-			y = dRect.Y;
-			break;
-
-		case CA_TopRight:
-			x = (screenRegion.Right()) - stringPixelWidth; // TODO: check stringPixelWidth is larger than space
-			y = dRect.Y;
-			break;
-
-		case CA_MiddleLeft:
-			x = dRect.X;
-			y = dRect.Y + (( dRect.Height - Size ) / 2);
-			break;
-
-		case CA_MiddleCenter:
-			x = dRect.X + ((dRect.Width - stringPixelWidth) / 2);
-			y = dRect.Y + (( dRect.Height - Size ) / 2);
-			break;
-
-		case CA_MiddleRight:
-			x = (screenRegion.Right()) - stringPixelWidth; // TODO: check stringPixelWidth is larger than space
-			y = dRect.Y + (( dRect.Height - Size ) / 2);
-			break;
-
-		case CA_BottomLeft:
-			x = dRect.X;
-			y = ( screenRegion.Bottom() ) - Size;
-			break;
-
-		case CA_BottomCenter:
-			x = dRect.X + ((dRect.Width - stringPixelWidth) / 2);
-			y = ( screenRegion.Bottom() ) - Size;
-			break;
-
-		case CA_BottomRight:
-			x = (screenRegion.Right() ) - stringPixelWidth; // TODO: check stringPixelWidth is larger than spacelarger than space
-			y = ( screenRegion.Bottom() ) - Size;
-			break;
-		}
-		x += xOffset;
-		y += yOffset;
-
-		RenderText(text,(float)x,(float)y,color.color);
+		RenderText(text,(float)textRect.X,(float)textRect.Y,color.color);
 	}
 
-	inline void Render(const TString& text, const IRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
+	inline void Render(const TString& text, const IRegion& screenRegion, Alignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
 		TCharacterEnumerator schars(text);
 		Render(schars,screenRegion,align,color,xOffset,yOffset,stringPixelWidth);
 	}
 	
-	inline void Render(const TStringBuilder& sb, const IRegion& screenRegion, ContentAlignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
+	inline void Render(const TStringBuilder& sb, const IRegion& screenRegion, Alignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
 		TCharacterEnumerator schars(sb);
 		Render(schars,screenRegion,align,color,xOffset,yOffset,stringPixelWidth);
 	}
 
-	inline void CalculatePosition(TCharacterEnumerator& text, ContentAlignment align, IPosition& pos, const ISize& objRange)
+	inline void CalculatePosition(TCharacterEnumerator& text, Alignment align, IPosition& pos, const ISize& objRange)
 	{
 
 		int totalWidth = GetStringWidth(text);
 	}
 
-	inline void Render(TCharacterEnumerator& text, float x, float y, const TColor32& color, ContentAlignment align)
+	inline void Render(TCharacterEnumerator& text, float x, float y, const TColor32& color, Alignment align)
 	{
 		RenderText(text,x,y,color.color);
 	}

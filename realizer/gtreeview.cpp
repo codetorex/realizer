@@ -3,51 +3,6 @@
 #include "gfont.h"
 #include "cengine.h"
 
-/**
- * Enumerates through every visible node
- */
-class GTreeNodeEnumerator: public TEnumerator< GTreeNode* >
-{
-public:
-	GTreeNode* baseNode;
-	int curIndex;
-
-	GTreeNodeEnumerator(GTreeNode* baseNode)
-	{
-		this->baseNode = baseNode;
-	}
-
-	void Reset()
-	{
-		curIndex = -1; // self
-		Current = baseNode;
-	}
-
-	bool MoveNext()
-	{
-		if (curIndex == -1)
-		{
-			curIndex = 0;
-			return true;
-		}
-
-		if (curIndex == Current->Nodes.Count)
-		{
-			Current = Current->Parent->NextNode();
-			if (Current)
-			{
-
-				return true;
-			}
-		}
-		else
-		{
-			Current = Current->NextNode();
-		}
-	}
-};
-
-
 
 GTreeView::GTreeView()
 {
@@ -72,7 +27,7 @@ void GTreeView::Render()
 	IRectangle clipRect (Content);
 	clipRect += DrawRegion;
 
-	//Engine.Draw.SetClip(clipRect); CURRENTLY DISABLED FOR DEBUG PURPOSES
+	Engine.Draw.SetClip(clipRect); // CURRENTLY DISABLED FOR DEBUG PURPOSES
 
 	drawX = 0;
 	drawY = -(VBar.Value % NodeHeight);
@@ -97,93 +52,6 @@ void GTreeView::Render()
 
 	Engine.Draw.ResetClip();
 }
-
-#include "gschemedskin.h"
-
-void GTreeView::RenderNode( GTreeNode* nd )
-{
-	GSchemedSkin* ss = (GSchemedSkin*)Skin;
-	Engine.Draw.SetTexture(ss->SkinTexture);
-
-	int curX = drawX; // 0 this time
-
-	int lineimg = 1;
-	if (nd->Parent)
-	{
-		if (nd == nd->Parent->Nodes.GetLast())
-		{
-			lineimg = 2;
-		}
-		else
-		{
-			lineimg = 1;
-		}
-
-		int lvl = nd->Level-1;
-		if (!ShowRoot)
-		{
-			lvl--;
-		}
-
-		while(lvl-- > 0)
-		{
-			ss->DotLine[0].Draw(curX,drawY);
-			curX += 16;
-		}
-		bool isRootChild = nd->Parent == &RootNode;
-		if ((isRootChild && ShowRoot) || !isRootChild)
-		{
-			ss->DotLine[lineimg].Draw(curX,drawY);
-			curX += 16;
-		}
-
-	}
-
-	if (nd->Image)
-	{
-		int imageY = ((int)NodeHeight - nd->Image->Height) / 2;
-		nd->Image->Render(curX,drawY + imageY);
-		curX += nd->Image->Width + 3;
-	}
-
-	Font->Render(nd->Text,curX,TextYOffset + drawY,ForeColor);
-	drawY += NodeHeight;
-}
-
-/*void GTreeView::RenderNode( GTreeNode* nd)
-{
-	
-	
-	
-
-	int curX = drawX;
-
-	if (nd->Image)
-	{
-		int imageY = ((int)NodeHeight - nd->Image->Height) / 2;
-		nd->Image->Render(curX,drawY + imageY);
-		curX += nd->Image->Width + 3;
-	}
-
-	Font->Render(nd->Text,curX,TextYOffset + drawY,ForeColor);
-	drawY += NodeHeight;
-
-	if (nd->Expanded)
-	{
-		drawX += 16;
-		RenderChildNodes(nd);
-		drawX -= 16;
-	}
-}
-
-void GTreeView::RenderChildNodes( GTreeNode* nd)
-{
-	TArrayEnumerator< GTreeNode* > ae(nd->Nodes);
-	while(ae.MoveNext())
-	{
-		RenderNode(ae.Current);
-	}
-}*/
 
 void GTreeView::Layout()
 {
@@ -264,6 +132,7 @@ void GTreeView::Update()
 			Layout();
 
 			// TODO: fix scrollbar 1 px bug
+			// TODO: some bug on text rendering. clips them when their y goes negative ?
 		}
 		UpdateRender = false;
 	}
@@ -282,6 +151,8 @@ void GTreeView::MouseUp( int x,int y,int button )
 		cNode->Expanded = !cNode->Expanded;
 		Layout();
 	}
+
+	SelectedNode = cNode;
 	
 }
 

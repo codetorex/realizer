@@ -80,7 +80,10 @@
   <ItemGroup>
     <ClInclude Include="rdocument.h" />
     <ClInclude Include="rdocumentview.h" />
+    <ClInclude Include="reditorskin.h" />
+    <ClInclude Include="rproject.h" />
     <ClInclude Include="rstartpage.h" />
+    <ClInclude Include="rstartpagebutton.h" />
     <ClInclude Include="rtextdocument.h" />
     <ClInclude Include="rtextview.h" />
     <ClInclude Include="rpageview.h" />
@@ -88,9 +91,11 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="rstartpagebutton.cpp" />
     <ClCompile Include="rdocument.cpp" />
     <ClCompile Include="rdocumentview.cpp" />
     <ClCompile Include="reditor.cpp" />
+    <ClCompile Include="rproject.cpp" />
     <ClCompile Include="rstartpage.cpp" />
     <ClCompile Include="rtextdocument.cpp" />
     <ClCompile Include="rtextview.cpp" />

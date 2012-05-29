@@ -20,6 +20,6 @@ public:
 
 	void setChecked(bool checked);
 
-	ContentAlignment CheckAlign;
+	Alignment CheckAlign;
 };
 #endif

@@ -4,7 +4,7 @@
 #include "cengine.h"
 
 
-VNodeCanvasImage* VNodeCanvas::DrawImage( VTexture* Texture, int dstX,int dstY, float scale, ContentAlignment align )
+VNodeCanvasImage* VNodeCanvas::DrawImage( VTexture* Texture, int dstX,int dstY, float scale, Alignment align )
 {
 	VNodeCanvasImage* img = new VNodeCanvasImage();
 	img->Scale.x = scale;

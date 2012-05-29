@@ -9,15 +9,44 @@
 
 #include "rtextview.h"
 #include "rtextdocument.h"
+#include "vtexture.h"
+#include "tbitmapcodecs.h"
+
 
 REditor Editor;
 
 REditorResources Resources;
 
 
+void REditorSkin::LoadEditorSkin()
+{
+	TStream* fs = Engine.FileSystem.Open("Acrylic 7/Acrylic 7.uis",fm_Read);
+	if (fs == NULL)
+	{
+		throw Exception("File not found");
+	}
+
+	int textureSize = 1024;
+	Builder.Begin(textureSize,textureSize,true,this); // maybe needed to change?
+	Builder.LoadFromScheme(fs);
+	
+	StartPageButton.SetAll(*Builder.SkinBitmap, TransparentPart, IPadding(2));
+	VTexturePart* HoverPart = Builder.LoadInsertImage("editor/startpageover.png"); // TODO: these shits are getting nasty implement CSS like stuff!
+	StartPageButton.Over.Initialize(*Builder.SkinBitmap,*HoverPart);
+
+	Builder.Finish();
+
+#ifdef _DEBUG
+	// DEBUG PURPOSES ONLY
+	fs = Engine.FileSystem.Open("outputEDITOR.png",fm_Write);
+	SkinTexture->bitmap->Save(fs,TBitmapCodecs::Png);
+	fs->Close();
+#endif // _DEBUG
+}
+
 void REditor::LoadResources()
 {
-	try
+	//try
 	{
 		TStream* fontcacheStream = Engine.FileSystem.Open( "fontcache.rcf", fm_Write );
 		Engine.GUI.Fonts.Cache.CreateCache();
@@ -25,8 +54,11 @@ void REditor::LoadResources()
 
 		DebugFont = Engine.GUI.Fonts.GetFont("Bitstream Vera Sans Mono",14);
 
-		EditorSkin = (GSchemedSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
-		Engine.GUI.EnableGUI(EditorSkin);
+		//Skin = (REditorSkin*)Engine.GUI.Skins.LoadSkin("Acrylic 7/Acrylic 7.uis");
+		Skin = new REditorSkin();
+		Skin->LoadEditorSkin();
+
+		Engine.GUI.EnableGUI(Skin);
 
 
 		Engine.Renderer.EnableBlending();
@@ -53,14 +85,14 @@ void REditor::LoadResources()
 
 		InitializeMainGui();
 	}
-	catch( Exception& e )
+	/*catch( Exception& e )
 	{
 		TStringBuilderStack<1024> sb;
 		sb.AppendLine("Error when loading most basic stuff:");
 		sb.Append(e.Message);
 
 		TWinTools::ShowMessage(sb.ToString());
-	}
+	}*/
 }
 
 void REditor::Render()
@@ -96,6 +128,16 @@ void REditor::ActivateConsole( bool value )
 
 void REditor::InitializeMainGui()
 {
+	EditorImages = new GImageList(Skin->SkinTexture, Skin->Pack);
+	EditorImages->AddImage("editor/newproject.png");
+	EditorImages->AddImage("editor/project.png");
+	EditorImages->AddImage("icons/fugue/32/blue-folder-horizontal.png");
+
+	StartPage.NewProjectButton.Image.SetImage(EditorImages->GetImage(0));
+	StartPage.NewProjectButton.Margin.SetPadding(4,2);
+	StartPage.OpenProjectButton.Image.SetImage(EditorImages->GetImage(2));
+	StartPage.OpenProjectButton.Margin.SetPadding(4,2);
+
 	GMenuStrip* mainMenu = new GMenuStrip();
 	mainMenu->SetRectangle(0,0,100,20);
 	mainMenu->Dock = DCK_TOP;
@@ -109,15 +151,14 @@ void REditor::InitializeMainGui()
 	mainMenu->AddItem("Tools");
 	mainMenu->AddItem("Help");
 
-	EditorImages = new GImageList(EditorSkin->SkinTexture, EditorSkin->Pack);
-
-
-
 	MainPages.SetRectangle(0,0,100,100);
 	MainPages.Dock = DCK_FILL;
 	Engine.GUI.Desktop->AddChild(&MainPages);
 
 	MainPages.AddPage(&StartPage,0,true);
+
+
+
 
 	RTextViewStyle* defStyle = new RTextViewStyle();
 	TStream* styleStream = Engine.FileSystem.Open("editor/styles/vs2010/soft-metro.htm", fm_Read);

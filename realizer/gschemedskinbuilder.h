@@ -177,7 +177,7 @@ public:
 
 	int UseOSFont;
 
-	static ContentAlignment SchemeToContentAlign(const GSchemeTextXAlign& x,const GSchemeTextYAlign& y,ContentAlignment defaultvalue = CA_TopRight)
+	static Alignment SchemeToContentAlign(const GSchemeTextXAlign& x,const GSchemeTextYAlign& y,Alignment defaultvalue = CA_TopRight)
 	{
 		if (x == XA_Left)
 		{
@@ -227,12 +227,12 @@ public:
 		return defaultvalue;
 	}
 
-	ContentAlignment GetContentAlign(ContentAlignment defaultvalue = CA_TopRight) const
+	Alignment GetContentAlign(Alignment defaultvalue = CA_TopRight) const
 	{
 		return SchemeToContentAlign(XAlign,YAlign,defaultvalue);
 	}
 
-	ContentAlignment GetPressedContentAlign(ContentAlignment defaultvalue = CA_TopRight) const
+	Alignment GetPressedContentAlign(Alignment defaultvalue = CA_TopRight) const
 	{
 		return SchemeToContentAlign(XAlignPressed,YAlignPressed,defaultvalue);
 	}
@@ -253,7 +253,7 @@ public:
 
 class GSchemedSkinBuilder
 {
-private:
+public:
 	GSchemedSkin* Skin;
 	TBitmap* SkinBitmap;
 	TBitmapGraphics Gfx;
@@ -284,15 +284,16 @@ public:
 	/**
 	 * Creates a bitmap and pack structure and initializes them.
 	 */
-	void Begin(int w,int h, bool _keeppack = true);
+	void Begin(int w,int h, bool _keeppack = true, GSchemedSkin* lskin = 0);
 
 	/**
 	 * Uses existing bitmap and pack structure.
 	 */
-	void Begin( TBitmap* bmp, TPackedRectangle* pck);
+	void Begin( TBitmap* bmp, TPackedRectangle* pck, GSchemedSkin* lskin = 0);
 
 	GSchemedSkin* Finish();
 
+	VTexturePart* LoadInsertImage(const TString& path);
 	VTexturePart* InsertImage(TBitmap* bmp);
 
 	void LoadWindowTop          (const GSchemeText& borderData, bool corners);

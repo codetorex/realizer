@@ -8,6 +8,7 @@
 #include "tarray.h"
 #include "genums.h"
 #include "tstring.h"
+#include "mrectangle.h"
 
 class VNodeCanvasItem
 {
@@ -52,9 +53,9 @@ public:
 		}
 	}
 
-	VNodeCanvasImage* DrawImage(VTexture* Texture, int srcX,int srcY, int srcWidth,int srcHeight,int dstX,int dstY,int dstWidth, int dstHeight, ContentAlignment align );
+	VNodeCanvasImage* DrawImage(VTexture* Texture, int srcX,int srcY, int srcWidth,int srcHeight,int dstX,int dstY,int dstWidth, int dstHeight, Alignment align );
 
-	VNodeCanvasImage* DrawImage(VTexture* Texture, int dstX,int dstY, float scale, ContentAlignment align );
+	VNodeCanvasImage* DrawImage(VTexture* Texture, int dstX,int dstY, float scale, Alignment align );
 
 };
 

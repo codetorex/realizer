@@ -12,7 +12,7 @@ public:
 
 	// TODO: implement reference point instead align?
 
-	ContentAlignment Align;
+	Alignment Align;
 	VTexture* Texture;
 	VTexturePart Part;
 

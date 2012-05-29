@@ -222,7 +222,7 @@ public:
 
 	bool AutoSize;
 
-	ContentAlignment TextAlign;
+	Alignment TextAlign;
 	TColor32 SelectionBackGroundColor;
 
 	TString get_Text();

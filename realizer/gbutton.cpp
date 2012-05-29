@@ -4,7 +4,6 @@
 
 GButton::GButton()
 {
-	TextAlign = CA_MiddleCenter;
 	ClassID = GBUTTON_CLASSID;
 }
 

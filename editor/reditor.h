@@ -6,6 +6,7 @@
 #include "gconsole.h"
 #include "rpageview.h"
 #include "rstartpage.h"
+#include "reditorskin.h"
 
 class GSchemedSkin;
 class GImageList;
@@ -35,7 +36,7 @@ public:
 	}
 
 
-	GSchemedSkin* EditorSkin;
+	REditorSkin* Skin;
 
 	GImageList* EditorImages;
 

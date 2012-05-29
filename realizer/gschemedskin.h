@@ -158,6 +158,20 @@ public:
 		}
 	}
 
+	void SetAll(const ISize& bitmapSize, const IRectangle& texPart, const IPadding& pad)
+	{
+		Normal.SetPadding(pad);
+		Normal.Initialize(bitmapSize,texPart);
+		Over.SetPadding(pad);
+		Over.Initialize(bitmapSize,texPart);
+		Down.SetPadding(pad);
+		Down.Initialize(bitmapSize,texPart);
+		Disabled.SetPadding(pad);
+		Disabled.Initialize(bitmapSize,texPart);
+		Focused.SetPadding(pad);
+		Focused.Initialize(bitmapSize,texPart);
+	}
+
 	inline void Render(GButtonBase* button)
 	{
 		Quads[button->ButtonGraphic].Render(button);
@@ -176,11 +190,12 @@ public:
 	TPackedRectangle* Pack;
 
 	VTexturePart WhitePart;
+	VTexturePart TransparentPart;
 
 	GScalableQuadParted WindowQuad[2]; // 0= Active, 1= Inactive
 	TColor32 ButtonFaceWindowBackgroundColor;
 	GFont* WindowTitleFont; // normal font, pressed font
-	ContentAlignment WindowTitleAlign;
+	Alignment WindowTitleAlign;
 
 	GSchemedSkinButtonQuad ButtonGfx;
 

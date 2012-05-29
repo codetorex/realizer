@@ -360,6 +360,10 @@ void GSchemedSkin::LayoutSystemButton( GSystemButton* sysb )
 	}
 }
 
+
+/**
+ * TODO: clean this mess up and probably move rendering code to treeview?
+ */
 void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 {
 	Engine.Draw.SetTexture(SkinTexture);
@@ -463,6 +467,14 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 		int imageY = ((int)tv->NodeHeight - n->Image->Height) / 2;
 		n->Image->Render(curX,y + imageY);
 		curX += n->Image->Width + 3;
+	}
+
+	int textLength = -1;
+	if (tv->SelectedNode == n)
+	{
+		TCharacterEnumerator ce(n->Text); // TODO: fix this shit, getstringwidth should accept Tstring instead of char enumerator
+		textLength = tv->Font->GetStringWidth(ce);
+		RenderHilight(curX-2,y+1,textLength+4,tv->NodeHeight-2);
 	}
 
 	tv->Font->Render(n->Text,curX,tv->TextYOffset + y,tv->ForeColor);

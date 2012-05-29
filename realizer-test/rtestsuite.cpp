@@ -191,7 +191,7 @@ void RTestSuite::Update()
 	}
 }
 
-void RTestSuite::WriteText( TCharacterEnumerator schars , IRegion& reg, ContentAlignment alg)
+void RTestSuite::WriteText( TCharacterEnumerator schars , IRegion& reg, Alignment alg)
 {
 	TestSuite.DebugFont->Render(schars, reg, alg, TColors::White);
 	reg.MoveYDiff( DebugFont->Height );

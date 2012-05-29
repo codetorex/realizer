@@ -146,4 +146,12 @@ IRectangle GLayoutHorizontalOverflow::Layout( GObject* container, bool measureOn
 /*TRectangle GLayoutVertical::Layout( GObject* container, bool measureOnly )
 {
 	TRectangle remainingArea(container->ObjectRegion);
-}*/
+	}*/
+
+void GAlign::Align( IRectangle& srcRect, const IRectangle& dstRect, Alignment alignment )
+{
+	switch(alignment)
+	{
+
+	}
+}

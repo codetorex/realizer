@@ -5,6 +5,12 @@
 
 class GObject;
 
+class GAlign
+{
+public:
+	void Align( IRectangle& srcRect, const IRectangle& dstRect, Alignment alignment);
+};
+
 /**
  * Base layout algorithm for laying out strategy of containers.
  */

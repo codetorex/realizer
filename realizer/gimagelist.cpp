@@ -44,6 +44,14 @@ int GImageList::AddImage( TBitmap* bmp )
 	return (Images.Count - 1);
 }
 
+int GImageList::AddImage( const TString& path )
+{
+	TBitmap* bmp = Engine.Textures.LoadToBitmap(path);
+	int result = AddImage(bmp);
+	delete bmp;
+	return result;
+}
+
 void GImageList::Draw( TGraphics* g, int x, int y, int index )
 {
 	GImage& img = GetImage(index);

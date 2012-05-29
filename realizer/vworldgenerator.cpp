@@ -18,7 +18,7 @@ void VMapView::Visualize(TBitmap* bmp)
 
 		IPosition cp = VectorFromRatio(c->X,c->Y);
 		Vector2 right = c->PointOnCircle(0.0f);
-		int rad = XFromRatio(right.X) - cp.X;
+		int rad = GetXFromRatio(right.X) - cp.X;
 		/*cp.x -= rad;
 		cp.y -= rad;
 		rad *= 2;*/
