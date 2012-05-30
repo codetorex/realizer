@@ -8,6 +8,7 @@ GCheckBox::GCheckBox()
 	CheckState = CS_Unchecked;
 	Checked = false;
 	CheckAlign = CA_MiddleLeft;
+	TextAlign = CA_TopLeft;
 	ClassID = GCHECKBOX_CLASSID;
 }
 

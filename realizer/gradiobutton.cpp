@@ -6,6 +6,7 @@ GRadioButton::GRadioButton()
 {
 	Checked = false;
 	CheckAlign = CA_MiddleLeft;
+	TextAlign = CA_TopLeft;
 	ClassID = GRADIOBUTTON_CLASSID;
 }
 

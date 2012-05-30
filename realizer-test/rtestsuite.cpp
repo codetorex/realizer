@@ -107,17 +107,27 @@ void RTestSuite::ActivateTest( RTestScene* Test )
 	Test->OnActivated();
 }
 
+void RTestSuite::WriteTextRight( TCharacterEnumerator schars )
+{
+	WriteText(schars,RightRegion, CA_TopRight);
+}
+
+void RTestSuite::WriteTextLeft( TCharacterEnumerator schars )
+{
+	WriteText(schars,LeftRegion);
+}
+
 void RTestSuite::Render()
 {
 	Engine.Renderer.Enter2D();
 
 	Engine.GUI.RenderDesktop(TestDesktop);
 
-	mreg.SetRegion(10,10,Engine.Renderer.vWidth,10);
-	topreg.SetRegion(10,10,Engine.Renderer.vWidth-20,10);
+	LeftRegion.SetRegion(10,10,Engine.Renderer.vWidth,10);
+	RightRegion.SetRegion(10,10,Engine.Renderer.vWidth-20,10);
 
-	WriteText(Application.IdentifyText,mreg);
-	WriteText(Application.Modules.Item[0]->IdentifyText,topreg,CA_TopRight);
+	WriteText(Application.IdentifyText,LeftRegion);
+	WriteText(Application.Modules.Item[0]->IdentifyText,RightRegion,CA_TopRight);
 
 	sb.Clear();
 	sb.Append("Current test: ");
@@ -137,7 +147,7 @@ void RTestSuite::Render()
 
 	sb.Append(" ]");
 	
-	WriteText(sb,mreg);
+	WriteText(sb,LeftRegion);
 
 	// TODO: make these functions to a class named FPSCounter.Update
 	ui32 frameMS = Engine.Time.RealTimeMS - LastFrame;
@@ -153,20 +163,28 @@ void RTestSuite::Render()
 
 	sb.Clear();
 	sb.Append("FPS: ");
-	sb.Append(sfu(FPS,-6));
-	WriteText(sb,topreg, CA_TopRight);
+	sb.Append(sfu(FPS,-8));
+	WriteText(sb,RightRegion, CA_TopRight);
 	
+
+	TStringBuilderStack<64> ss;
+	ss.Append(sfu(1000/FPS));
+	ss.Append(" ms");
+
 	sb.Clear();
 	sb.Append("Average Frame Time: ");
-	sb.Append(sfu(1000/FPS,-4));
-	sb.Append("ms");
-	WriteText(sb,topreg, CA_TopRight);
+	sb.AppendPadded(ss,-8,' ');
+
+	WriteText(sb,RightRegion, CA_TopRight);
+
+	ss.Clear();
+	ss.Append(sfu(frameMS));
+	ss.Append(" ms");
 
 	sb.Clear();
 	sb.Append("Frame Time: ");
-	sb.Append(sfu(frameMS,-4));
-	sb.Append("ms");
-	WriteText(sb,topreg, CA_TopRight);
+	sb.AppendPadded(ss,-8,' ');
+	WriteText(sb,RightRegion, CA_TopRight);
 
 	Engine.Draw.Flush();
 	Engine.Renderer.Exit2D();

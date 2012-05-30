@@ -4,6 +4,21 @@
 #include "glayout.h"
 #include "gfont.h"
 
+void GDropDownTimer::Activate()
+{
+	if (Parent->SubItems.ItemCount == 0)
+	{
+		Parent->HideParentMenu();
+	}
+	else
+	{
+		if (!Parent->SubItems.Visible)
+		{
+			Parent->ShowSubMenu();
+		}
+	}
+}
+
 void GMenuItem::Render()
 {
 	const IRectangle& dRect = DrawRegion;
@@ -35,6 +50,19 @@ GMenuItem::GMenuItem()
 	ClassID = GMENUITEM_CLASSID;
 	GraphicState = 0;
 	Seperator = false;
+
+	ShowTimer.Initialize(this,400);
+}
+
+void GMenuItem::MouseEnter()
+{
+	if (!IsParentDropDown())
+		return;
+	
+	if (!ShowTimer.Enabled)
+	{
+		ShowTimer.Start();
+	}
 }
 
 void GMenuItem::MouseMove( int x,int y )
@@ -62,9 +90,6 @@ void GMenuItem::MouseMove( int x,int y )
 			GraphicState = 3;
 		}
 	}
-
-	// bir timer calistir 300 yada 400 ms lik
-	// timer dolunca dropdown u varsa showlasin amk
 }
 
 void GMenuItem::MouseExit()
@@ -73,13 +98,37 @@ void GMenuItem::MouseExit()
 	{
 		GraphicState = 0;
 	}
+
+	ShowTimer.Stop();
 }
 
 void GMenuItem::MouseUp( int x,int y,int button )
 {
 	if (MouseInside)
 	{
-		Click.call();
+		if (IsParentMenuStrip())
+		{
+			if (SubItems.ItemCount > 0)
+			{
+				SubItems.Show(DrawRegion.X(),DrawRegion.Bottom());
+			}
+		}
+		else
+		{
+			if (SubItems.ItemCount > 0)
+			{
+				if (!SubItems.Visible)
+				{
+					ShowTimer.Stop();
+					ShowSubMenu();
+				}
+			}
+			else
+			{
+				HideRelativeMenus();
+				Click.call();
+			}
+		}
 	}
 }
 
@@ -87,6 +136,7 @@ void GMenuItem::Update()
 {
 	this->GObject::Update();
 	Image.Update();
+	ShowTimer.UpdateTimeEffect();
 }
 
 void GMenuItem::Layout()
@@ -115,6 +165,9 @@ void GMenuItem::Layout()
 
 	Content.SetRectangle(0,0,Width,Height);
 	Image.SetParent(this);
+
+	OwnObject(&SubItems);
+	SubItems.Layout();
 }
 
 GMenuItem* GMenuItem::AddSeperator()
@@ -125,3 +178,30 @@ GMenuItem* GMenuItem::AddSeperator()
 	AddChild(r);
 	return r;
 }
+
+void GMenuItem::ShowSubMenu()
+{
+	SubItems.Show(DrawRegion.Right(),DrawRegion.Top());
+	GDropDown* p = (GDropDown*)Parent;
+	p->SetSubMenu(&SubItems);
+}
+
+void GMenuItem::HideRelativeMenus()
+{
+	if (IsParentDropDown())
+	{
+		GDropDown* p = (GDropDown*)Parent;
+		GDropDown* root = p->GetRootMenu();
+		root->Hide();
+	}
+}
+
+void GMenuItem::HideParentMenu()
+{
+	if (IsParentDropDown())
+	{
+		GDropDown* p = (GDropDown*)Parent;
+		p->SetSubMenu(&SubItems);
+	}
+}
+

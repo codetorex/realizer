@@ -162,10 +162,11 @@ public:
 			stringPixelWidth = GetStringWidth(text);
 		}
 
-		IRectangle textRect(0,0,stringPixelWidth,Size);
+		IRectangle textRect (screenRegion.X(),screenRegion.Y(),stringPixelWidth,Size);
 		screenRegion.AlignOutside(textRect,align);
 		textRect.X += xOffset;
-		textRect.Y += xOffset;
+		textRect.Y += yOffset;
+		//Engine.Draw.DrawRectangle(textRect, TColor32::Red);
 
 		RenderText(text,(float)textRect.X,(float)textRect.Y,color.color);
 	}

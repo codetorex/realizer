@@ -42,9 +42,9 @@ public:
 class RTestSuite: public VScene
 {
 private:
-	TStringBuilderStack<512> sb;
-	IRegion mreg;
-	IRegion topreg;
+	TStringBuilderStack<256> sb;
+	IRegion LeftRegion;
+	IRegion RightRegion;
 	
 	GDesktop* OldDesktop;
 	bool OldEnabled;
@@ -95,6 +95,10 @@ public:
 	void LoadResources();
 
 	void WriteText( TCharacterEnumerator schars, IRegion& reg, Alignment alg = CA_TopLeft);
+
+	void WriteTextRight(TCharacterEnumerator schars);
+
+	void WriteTextLeft(TCharacterEnumerator schars);
 
 	void Render();
 

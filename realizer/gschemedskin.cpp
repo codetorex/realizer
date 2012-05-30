@@ -142,7 +142,12 @@ void GSchemedSkin::LayoutDropDown( GDropDown* dropdown )
 void GSchemedSkin::RenderMenuItem( GMenuItem* menuItem )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	MenuItemBg[menuItem->GraphicState].Render(menuItem);
+	int gstate = menuItem->GraphicState;
+	if (menuItem->SubItems.Visible)
+	{
+		gstate = 3;
+	}
+	MenuItemBg[gstate].Render(menuItem);
 }
 
 void GSchemedSkin::RenderMenuStripItem( GMenuItem* menuItem )
@@ -374,10 +379,12 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 	GTreeView* tv = n->TreeView;
 	bool ShowRoot = tv->ShowRoot;
 
-	if (ShowRoot && tv->ShowPlusMinus)
+	/*
+	 *ENABLE THIS IF YOU WANT TO SEE PLUS MINUS ON ROOT ITEM
+	 *if (ShowRoot && tv->ShowPlusMinus)
 	{
 		curX += 16;
-	}
+	}*/
 	if (tv->ShowLines)
 	{
 		int lineimg = 1;
@@ -429,7 +436,7 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 		
 	}
 
-	if (tv->ShowPlusMinus && (n->Nodes.Count > 0))
+	if (tv->ShowPlusMinus && (n->Nodes.Count > 0) && n != &tv->RootNode) // remove last condition if you want to see plus minus for root
 	{
 		/*if (!ShowRoot)
 		{

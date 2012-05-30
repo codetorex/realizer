@@ -26,6 +26,47 @@ public:
 	virtual void UpdateTimeEffect() = 0;
 };
 
+/**
+ * Fires one time and resets itself.
+ */
+class GTimeEffectSingle: public GTimeEffect
+{
+public:
+	ui32 LastCheck;
+	ui32 Delay;
+	bool Enabled;
+
+
+	GTimeEffectSingle(bool realTime_ = false): GTimeEffect(realTime_)
+	{
+		Enabled = false;
+	}
+
+	inline void Start()
+	{
+		LastCheck = *ReadReference;
+		Enabled = true;
+	}
+
+	inline void Stop()
+	{
+		Enabled = false;
+	}
+
+	void UpdateTimeEffect()
+	{
+		if (!Enabled) return;
+
+		int timeDifference = *ReadReference - LastCheck;
+		if (timeDifference >= Delay)
+		{
+			Stop();
+			Activate();
+		}
+	}
+
+	virtual void Activate() = 0;
+};
 
 /**
  * It starts repeating after activation delay passed.

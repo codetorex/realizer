@@ -60,9 +60,44 @@ void RTestGUI::Initialize()
 	testWin->AddChild(testBut2);
 	testWin->AddChild(testMenu);
 
+	GImageList* imgList = new GImageList(TestSkin->SkinTexture, TestSkin->Pack);
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/wand.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/page_white.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/disk.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/fugue/folder.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/folder.png") );
 
 
-	testMenu->AddItem("File");
+	GMenuItem* fileMenu = testMenu->AddItem("File");
+	GMenuItem* fileNewItem = new GMenuItem();
+	fileNewItem->SetRectangle(0,0,10,20);
+	fileNewItem->Text = "New";
+	fileNewItem->Image.SetImage(imgList->GetImage(1));
+	fileNewItem->Click += GetHandler(this, &RTestGUI::testBut2_Click );
+	fileMenu->SubItems.AddChild(fileNewItem);
+
+	GMenuItem* fileOpenItem = new GMenuItem();
+	fileOpenItem->SetRectangle(0,0,10,20);
+	fileOpenItem->Text = "Open";
+	fileOpenItem->Image.SetImage(imgList->GetImage(4));
+	fileMenu->SubItems.AddChild(fileOpenItem);
+
+	GMenuItem* fileOpenRecentItem = new GMenuItem();
+	fileOpenRecentItem->SetRectangle(0,0,10,20);
+	fileOpenRecentItem->Text = "Open Recent";
+	fileOpenRecentItem->Image.SetImage(imgList->GetImage(4));
+	fileMenu->SubItems.AddChild(fileOpenRecentItem);
+
+	GMenuItem* testItem2 = new GMenuItem();
+	testItem2->SetRectangle(0,0,10,20);
+	testItem2->Text = "../arecentfile.cpp";
+	testItem2->Image.SetImage(imgList->GetImage(1));
+	testItem2->Click += GetHandler(this, &RTestGUI::testBut2_Click );
+	fileOpenRecentItem->SubItems.AddChild(testItem2);
+
+	fileMenu->Layout();
+
+
 	testMenu->AddItem("Edit");
 	testMenu->AddItem("View");
 	testMenu->AddItem("Help");
@@ -73,12 +108,7 @@ void RTestGUI::Initialize()
 	dropDown = new GDropDown();
 	dropDown->SetRectangle(0,0,100,100);
 
-	GImageList* imgList = new GImageList(TestSkin->SkinTexture, TestSkin->Pack);
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/wand.png") );
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/page_white.png") );
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/disk.png") );
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/fugue/folder.png") );
-	
+
 	GMenuItem* menuItem1 = new GMenuItem();
 	menuItem1->SetRectangle(0,0,10,20);
 	menuItem1->Text = "Menu Item test 1";
@@ -248,6 +278,19 @@ void RTestGUI::Render()
 	Engine.Renderer.Enter2D();
 
 	Engine.GUI.Render();
+
+	int topCount = Engine.GUI.Desktop->OnTopObjects.Count;
+	
+	TStringBuilderStack<256> sb;
+	sb.Append("Top objects: ");
+	sb.Append(sfi(topCount,-8));
+	TestSuite.WriteTextRight(sb);
+
+	sb.Clear();
+	sb.Append("Focused: ");
+	sb.Append(sfx((ui32)Engine.GUI.Focused,-8));
+	TestSuite.WriteTextRight(sb);
+
 
 	Engine.Draw.Flush();
 	Engine.Renderer.Exit2D();

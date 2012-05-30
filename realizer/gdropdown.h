@@ -3,12 +3,27 @@
 
 #include "gobject.h"
 
+
+
 class GDropDown: public GObject
 {
-private:
+protected:
 	GObject* LastFocus;
 
 public:
+	GDropDown* ParentMenu;
+	GDropDown* SubMenu;
+
+	void SetSubMenu(GDropDown* pSubMenu);
+	void HideSubMenu();
+
+
+	GDropDown* GetRootMenu();
+
+	bool IsRelative(GDropDown* menu);
+
+	bool IsRelativeObject(GObject* obj);
+
 	GLayout* Layouter; // use a vertical layouter
 
 	GDropDown();
