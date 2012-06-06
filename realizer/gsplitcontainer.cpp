@@ -15,7 +15,7 @@ GSplitContainer::GSplitContainer()
 	Panel2MinSize = 25;
 }
 
-void GSplitContainer::MouseDown( int x,int y, int button )
+void GSplitContainer::OnMouseDown( int x,int y, int button )
 {
 	// WE CAN CHANGE CURSOR AT THIS POINT
 	DragPoint.SetVector(Master->X,Master->Y);
@@ -23,7 +23,7 @@ void GSplitContainer::MouseDown( int x,int y, int button )
 	Dragging = true;
 }
 
-void GSplitContainer::MouseUp( int x,int y,int button )
+void GSplitContainer::OnMouseUp( int x,int y,int button )
 {
 	Dragging = false;
 	Layout();

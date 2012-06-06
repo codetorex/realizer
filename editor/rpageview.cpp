@@ -215,7 +215,7 @@ void RPageButton::Clicked( int x, int y, int button )
 	pnl->ActivatePage(Page);
 }
 
-void RPageButton::MouseExit()
+void RPageButton::OnMouseExit()
 {
 	if (IsSelected())
 	{

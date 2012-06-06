@@ -50,11 +50,12 @@ GMenuItem::GMenuItem()
 	ClassID = GMENUITEM_CLASSID;
 	GraphicState = 0;
 	Seperator = false;
-
 	ShowTimer.Initialize(this,400);
+
+	Image.SetParent(this);
 }
 
-void GMenuItem::MouseEnter()
+void GMenuItem::OnMouseEnter()
 {
 	if (!IsParentDropDown())
 		return;
@@ -65,7 +66,7 @@ void GMenuItem::MouseEnter()
 	}
 }
 
-void GMenuItem::MouseMove( int x,int y )
+void GMenuItem::OnMouseMove( int x,int y )
 {
 	if (!Seperator)
 	{
@@ -92,7 +93,7 @@ void GMenuItem::MouseMove( int x,int y )
 	}
 }
 
-void GMenuItem::MouseExit()
+void GMenuItem::OnMouseExit()
 {
 	if (!Seperator)
 	{
@@ -102,7 +103,7 @@ void GMenuItem::MouseExit()
 	ShowTimer.Stop();
 }
 
-void GMenuItem::MouseUp( int x,int y,int button )
+void GMenuItem::OnMouseUp( int x,int y,int button )
 {
 	if (MouseInside)
 	{
@@ -205,3 +206,27 @@ void GMenuItem::HideParentMenu()
 	}
 }
 
+void GMenuItem::AddSubMenu( GMenuItem* item )
+{
+	SubItems.AddChild(item);
+}
+
+GMenuItem* GMenuItem::AddSubMenu( const TString& menuItem, NoArgEvent* onClick )
+{
+	GMenuItem* newItem = new GMenuItem();
+	newItem->SetRectangle(0,0,10,20);
+	newItem->Text = menuItem;
+	if (onClick)
+	{
+		newItem->Click += onClick;
+	}
+	AddSubMenu(newItem);
+	return newItem;
+}
+
+GMenuItem* GMenuItem::AddSubMenu( const TString& menuItem, GImage& img, NoArgEvent* onClick )
+{
+	GMenuItem* newItem = AddSubMenu(menuItem,onClick);
+	newItem->Image.SetImage(img);
+	return newItem;
+}

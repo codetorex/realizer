@@ -62,8 +62,7 @@ void GDropDown::Show()
 
 void GDropDown::Show( int x,int y )
 {
-	MoveX(x);
-	MoveY(y);
+	Move(x,y);
 
 	if (Visible)
 	{

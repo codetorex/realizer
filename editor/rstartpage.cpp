@@ -4,6 +4,7 @@
 #include "reditor.h"
 #include "gschemedskin.h"
 #include "rstartpagebutton.h"
+#include "reditorcommands.h"
 
 RStartPage::RStartPage()
 {
@@ -11,7 +12,7 @@ RStartPage::RStartPage()
 	Document = 0;
 
 	NewProjectButton.Text = "New Project";
-	NewProjectButton.Click += GetHandler(this, &RStartPage::NewProjectButton_Click);
+
 
 	OpenProjectButton.Text = "Open Project";
 }
@@ -45,15 +46,10 @@ void RStartPage::Layout()
 	this->GObject::Layout();
 }
 
-void RStartPage::NewProjectButton_Click()
+void RStartPage::Initialize()
 {
-	if (Editor.Project)
+	if (!NewProjectButton.Click.HandlerCount)
 	{
-		throw NotImplementedException();
-		// ask for save the changes in current project
-	}
-	else
-	{
-		Editor.NewProject();
+		NewProjectButton.Click += EditorEvents.NewProject;
 	}
 }

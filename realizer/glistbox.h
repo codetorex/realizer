@@ -12,13 +12,13 @@ private:
 public:
 	GListBox();
 
-	void MouseDown(int x,int y, int button);
+	void OnMouseDown(int x,int y, int button);
 
 	TArray< TString* > Items;
 
 	void AddItem( TString& value );
 
-	void MouseWheel(int x,int y, int delta);
+	void OnMouseWheel(int x,int y, int delta);
 
 	int SelectedIndex;
 

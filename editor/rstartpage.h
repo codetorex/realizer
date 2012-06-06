@@ -15,8 +15,7 @@ public:
 	RStartPageButton NewProjectButton;
 	RStartPageButton OpenProjectButton;
 
-	void NewProjectButton_Click();
-
+	void Initialize();
 
 	void Render();
 

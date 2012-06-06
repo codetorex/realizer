@@ -5,10 +5,27 @@
 #include "gscrollbar.h"
 #include "gimagelist.h"
 #include "tenumerator.h"
+#include "gdropdowntext.h"
 
 class GTreeNode;
 class GTreeView;
 
+class NodeLabelEditEventArgs
+{
+public:
+	NodeLabelEditEventArgs()
+	{
+		CancelEdit = false;
+	}
+
+	GTreeNode* Node;
+	TString Label;
+	bool CancelEdit;
+};
+
+/**
+ * TODO: derive this from GObject?
+ */
 class GTreeNode
 {
 public:
@@ -36,6 +53,8 @@ public:
 	bool Expanded;
 	bool MouseOver;
 
+	bool IsVisible;
+
 	/**
 	 * So nodes can hold other objects.
 	 */
@@ -48,6 +67,17 @@ public:
 	GImage* SelectedImage;
 
 	GTreeView* TreeView;
+
+	IPosition TextPosition; // useful
+
+	/**
+	 * Returns text position.
+	 */
+	IPosition GetTextPosition();
+
+	void BeginEdit();
+	void EndEdit(bool cancel);
+
 
 	inline GTreeNode* NextNode()
 	{
@@ -78,12 +108,13 @@ private:
 
 	bool UpdateRender;
 
+	GTreeNode* EditingNode;
+
 	TArray< GTreeNode* > RenderNodes;
 
 	
 	ui32 ScreenSpace;
 	ui32 ViewHeight;
-	
 
 	int drawX;
 	int drawY;
@@ -97,15 +128,21 @@ private:
 	 */
 	void UpdateRenderNode(GTreeNode* nd);
 
-	/**
-	 * Finds node using RenderNodes
-	 */
-	GTreeNode* FindNode(int x, int y);
-
 	friend class GTreeNode;
 
 public:
+	typedef delegate2<void, void*, NodeLabelEditEventArgs& > NodeLabelEditEvent;
+
 	GTreeView();
+
+	event< NodeLabelEditEvent > AfterLabelEdit;
+
+	/**
+	 * This is used for editing texts of items.
+	 */
+	GDropDownText EditDropDown;
+
+	void EditDropDown_Edited();
 
 	//GTreeNode* MouseOverNode;
 	GTreeNode* SelectedNode;
@@ -126,9 +163,14 @@ public:
 	bool ShowLines;
 
 	
-	void MouseWheel(int x,int y, int delta);
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
+	void OnMouseWheel(int x,int y, int delta);
+	void OnMouseUp(int x,int y,int button);
+	void OnMouseMove(int x,int y);
+
+	/**
+	 * Finds node using RenderNodes
+	 */
+	GTreeNode* GetNodeAt(int x, int y);
 
 
 	void Render();

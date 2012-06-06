@@ -20,7 +20,7 @@ public:
 
 	bool IsSelectedPage();
 
-	void MouseExit();
+	void OnMouseExit();
 	void Clicked(int x, int y, int button);
 
 	void Render();

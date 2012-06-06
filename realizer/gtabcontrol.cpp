@@ -61,7 +61,7 @@ void GTabControl::Layout()
 
 	// 5 soldan sagdan 4 yukardan assagidan
 
-	TabPageButtons.Clear();
+	TabPageButtons.ClearSubItems();
 
 	for (int i=0;i<TabPages.Count;i++)
 	{
@@ -166,7 +166,7 @@ GObject* GTabControl::FindObject()
 }
 
 
-void GTabButton::MouseExit()
+void GTabButton::OnMouseExit()
 {
 	if (IsSelectedPage())
 	{

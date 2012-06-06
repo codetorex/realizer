@@ -21,8 +21,8 @@ public:
 
 	SButtonDirection Direction;
 
-	void MouseDown(int x,int y, int button);
-	void MouseUp(int x,int y,int button);
+	void OnMouseDown(int x,int y, int button);
+	void OnMouseUp(int x,int y,int button);
 
 	void Update();
 };
@@ -39,9 +39,9 @@ public:
 
 	GScrollBarDrag();
 
-	void MouseDown(int x,int y, int button);
-	void MouseUp(int x,int y,int button);
-	void MouseWheel(int x,int y, int delta);
+	void OnMouseDown(int x,int y, int button);
+	void OnMouseUp(int x,int y,int button);
+	void OnMouseWheel(int x,int y, int delta);
 
 	void Update();
 };
@@ -74,11 +74,11 @@ public:
 	void setValue(int newValue);
 	void setOrientation( GOrientation newOrientation );
 
-	void MouseMove(int x,int y);
-	void MouseDown(int x,int y, int button);
-	void MouseUp(int x,int y,int button);
-	void MouseWheel(int x,int y, int delta);
-	void MouseExit();
+	void OnMouseMove(int x,int y);
+	void OnMouseDown(int x,int y, int button);
+	void OnMouseUp(int x,int y,int button);
+	void OnMouseWheel(int x,int y, int delta);
+	void OnMouseExit();
 	
 	event<NoArgEvent> ValueChanged;
 

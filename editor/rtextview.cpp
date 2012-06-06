@@ -161,7 +161,7 @@ void RTextView::Layout()
 	}
 }
 
-void RTextView::KeyDown( ui32 keyID )
+void RTextView::OnKeyDown( ui32 keyID )
 {
 	Document->Changed = true;
 }
@@ -171,9 +171,9 @@ void RTextView::DocumentChanged()
 	Layout();
 }
 
-void RTextView::MouseWheel( int x,int y, int delta )
+void RTextView::OnMouseWheel( int x,int y, int delta )
 {
-	VertBar.MouseWheel(10,y,delta * 3);
+	VertBar.OnMouseWheel(10,y,delta * 3);
 }
 
 #include "txmlreader.h"

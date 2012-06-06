@@ -59,10 +59,10 @@ GObject* GObject::FindObjectByCoord( int x,int y )
 void GObject::SetFocus()
 {
 	Master->Focused->Focused = false;
-	Master->Focused->LostFocus();
+	Master->Focused->OnLostFocus();
 	Master->Focused = this;
 	Focused = true;
-	GotFocus();
+	OnGotFocus();
 }
 
 /*void GObject::Render()

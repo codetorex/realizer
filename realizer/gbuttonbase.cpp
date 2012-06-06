@@ -12,7 +12,7 @@ GButtonBase::GButtonBase()
 	ImageAlign = CA_MiddleLeft;
 }
 
-void GButtonBase::MouseMove( int x,int y )
+void GButtonBase::OnMouseMove( int x,int y )
 {
 	if (Master->Focused == this)
 	{
@@ -31,12 +31,12 @@ void GButtonBase::MouseMove( int x,int y )
 	}
 }
 
-void GButtonBase::MouseExit()
+void GButtonBase::OnMouseExit()
 {
 	SetGraphic(GBG_NORMAL);
 }
 
-void GButtonBase::MouseUp( int x,int y,int button )
+void GButtonBase::OnMouseUp( int x,int y,int button )
 {
 	if (MouseInside)
 	{

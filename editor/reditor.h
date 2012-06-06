@@ -14,6 +14,8 @@
 #include "gimagelist.h"
 #include "gtoolstrip.h"
 
+#include "reditorcommands.h"
+
 class GSchemedSkin;
 class GImageList;
 class VTexture;
@@ -25,6 +27,20 @@ public:
 	VTexture* StartPageTexture;
 
 };
+
+class REditorMenu
+{
+public:
+	GMenuItem* File;
+	GMenuItem* Edit;
+	GMenuItem* View;
+	GMenuItem* Project;
+	GMenuItem* Debug;
+	GMenuItem* Tools;
+	GMenuItem* Help;
+};
+
+extern REditorMenu EditorMenu;
 
 extern REditorResources Resources;
 
@@ -57,8 +73,6 @@ public:
 
 	RProject* Project;
 
-	void NewProject();
-
 	/// Monospaced font that is good for console and debug stuff
 	GFont* DebugFont;
 
@@ -72,7 +86,7 @@ public:
 
 	void ActivateConsole(bool value);
 
-	void NewItem_Click();
+	
 };
 
 extern REditor Editor;

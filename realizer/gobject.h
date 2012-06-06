@@ -14,14 +14,24 @@ class GFont;
 class VGUI;
 class GLayout;
 
+class KeyEventArgs
+{
+public:
+	KeyEventArgs()
+	{
+		Handled = 0;
+	}
 
+	TChar KeyChar;
+	bool Handled;
+};
 
 class GObject: public TListNode< GObject* >, public TList< GObject* >, public TBoxModel
 {
 public:
-	typedef delegate0<void>				NoArgEvent;
-	typedef delegate3<void,int,int,int> MouseEvent;
-	typedef delegate1<void,ui32>		KeyEvent;
+	typedef delegate0<void>						NoArgEvent;
+	typedef delegate3<void,int,int,int>			MouseEvent;
+	typedef delegate2<void,void*,KeyEventArgs&>	KeyEvent;
 
 	GObject()
 	{
@@ -54,17 +64,17 @@ public:
 	event<KeyEvent>		KeyDown;
 	event<KeyEvent>		KeyUp;*/
 
-	virtual void MouseEnter() {};
-	virtual void MouseExit() {};
-	virtual void MouseWheel(int x,int y, int delta) {};
-	virtual void MouseDown(int x,int y, int button) {};
-	virtual void MouseUp(int x,int y,int button) {};
-	virtual void MouseMove(int x,int y) {};
-	virtual void GotFocus() {};
-	virtual void LostFocus() {};
-	virtual void KeyPress(ui32 keyID) {};
-	virtual void KeyDown(ui32 keyID) {};
-	virtual void KeyUp(ui32 keyID) {};
+	virtual void OnMouseEnter() {};
+	virtual void OnMouseExit() {};
+	virtual void OnMouseWheel(int x,int y, int delta) {};
+	virtual void OnMouseDown(int x,int y, int button) {};
+	virtual void OnMouseUp(int x,int y,int button) {};
+	virtual void OnMouseMove(int x,int y) {};
+	virtual void OnGotFocus() {};
+	virtual void OnLostFocus() {};
+	virtual void OnKeyPress(ui32 keyID) {};
+	virtual void OnKeyDown(ui32 keyID) {};
+	virtual void OnKeyUp(ui32 keyID) {};
 
 	bool	Focused;
 	bool	Enabled;

@@ -76,7 +76,7 @@ public:
 		{
 			obj->SetFocus();
 			const IRectangle& dRect = obj->DrawRegion;
-			obj->MouseDown(x - dRect.X, y - dRect.Y, button);
+			obj->OnMouseDown(x - dRect.X, y - dRect.Y, button);
 			obj->ActivateRoot();
 		}
 	}
@@ -88,7 +88,7 @@ public:
 		ButtonState[button] = false;
 
 		const IRectangle& dRect = Focused->DrawRegion;
-		Focused->MouseUp(x - dRect.X,y - dRect.Y,button);
+		Focused->OnMouseUp(x - dRect.X,y - dRect.Y,button);
 	}
 
 	void MouseWheel(int x,int y,int delta)
@@ -99,23 +99,23 @@ public:
 		if (obj)
 		{
 			const IRectangle& dRect = obj->DrawRegion;
-			obj->MouseWheel(x - dRect.X,y - dRect.Y,delta);
+			obj->OnMouseWheel(x - dRect.X,y - dRect.Y,delta);
 		}
 	}
 
 	void KeyDown(int KeyID)
 	{
-		Focused->KeyDown(KeyID);
+		Focused->OnKeyDown(KeyID);
 	}
 
 	void KeyUp(int keyID)
 	{
-		Focused->KeyUp(keyID);
+		Focused->OnKeyUp(keyID);
 	}
 
 	void KeyUnicode(ch16 keyChar)
 	{
-		Focused->KeyPress(keyChar);
+		Focused->OnKeyPress(keyChar);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public:
 		if (obj)
 		{
 			const IRectangle& dRect = obj->DrawRegion;
-			obj->MouseMove(X - dRect.X, Y - dRect.Y);
+			obj->OnMouseMove(X - dRect.X, Y - dRect.Y);
 		}
 
 		dsktp->Render();

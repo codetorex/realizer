@@ -62,10 +62,10 @@ public:
 
 	event<NoArgEvent> Click;
 
-	void MouseEnter();
-	void MouseExit();
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
+	void OnMouseEnter();
+	void OnMouseExit();
+	void OnMouseUp(int x,int y,int button);
+	void OnMouseMove(int x,int y);
 
 	void Render();
 	void Layout();
@@ -73,6 +73,9 @@ public:
 
 	GImage Image;
 
+	void AddSubMenu(GMenuItem* item);
+	GMenuItem* AddSubMenu(const TString& menuItem, NoArgEvent* onClick = 0);
+	GMenuItem* AddSubMenu(const TString& menuItem, GImage& img, NoArgEvent* onClick = 0);
 
 
 	inline void set_Seperator( bool _seperator )

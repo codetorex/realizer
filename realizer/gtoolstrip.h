@@ -21,9 +21,9 @@ public:
 
 	int GraphicState;
 
-	void MouseExit();
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
+	void OnMouseExit();
+	void OnMouseUp(int x,int y,int button);
+	void OnMouseMove(int x,int y);
 
 	event<NoArgEvent> Click;
 

@@ -18,6 +18,9 @@ GTreeView::GTreeView()
 	VBar.Dock = DCK_RIGHT;
 
 	ShowRoot = false;
+
+	EditDropDown.Edited += GetHandler(this, &GTreeView::EditDropDown_Edited);
+	EditingNode = 0;
 }
 
 void GTreeView::Render()
@@ -64,6 +67,7 @@ void GTreeView::Layout()
 	}
 
 	OwnObject(&VBar);
+	OwnObject(&EditDropDown);
 	Skin->LayoutSunkEdge(this);
 	UpdateContent();
 
@@ -95,6 +99,7 @@ void GTreeView::UpdateRenderNode( GTreeNode* nd )
 		if (updateY > 0 && updateY < (Content.Height + NodeHeight))
 		{
 			RenderNodes.Add(nd);
+			nd->IsVisible = true;
 			if (moY < updateY && moY > (updateY - NodeHeight))
 			{
 				nd->MouseOver = true;
@@ -123,6 +128,11 @@ void GTreeView::Update()
 	/// Updates render list when required.
 	//if (UpdateRender)
 	{
+		TArrayEnumerator< GTreeNode* > ae(RenderNodes);
+		while(ae.MoveNext())
+		{
+			ae.Current->IsVisible = false;
+		}
 		RenderNodes.Clear();
 		updateY = -VBar.Value;
 		int updateYStart = updateY;
@@ -140,9 +150,9 @@ void GTreeView::Update()
 	}
 }
 
-void GTreeView::MouseUp( int x,int y,int button )
+void GTreeView::OnMouseUp( int x,int y,int button )
 {
-	GTreeNode* cNode = FindNode(x,y);
+	GTreeNode* cNode = GetNodeAt(x,y);
 	if (!cNode)
 	{
 		return;
@@ -158,7 +168,7 @@ void GTreeView::MouseUp( int x,int y,int button )
 	
 }
 
-GTreeNode* GTreeView::FindNode( int x, int y )
+GTreeNode* GTreeView::GetNodeAt( int x, int y )
 {
 	int my = -(VBar.Value % NodeHeight);
 
@@ -174,19 +184,21 @@ GTreeNode* GTreeView::FindNode( int x, int y )
 	return 0;
 }
 
-void GTreeView::MouseWheel( int x,int y, int delta )
+void GTreeView::OnMouseWheel( int x,int y, int delta )
 {
 	if (VBar.Visible)
 	{
-		VBar.MouseWheel(x,y,delta);
+		VBar.OnMouseWheel(x,y,delta);
 	}
 }
 
-void GTreeView::MouseMove( int x,int y )
+void GTreeView::OnMouseMove( int x,int y )
 {
 	moX = x;
 	moY = y;
 }
+
+
 
 void GTreeNode::AddNode( GTreeNode* node )
 {
@@ -235,4 +247,71 @@ ui32 GTreeNode::GetHeight()
 	}
 
 	return result;
+}
+
+IPosition GTreeNode::GetTextPosition()
+{
+	return TextPosition;
+	/*if (!IsVisible)
+	{
+		return IPosition(0,0);
+	}
+
+
+	IPosition result;
+	result.X =  + (16 * (TreeView->ShowRoot ? Level - 1: Level));
+	if (Image)
+	{
+		result.X += Image->Width + 5;
+	}
+
+	result.Y = -(TreeView->VBar.Value % TreeView->NodeHeight);
+	int ItemIndex = TreeView->RenderNodes.IndexOf(this);
+	if (ItemIndex == -1)
+	{
+		throw Exception("wtf");
+	}
+	result.Y += ItemIndex * TreeView->NodeHeight;
+	
+	return result;*/
+}
+
+void GTreeView::EditDropDown_Edited()
+{
+	NodeLabelEditEventArgs e;
+	e.Node = EditingNode;
+	e.Label = EditDropDown.EditBox.get_Text();
+
+	AfterLabelEdit.call(this, e);
+	EditingNode = 0;
+
+	if (e.CancelEdit)
+	{
+		return;
+	}
+
+	e.Node->Text = e.Label;
+	EditDropDown.Hide();
+	SetFocus();
+}
+
+void GTreeNode::BeginEdit()
+{
+	if (!IsVisible)
+	{
+		throw Exception("wtf");
+		// TODO: implement ensure visible thing
+	}
+
+	if (TreeView->EditingNode)
+	{
+		return; // ALREADY EDÝTÝNG SOMETHING ELSE
+	}
+
+	TreeView->EditingNode = this;
+	IPosition textPos = GetTextPosition();
+	int editWidth = TreeView->Width - (textPos.X) - 10;
+	textPos += TreeView->DrawRegion;
+	TreeView->EditDropDown.Show(textPos.X,textPos.Y,editWidth);
+	TreeView->EditDropDown.SetText(Text);
 }

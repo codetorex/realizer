@@ -483,7 +483,8 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 		TCharacterEnumerator ce(n->Text); // TODO: fix this shit, getstringwidth should accept Tstring instead of char enumerator
 		textLength = tv->Font->GetStringWidth(ce);
 		RenderHilight(curX-2,y+1,textLength+4,tv->NodeHeight-2);
+		
 	}
-
+	n->TextPosition.SetVector(curX,tv->TextYOffset + y);
 	tv->Font->Render(n->Text,curX,tv->TextYOffset + y,tv->ForeColor);
 }

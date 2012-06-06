@@ -106,6 +106,18 @@ void GEditableLine::InternalRender()
 	}
 }
 
+void GEditableLine::SetText( const TString& value )
+{
+	Clear();
+
+	int i = 0;
+	TCharacterEnumerator ce(value);
+	while(ce.MoveNext())
+	{
+		InsertCharacter(ce.Current,i++);
+	}
+}
+
 GTextBoxBase::GTextBoxBase()
 {
 	ClassID = GTEXTBOXBASE_CLASSID;
@@ -138,7 +150,7 @@ void GTextBoxBase::Render()
 	Line.RenderWithSelection(dRect.X,dRect.Y, ShowCaret);
 }
 
-void GTextBoxBase::KeyDown( ui32 keyID )
+void GTextBoxBase::OnKeyDown( ui32 keyID )
 {
 	if (keyID == Keys::Left)
 	{
@@ -171,8 +183,16 @@ void GTextBoxBase::KeyDown( ui32 keyID )
 	CaretEffect.ResetValue(true);
 }
 
-void GTextBoxBase::KeyPress( ui32 keyID )
+void GTextBoxBase::OnKeyPress( ui32 keyID )
 {
+	KeyEventArgs args;
+	args.KeyChar = keyID;
+	KeyPress.call(this, args);
+	if (args.Handled)
+	{
+		return;
+	}
+
 	if (keyID == Keys::BackSpace)
 	{
 		if (SelectionLength != 0)
@@ -215,7 +235,7 @@ void GTextBoxBase::KeyPress( ui32 keyID )
 	CaretEffect.ResetValue(true);
 }
 
-void GTextBoxBase::MouseDown( int x,int y, int button )
+void GTextBoxBase::OnMouseDown( int x,int y, int button )
 {
 	int hitpos = Line.Collide(x);
 	SelectionStart = hitpos;
@@ -228,13 +248,13 @@ void GTextBoxBase::MouseDown( int x,int y, int button )
 	Line.SelectionEnd = SelectionEnd;
 }
 
-void GTextBoxBase::MouseUp( int x,int y,int button )
+void GTextBoxBase::OnMouseUp( int x,int y,int button )
 {
-	MouseMove(x,y);
+	OnMouseMove(x,y);
 	Selecting = false;
 }
 
-void GTextBoxBase::MouseMove( int x,int y )
+void GTextBoxBase::OnMouseMove( int x,int y )
 {
 	if ( !Selecting ) return;
 	int hitpos = Line.Collide(x);
@@ -270,4 +290,16 @@ TString GTextBoxBase::get_Text()
 		sb.AppendUnicode(cb.Character);
 	}
 	return sb.ToString();
+}
+
+void GTextBoxBase::Clear()
+{
+	Line.Clear();
+	CaretPosition = 0;
+}
+
+void GTextBoxBase::set_Text( const TString& value )
+{
+	Line.SetText(value);
+	CaretPosition = value.Length;
 }

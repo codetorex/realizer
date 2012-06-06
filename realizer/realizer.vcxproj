@@ -103,6 +103,7 @@
     <ClInclude Include="gcomponents.h" />
     <ClInclude Include="gconsole.h" />
     <ClInclude Include="gdesktop.h" />
+    <ClInclude Include="gdropdowntext.h" />
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="gconsole.cpp" />
     <ClCompile Include="gdeskop.cpp" />
     <ClCompile Include="gdropdown.cpp" />
+    <ClCompile Include="gdropdowntext.cpp" />
     <ClCompile Include="gfont.cpp" />
     <ClCompile Include="gfontbmf.cpp" />
     <ClCompile Include="gfontcache.cpp" />

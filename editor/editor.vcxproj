@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClInclude Include="rdocument.h" />
     <ClInclude Include="rdocumentview.h" />
+    <ClInclude Include="reditorcommands.h" />
     <ClInclude Include="reditorskin.h" />
     <ClInclude Include="rproject.h" />
     <ClInclude Include="rstartpage.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="reditorcommands.cpp" />
     <ClCompile Include="rstartpagebutton.cpp" />
     <ClCompile Include="rdocument.cpp" />
     <ClCompile Include="rdocumentview.cpp" />

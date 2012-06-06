@@ -42,7 +42,7 @@ public:
 	void Render();
 	void Layout();
 
-	void MouseExit();
+	void OnMouseExit();
 };
 
 /**

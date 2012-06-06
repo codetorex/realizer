@@ -58,7 +58,7 @@ public:
 	{
 		if (MouseOn != obj)
 		{
-			MouseOn->MouseExit();
+			MouseOn->OnMouseExit();
 			MouseOn->MouseEntered = false;
 		}
 
@@ -66,7 +66,7 @@ public:
 		if ( !MouseOn->MouseEntered )
 		{
 			MouseOn->MouseEntered = true;
-			MouseOn->MouseEnter();
+			MouseOn->OnMouseEnter();
 		}
 	}
 

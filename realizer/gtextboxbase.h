@@ -181,6 +181,15 @@ public:
 		return Characters.Count;
 	}
 
+	void Clear()
+	{
+		SelectionStart = 0;
+		SelectionEnd = 0;
+		Characters.Clear();
+	}
+
+	void SetText(const TString& value);
+
 	void InternalRender();
 	void Render(int x,int y);
 
@@ -207,13 +216,16 @@ private:
 public:
 	GTextBoxBase();
 
-	void MouseDown(int x,int y, int button);
-	void MouseUp(int x,int y,int button);
-	void MouseMove(int x,int y);
+	void OnMouseDown(int x,int y, int button);
+	void OnMouseUp(int x,int y,int button);
+	void OnMouseMove(int x,int y);
 
-	void KeyDown(ui32 keyID);
+	void OnKeyDown(ui32 keyID);
 
-	void KeyPress(ui32 keyID);
+	void OnKeyPress(ui32 keyID);
+
+	event<KeyEvent> KeyPress;
+
 
 	int SelectionStart;
 	int SelectionLength;
@@ -226,8 +238,11 @@ public:
 	TColor32 SelectionBackGroundColor;
 
 	TString get_Text();
+	void set_Text(const TString& value);
 
 	TString get_SelectedText();
+
+	void Clear();
 
 	void Render();
 	void Update();

@@ -103,9 +103,9 @@ public:
 		return (RTextDocument*)Document;
 	}
 
-	void MouseWheel(int x,int y, int delta);
+	void OnMouseWheel(int x,int y, int delta);
 
-	void KeyDown(ui32 keyID);
+	void OnKeyDown(ui32 keyID);
 
 	void Render();
 	

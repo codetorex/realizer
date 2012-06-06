@@ -9,14 +9,14 @@ GScrollBarDrag::GScrollBarDrag()
 	Dragging = false;
 }
 
-void GScrollBarDrag::MouseDown( int x,int y, int button )
+void GScrollBarDrag::OnMouseDown( int x,int y, int button )
 {
 	DragPoint.SetVector(Master->X,Master->Y);
 	DragPos.SetVector(this->X,this->Y);
 	Dragging = true;
 }
 
-void GScrollBarDrag::MouseUp( int x,int y,int button )
+void GScrollBarDrag::OnMouseUp( int x,int y,int button )
 {
 	Dragging = false;
 }
@@ -45,10 +45,10 @@ void GScrollBarDrag::Update()
 	this->GObject::Update();
 }
 
-void GScrollBarDrag::MouseWheel( int x,int y, int delta )
+void GScrollBarDrag::OnMouseWheel( int x,int y, int delta )
 {
 	GScrollBar* p = (GScrollBar*)Parent;
-	p->MouseWheel(x,y,delta); // forward to parent
+	p->OnMouseWheel(x,y,delta); // forward to parent
 }
 
 GScrollBarButton::GScrollBarButton(): GTimeEffectActivation(true)
@@ -67,12 +67,12 @@ void GScrollBarButton::Update()
 	}
 }
 
-void GScrollBarButton::MouseUp( int x,int y,int button )
+void GScrollBarButton::OnMouseUp( int x,int y,int button )
 {
 	DisableTimeEffect();
 }
 
-void GScrollBarButton::MouseDown( int x,int y, int button )
+void GScrollBarButton::OnMouseDown( int x,int y, int button )
 {
 	EnableTimeEffect();
 }
@@ -200,25 +200,25 @@ void GScrollBar::Update()
 	}
 }
 
-void GScrollBar::MouseMove( int x,int y )
+void GScrollBar::OnMouseMove( int x,int y )
 {
-	this->GButtonBase::MouseMove(x,y);
+	this->GButtonBase::OnMouseMove(x,y);
 	mX = x;
 	mY = y;
 }
 
-void GScrollBar::MouseExit()
+void GScrollBar::OnMouseExit()
 {
-	this->GButtonBase::MouseExit();
+	this->GButtonBase::OnMouseExit();
 	DisableTimeEffect();
 }
 
-void GScrollBar::MouseUp( int x,int y,int button )
+void GScrollBar::OnMouseUp( int x,int y,int button )
 {
 	DisableTimeEffect();
 }
 
-void GScrollBar::MouseDown( int x,int y, int button )
+void GScrollBar::OnMouseDown( int x,int y, int button )
 {
 	EnableTimeEffect();
 }
@@ -238,7 +238,7 @@ void GScrollBar::setOrientation( GOrientation newOrientation )
 	}
 }
 
-void GScrollBar::MouseWheel( int x,int y, int delta )
+void GScrollBar::OnMouseWheel( int x,int y, int delta )
 {
 	setValue(Value - (delta * SmallChange));
 }

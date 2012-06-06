@@ -15,9 +15,9 @@ protected:
 public:
 	GButtonBase();
 
-	virtual void MouseExit();
-	virtual void MouseUp(int x,int y,int button);
-	virtual void MouseMove(int x,int y); 
+	virtual void OnMouseExit();
+	virtual void OnMouseUp(int x,int y,int button);
+	virtual void OnMouseMove(int x,int y); 
 
 	virtual void Clicked(int x, int y, int button) { };
 

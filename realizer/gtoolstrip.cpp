@@ -28,7 +28,7 @@ GToolStripButton::GToolStripButton()
 	DrawStyle = GDS_IMAGE;
 }
 
-void GToolStripButton::MouseMove( int x,int y )
+void GToolStripButton::OnMouseMove( int x,int y )
 {
 	if (Master->Focused == this)
 	{
@@ -47,12 +47,12 @@ void GToolStripButton::MouseMove( int x,int y )
 	}
 }
 
-void GToolStripButton::MouseExit()
+void GToolStripButton::OnMouseExit()
 {
 	GraphicState = 0;
 }
 
-void GToolStripButton::MouseUp( int x,int y,int button )
+void GToolStripButton::OnMouseUp( int x,int y,int button )
 {
 	if (MouseInside)
 	{
@@ -129,6 +129,23 @@ GToolStripButton* GToolStrip::AddButton( const TString& buttonName, GImage& imag
 	{
 		nb->DrawStyle = GDS_IMAGETEXT;
 	}
+
+	AddChild(nb);
+
+	return nb;
+}
+
+GToolStripButton* GToolStrip::AddButton( const TString& buttonName, NoArgEvent* event )
+{
+	GToolStripButton* nb = new GToolStripButton();
+	nb->SetRectangle(0,0,16,16);
+	nb->Text = buttonName;
+	if (event)
+	{
+		nb->Click += event;
+	}
+
+	nb->DrawStyle = GDS_TEXT;
 
 	AddChild(nb);
 

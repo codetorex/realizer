@@ -323,7 +323,7 @@ public:
 
 	void InitializeConsole(int _width, int _height, int _bufferheight = 0);
 
-	void KeyPress(ui32 keyID);
+	void OnKeyPress(ui32 keyID);
 
 	void DrawBg(float x,float y,  const TColor32& color);
 

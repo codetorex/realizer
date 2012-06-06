@@ -72,7 +72,7 @@ void GConsole::InitializeConsole( int _width, int _height, int _bufferheight /*=
 	ChangeHeight( _height * Font->Size );
 }
 
-void GConsole::KeyPress( ui32 keyID )
+void GConsole::OnKeyPress( ui32 keyID )
 {
 	if (keyID == Keys::Enter)
 	{

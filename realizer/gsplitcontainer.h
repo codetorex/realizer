@@ -20,8 +20,8 @@ private:
 public:
 	GSplitContainer();
 
-	void MouseDown(int x,int y, int button);
-	void MouseUp(int x,int y,int button);
+	void OnMouseDown(int x,int y, int button);
+	void OnMouseUp(int x,int y,int button);
 
 	GObject Panel1;
 	int Panel1MinSize;

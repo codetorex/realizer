@@ -14,7 +14,9 @@
 
 
 REditor Editor;
-
+REditorMenu EditorMenu;
+REditorEvents EditorEvents;
+REditorCommands EditorCommands;
 REditorResources Resources;
 
 
@@ -125,6 +127,9 @@ void REditor::InitializeMainGui()
 	EditorImages->AddImage("editor/newproject.png");
 	EditorImages->AddImage("editor/project.png");
 	EditorImages->AddImage("icons/fugue/32/folder-horizontal.png");
+	int newItemIcon = EditorImages->AddImage( "icons/fugue/blue-document--plus.png" );
+	int exiItemIcon = EditorImages->AddImage("icons/fugue/blue-document--arrow.png");
+	int newFolderIcon = EditorImages->AddImage("icons/fugue/folder--plus.png");
 
 	StartPage.NewProjectButton.Image.SetImage(EditorImages->GetImage(0));
 	StartPage.NewProjectButton.Margin.SetPadding(4,2);
@@ -136,14 +141,20 @@ void REditor::InitializeMainGui()
 	mainMenu->Dock = DCK_TOP;
 	Engine.GUI.Desktop->AddChild(mainMenu);
 
-	mainMenu->AddItem("File");
-	mainMenu->AddItem("Edit");
-	mainMenu->AddItem("View");
-	mainMenu->AddItem("Project");
-	mainMenu->AddItem("Debug");
-	mainMenu->AddItem("Tools");
-	mainMenu->AddItem("Help");
-	
+	EditorMenu.File    = mainMenu->AddItem("File");
+	EditorMenu.Edit    = mainMenu->AddItem("Edit");
+	EditorMenu.View    = mainMenu->AddItem("View");
+	EditorMenu.Project = mainMenu->AddItem("Project");
+	EditorMenu.Debug   = mainMenu->AddItem("Debug");
+	EditorMenu.Tools   = mainMenu->AddItem("Tools");
+	EditorMenu.Help    = mainMenu->AddItem("Help");
+
+	EditorMenu.Project->AddSubMenu("Add New Item",EditorImages->GetImage(newItemIcon), EditorEvents.AddNewItem);
+	EditorMenu.Project->AddSubMenu("Add Existing Item",EditorImages->GetImage(exiItemIcon), EditorEvents.AddExistingItem);
+	EditorMenu.Project->AddSubMenu("Add Folder",EditorImages->GetImage(newFolderIcon), EditorEvents.AddNewFolder);
+	EditorMenu.Project->AddSubMenu("Rename", EditorEvents.Rename);
+	EditorMenu.Project->Layout();
+
 	ProjectEditorSplit.SetRectangle(0,0,100,100);
 	ProjectEditorSplit.Dock = DCK_FILL;
 	Engine.GUI.Desktop->AddChild(&ProjectEditorSplit);
@@ -168,15 +179,18 @@ void REditor::InitializeMainGui()
 
 
 	ProjectViewImages = new GImageList(Skin->SkinTexture,Skin->Pack);
-	ProjectViewImages->AddImage( "icons/fugue/box.png" );
+	//ProjectViewImages->AddImage( "icons/fugue/box.png" );
+	ProjectViewImages->AddImage( "icons/fugue/block.png" );
 	ProjectViewImages->AddImage( "icons/fugue/folder.png");
-	int newItemIcon = ProjectViewImages->AddImage( "icons/fugue/blue-document--plus.png" );
 
 	ProjectToolbar.SetRectangle(0,0,100,100);
 	ProjectToolbar.Dock = DCK_TOP;
 	ProjectEditorSplit.Panel2.AddChild(&ProjectToolbar);
 
-	ProjectToolbar.AddButton("New Item", ProjectViewImages->GetImage(newItemIcon), GetHandler(this,&REditor::NewItem_Click));
+	ProjectToolbar.AddButton("Add New Item", EditorImages->GetImage(newItemIcon), EditorEvents.AddNewItem);
+	ProjectToolbar.AddButton("Add Existing Item", EditorImages->GetImage(exiItemIcon), EditorEvents.AddExistingItem);
+	ProjectToolbar.AddButton("Add New Folder", EditorImages->GetImage(newFolderIcon), EditorEvents.AddNewFolder);
+	ProjectToolbar.AddButton("Rename", EditorEvents.Rename);
 
 	ProjectView.SetRectangle(0,0,100,100);
 	ProjectView.Dock = DCK_FILL;
@@ -199,21 +213,4 @@ void REditor::InitializeMainGui()
 	Skin->SkinTexture->bitmap->Save(fs,TBitmapCodecs::Png);
 	fs->Close();
 #endif // _DEBUG
-}
-
-void REditor::NewProject()
-{
-	Editor.Project = new RProject();
-	Editor.Project->setProjectName("untitled");
-	
-	Editor.Project->Image = &ProjectViewImages->GetImage(0);
-	Editor.Project->TreeView = &ProjectView;
-	ProjectView.RootNode = Editor.Project;
-
-	// TODO: open a window and ask for project name
-}
-
-void REditor::NewItem_Click()
-{
-
 }
