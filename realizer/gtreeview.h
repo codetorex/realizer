@@ -109,7 +109,7 @@ public:
 
 	//GTreeNode* MouseOverNode;
 	GTreeNode* SelectedNode;
-	GTreeNode RootNode;
+	GTreeNode* RootNode;
 	bool CheckBoxes;
 
 	/// Node height will be determined by font size

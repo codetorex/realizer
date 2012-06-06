@@ -61,6 +61,11 @@ public:
 	{
 		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
 	}
+
+	inline void Draw90DegRotated(float x,float y, const TColor32& color)
+	{
+		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Height,y+Width,BottomRightCoord.X,TopLeftCoord.Y,TopLeftCoord.X,BottomRightCoord.Y,color);
+	}
 	
 	inline void Draw(float x,float y)
 	{

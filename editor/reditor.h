@@ -7,6 +7,12 @@
 #include "rpageview.h"
 #include "rstartpage.h"
 #include "reditorskin.h"
+#include "rproject.h"
+#include "gtreeview.h"
+#include "gsplitcontainer.h"
+#include "gtreeview.h"
+#include "gimagelist.h"
+#include "gtoolstrip.h"
 
 class GSchemedSkin;
 class GImageList;
@@ -29,12 +35,11 @@ private:
 	bool DebugInputEnabled;
 
 public:
-
 	REditor()
 	{
 		Flags.Set( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
+		Project = 0;
 	}
-
 
 	REditorSkin* Skin;
 
@@ -43,6 +48,16 @@ public:
 	RPageView MainPages; // TODO: make this splittable by attaching split container?
 
 	RStartPage StartPage;
+
+	GSplitContainer ProjectEditorSplit;
+
+	GImageList* ProjectViewImages;
+	GToolStrip ProjectToolbar;
+	GTreeView ProjectView;
+
+	RProject* Project;
+
+	void NewProject();
 
 	/// Monospaced font that is good for console and debug stuff
 	GFont* DebugFont;
@@ -56,6 +71,8 @@ public:
 	void Render();
 
 	void ActivateConsole(bool value);
+
+	void NewItem_Click();
 };
 
 extern REditor Editor;

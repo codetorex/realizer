@@ -10,6 +10,10 @@ enum GDebugMode
 	GDB_ALL
 };
 
+/**
+ * Also can be called as Window Provider.
+ * Can be overridden for GDI and window stuff when moved to raise
+ */
 class GDesktop: public GObject
 {
 private:

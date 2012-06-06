@@ -239,10 +239,10 @@ void RTestGUI::Initialize()
 	tv->ImageIndex = 3;
 	tv->ShowRoot = true;
 	tv->SetRectangle(10,10,200,200);
-	tv->RootNode.Image = &imgList->GetImage(3);
+	tv->RootNode->Image = &imgList->GetImage(3);
 	p3->AddChild(tv);
 
-	GTreeNode* nod = tv->RootNode.AddNode("Burak");
+	GTreeNode* nod = tv->RootNode->AddNode("Burak");
 	nod->Expanded = true;
 	nod->AddNode("Child 1");
 	GTreeNode* nod2 = nod->AddNode("Child 2");
@@ -260,9 +260,9 @@ void RTestGUI::Initialize()
 	nod->AddNode("Child 4");
 
 
-	tv->RootNode.AddNode("Karub");
-	tv->RootNode.AddNode("Alex");
-	tv->RootNode.Expanded = true;
+	tv->RootNode->AddNode("Karub");
+	tv->RootNode->AddNode("Alex");
+	tv->RootNode->Expanded = true;
 
 	Engine.GUI.Desktop->Layout();
 

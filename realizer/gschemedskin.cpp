@@ -415,7 +415,7 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 				DotLine[0].Draw(curX,y);
 				curX += 16;
 			}
-			bool isRootChild = n->Parent == &(n->TreeView->RootNode);
+			bool isRootChild = n->Parent == n->TreeView->RootNode;
 			if ((isRootChild && ShowRoot) || !isRootChild)
 			{
 				DotLine[lineimg].Draw(curX,y);
@@ -436,7 +436,7 @@ void GSchemedSkin::RenderTreeNode(GTreeNode* n, int x, int y)
 		
 	}
 
-	if (tv->ShowPlusMinus && (n->Nodes.Count > 0) && n != &tv->RootNode) // remove last condition if you want to see plus minus for root
+	if (tv->ShowPlusMinus && (n->Nodes.Count > 0) && n != tv->RootNode) // remove last condition if you want to see plus minus for root
 	{
 		/*if (!ShowRoot)
 		{

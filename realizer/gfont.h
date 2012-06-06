@@ -48,6 +48,14 @@ public:
 		Draw(x,y,color);
 	}
 
+	// TODO: test this
+	inline void DrawCharacterRotated(float x,float y, const TColor32& color)
+	{
+		x += YOffset;
+		y += XOffset;
+		Draw90DegRotated(x,y,color);
+	}
+
 	GKerning* Kerning; // Its kerning class, it can support kerning pairs too
 };
 

@@ -11,6 +11,8 @@ RStartPage::RStartPage()
 	Document = 0;
 
 	NewProjectButton.Text = "New Project";
+	NewProjectButton.Click += GetHandler(this, &RStartPage::NewProjectButton_Click);
+
 	OpenProjectButton.Text = "Open Project";
 }
 
@@ -41,4 +43,17 @@ void RStartPage::Layout()
 	OpenProjectButton.TranslateVector(0,40);
 
 	this->GObject::Layout();
+}
+
+void RStartPage::NewProjectButton_Click()
+{
+	if (Editor.Project)
+	{
+		throw NotImplementedException();
+		// ask for save the changes in current project
+	}
+	else
+	{
+		Editor.NewProject();
+	}
 }

@@ -503,9 +503,6 @@
     <ClCompile Include="gtoolstrip.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
-    <ClCompile Include="gdeskop.cpp">
-      <Filter>Source Files\Visual\GUI\Components</Filter>
-    </ClCompile>
     <ClCompile Include="gscrollbar.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClCompile>
@@ -529,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="gtreeview.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gdeskop.cpp">
+      <Filter>Source Files\Visual\GUI\Components\Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

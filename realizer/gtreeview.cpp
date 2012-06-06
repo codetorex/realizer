@@ -9,8 +9,10 @@ GTreeView::GTreeView()
 	ClassID = GTREEVIEW_CLASSID;
 	SelectedNode = 0;
 	CheckBoxes = false;
-	RootNode.TreeView = this;
-	RootNode.Text = "Root"; // TODO: change this
+
+	RootNode = new GTreeNode();
+	RootNode->TreeView = this;
+	RootNode->Text = "Root"; // TODO: change this
 
 	VBar.SetRectangle(0,0,100,100);
 	VBar.Dock = DCK_RIGHT;
@@ -87,7 +89,7 @@ void GTreeView::Layout()
 
 void GTreeView::UpdateRenderNode( GTreeNode* nd )
 {
-	if (!(!ShowRoot && nd == &RootNode))
+	if (!(!ShowRoot && nd == RootNode))
 	{
 		updateY += NodeHeight;
 		if (updateY > 0 && updateY < (Content.Height + NodeHeight))
@@ -124,7 +126,7 @@ void GTreeView::Update()
 		RenderNodes.Clear();
 		updateY = -VBar.Value;
 		int updateYStart = updateY;
-		UpdateRenderNode(&RootNode);
+		UpdateRenderNode(RootNode);
 		int updateYDiff = updateY - updateYStart;
 		if (updateYDiff != ViewHeight)
 		{

@@ -89,7 +89,7 @@ void GFontCache::SaveCache( TStream* cacheStream )
 	}*/
 	for (ui32 i=0;i<Entries.Count;i++)
 	{
-		rmlWriter->Serialize( &GFontEntry::MemberInfo, Entries.Item[i] );
+		rmlWriter->SerializeObject( &GFontEntry::MemberInfo, Entries.Item[i] );
 	}
 
 

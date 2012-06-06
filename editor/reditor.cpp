@@ -143,10 +143,15 @@ void REditor::InitializeMainGui()
 	mainMenu->AddItem("Debug");
 	mainMenu->AddItem("Tools");
 	mainMenu->AddItem("Help");
+	
+	ProjectEditorSplit.SetRectangle(0,0,100,100);
+	ProjectEditorSplit.Dock = DCK_FILL;
+	Engine.GUI.Desktop->AddChild(&ProjectEditorSplit);
 
 	MainPages.SetRectangle(0,0,100,100);
 	MainPages.Dock = DCK_FILL;
-	Engine.GUI.Desktop->AddChild(&MainPages);
+	//Engine.GUI.Desktop->AddChild(&MainPages);
+	ProjectEditorSplit.Panel1.AddChild(&MainPages);
 
 	MainPages.AddPage(&StartPage,0,true);
 
@@ -161,7 +166,25 @@ void REditor::InitializeMainGui()
 	doc->FilePath = "C:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
 	doc->LoadDocument();
 
-	
+
+	ProjectViewImages = new GImageList(Skin->SkinTexture,Skin->Pack);
+	ProjectViewImages->AddImage( "icons/fugue/box.png" );
+	ProjectViewImages->AddImage( "icons/fugue/folder.png");
+	int newItemIcon = ProjectViewImages->AddImage( "icons/fugue/blue-document--plus.png" );
+
+	ProjectToolbar.SetRectangle(0,0,100,100);
+	ProjectToolbar.Dock = DCK_TOP;
+	ProjectEditorSplit.Panel2.AddChild(&ProjectToolbar);
+
+	ProjectToolbar.AddButton("New Item", ProjectViewImages->GetImage(newItemIcon), GetHandler(this,&REditor::NewItem_Click));
+
+	ProjectView.SetRectangle(0,0,100,100);
+	ProjectView.Dock = DCK_FILL;
+	ProjectView.ShowRoot = true;
+	ProjectView.ShowLines = true;
+	ProjectView.ShowPlusMinus = true;
+	ProjectEditorSplit.SplitterDistance = (int)((float)Engine.Renderer.vWidth * 0.85f);
+	ProjectEditorSplit.Panel2.AddChild(&ProjectView);
 
 	MainPages.AddPage(tv,doc,false);
 	
@@ -176,4 +199,21 @@ void REditor::InitializeMainGui()
 	Skin->SkinTexture->bitmap->Save(fs,TBitmapCodecs::Png);
 	fs->Close();
 #endif // _DEBUG
+}
+
+void REditor::NewProject()
+{
+	Editor.Project = new RProject();
+	Editor.Project->setProjectName("untitled");
+	
+	Editor.Project->Image = &ProjectViewImages->GetImage(0);
+	Editor.Project->TreeView = &ProjectView;
+	ProjectView.RootNode = Editor.Project;
+
+	// TODO: open a window and ask for project name
+}
+
+void REditor::NewItem_Click()
+{
+
 }
