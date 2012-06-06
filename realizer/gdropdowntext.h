@@ -21,6 +21,8 @@ public:
 	event<NoArgEvent> Edited;
 
 
+	void SelectAll();
+
 	void SetText(const TString& value);
 
 	/**

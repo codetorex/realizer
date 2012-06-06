@@ -72,6 +72,7 @@ public:
 
 	GFont* DefaultFont;
 	TColor32 DefaultColor;
+	GSkin* Skin;
 
 	void UpdateCharacter(int startPos, int endPos)
 	{
@@ -241,6 +242,10 @@ public:
 	void set_Text(const TString& value);
 
 	TString get_SelectedText();
+
+	void SetSelection(int start, int length);
+
+	void SelectAll();
 
 	void Clear();
 

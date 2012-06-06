@@ -67,7 +67,8 @@ void GEditableLine::RenderWithSelection( int x,int y, int caret )
 			}
 
 			// TODO: improve this shit
-			DrawRectangle(startX,0,endX,15, TColors::Grey);
+			//DrawRectangle(startX,0,endX,15, TColors::Grey);
+			Skin->RenderHilight(startX,0,endX,15);
 		}
 
 		InternalRender();
@@ -147,6 +148,7 @@ void GTextBoxBase::Render()
 	}
 
 	const IRectangle& dRect = DrawRegion;
+	Line.Skin = Skin;
 	Line.RenderWithSelection(dRect.X,dRect.Y, ShowCaret);
 }
 
@@ -157,12 +159,14 @@ void GTextBoxBase::OnKeyDown( ui32 keyID )
 		CaretPosition--;
 		if (CaretPosition < 0)
 			CaretPosition = 0;
+		SetSelection(CaretPosition,0); // reset selection
 	}
 	else if (keyID == Keys::Right)
 	{
 		CaretPosition++;
 		if (CaretPosition > Line.Characters.Count)
 			CaretPosition = Line.Characters.Count;
+		SetSelection(CaretPosition,0); // reset selection
 	}
 	else if (keyID == Keys::Delete)
 	{
@@ -302,4 +306,26 @@ void GTextBoxBase::set_Text( const TString& value )
 {
 	Line.SetText(value);
 	CaretPosition = value.Length;
+}
+
+void GTextBoxBase::SelectAll()
+{
+	Line.SelectAll();
+	SelectionStart = Line.SelectionStart;
+	SelectionEnd = Line.SelectionEnd;
+	SelectionLength = SelectionEnd - SelectionStart;
+}
+
+void GTextBoxBase::SetSelection( int start, int length )
+{
+	SelectionStart = start;
+	SelectionEnd = start + length;
+	if (SelectionEnd > Line.Characters.Count)
+	{
+		SelectionEnd = Line.Characters.Count;
+	}
+
+	Line.SelectionStart = SelectionStart;
+	Line.SelectionEnd = SelectionEnd;
+	SelectionLength = SelectionEnd - SelectionStart;
 }

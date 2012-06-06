@@ -54,3 +54,8 @@ void GDropDownText::SetText( const TString& value )
 {
 	EditBox.set_Text(value);
 }
+
+void GDropDownText::SelectAll()
+{
+	EditBox.SelectAll();
+}

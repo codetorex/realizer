@@ -314,4 +314,5 @@ void GTreeNode::BeginEdit()
 	textPos += TreeView->DrawRegion;
 	TreeView->EditDropDown.Show(textPos.X,textPos.Y,editWidth);
 	TreeView->EditDropDown.SetText(Text);
+	TreeView->EditDropDown.SelectAll();
 }
