@@ -28,14 +28,20 @@ public:
 
 	GImageList* EditorImages;
 
+	GImage* NewProjectLargeIcon;
+	GImage* ProjectLargeIcon;
+	GImage* OpenProjectLargeIcon;
+
 	GImage* NewProjectIcon;
-	GImage* ProjectIcon;
 	GImage* OpenProjectIcon;
+	GImage* SaveProjectIcon;
 
 	GImage* NewItemIcon;
 	GImage* ExistingItemIcon;
 	GImage* NewFolderIcon;
 	GImage* RenameIcon;
+
+	GImage* Fugue(const TString& fugueName);
 
 	void Initialize();
 };

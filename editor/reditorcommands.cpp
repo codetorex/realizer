@@ -47,3 +47,10 @@ void REditorCommands::NewProject()
 	// TODO: open a window and ask for project name
 }
 
+void REditorCommands::SaveProject()
+{
+	if (Editor.Project)
+	{
+		Editor.Project->SaveAs("c://TestProject.xml");
+	}
+}

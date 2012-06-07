@@ -2,17 +2,22 @@
 #include "rproject.h"
 #include "txmlwriter.h"
 
-void RProjectFolder::Serialize( TXMLWriter& xw )
+void RProjectNode::SerializeNodes(TXMLWriter& xw)
 {
-	xw.WriteStartElement("folder");
-	xw.WriteAttributeString("name", Text);
-
 	TArrayEnumerator<GTreeNode*> nd(Nodes);
 	while(nd.MoveNext())
 	{
 		RProjectNode* pn = (RProjectNode*)nd.Current;
 		pn->Serialize(xw);
 	}
+}
+
+void RProjectFolder::Serialize( TXMLWriter& xw )
+{
+	xw.WriteStartElement("folder");
+	xw.WriteAttributeString("name", Text);
+
+	SerializeNodes(xw);
 
 	xw.WriteEndElement();
 }
@@ -28,6 +33,9 @@ void RProject::Serialize( TXMLWriter& xw )
 {
 	xw.WriteStartElement("project");
 	xw.WriteAttributeString("name",ProjectName);
+
+	SerializeNodes(xw);
+
 	xw.WriteEndElement();
 }
 
@@ -56,4 +64,5 @@ void RProject::SaveAs( const TString& projectPath )
 
 	xw.Close();
 }
+
 

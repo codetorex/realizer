@@ -12,6 +12,7 @@ public:
 	void Rename();
 
 	void NewProject();
+	void SaveProject();
 };
 
 extern REditorCommands EditorCommands;
@@ -26,6 +27,7 @@ public:
 		AddNewFolder    = GetHandler(&EditorCommands, &REditorCommands::AddNewFolder);
 		NewProject      = GetHandler(&EditorCommands, &REditorCommands::NewProject);
 		Rename          = GetHandler(&EditorCommands, &REditorCommands::Rename);
+		SaveProject     = GetHandler(&EditorCommands, &REditorCommands::SaveProject);
 	}
 
 	GObject::NoArgEvent* AddNewItem;
@@ -33,6 +35,7 @@ public:
 	GObject::NoArgEvent* AddNewFolder;
 	GObject::NoArgEvent* NewProject;
 	GObject::NoArgEvent* Rename;
+	GObject::NoArgEvent* SaveProject;
 };
 
 extern REditorEvents EditorEvents;

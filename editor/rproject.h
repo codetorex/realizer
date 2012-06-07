@@ -24,6 +24,8 @@ public:
 	virtual void UpdateText() {}
 
 	virtual void Serialize(TXMLWriter& xw) = 0;
+
+	void SerializeNodes(TXMLWriter& xw);
 };
 
 /**
