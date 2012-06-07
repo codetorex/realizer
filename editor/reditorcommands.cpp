@@ -23,7 +23,7 @@ void REditorCommands::AddNewFolder()
 		newFolder->Text = "New Folder";
 		newFolder->Image = &Editor.ProjectViewImages->GetImage(1);
 		pn->AddNode(newFolder);
-		// newFolder->StartEditingText(true);
+		newFolder->BeginEdit();
 	}
 }
 

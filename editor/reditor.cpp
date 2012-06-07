@@ -75,9 +75,6 @@ void REditor::LoadResources()
 		Engine.Command.Start(&DebugConsole->Buffer);
 		Engine.Command.ConnectAsLogOutput(); // TODO: make this somewhere internal?
 
-		Resources.RealizerLogo = Engine.Textures.LoadTexture("realizer.png");
-		Resources.StartPageTexture = Engine.Textures.LoadTexture("editor/start-page.png");
-
 		InitializeMainGui();
 	}
 	/*catch( Exception& e )
@@ -121,39 +118,55 @@ void REditor::ActivateConsole( bool value )
 	}
 }
 
+void REditorResources::Initialize()
+{
+	EditorImages = new GImageList(Editor.Skin->SkinTexture, Editor.Skin->Pack);
+
+
+	RealizerLogo = Engine.Textures.LoadTexture("realizer.png");
+	StartPageTexture = Engine.Textures.LoadTexture("editor/start-page.png");
+
+	/// TODO: load these paths from somewhere else
+	NewProjectIcon = EditorImages->AddImage("editor/newproject.png");
+	ProjectIcon = EditorImages->AddImage("editor/project.png");
+	OpenProjectIcon = EditorImages->AddImage("icons/fugue/32/folder-horizontal.png");
+	NewItemIcon = EditorImages->AddImage( "icons/fugue/blue-document--plus.png" );
+	ExistingItemIcon = EditorImages->AddImage("icons/fugue/blue-document--arrow.png");
+	NewFolderIcon = EditorImages->AddImage("icons/fugue/folder--plus.png");
+	RenameIcon = EditorImages->AddImage("icons/fugue/pencil-field.png");
+}
+
+void REditorMenu::Initialize()
+{
+	MainMenu = new GMenuStrip();
+	MainMenu->SetRectangle(0,0,100,20);
+	MainMenu->Dock = DCK_TOP;
+	Engine.GUI.Desktop->AddChild(MainMenu);
+
+	EditorMenu.File    = MainMenu->AddItem("File");
+	EditorMenu.Edit    = MainMenu->AddItem("Edit");
+	EditorMenu.View    = MainMenu->AddItem("View");
+	EditorMenu.Project = MainMenu->AddItem("Project");
+	EditorMenu.Debug   = MainMenu->AddItem("Debug");
+	EditorMenu.Tools   = MainMenu->AddItem("Tools");
+	EditorMenu.Help    = MainMenu->AddItem("Help");
+
+	EditorMenu.Project->AddSubMenu("Add New Item",*Resources.NewItemIcon, EditorEvents.AddNewItem);
+	EditorMenu.Project->AddSubMenu("Add Existing Item",*Resources.ExistingItemIcon, EditorEvents.AddExistingItem);
+	EditorMenu.Project->AddSubMenu("Add Folder",*Resources.NewFolderIcon, EditorEvents.AddNewFolder);
+	EditorMenu.Project->AddSubMenu("Rename", *Resources.RenameIcon,EditorEvents.Rename);
+	EditorMenu.Project->Layout();
+}
+
 void REditor::InitializeMainGui()
 {
-	EditorImages = new GImageList(Skin->SkinTexture, Skin->Pack);
-	EditorImages->AddImage("editor/newproject.png");
-	EditorImages->AddImage("editor/project.png");
-	EditorImages->AddImage("icons/fugue/32/folder-horizontal.png");
-	int newItemIcon = EditorImages->AddImage( "icons/fugue/blue-document--plus.png" );
-	int exiItemIcon = EditorImages->AddImage("icons/fugue/blue-document--arrow.png");
-	int newFolderIcon = EditorImages->AddImage("icons/fugue/folder--plus.png");
+	Resources.Initialize();
+	EditorMenu.Initialize();
 
-	StartPage.NewProjectButton.Image.SetImage(EditorImages->GetImage(0));
+	StartPage.NewProjectButton.Image.SetImage(*Resources.NewProjectIcon);
 	StartPage.NewProjectButton.Margin.SetPadding(4,2);
-	StartPage.OpenProjectButton.Image.SetImage(EditorImages->GetImage(2));
+	StartPage.OpenProjectButton.Image.SetImage(*Resources.OpenProjectIcon);
 	StartPage.OpenProjectButton.Margin.SetPadding(4,2);
-
-	GMenuStrip* mainMenu = new GMenuStrip();
-	mainMenu->SetRectangle(0,0,100,20);
-	mainMenu->Dock = DCK_TOP;
-	Engine.GUI.Desktop->AddChild(mainMenu);
-
-	EditorMenu.File    = mainMenu->AddItem("File");
-	EditorMenu.Edit    = mainMenu->AddItem("Edit");
-	EditorMenu.View    = mainMenu->AddItem("View");
-	EditorMenu.Project = mainMenu->AddItem("Project");
-	EditorMenu.Debug   = mainMenu->AddItem("Debug");
-	EditorMenu.Tools   = mainMenu->AddItem("Tools");
-	EditorMenu.Help    = mainMenu->AddItem("Help");
-
-	EditorMenu.Project->AddSubMenu("Add New Item",EditorImages->GetImage(newItemIcon), EditorEvents.AddNewItem);
-	EditorMenu.Project->AddSubMenu("Add Existing Item",EditorImages->GetImage(exiItemIcon), EditorEvents.AddExistingItem);
-	EditorMenu.Project->AddSubMenu("Add Folder",EditorImages->GetImage(newFolderIcon), EditorEvents.AddNewFolder);
-	EditorMenu.Project->AddSubMenu("Rename", EditorEvents.Rename);
-	EditorMenu.Project->Layout();
 
 	ProjectEditorSplit.SetRectangle(0,0,100,100);
 	ProjectEditorSplit.Dock = DCK_FILL;
@@ -187,10 +200,10 @@ void REditor::InitializeMainGui()
 	ProjectToolbar.Dock = DCK_TOP;
 	ProjectEditorSplit.Panel2.AddChild(&ProjectToolbar);
 
-	ProjectToolbar.AddButton("Add New Item", EditorImages->GetImage(newItemIcon), EditorEvents.AddNewItem);
-	ProjectToolbar.AddButton("Add Existing Item", EditorImages->GetImage(exiItemIcon), EditorEvents.AddExistingItem);
-	ProjectToolbar.AddButton("Add New Folder", EditorImages->GetImage(newFolderIcon), EditorEvents.AddNewFolder);
-	ProjectToolbar.AddButton("Rename", EditorEvents.Rename);
+	ProjectToolbar.AddButton("Add New Item", *Resources.NewItemIcon, EditorEvents.AddNewItem);
+	ProjectToolbar.AddButton("Add Existing Item", *Resources.ExistingItemIcon, EditorEvents.AddExistingItem);
+	ProjectToolbar.AddButton("Add New Folder", *Resources.NewFolderIcon, EditorEvents.AddNewFolder);
+	ProjectToolbar.AddButton("Rename",*Resources.RenameIcon, EditorEvents.Rename);
 
 	ProjectView.SetRectangle(0,0,100,100);
 	ProjectView.Dock = DCK_FILL;
@@ -214,3 +227,5 @@ void REditor::InitializeMainGui()
 	fs->Close();
 #endif // _DEBUG
 }
+
+

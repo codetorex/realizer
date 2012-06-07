@@ -15,8 +15,9 @@ void GToolStripButton::Render()
 
 	if (DrawStyle == GDS_TEXT || DrawStyle == GDS_IMAGETEXT)
 	{
-		const IRectangle& dRect = DrawRegion;
-		Font->Render(Text,dRect.X + Content.X + TextX,dRect.Y + Content.Y + TextY,ForeColor);
+		IRectangle dRect = DrawRegion;
+		dRect += Content;
+		Font->Render(Text,dRect.X + TextX,dRect.Y + TextY,ForeColor);
 	}
 
 }
@@ -62,31 +63,71 @@ void GToolStripButton::OnMouseUp( int x,int y,int button )
 
 void GToolStripButton::Layout()
 {
-	int reqWidth = 0;
-	int reqHeight = 0;
+	int reqWidth,reqHeight,textWidth;
 
-	GObject* p = (GObject*)Parent;
-	if (Image.Visible && (DrawStyle == GDS_IMAGE || DrawStyle == GDS_IMAGETEXT))
+	OwnObject(&Image);
+
+	if (!Image.Visible)
 	{
-		reqWidth += Image.Width;
-		reqHeight += Image.Height;
+		if (DrawStyle == GDS_IMAGE || DrawStyle == GDS_IMAGETEXT)
+		{
+			DrawStyle = GDS_TEXT;
+			return;
+		}
 	}
 
 	if (DrawStyle == GDS_TEXT || DrawStyle == GDS_IMAGETEXT)
 	{
 		TCharacterEnumerator s(Text);
-		reqWidth += 4 + Font->GetStringWidth(s) + 4;
+		textWidth = 4 + Font->GetStringWidth(s) + 4;
+	}
+
+	switch( DrawStyle )
+	{
+	case GDS_IMAGE:
+		reqWidth = Image.Width;
+		reqHeight = Image.Height;
+		break;
+
+	case GDS_IMAGETEXT:
+		reqWidth = Image.Width + textWidth;
+		reqHeight = MathDriver::Max(Image.Height, Font->Size);
+		Image.Move(0,(Content.Height - Image.Height) / 2);
+		Image.SetParent(this);
+		TextX = Image.Right() + 4;
+		break;
+
+	case GDS_TEXT:
+		reqWidth = textWidth;
+		reqHeight = Font->Size;
+		TextX = 4;
+		break;
 	}
 
 	Skin->LayoutToolButton(this); // get the margins?
-	ChangeHeight((Height - Content.Height) + reqHeight);
-	ChangeWidth((Width - Content.Width) + reqWidth);
-	Skin->LayoutToolButton(this); // reset the margins?
-	
-	Image.Move(0,(Content.Height - Image.Height) / 2);
-	Image.SetParent(this);
+	ChangeHeight(Border.TotalVerticalPad() + reqHeight);
+	ChangeWidth(Border.TotalHorizontalPad() + reqWidth);
 
-	TextX = Image.Right() + 4;
+	// TODO: Align image and text to content by Align paramaters of this object
+
+	/**
+	 * Hmm best solution so far.
+	 */
+	if (Parent)
+	{
+		GObject* p = (GObject*)Parent;
+
+		TLinkedListEnumerator<GObject*> le(p);
+		while(le.MoveNext())
+		{
+			if (Height < le.Current->Height)
+			{
+				ChangeHeight(le.Current->Height);
+			}
+		}
+	}
+
+	UpdateContent();
 	TextY = (Content.Height - Font->Height) / 2;
 }
 

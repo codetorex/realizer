@@ -160,12 +160,14 @@ void GTreeView::OnMouseUp( int x,int y,int button )
 
 	if (button == 0)
 	{
-		cNode->Expanded = !cNode->Expanded;
-		Layout();
+		if (SelectedNode == cNode)
+		{
+			cNode->Expanded = !cNode->Expanded;
+			Layout();
+		}
 	}
 
 	SelectedNode = cNode;
-	
 }
 
 GTreeNode* GTreeView::GetNodeAt( int x, int y )
@@ -258,8 +260,10 @@ IPosition GTreeNode::GetTextPosition()
 	}
 
 
-	IPosition result;
-	result.X =  + (16 * (TreeView->ShowRoot ? Level - 1: Level));
+*/
+
+	/*IPosition result;
+	result.X =  + (16 * (TreeView->ShowRoot ? Level : Level - 1));
 	if (Image)
 	{
 		result.X += Image->Width + 5;
@@ -272,7 +276,10 @@ IPosition GTreeNode::GetTextPosition()
 		throw Exception("wtf");
 	}
 	result.Y += ItemIndex * TreeView->NodeHeight;
-	
+	result.Y += (TreeView->NodeHeight - TreeView->Font->Height) / 2;
+
+	result += TreeView->Content;
+
 	return result;*/
 }
 
@@ -297,16 +304,12 @@ void GTreeView::EditDropDown_Edited()
 
 void GTreeNode::BeginEdit()
 {
-	if (!IsVisible)
-	{
-		throw Exception("wtf");
-		// TODO: implement ensure visible thing
-	}
-
 	if (TreeView->EditingNode)
 	{
 		return; // ALREADY EDİTİNG SOMETHING ELSE
 	}
+
+	EnsureVisible();
 
 	TreeView->EditingNode = this;
 	IPosition textPos = GetTextPosition();
@@ -315,4 +318,24 @@ void GTreeNode::BeginEdit()
 	TreeView->EditDropDown.Show(textPos.X,textPos.Y,editWidth);
 	TreeView->EditDropDown.SetText(Text);
 	TreeView->EditDropDown.SelectAll();
+}
+
+void GTreeNode::EnsureVisible()
+{
+	GTreeNode* p = Parent;
+	while(p)
+	{
+		p->Expanded = true;
+		p = p->Parent;
+	}
+
+	// TODO: calculate position of this shit and move treeview scrollbar accordignly
+
+	/**
+	 * WELL THIS IS A HACKY WAY TO GET TEXT POSITION :(
+	 * AND I AM TOO LAZY TO FIX GetTextPosition
+	 * But WHO Cares?
+	 */
+	TreeView->Update();
+	TreeView->Render();
 }

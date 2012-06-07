@@ -22,7 +22,7 @@ void GImageList::Initialize( int _width, int _height )
 	TextureSize.SetSize(_width,_height);
 }
 
-int GImageList::AddImage( TBitmap* bmp )
+GImage* GImageList::AddImage( TBitmap* bmp )
 {
 	if (BaseTexture == 0)
 	{
@@ -41,13 +41,13 @@ int GImageList::AddImage( TBitmap* bmp )
 	r->TexturePart.Initialize(*BaseTexture, *place);
 	Images.Add(r);
 
-	return (Images.Count - 1);
+	return r;
 }
 
-int GImageList::AddImage( const TString& path )
+GImage* GImageList::AddImage( const TString& path )
 {
 	TBitmap* bmp = Engine.Textures.LoadToBitmap(path);
-	int result = AddImage(bmp);
+	GImage* result = AddImage(bmp);
 	delete bmp;
 	return result;
 }

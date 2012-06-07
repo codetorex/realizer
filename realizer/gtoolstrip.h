@@ -15,11 +15,11 @@ private:
 public:
 	GToolStripButton();
 
-	GItemDrawStyles DrawStyle;
-
 	GImage Image;
 
 	int GraphicState;
+
+	GItemDrawStyles DrawStyle;
 
 	void OnMouseExit();
 	void OnMouseUp(int x,int y,int button);

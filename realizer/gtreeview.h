@@ -78,6 +78,8 @@ public:
 	void BeginEdit();
 	void EndEdit(bool cancel);
 
+	void EnsureVisible();
+
 
 	inline GTreeNode* NextNode()
 	{
@@ -90,6 +92,14 @@ public:
 		}
 
 		return 0;
+	}
+
+	void UpdateChildIndexes()
+	{
+		for (ui32 i=0;i<Nodes.Count;i++)
+		{
+			Nodes[i]->Index = i;
+		}
 	}
 
 	/**

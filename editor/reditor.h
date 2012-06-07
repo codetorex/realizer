@@ -26,11 +26,25 @@ public:
 	VTexture* RealizerLogo;
 	VTexture* StartPageTexture;
 
+	GImageList* EditorImages;
+
+	GImage* NewProjectIcon;
+	GImage* ProjectIcon;
+	GImage* OpenProjectIcon;
+
+	GImage* NewItemIcon;
+	GImage* ExistingItemIcon;
+	GImage* NewFolderIcon;
+	GImage* RenameIcon;
+
+	void Initialize();
 };
 
 class REditorMenu
 {
 public:
+	GMenuStrip* MainMenu;
+
 	GMenuItem* File;
 	GMenuItem* Edit;
 	GMenuItem* View;
@@ -38,6 +52,8 @@ public:
 	GMenuItem* Debug;
 	GMenuItem* Tools;
 	GMenuItem* Help;
+
+	void Initialize();
 };
 
 extern REditorMenu EditorMenu;

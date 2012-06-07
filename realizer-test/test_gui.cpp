@@ -60,12 +60,15 @@ void RTestGUI::Initialize()
 	testWin->AddChild(testBut2);
 	testWin->AddChild(testMenu);
 
-	GImageList* imgList = new GImageList(TestSkin->SkinTexture, TestSkin->Pack);
+
+	throw NotImplementedException();
+	// IMPLEMENT THESE
+	/*GImageList* imgList = new GImageList(TestSkin->SkinTexture, TestSkin->Pack);
 	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/wand.png") );
 	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/page_white.png") );
 	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/disk.png") );
 	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/fugue/folder.png") );
-	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/folder.png") );
+	imgList->AddImage( Engine.Textures.LoadToBitmap("icons/silk/folder.png") );*/
 
 
 	GMenuItem* fileMenu = testMenu->AddItem("File");

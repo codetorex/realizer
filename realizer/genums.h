@@ -60,6 +60,7 @@ enum GenericGraphicState
 
 enum GItemDrawStyles
 {
+	GDS_UNDEFINED = 0,
 	GDS_TEXT = 1,
 	GDS_IMAGE = 2,
 	GDS_IMAGETEXT = 3,

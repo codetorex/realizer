@@ -31,9 +31,9 @@ public:
 
 	void Initialize(int _width, int _height);
 
-	int AddImage(TBitmap* bmp);
+	GImage* AddImage(TBitmap* bmp);
 
-	int AddImage(const TString& path);
+	GImage* AddImage(const TString& path);
 
 	GImage& GetImage(int index)
 	{
