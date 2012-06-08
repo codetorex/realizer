@@ -28,6 +28,9 @@
     <Filter Include="Editors\GUI Editor">
       <UniqueIdentifier>{d15106b9-fb54-4577-aa99-276843a34363}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project">
+      <UniqueIdentifier>{d9364e62-1d8b-4d14-a874-8d8a61ec3bcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="reditor.h">
@@ -54,9 +57,6 @@
     <ClInclude Include="rtextdocument.h">
       <Filter>Editors\Text Editor</Filter>
     </ClInclude>
-    <ClInclude Include="rproject.h">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="reditorskin.h">
       <Filter>Base</Filter>
     </ClInclude>
@@ -65,6 +65,15 @@
     </ClInclude>
     <ClInclude Include="reditorcommands.h">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="rproject.h">
+      <Filter>Project</Filter>
+    </ClInclude>
+    <ClInclude Include="rprojectfolder.h">
+      <Filter>Project</Filter>
+    </ClInclude>
+    <ClInclude Include="rprojectsource.h">
+      <Filter>Project</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,14 +104,20 @@
     <ClCompile Include="rdocument.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="rproject.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
     <ClCompile Include="rstartpagebutton.cpp">
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="reditorcommands.cpp">
       <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="rproject.cpp">
+      <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="rprojectfolder.cpp">
+      <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="rprojectsource.cpp">
+      <Filter>Project</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

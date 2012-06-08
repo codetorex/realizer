@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rproject.h"
 #include "txmlwriter.h"
+#include "reditor.h"
 
 void RProjectNode::SerializeNodes(TXMLWriter& xw)
 {
@@ -10,23 +11,6 @@ void RProjectNode::SerializeNodes(TXMLWriter& xw)
 		RProjectNode* pn = (RProjectNode*)nd.Current;
 		pn->Serialize(xw);
 	}
-}
-
-void RProjectFolder::Serialize( TXMLWriter& xw )
-{
-	xw.WriteStartElement("folder");
-	xw.WriteAttributeString("name", Text);
-
-	SerializeNodes(xw);
-
-	xw.WriteEndElement();
-}
-
-void RProjectSource::Serialize( TXMLWriter& xw )
-{
-	xw.WriteStartElement("source");
-	xw.WriteAttributeString("path", FilePath);
-	xw.WriteEndElement();
 }
 
 void RProject::Serialize( TXMLWriter& xw )
@@ -65,4 +49,10 @@ void RProject::SaveAs( const TString& projectPath )
 	xw.Close();
 }
 
+RProject::RProject()
+{
+	Text = "Project";
+	Type = RProjectNode::RS_PROJECT;
+	Image = Resources.PVProject;
+}
 

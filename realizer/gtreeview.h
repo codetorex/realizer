@@ -39,6 +39,11 @@ public:
 		Level = 0;
 	}
 
+	~GTreeNode()
+	{
+		Nodes.DeletePointers(); // this is correct right?
+	}
+
 	void AddNode(GTreeNode* node);
 
 	GTreeNode* AddNode(const TString& nodeText, ui32 image, ui32 selectedImage);

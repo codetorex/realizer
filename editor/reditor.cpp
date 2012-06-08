@@ -134,10 +134,17 @@ void REditorResources::Initialize()
 	ExistingItemIcon     = Fugue("blue-document--arrow.png");
 	NewFolderIcon        = Fugue("folder--plus.png");
 	RenameIcon           = Fugue("pencil-field.png");
+	ImportFolderIcon	 = Fugue("folder-import.png");
 
 	NewProjectIcon       = Fugue("block--plus.png");
 	OpenProjectIcon      = Fugue("folder-horizontal-open.png");
 	SaveProjectIcon      = Fugue("disk.png");
+
+	PVProject			 = Fugue("block.png");
+	PVFolder			 = Fugue("blue-folder.png");
+	PVLiveFolder		 = Fugue("folder.png");
+	PVDocument			 = Fugue("document.png");
+	PVImage				 = Fugue("image.png");
 }
 
 GImage* REditorResources::Fugue( const TString& fugueName )
@@ -169,6 +176,7 @@ void REditorMenu::Initialize()
 	Project->AddSubMenu("Add Existing Item",*Resources.ExistingItemIcon, EditorEvents.AddExistingItem);
 	Project->AddSubMenu("Add Folder",*Resources.NewFolderIcon, EditorEvents.AddNewFolder);
 	Project->AddSubMenu("Rename", *Resources.RenameIcon,EditorEvents.Rename);
+	Project->AddSubMenu("Import Live Folder", *Resources.ImportFolderIcon, EditorEvents.ImportFolder);
 	Project->Layout();
 }
 
@@ -176,6 +184,8 @@ void REditor::InitializeMainGui()
 {
 	Resources.Initialize();
 	EditorMenu.Initialize();
+
+	RProjectSourceTypeManager::Instance.InitializeDefaultTypes();
 
 	StartPage.NewProjectButton.Image.SetImage(*Resources.NewProjectLargeIcon);
 	StartPage.NewProjectButton.Margin.SetPadding(4,2);
@@ -205,11 +215,6 @@ void REditor::InitializeMainGui()
 	doc->LoadDocument();
 
 
-	ProjectViewImages = new GImageList(Skin->SkinTexture,Skin->Pack);
-	//ProjectViewImages->AddImage( "icons/fugue/box.png" );
-	ProjectViewImages->AddImage( "icons/fugue/block.png" );
-	ProjectViewImages->AddImage( "icons/fugue/folder.png");
-
 	ProjectToolbar.SetRectangle(0,0,100,100);
 	ProjectToolbar.Dock = DCK_TOP;
 	ProjectEditorSplit.Panel2.AddChild(&ProjectToolbar);
@@ -218,6 +223,7 @@ void REditor::InitializeMainGui()
 	ProjectToolbar.AddButton("Add Existing Item", *Resources.ExistingItemIcon, EditorEvents.AddExistingItem);
 	ProjectToolbar.AddButton("Add New Folder", *Resources.NewFolderIcon, EditorEvents.AddNewFolder);
 	ProjectToolbar.AddButton("Rename",*Resources.RenameIcon, EditorEvents.Rename);
+	ProjectToolbar.AddButton("Import Folder",*Resources.ImportFolderIcon, EditorEvents.ImportFolder);
 
 	ProjectView.SetRectangle(0,0,100,100);
 	ProjectView.Dock = DCK_FILL;

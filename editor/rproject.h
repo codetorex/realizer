@@ -14,9 +14,8 @@ public:
 	{
 		RS_PROJECT,
 		RS_FOLDER,
-		RS_CODE_CPP,
-		RS_CODE_H,
-		RS_TERRAIN,
+		RS_LIVEFOLDER,
+		RS_SOURCE,
 	};
 
 	RNodeTypes Type;
@@ -28,37 +27,10 @@ public:
 	void SerializeNodes(TXMLWriter& xw);
 };
 
-/**
- * Folder like stuff.
- */
-class RProjectFolder: public RProjectNode
-{
-public:
-	RProjectFolder()
-	{
-		Type = RProjectNode::RS_FOLDER;
-	}
-
-	void Serialize(TXMLWriter& xw);
-};
-
-class RProjectSource: public RProjectNode
-{
-public:
-	TString FilePath;
-
-	void Serialize(TXMLWriter& xw);
-};
-
 class RProject: public RProjectNode
 {
 public:
-	RProject()
-	{
-		Text = "Project";
-		Type = RProjectNode::RS_PROJECT;
-		
-	}
+	RProject();
 
 	TString FilePath;
 	TString ProjectName;
@@ -92,6 +64,9 @@ public:
 
 	void Serialize(TXMLWriter& xw);
 };
+
+#include "rprojectfolder.h"
+#include "rprojectsource.h"
 
 
 #endif

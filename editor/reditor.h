@@ -40,6 +40,13 @@ public:
 	GImage* ExistingItemIcon;
 	GImage* NewFolderIcon;
 	GImage* RenameIcon;
+	GImage* ImportFolderIcon;
+
+	GImage* PVProject;
+	GImage* PVFolder;
+	GImage* PVLiveFolder;
+	GImage* PVDocument;
+	GImage* PVImage;
 
 	GImage* Fugue(const TString& fugueName);
 
@@ -89,7 +96,6 @@ public:
 
 	GSplitContainer ProjectEditorSplit;
 
-	GImageList* ProjectViewImages;
 	GToolStrip ProjectToolbar;
 	GTreeView ProjectView;
 
