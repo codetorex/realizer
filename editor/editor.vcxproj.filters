@@ -31,6 +31,9 @@
     <Filter Include="Project">
       <UniqueIdentifier>{d9364e62-1d8b-4d14-a874-8d8a61ec3bcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dialogs">
+      <UniqueIdentifier>{fc096844-be56-4382-8030-3dcee573ef05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="reditor.h">
@@ -75,6 +78,15 @@
     <ClInclude Include="rprojectsource.h">
       <Filter>Project</Filter>
     </ClInclude>
+    <ClInclude Include="rnewprojectdialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="rguiview.h">
+      <Filter>Editors\GUI Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="rguidocument.h">
+      <Filter>Editors\GUI Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -118,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="rprojectsource.cpp">
       <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="rnewprojectdialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="rguiview.cpp">
+      <Filter>Editors\GUI Editor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

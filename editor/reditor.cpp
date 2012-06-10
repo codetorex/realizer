@@ -7,6 +7,7 @@
 #include "gconsole.h"
 #include "gcomponents.h"
 
+#include "rguiview.h"
 #include "rtextview.h"
 #include "rtextdocument.h"
 #include "vtexture.h"
@@ -209,10 +210,7 @@ void REditor::InitializeMainGui()
 	defStyle->Font = Engine.GUI.Fonts.GetFont("Dina",12);
 	RTextView::DefaultStyle = defStyle;
 	
-	RTextView* tv = new RTextView();
-	RTextDocument* doc = new RTextDocument();
-	doc->FilePath = "C:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
-	doc->LoadDocument();
+
 
 
 	ProjectToolbar.SetRectangle(0,0,100,100);
@@ -233,7 +231,15 @@ void REditor::InitializeMainGui()
 	ProjectEditorSplit.SplitterDistance = (int)((float)Engine.Renderer.vWidth * 0.85f);
 	ProjectEditorSplit.Panel2.AddChild(&ProjectView);
 
+	RTextView* tv = new RTextView();
+	RTextDocument* doc = new RTextDocument();
+	doc->FilePath = "C:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
+	doc->LoadDocument();
+
 	MainPages.AddPage(tv,doc,false);
+
+	RGUIView* gv = new RGUIView();
+	MainPages.AddPage(gv,0,false);
 	
 	Engine.GUI.Desktop->Layout();
 	Engine.GUI.Desktop->Layout();

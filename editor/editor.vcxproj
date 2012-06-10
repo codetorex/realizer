@@ -82,6 +82,9 @@
     <ClInclude Include="rdocumentview.h" />
     <ClInclude Include="reditorcommands.h" />
     <ClInclude Include="reditorskin.h" />
+    <ClInclude Include="rguidocument.h" />
+    <ClInclude Include="rguiview.h" />
+    <ClInclude Include="rnewprojectdialog.h" />
     <ClInclude Include="rproject.h" />
     <ClInclude Include="rprojectfolder.h" />
     <ClInclude Include="rprojectsource.h" />
@@ -95,6 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="reditorcommands.cpp" />
+    <ClCompile Include="rguiview.cpp" />
+    <ClCompile Include="rnewprojectdialog.cpp" />
     <ClCompile Include="rprojectfolder.cpp" />
     <ClCompile Include="rprojectsource.cpp" />
     <ClCompile Include="rstartpagebutton.cpp" />

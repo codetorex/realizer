@@ -70,7 +70,17 @@ public:
 	// TODO: consider openGL version of this will use floats?
 	inline ui32 TransformColorToEngineColor(const TColor32& color)
 	{
-		return D3DCOLOR_RGBA(color.r,color.g,color.b,color.a);
+		/*ui32 clR = (color.color & 0xFF000000) >> 16;
+		ui32 clB = (color.color & 0x0000FF00) << 16;
+		return (color.color & 0x00FF00FF) | clR | clB;*/
+
+
+		TColor32 k(color.b,color.g,color.r,color.a);
+		return k.color;
+		//return D3DCOLOR_RGBA(color.r,color.g,color.b,color.a);
+		/*ui32 col = color.color;
+		ui32 a = col & 0xFF;*/
+		
 	}
 
 	void Add2DVertex1Tex(float x,float y,float u,float v)
