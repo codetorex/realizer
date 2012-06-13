@@ -48,6 +48,10 @@ public:
 	GImage* PVDocument;
 	GImage* PVImage;
 
+	GImage* UICanvas;
+	GImage* UIButton;
+
+
 	GImage* Fugue(const TString& fugueName);
 
 	void Initialize();

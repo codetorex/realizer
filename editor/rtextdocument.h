@@ -22,6 +22,7 @@ public:
 	{
 		DocumentType = DT_TEXT;
 		Name = "Untitled";
+		KnownFile = false;
 	}
 
 	TArray<RTextLine*> Lines;

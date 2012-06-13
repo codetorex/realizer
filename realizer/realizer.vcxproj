@@ -107,6 +107,7 @@
     <ClInclude Include="gentity.h" />
     <ClInclude Include="genums.h" />
     <ClInclude Include="gevent.h" />
+    <ClInclude Include="gobjectmanager.h" />
     <ClInclude Include="gfont.h" />
     <ClInclude Include="gfontcache.h" />
     <ClInclude Include="gfontloader.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="gdeskop.cpp" />
     <ClCompile Include="gdropdown.cpp" />
     <ClCompile Include="gdropdowntext.cpp" />
+    <ClCompile Include="gobjectmanager.cpp" />
     <ClCompile Include="gfont.cpp" />
     <ClCompile Include="gfontbmf.cpp" />
     <ClCompile Include="gfontcache.cpp" />

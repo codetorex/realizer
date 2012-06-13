@@ -240,4 +240,6 @@ public:
 
 typedef TLinkedListEnumerator<GObject*> GObjectEnumerator;
 
+#include "gfactory.h"
+
 #endif

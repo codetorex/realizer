@@ -85,6 +85,8 @@ public:
 
 	void EnsureVisible();
 
+	void SetTreeViewForAllChilds();
+
 
 	inline GTreeNode* NextNode()
 	{

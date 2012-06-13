@@ -6,6 +6,8 @@
 #include "rguidocument.h"
 
 #include "gsplitcontainer.h"
+#include "gtoolstrip.h"
+#include "gtreeview.h"
 
 class GObjectResizerGrip: public GObject
 {
@@ -47,6 +49,9 @@ enum GGridStyle
 class GGUICanvas: public GObject
 {
 public:
+
+	GGUICanvas();
+
 	/// There should be only one re sizer
 	GObjectResizer Resizer;
 
@@ -54,12 +59,16 @@ public:
 	bool GridLines;
 	int GridSpacing;
 
+	GGUIItem* RootNode;
+
 	void Layout();
 
 	void Render();
 };
 
 // TODO: implement property grid
+
+
 
 /**
  * There should be toolbox on rightSide and document structure and properties on right side
@@ -80,6 +89,13 @@ public:
 	/// Where actual editing occurs
 	GGUICanvas Canvas;
 
+	GToolStrip Tools;
+
+	GTreeView CanvasTree;
+
+	void DocumentChanged();
+
+
 	inline RGUIDocument* GetGUIDocument()
 	{
 		return (RGUIDocument*)Document;
@@ -87,7 +103,10 @@ public:
 
 	void Layout();
 
-	
+
+	/// VIEW COMMANDS COMES HERE
+
+	void CreateButton();
 };
 
 #endif

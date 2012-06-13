@@ -339,3 +339,12 @@ void GTreeNode::EnsureVisible()
 	TreeView->Update();
 	TreeView->Render();
 }
+
+void GTreeNode::SetTreeViewForAllChilds()
+{
+	for (int i=0;i<Nodes.Count;i++)
+	{
+		Nodes[i]->TreeView = TreeView;
+		Nodes[i]->SetTreeViewForAllChilds();
+	}
+}

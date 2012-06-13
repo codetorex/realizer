@@ -351,6 +351,9 @@
     <ClInclude Include="gdropdowntext.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
+    <ClInclude Include="gobjectmanager.h">
+      <Filter>Source Files\Visual\GUI\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -535,6 +538,9 @@
     </ClCompile>
     <ClCompile Include="gdropdowntext.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="gobjectmanager.cpp">
+      <Filter>Source Files\Visual\GUI\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

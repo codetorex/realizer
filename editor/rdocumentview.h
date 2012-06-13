@@ -22,7 +22,7 @@ public:
 
 	void SetDocument( RDocument* doc )
 	{
-		if (doc != Document)
+		if (doc != Document || doc == 0)
 		{
 			Document = doc;
 			DocumentChanged();

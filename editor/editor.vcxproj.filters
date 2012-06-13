@@ -137,5 +137,8 @@
     <ClCompile Include="rguiview.cpp">
       <Filter>Editors\GUI Editor</Filter>
     </ClCompile>
+    <ClCompile Include="rguidocument.cpp">
+      <Filter>Editors\GUI Editor</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

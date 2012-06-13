@@ -71,7 +71,7 @@ public:
 		return true;
 	}
 
-	static TMemberInfo MemberInfo;
+	static TType MemberInfo;
 };
 
 class GFontEntry
@@ -82,7 +82,7 @@ public:
 
 	TArray< GFontFile* > Files;
 
-	static TMemberInfo MemberInfo;
+	static TType MemberInfo;
 
 	GFont* GetFont(int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);
 

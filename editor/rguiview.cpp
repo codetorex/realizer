@@ -2,6 +2,7 @@
 #include "rguiview.h"
 #include "gcomponents.h"
 #include "cengine.h"
+#include "reditor.h"
 
 
 void GObjectResizerGrip::Render()
@@ -55,6 +56,8 @@ void GObjectResizer::Layout()
 	Grips[6].SetVector(halfX-halfGrip,Height-halfGrip);
 	Grips[7].SetVector(Width-halfGrip,Height-halfGrip);
 
+	// 2px offset
+
 	this->GObject::Layout();
 }
 
@@ -76,7 +79,7 @@ void GGUICanvas::Layout()
 		// TODO: THIS REALLY GETS ANNOYING, IMPLEMENT, FIX INITILIZE FUNCTION AND DO THESE THINGS IN THERE
 		AddChild(&Resizer);
 
-		Resizer.SetRectangle(100,100,250,250);
+		Resizer.Visible = false;
 	}
 
 	this->GObject::Layout();
@@ -87,7 +90,25 @@ void GGUICanvas::Render()
 	Engine.Draw.NoTexture();
 	Engine.Draw.FillRectangle(DrawRegion,TColors::White);
 
+	if (RootNode)
+	{
+		TArrayEnumerator< GTreeNode* > ne(RootNode->Nodes);
+		while(ne.MoveNext())
+		{
+			GGUIItem* curItem = (GGUIItem*)(ne.Current);
+			OwnObject(curItem->Object);
+			curItem->Object->Render();
+		}
+	}
+	
 	this->GObject::Render();
+
+	
+}
+
+GGUICanvas::GGUICanvas()
+{
+	RootNode = 0;
 }
 
 RGUIView::RGUIView()
@@ -98,7 +119,13 @@ RGUIView::RGUIView()
 	Canvas.Dock = DCK_FILL;
 	ViewTool.Dock = DCK_FILL;
 	ToolProperty.Dock = DCK_FILL;
+	Tools.Dock = DCK_TOP;
+	CanvasTree.Dock = DCK_FILL;
 	ToolProperty.Orientation = GO_HORIZONTAL;
+
+	CanvasTree.ShowLines = true;
+	CanvasTree.ShowPlusMinus = true;
+	CanvasTree.ShowRoot = true;
 }
 
 void RGUIView::Layout()
@@ -110,13 +137,37 @@ void RGUIView::Layout()
 		ViewTool.Panel2.AddChild(&ToolProperty);
 		ViewTool.Panel1.AddChild(&Canvas);
 
+		ToolProperty.Panel1.AddChild(&Tools);
+		ToolProperty.Panel1.AddChild(&CanvasTree);
+
 		GObject* p = (GObject*)Parent;
 		ViewTool.SplitterDistance = (int)((float)p->Width * 0.80f);
 		ToolProperty.SplitterDistance = p->Height / 2;
+
+		Tools.AddButton("Button",*Resources.UIButton,0);
 	}
 
 	this->GObject::Layout();
 }
 
+void RGUIView::DocumentChanged()
+{
+	if (!Document)
+	{
+		Document = new RGUIDocument();
+		Document->InitializeEmptyDocument();
+	}
+	CanvasTree.RootNode = GetGUIDocument()->RootNode;
+	CanvasTree.RootNode->TreeView = &CanvasTree;
+	CanvasTree.RootNode->SetTreeViewForAllChilds();
+}
 
+void RGUIView::CreateButton()
+{
+	if (!CanvasTree.SelectedNode)
+	{
+		return;
+	}
 
+	GGUIItem* newItem = new GGUIItem()
+}

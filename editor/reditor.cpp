@@ -146,6 +146,9 @@ void REditorResources::Initialize()
 	PVLiveFolder		 = Fugue("folder.png");
 	PVDocument			 = Fugue("document.png");
 	PVImage				 = Fugue("image.png");
+
+	UICanvas			 = Fugue("layers-stack.png");
+	UIButton			 = Fugue("ui-button.png");
 }
 
 GImage* REditorResources::Fugue( const TString& fugueName )
@@ -239,7 +242,7 @@ void REditor::InitializeMainGui()
 	MainPages.AddPage(tv,doc,false);
 
 	RGUIView* gv = new RGUIView();
-	MainPages.AddPage(gv,0,false);
+	MainPages.AddPage(gv, 0 ,false);
 	
 	Engine.GUI.Desktop->Layout();
 	Engine.GUI.Desktop->Layout();

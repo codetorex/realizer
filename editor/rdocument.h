@@ -6,6 +6,8 @@
 enum RDocumentTypes
 {
 	DT_TEXT,
+	DT_XML,
+	DT_GUI,
 };
 
 /**
@@ -17,12 +19,7 @@ public:
 	RDocument()
 	{
 		Changed = false;
-	}
-
-	RDocument(const TString& filepath_)
-	{
-		FilePath = filepath_;
-		LoadDocument();
+		KnownFile = false;
 	}
 
 	TString Name;
@@ -32,15 +29,41 @@ public:
 
 	bool Changed;
 
+	/// If knownFile then we know the filePath, and it should be legit, else we will ask for save folder
+	bool KnownFile;
+
 	inline virtual void UpdateName()
 	{
 		Name = TPath::GetFileName(FilePath);
 	}
 
 	/**
+	 * Call this after you created an empty document?
+	 */
+	virtual void InitializeEmptyDocument()
+	{
+
+	}
+
+	/**
 	 * Loads document to cache.
 	 */
-	virtual void LoadDocument() = 0;
+	virtual void LoadDocument()
+	{
+		throw NotImplementedException();
+	}
+
+	virtual void SaveDocument() 
+	{ 
+		throw NotImplementedException();
+	}
+
+	void LoadDocument(const TString& path)
+	{
+		FilePath = path;
+		LoadDocument();
+		KnownFile = true;
+	}
 };
 
 #endif

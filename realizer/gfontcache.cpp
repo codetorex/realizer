@@ -5,12 +5,12 @@
 #include "tstream.h"
 #include "gfont.h"
 
-TMemberInfo GFontFileMemberInfo()
+TType GFontFileMemberInfo()
 {
-	TMemberInfo memberInfo;
+	TType memberInfo;
 	GFontFile ent;
 
-	TMemberInfoBuilder mib(&memberInfo,&ent);
+	TTypeBuilder mib(&memberInfo,&ent);
 
 	mib.SetObjectName(&ent.FileName);
 
@@ -26,14 +26,14 @@ TMemberInfo GFontFileMemberInfo()
 	return memberInfo;
 }
 
-TMemberInfo GFontFile::MemberInfo = GFontFileMemberInfo();
+TType GFontFile::MemberInfo = GFontFileMemberInfo();
 
-TMemberInfo GFontEntryMemberInfo()
+TType GFontEntryMemberInfo()
 {
-	TMemberInfo memberInfo;
+	TType memberInfo;
 	GFontEntry ent;
 
-	TMemberInfoBuilder mib(&memberInfo,&ent);
+	TTypeBuilder mib(&memberInfo,&ent);
 	
 	mib.SetObjectName(&ent.FontName);
 	//memberInfo.AddMember("FontName",TMemberInfo::GetOffset(&ent,&ent.FontName),MT_STRING);
@@ -42,7 +42,7 @@ TMemberInfo GFontEntryMemberInfo()
 	return memberInfo;
 }
 
-TMemberInfo GFontEntry::MemberInfo = GFontEntryMemberInfo();
+TType GFontEntry::MemberInfo = GFontEntryMemberInfo();
 
 const TString FontPath = "fonts/";
 
