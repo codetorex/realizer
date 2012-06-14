@@ -4,6 +4,8 @@
 #include "trmlwriter.h"
 #include "tstream.h"
 #include "gfont.h"
+#include "ttypebuilder.h"
+#include "ttypemanager.h"
 
 TType GFontFileMemberInfo()
 {
@@ -12,16 +14,20 @@ TType GFontFileMemberInfo()
 
 	TTypeBuilder mib(&memberInfo,&ent);
 
-	mib.SetObjectName(&ent.FileName);
+
+	mib.SetName("FontFile");
+
+	//mib.SetObjectName(&ent.FileName);
 
 	//memberInfo.AddMember("FileName"     ,TMemberInfo::GetOffset(&ent,&ent.FileName)  ,MT_STRING);
-	mib.AddMember("SizeSmallest" ,&ent.SizeMin   ,MT_INT);
-	mib.AddMember("SizeLargest"  ,&ent.SizeMax   ,MT_INT);
-	mib.AddMember("WidthSmallest",&ent.WeightMin ,MT_INT);
-	mib.AddMember("WidthLargest" ,&ent.WeightMax ,MT_INT);
-	mib.AddMember("IsItalic"     ,&ent.Italic    ,MT_BOOL);
-	mib.AddMember("OutlineWidth" ,&ent.Outline   ,MT_INT);
-	mib.AddMember("CanOutline"   ,&ent.CanOutline,MT_BOOL);
+	mib.AddField("FileName"     ,&ent.FileName  , Types.ST_String);
+	mib.AddField("SizeSmallest" ,&ent.SizeMin   ,Types.ST_Int32);
+	mib.AddField("SizeLargest"  ,&ent.SizeMax   ,Types.ST_Int32);
+	mib.AddField("WidthSmallest",&ent.WeightMin ,Types.ST_Int32);
+	mib.AddField("WidthLargest" ,&ent.WeightMax ,Types.ST_Int32);
+	mib.AddField("IsItalic"     ,&ent.Italic    ,Types.ST_Bool);
+	mib.AddField("OutlineWidth" ,&ent.Outline   ,Types.ST_Int32);
+	mib.AddField("CanOutline"   ,&ent.CanOutline,Types.ST_Bool);
 
 	return memberInfo;
 }
@@ -35,9 +41,13 @@ TType GFontEntryMemberInfo()
 
 	TTypeBuilder mib(&memberInfo,&ent);
 	
-	mib.SetObjectName(&ent.FontName);
+	mib.SetName("FontEntry");
+
+	mib.AddField("FontName", &ent.FontName, Types.ST_String);
+
+	//mib.SetObjectName(&ent.FontName);
 	//memberInfo.AddMember("FontName",TMemberInfo::GetOffset(&ent,&ent.FontName),MT_STRING);
-	mib.AddMember("Files",&ent.Files,MT_ARRAY,MT_OBJECT,&GFontFile::MemberInfo);
+	mib.AddTemplateField("Files",&ent.Files, Types.ST_Array, &GFontFile::MemberInfo);
 	
 	return memberInfo;
 }

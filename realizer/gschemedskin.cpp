@@ -169,13 +169,13 @@ void GSchemedSkin::RenderToolStrip( GToolStrip* toolbox )
 
 void GSchemedSkin::LayoutToolButton( GToolStripButton* button )
 {
-	ToolButton[0].SetObjectRegion(button);
+	ToolButtonGfx.Normal.SetObjectRegion(button);
 }
 
 void GSchemedSkin::RenderToolButton( GToolStripButton* button )
 {
 	Engine.Draw.SetTexture(SkinTexture);
-	ToolButton[button->GraphicState].Render(button);
+	ToolButtonGfx.Render(button);
 }
 
 void GSchemedSkin::RenderScrollBarButton( GScrollBarButton* button )

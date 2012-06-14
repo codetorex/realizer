@@ -3,7 +3,7 @@
 
 #include "gtreeview.h"
 
-#include "tserializable.h"
+#include "tserialization.h"
 
 class TXMLWriter;
 

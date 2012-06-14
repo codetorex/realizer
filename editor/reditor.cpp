@@ -148,12 +148,28 @@ void REditorResources::Initialize()
 	PVImage				 = Fugue("image.png");
 
 	UICanvas			 = Fugue("layers-stack.png");
+	UIWindow			 = Fugue("application.png");
 	UIButton			 = Fugue("ui-button.png");
+
+	UIUnknown			 = Fugue("question.png");
+
+	SetToolboxIcon(GWINDOW_CLASSID, UIWindow);
+	SetToolboxIcon(GBUTTON_CLASSID, UIButton);
+	
 }
 
 GImage* REditorResources::Fugue( const TString& fugueName )
 {
 	return EditorImages->AddImage("icons/fugue/" + fugueName);
+}
+
+void REditorResources::SetToolboxIcon( GUIClassID clsID, GImage* img )
+{
+	GObjectType* typ = GObjectManager::Instance.GetFactoryFromClassID(clsID);
+	if (typ)
+	{
+		typ->RegisterExtension( "ToolboxIcon", img );
+	}
 }
 
 void REditorMenu::Initialize()

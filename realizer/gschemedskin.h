@@ -198,8 +198,6 @@ public:
 	Alignment WindowTitleAlign;
 
 	GSchemedSkinButtonQuad ButtonGfx;
-
-	GScalableQuad ButtonQuad[5]; // 0 = Normal, 1 = Pressed, 2 = Disabled, 3 = Mouse Over, 4 = Focus & Default
 	GFont* ButtonFont;
 
 	GScemedSkinButtonPart CheckBoxGfx[3];
@@ -223,7 +221,8 @@ public:
 
 	GScalableQuad MenuBarButton[5];
 
-	GScalableQuad ToolButton[6];
+	GSchemedSkinButtonQuad ToolButtonGfx;
+	
 
 
 	GScemedSkinButtonPart ScrollbarButtonGfx[6];

@@ -11,6 +11,7 @@ class TBitmap;
 /**
  * Image objects which is defaults to invisible. ( Visible = false )
  * Becomes visible when set to image.
+ * TODO: split this to two classes, ONE is only defines image, other is a GObject that can redner it
  */
 class GImage: public GObject
 {

@@ -17,7 +17,7 @@ void GToolStripButton::Render()
 	{
 		IRectangle dRect = DrawRegion;
 		dRect += Content;
-		Font->Render(Text,dRect.X + TextX,dRect.Y + TextY,ForeColor);
+		Font->Render(Text,dRect.X + TextPosition.X,dRect.Y + TextPosition.Y,ForeColor);
 	}
 
 }
@@ -25,40 +25,7 @@ void GToolStripButton::Render()
 GToolStripButton::GToolStripButton()
 {
 	ClassID = GTOOLBUTTON_CLASSID;
-	GraphicState = 0;
 	DrawStyle = GDS_IMAGE;
-}
-
-void GToolStripButton::OnMouseMove( int x,int y )
-{
-	if (Master->Focused == this)
-	{
-		if (Master->ButtonState[0] && MouseInside)
-		{
-			GraphicState = 2;
-		}
-		else
-		{
-			GraphicState = 1;
-		}
-	}
-	else
-	{
-		GraphicState = 1;
-	}
-}
-
-void GToolStripButton::OnMouseExit()
-{
-	GraphicState = 0;
-}
-
-void GToolStripButton::OnMouseUp( int x,int y,int button )
-{
-	if (MouseInside)
-	{
-		Click.call();
-	}
 }
 
 void GToolStripButton::Layout()
@@ -94,13 +61,13 @@ void GToolStripButton::Layout()
 		reqHeight = MathDriver::Max(Image.Height, Font->Size);
 		Image.Move(0,(Content.Height - Image.Height) / 2);
 		Image.SetParent(this);
-		TextX = Image.Right() + 4;
+		TextPosition.X = Image.Right() + 4;
 		break;
 
 	case GDS_TEXT:
 		reqWidth = textWidth;
 		reqHeight = Font->Size;
-		TextX = 4;
+		TextPosition.X = 4;
 		break;
 	}
 
@@ -128,13 +95,12 @@ void GToolStripButton::Layout()
 	}
 
 	UpdateContent();
-	TextY = (Content.Height - Font->Height) / 2;
+	TextPosition.Y = (Content.Height - Font->Height) / 2;
 }
 
-void GToolStripButton::Update()
+void GToolStripButton::Clicked( int x, int y, int button )
 {
-	this->GObject::Update();
-	Image.Update();
+	Click.call();
 }
 
 GToolStrip::GToolStrip()

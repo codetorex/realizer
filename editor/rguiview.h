@@ -64,11 +64,26 @@ public:
 	void Layout();
 
 	void Render();
+	void Update();
 };
 
 // TODO: implement property grid
 
 
+class RGUIView;
+
+class RGUIItemCreateButton: public GToolStripButton
+{
+public:
+	RGUIView* View;
+	GObjectType* Type;
+
+	RGUIItemCreateButton(GObjectType* typ, RGUIView* viw);
+
+	GImage* GetImage();
+
+	void Clicked(int x, int y, int button);
+};
 
 /**
  * There should be toolbox on rightSide and document structure and properties on right side
@@ -102,11 +117,6 @@ public:
 	}
 
 	void Layout();
-
-
-	/// VIEW COMMANDS COMES HERE
-
-	void CreateButton();
 };
 
 #endif

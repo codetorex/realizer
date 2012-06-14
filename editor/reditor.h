@@ -49,9 +49,13 @@ public:
 	GImage* PVImage;
 
 	GImage* UICanvas;
+	GImage* UIWindow;
 	GImage* UIButton;
+	GImage* UIUnknown;
 
 
+
+	void SetToolboxIcon(GUIClassID clsID, GImage* img);
 	GImage* Fugue(const TString& fugueName);
 
 	void Initialize();

@@ -4,10 +4,10 @@
 
 GObjectManager GObjectManager::Instance;
 
-class GButtonFactory: public GObjectType
+class GButtonType: public GObjectType
 {
 public:
-	GButtonFactory()
+	GButtonType()
 	{
 		ClassID = GBUTTON_CLASSID;
 		ObjectName = "button";
@@ -20,7 +20,24 @@ public:
 	}
 };
 
+class GWindowType: public GObjectType
+{
+public:
+	GWindowType()
+	{
+		ClassID = GWINDOW_CLASSID;
+		ObjectName = "window";
+	}
+
+	GObject* CreateObject()
+	{
+		GWindow* newWindow = new GWindow();
+		return newWindow;
+	}
+};
+
 GObjectManager::GObjectManager()
 {
-	RegisterFactory(new GButtonFactory());
+	RegisterFactory(new GWindowType());
+	RegisterFactory(new GButtonType());
 }

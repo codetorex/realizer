@@ -111,6 +111,22 @@ GGUICanvas::GGUICanvas()
 	RootNode = 0;
 }
 
+void GGUICanvas::Update()
+{
+	this->GObject::Update();
+
+	if (RootNode)
+	{
+		TArrayEnumerator< GTreeNode* > ne(RootNode->Nodes);
+		while(ne.MoveNext())
+		{
+			GGUIItem* curItem = (GGUIItem*)(ne.Current);
+			OwnObject(curItem->Object);
+			curItem->Object->Update();
+		}
+	}
+}
+
 RGUIView::RGUIView()
 {
 	Document = 0;
@@ -144,7 +160,17 @@ void RGUIView::Layout()
 		ViewTool.SplitterDistance = (int)((float)p->Width * 0.80f);
 		ToolProperty.SplitterDistance = p->Height / 2;
 
-		Tools.AddButton("Button",*Resources.UIButton,0);
+		TArrayEnumerator<GObjectType*> ae(GObjectManager::Instance.Factories);
+		while(ae.MoveNext())
+		{
+			GObjectType* objType = ae.Current;
+			RGUIItemCreateButton* cbutton = new RGUIItemCreateButton(objType,this);
+			cbutton->SetRectangle(0,0,16,16);
+			Tools.AddChild(cbutton);
+			cbutton->Layout();
+		}
+
+		Tools.Layout();
 	}
 
 	this->GObject::Layout();
@@ -160,14 +186,57 @@ void RGUIView::DocumentChanged()
 	CanvasTree.RootNode = GetGUIDocument()->RootNode;
 	CanvasTree.RootNode->TreeView = &CanvasTree;
 	CanvasTree.RootNode->SetTreeViewForAllChilds();
+
+	Canvas.RootNode = (GGUIItem*)CanvasTree.RootNode;
 }
 
-void RGUIView::CreateButton()
+RGUIItemCreateButton::RGUIItemCreateButton( GObjectType* typ , RGUIView* viw)
 {
-	if (!CanvasTree.SelectedNode)
+	Type = typ;
+
+	GImage* img = GetImage();
+	if (img) Image.SetImage(*img);
+
+	View = viw;
+	
+	Text = Type->ObjectName;
+}
+
+void RGUIItemCreateButton::Clicked( int x, int y, int button )
+{
+	if (!View->CanvasTree.SelectedNode)
 	{
 		return;
 	}
 
-	GGUIItem* newItem = new GGUIItem()
+	GGUIItem* newItem = new GGUIItem();
+	newItem->Object = Type->CreateObject();
+	newItem->Object->SetRectangle(100,100,50,50); // LOL make this drag and droppable?
+	newItem->Text = Type->ObjectName;
+	newItem->Object->Text = Type->ObjectName;
+
+	GGUIItem* parentItem = (GGUIItem*)View->CanvasTree.SelectedNode;
+
+	if (View->CanvasTree.SelectedNode != View->CanvasTree.RootNode)
+	{
+		parentItem->Object->AddChild(newItem->Object);
+	}
+
+	GImage* img = GetImage();
+	if (img)
+	{
+		newItem->Image = img;
+	}
+
+	parentItem->AddNode(newItem);
+}
+
+GImage* RGUIItemCreateButton::GetImage()
+{
+	GImage* img = (GImage*)Type->GetExtensionPtr("ToolboxIcon");
+	if (!img)
+	{
+		img = Resources.UIUnknown;
+	}
+	return img;
 }

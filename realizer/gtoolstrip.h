@@ -3,33 +3,23 @@
 
 #include "gobject.h"
 #include "gimage.h"
-#include "gbutton.h"
+#include "gbuttonbase.h"
 
 
 /// TODO: make this derived from gbutton
-class GToolStripButton: public GObject
+class GToolStripButton: public GButtonBase
 {
-private:
-	int TextX, TextY;
-
 public:
 	GToolStripButton();
 
-	GImage Image;
-
-	int GraphicState;
-
 	GItemDrawStyles DrawStyle;
-
-	void OnMouseExit();
-	void OnMouseUp(int x,int y,int button);
-	void OnMouseMove(int x,int y);
 
 	event<NoArgEvent> Click;
 
+	void Clicked(int x, int y, int button);
+
 	void Render();
 	void Layout();
-	void Update();
 };
 
 class GToolStripSeperator: public GObject

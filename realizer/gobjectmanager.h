@@ -4,38 +4,15 @@
 #include "tstring.h"
 #include "genums.h"
 #include "tarray.h"
+#include "texception.h"
 
 class GObject;
 
-enum GDefinitionExtensionTypes
-{
-	DET_TOOLBOXICON,
-};
-
-class GDefinitionExtension
+class GTypeExtension
 {
 public:
-	ui32 ExtensionType;
-	
-	virtual TType* GetMemberInfo() 
-	{ 
-		return 0; 
-	};
-};
-
-class GDefinitionExtensionToolboxIcon: public GDefinitionExtension
-{
-public:
-	GDefinitionExtensionToolboxIcon()
-	{
-		ExtensionType = DET_TOOLBOXICON;
-		TTypeBuilder mib(&MemberInfo);
-		mib.AddMember("ToolboxIcon",mib.GetOffset(&ToolboxIcon),MT_POINTER);
-	}
-
-	GImage* ToolboxIcon;
-
-	static TType MemberInfo;
+	TString Name;
+	void* ExtensionPtr;
 };
 
 /**
@@ -54,7 +31,40 @@ public:
 	/// Small description about
 	TString Description;
 
-	TArray< GDefinitionExtension* > Extensions;
+	TArray< GTypeExtension* > Extensions;
+
+	inline void* GetExtensionPtr(const TString& name)
+	{
+		GTypeExtension* ext = GetExtension(name);
+		if (ext)
+		{
+			return ext->ExtensionPtr;
+		}
+		return 0;
+	}
+
+	inline GTypeExtension* GetExtension(const TString& name)
+	{
+		TArrayEnumerator< GTypeExtension* > ae(Extensions);
+		while(ae.MoveNext())
+		{
+			if (ae.Current->Name == name)
+			{
+				return ae.Current;
+			}
+		}
+
+		return 0;
+	}
+
+	inline GTypeExtension* RegisterExtension( const TString& name, void* extensionPtr)
+	{
+		GTypeExtension* newExt = new GTypeExtension();
+		newExt->Name = name;
+		newExt->ExtensionPtr = extensionPtr;
+		Extensions.Add(newExt);
+		return newExt;
+	}
 
 	virtual GObject* CreateObject() = 0;
 };
@@ -73,9 +83,12 @@ public:
 	inline GObjectType* GetFactoryFromClassID(GUIClassID classID)
 	{
 		TArrayEnumerator< GObjectType* > ae (Factories);
-		if (ae.Current->ClassID == classID)
+		while(ae.MoveNext())
 		{
-			return ae.Current;
+			if (ae.Current->ClassID == classID)
+			{
+				return ae.Current;
+			}
 		}
 
 		return 0;
@@ -85,9 +98,12 @@ public:
 	inline GObject* CreateObject(const TString& objectName)
 	{
 		TArrayEnumerator< GObjectType* > ae (Factories);
-		if (ae.Current->ObjectName == objectName)
+		while(ae.MoveNext())
 		{
-			return ae.Current->CreateObject();
+			if (ae.Current->ObjectName == objectName)
+			{
+				return ae.Current->CreateObject();
+			}
 		}
 
 		return 0;
@@ -112,7 +128,8 @@ public:
 			return fac->ObjectName;
 		}
 
-		return 
+		throw Exception("Object factory not found");
+		return TString::Empty;
 	}
 
 	inline void RegisterFactory(GObjectType* factory)

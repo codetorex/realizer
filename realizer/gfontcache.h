@@ -1,7 +1,7 @@
 #ifndef GFONTCACHE_H
 #define GFONTCACHE_H
 
-#include <tserializable.h>
+#include <tserialization.h>
 #include <tarray.h>
 #include <thashmap.h>
 
@@ -82,6 +82,7 @@ public:
 
 	TArray< GFontFile* > Files;
 
+	/// TODO: Rename all MemberInfo to TypeInfo
 	static TType MemberInfo;
 
 	GFont* GetFont(int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);

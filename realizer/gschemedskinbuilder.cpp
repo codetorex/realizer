@@ -249,7 +249,7 @@ void GSchemedSkinBuilder::LoadFromScheme( TStream* srcStream )
 	LoadMenuStripItem      (Scheme->GetLayer("menubar"));
 	LoadToolStripBackground(Scheme->GetLayer("toolbarbackground"));
 	LoadToolStripButton    (Scheme->GetLayer("toolbar.normal"));
-	LoadToolStripButton    (Scheme->GetLayer("toolbar.normal"));
+	//LoadToolStripButton    (Scheme->GetLayer("toolbar.normal"));
 
 	LoadScrollbarButtons   (Scheme->GetLayer("scrollbar"));
 	LoadScrollbarBgH       (Scheme->GetLayer("horzscroll"));
@@ -502,7 +502,12 @@ void GSchemedSkinBuilder::LoadMenuStripItem( const GSchemeLayer& menustripItem )
 
 void GSchemedSkinBuilder::LoadToolStripButton( const GSchemeLayer& buttonData )
 {
-	LoadGeneric(buttonData,6,Skin->ToolButton);
+	GScalableQuad butquads[6];
+	LoadGeneric(buttonData,6,butquads);
+	ui32 order[] = {GBG_NORMAL,GBG_OVER, GBG_DOWN, GBG_DISABLED,GBG_FOCUSED};
+	Skin->ToolButtonGfx.Load(butquads,order,5);
+
+	//LoadGeneric(buttonData,6,Skin->ToolButton);
 }
 
 void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
