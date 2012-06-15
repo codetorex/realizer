@@ -18,6 +18,7 @@ public:
 /**
  * GUI Object Type Definition and Factory
  * TODO: we can create a base TType class and derive these stuff from it.
+ * TODO: define constructor stuff in TType like in .net reflection and derive this object from it 
  */
 class GObjectType
 {

@@ -42,9 +42,8 @@ public:
 		return GripSize;
 	}
 
-	GGUICanvas* Canvas;
-
-	GObject* GetSelectedObject();
+	/// The object getting resized
+	GObject* ResizingObject;
 
 	/// Wraps selected item of canvas
 	void WrapItem();
@@ -67,6 +66,9 @@ enum GGridStyle
  */
 class GGUICanvas: public GObject
 {
+private:
+	GGUIItem* SelectedItem;
+
 public:
 
 	GGUICanvas();
@@ -80,7 +82,16 @@ public:
 
 	GGUIItem* RootNode;
 
-	GGUIItem* SelectedItem;
+	void setSelectedItem(GGUIItem* item)
+	{
+		SelectedItem = item;
+		Resizer.ResizingObject = item->Object;
+	}
+
+	GGUIItem* getSelectedItem()
+	{
+		return SelectedItem;
+	}
 
 	void Layout();
 

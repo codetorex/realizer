@@ -75,15 +75,12 @@ void GObjectResizer::setGripSize( int newGripSize )
 
 void GObjectResizer::OnMouseDown( int x,int y, int button )
 {
-	GObject* obj = GetSelectedObject();
-	if (obj)
+	if (ResizingObject)
 	{
-		DragObjectPos.SetVector(obj->X,obj->Y);
+		DragObjectPos.SetVector(*ResizingObject);
+		DragPos.SetVector(Master->X, Master->Y);
+		Draging = true;
 	}
-
-	
-	DragPos.SetVector(Master->X, Master->Y);
-	Draging = true;
 }
 
 void GObjectResizer::OnMouseUp( int x,int y,int button )
@@ -97,18 +94,16 @@ void GObjectResizer::UpdateDrag()
 	if (!Draging)
 		return;
 
+	if (!ResizingObject)
+		return;
+
 	IPosition mousePos(Master->X,Master->Y);
 	mousePos -= DragPos;
 	mousePos += DragObjectPos;
 
-
-	GObject* obj = GetSelectedObject();
-	if (obj)
-	{
-		obj->SetVector(mousePos);
-		obj->GObject::Update();
-		WrapItem();
-	}
+	ResizingObject->SetVector(mousePos);
+	ResizingObject->GObject::Update();
+	WrapItem();
 	
 	this->GObject::Update();
 }
@@ -122,16 +117,15 @@ void GObjectResizer::Update()
 
 void GObjectResizer::WrapItem()
 {
-	
-	GObject* obj = GetSelectedObject();
+	if(!ResizingObject) 
+		return;
 
-	if (!obj)
+	GObject* p = (GObject*)Parent;
+	IRectangle sr = ResizingObject->DrawRegion;
+	if (p)
 	{
-		throw Exception("This shouldn't be happened");
+		sr -= p->DrawRegion;
 	}
-
-	IRectangle sr = obj->DrawRegion;
-	sr -= Canvas->DrawRegion;
 	sr.Inflate(2);
 	sr.Width -= 1;
 	sr.Height -=1 ;
@@ -140,23 +134,12 @@ void GObjectResizer::WrapItem()
 	Layout();
 }
 
-inline GObject* GObjectResizer::GetSelectedObject()
-{
-	if (Canvas->SelectedItem)
-	{
-		return Canvas->SelectedItem->Object;
-	}
-
-	return 0;
-}
-
 void GGUICanvas::Layout()
 {
 	if (!Resizer.Parent)
 	{
 		// TODO: THIS REALLY GETS ANNOYING, IMPLEMENT, FIX INITILIZE FUNCTION AND DO THESE THINGS IN THERE
 		AddChild(&Resizer);
-		Resizer.Canvas = this;
 		Resizer.Visible = false;
 	}
 
@@ -288,7 +271,7 @@ void RGUIView::ItemSelected( void* sender, TreeViewEventArgs& e )
 		CanvasTree.SelectedNode = 0;
 		return;
 	}
-	Canvas.SelectedItem = (GGUIItem*)e.Node;
+	Canvas.setSelectedItem((GGUIItem*)e.Node);
 }
 
 RGUIItemCreateButton::RGUIItemCreateButton( GObjectType* typ , RGUIView* viw)
