@@ -167,6 +167,10 @@ void GTreeView::OnMouseUp( int x,int y,int button )
 		}
 	}
 
+	TreeViewEventArgs ea;
+	ea.Node = cNode;
+	AfterSelect.call(this,ea);
+	
 	SelectedNode = cNode;
 }
 

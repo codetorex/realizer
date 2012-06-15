@@ -23,6 +23,19 @@ public:
 	bool CancelEdit;
 };
 
+class TreeViewEventArgs
+{
+public:
+	TreeViewEventArgs()
+	{
+		Node = 0;
+		Action = 0;
+	}
+
+	ui32 Action;
+	GTreeNode* Node;
+};
+
 /**
  * TODO: derive this from GObject?
  */
@@ -149,10 +162,12 @@ private:
 
 public:
 	typedef delegate2<void, void*, NodeLabelEditEventArgs& > NodeLabelEditEvent;
+	typedef delegate2<void, void*, TreeViewEventArgs& > TreeViewEvent;
 
 	GTreeView();
 
 	event< NodeLabelEditEvent > AfterLabelEdit;
+	event< TreeViewEvent > AfterSelect;
 
 	/**
 	 * This is used for editing texts of items.

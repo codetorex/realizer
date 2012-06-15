@@ -57,6 +57,7 @@ GWindow::GWindow()
 	AddChild(TitleBar);
 	ClassID = GWINDOW_CLASSID;
 	Layouter = &GLayout::Instance; // default layouter
+	SetRectangle(0,0,250,250);
 }
 
 void GWindow::Render()

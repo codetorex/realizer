@@ -64,6 +64,7 @@ void GObjectResizer::Layout()
 GObjectResizer::GObjectResizer()
 {
 	GripSize = 6;
+	Draging = false;
 }
 
 void GObjectResizer::setGripSize( int newGripSize )
@@ -72,13 +73,90 @@ void GObjectResizer::setGripSize( int newGripSize )
 	Layout();
 }
 
+void GObjectResizer::OnMouseDown( int x,int y, int button )
+{
+	GObject* obj = GetSelectedObject();
+	if (obj)
+	{
+		DragObjectPos.SetVector(obj->X,obj->Y);
+	}
+
+	
+	DragPos.SetVector(Master->X, Master->Y);
+	Draging = true;
+}
+
+void GObjectResizer::OnMouseUp( int x,int y,int button )
+{
+	UpdateDrag();
+	Draging = false;
+}
+
+void GObjectResizer::UpdateDrag()
+{
+	if (!Draging)
+		return;
+
+	IPosition mousePos(Master->X,Master->Y);
+	mousePos -= DragPos;
+	mousePos += DragObjectPos;
+
+
+	GObject* obj = GetSelectedObject();
+	if (obj)
+	{
+		obj->SetVector(mousePos);
+		obj->GObject::Update();
+		WrapItem();
+	}
+	
+	this->GObject::Update();
+}
+
+void GObjectResizer::Update()
+{
+	this->GObject::Update();
+
+	UpdateDrag();
+}
+
+void GObjectResizer::WrapItem()
+{
+	
+	GObject* obj = GetSelectedObject();
+
+	if (!obj)
+	{
+		throw Exception("This shouldn't be happened");
+	}
+
+	IRectangle sr = obj->DrawRegion;
+	sr -= Canvas->DrawRegion;
+	sr.Inflate(2);
+	sr.Width -= 1;
+	sr.Height -=1 ;
+
+	SetRectangle(sr);
+	Layout();
+}
+
+inline GObject* GObjectResizer::GetSelectedObject()
+{
+	if (Canvas->SelectedItem)
+	{
+		return Canvas->SelectedItem->Object;
+	}
+
+	return 0;
+}
+
 void GGUICanvas::Layout()
 {
 	if (!Resizer.Parent)
 	{
 		// TODO: THIS REALLY GETS ANNOYING, IMPLEMENT, FIX INITILIZE FUNCTION AND DO THESE THINGS IN THERE
 		AddChild(&Resizer);
-
+		Resizer.Canvas = this;
 		Resizer.Visible = false;
 	}
 
@@ -109,11 +187,22 @@ void GGUICanvas::Render()
 GGUICanvas::GGUICanvas()
 {
 	RootNode = 0;
+	SelectedItem = 0;
 }
 
 void GGUICanvas::Update()
 {
 	this->GObject::Update();
+
+	if (SelectedItem)
+	{
+		Resizer.Visible = true;
+		Resizer.WrapItem();
+	}
+	else
+	{
+		Resizer.Visible = false;
+	}
 
 	if (RootNode)
 	{
@@ -171,6 +260,8 @@ void RGUIView::Layout()
 		}
 
 		Tools.Layout();
+
+		CanvasTree.AfterSelect += GetHandler(this, &RGUIView::ItemSelected);
 	}
 
 	this->GObject::Layout();
@@ -188,6 +279,16 @@ void RGUIView::DocumentChanged()
 	CanvasTree.RootNode->SetTreeViewForAllChilds();
 
 	Canvas.RootNode = (GGUIItem*)CanvasTree.RootNode;
+}
+
+void RGUIView::ItemSelected( void* sender, TreeViewEventArgs& e )
+{
+	if (e.Node == CanvasTree.RootNode)
+	{
+		CanvasTree.SelectedNode = 0;
+		return;
+	}
+	Canvas.SelectedItem = (GGUIItem*)e.Node;
 }
 
 RGUIItemCreateButton::RGUIItemCreateButton( GObjectType* typ , RGUIView* viw)
@@ -211,7 +312,9 @@ void RGUIItemCreateButton::Clicked( int x, int y, int button )
 
 	GGUIItem* newItem = new GGUIItem();
 	newItem->Object = Type->CreateObject();
-	newItem->Object->SetRectangle(100,100,50,50); // LOL make this drag and droppable?
+	
+	newItem->Object->SetRectangle(100,100,100,100); // LOL make this drag and droppable?
+	
 	newItem->Text = Type->ObjectName;
 	newItem->Object->Text = Type->ObjectName;
 
@@ -229,6 +332,8 @@ void RGUIItemCreateButton::Clicked( int x, int y, int button )
 	}
 
 	parentItem->AddNode(newItem);
+
+	newItem->EnsureVisible();
 }
 
 GImage* RGUIItemCreateButton::GetImage()

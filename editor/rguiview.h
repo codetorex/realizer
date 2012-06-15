@@ -9,6 +9,8 @@
 #include "gtoolstrip.h"
 #include "gtreeview.h"
 
+class GGUICanvas;
+
 class GObjectResizerGrip: public GObject
 {
 public:
@@ -18,10 +20,19 @@ public:
 class GObjectResizer: public GObject
 {
 protected:
+	/// TODO : make dragging an tool object
 	int GripSize;
+	IPosition DragPos;
+	IPosition DragObjectPos;
+	bool Draging;
 
 public:
 	GObjectResizer();
+
+	void OnMouseDown(int x,int y, int button);
+	void OnMouseUp(int x,int y,int button);
+
+	void UpdateDrag();
 
 	// TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
 	GObjectResizerGrip Grips[8];
@@ -31,10 +42,18 @@ public:
 		return GripSize;
 	}
 
+	GGUICanvas* Canvas;
+
+	GObject* GetSelectedObject();
+
+	/// Wraps selected item of canvas
+	void WrapItem();
+
 	void setGripSize(int newGripSize);
 
 	void Render();
 	void Layout();
+	void Update();
 };
 
 enum GGridStyle
@@ -60,6 +79,8 @@ public:
 	int GridSpacing;
 
 	GGUIItem* RootNode;
+
+	GGUIItem* SelectedItem;
 
 	void Layout();
 
@@ -115,6 +136,8 @@ public:
 	{
 		return (RGUIDocument*)Document;
 	}
+
+	void ItemSelected(void* sender, TreeViewEventArgs& e);
 
 	void Layout();
 };
