@@ -13,8 +13,35 @@ class GGUICanvas;
 
 class GObjectResizerGrip: public GObject
 {
+protected:
+	IPosition DragPos;
+	bool Draging;
+
 public:
+	GObjectResizerGrip();
+
+	void OnMouseDown(int x,int y, int button);
+
+	void OnMouseUp(int x,int y,int button);
+
+	void UpdateDrag();
+
+	enum EGripType
+	{
+		GT_TOPLEFT,
+		GT_TOP,
+		GT_TOPRIGHT,
+		GT_LEFT,
+		GT_RIGHT,
+		GT_BOTTOMLEFT,
+		GT_BOTTOM,
+		GT_BOTTOMRIGHT,
+	};
+
+	EGripType GripType;
+
 	void Render();
+	void Update();
 };
 
 class GObjectResizer: public GObject

@@ -11,6 +11,96 @@ void GObjectResizerGrip::Render()
 	Engine.Draw.DrawRectangle(DrawRegion,TColors::Black);
 }
 
+void GObjectResizerGrip::OnMouseDown( int x,int y, int button )
+{
+	Draging = true;
+	DragPos.SetVector(Master->X,Master->Y);
+}
+
+void GObjectResizerGrip::OnMouseUp( int x,int y,int button )
+{
+	UpdateDrag();
+	Draging = false;
+}
+
+void GObjectResizerGrip::UpdateDrag()
+{
+	if (!Draging)
+		return;
+
+
+	IPosition diff(Master->X,Master->Y);
+	diff -= DragPos;
+
+	GObjectResizer* resizer = (GObjectResizer*)Parent;
+	GObject* obj = resizer->ResizingObject;
+
+	switch(GripType)
+	{
+	case GT_TOPLEFT:
+		obj->X += diff.X;
+		obj->Y += diff.Y;
+		obj->Width -= diff.X;
+		obj->Height -= diff.Y;
+		break;
+
+	case GT_TOP:
+		obj->Y += diff.Y;
+		obj->Height -= diff.Y;
+		break;
+
+	case GT_TOPRIGHT:
+		obj->Width += diff.X;
+		obj->Y += diff.Y;
+		obj->Height -= diff.Y;
+		break;
+
+	case GT_LEFT:
+		obj->X += diff.X;
+		obj->Width -= diff.X;
+		break;
+
+	case GT_RIGHT:
+		obj->Width += diff.X;
+		break;
+
+	case GT_BOTTOMLEFT:
+		obj->X += diff.X;
+		obj->Width -= diff.X;
+		obj->Height += diff.Y;
+		break;
+
+	case GT_BOTTOM:
+		obj->Height += diff.Y;
+		break;
+
+	case GT_BOTTOMRIGHT:
+		obj->Width += diff.X;
+		obj->Height += diff.Y;
+		break;
+	}
+
+	obj->Update();
+	obj->Layout();
+	resizer->WrapItem();
+	
+	DragPos.SetVector(Master->X,Master->Y);
+}
+
+void GObjectResizerGrip::Update()
+{
+	this->GObject::Update();
+	if (Draging)
+	{
+		UpdateDrag();
+	}
+}
+
+GObjectResizerGrip::GObjectResizerGrip()
+{
+	Draging = false;
+}
+
 void GObjectResizer::Render()
 {
 	TColor32 dColor = TColors::Gray;
@@ -58,6 +148,17 @@ void GObjectResizer::Layout()
 
 	// 2px offset
 
+	Grips[0].GripType = GObjectResizerGrip::GT_TOPLEFT;
+	Grips[1].GripType = GObjectResizerGrip::GT_TOP;
+	Grips[2].GripType = GObjectResizerGrip::GT_TOPRIGHT;
+
+	Grips[3].GripType = GObjectResizerGrip::GT_LEFT;
+	Grips[4].GripType = GObjectResizerGrip::GT_RIGHT;
+
+	Grips[5].GripType = GObjectResizerGrip::GT_BOTTOMLEFT;
+	Grips[6].GripType = GObjectResizerGrip::GT_BOTTOM;
+	Grips[7].GripType = GObjectResizerGrip::GT_BOTTOMRIGHT;
+
 	this->GObject::Layout();
 }
 
@@ -65,6 +166,7 @@ GObjectResizer::GObjectResizer()
 {
 	GripSize = 6;
 	Draging = false;
+	ResizingObject = 0;
 }
 
 void GObjectResizer::setGripSize( int newGripSize )
