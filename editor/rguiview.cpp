@@ -106,8 +106,11 @@ void GObjectResizer::Render()
 	TColor32 dColor = TColors::Gray;
 	dColor.a = 128;
 
+	IRectangle dRect(DrawRegion);
+	dRect.Shrink(GripSize/2);
+
 	Engine.Draw.NoTexture();
-	Engine.Draw.DrawRectangle(DrawRegion,dColor);
+	Engine.Draw.DrawRectangle(dRect,dColor);
 
 	this->GObject::Render(); // render grips
 }
@@ -135,16 +138,16 @@ void GObjectResizer::Layout()
 	int halfX = (Width / 2);
 	int halfY = (Height / 2);
 
-	Grips[0].SetVector(-halfGrip,-halfGrip);
-	Grips[1].SetVector(halfX - halfGrip,-halfGrip);
-	Grips[2].SetVector(Width-halfGrip,-halfGrip);
+	Grips[0].SetVector(0,0);
+	Grips[1].SetVector(halfX-halfGrip,0);
+	Grips[2].SetVector(Width-GripSize,0);
 
-	Grips[3].SetVector(-halfGrip,halfY-halfGrip);
-	Grips[4].SetVector(Width-halfGrip,halfY-halfGrip);
+	Grips[3].SetVector(0,halfY-halfGrip);
+	Grips[4].SetVector(Width-GripSize,halfY-halfGrip);
 
-	Grips[5].SetVector(-halfGrip,Height-halfGrip);
-	Grips[6].SetVector(halfX-halfGrip,Height-halfGrip);
-	Grips[7].SetVector(Width-halfGrip,Height-halfGrip);
+	Grips[5].SetVector(0,Height-GripSize);
+	Grips[6].SetVector(halfX-halfGrip,Height-GripSize);
+	Grips[7].SetVector(Width-GripSize,Height-GripSize);
 
 	// 2px offset
 
@@ -228,9 +231,9 @@ void GObjectResizer::WrapItem()
 	{
 		sr -= p->DrawRegion;
 	}
-	sr.Inflate(2);
+	sr.Inflate(GripSize);
 	sr.Width -= 1;
-	sr.Height -=1 ;
+	sr.Height -= 1;
 
 	SetRectangle(sr);
 	Layout();
@@ -371,6 +374,7 @@ void RGUIView::ItemSelected( void* sender, TreeViewEventArgs& e )
 	if (e.Node == CanvasTree.RootNode)
 	{
 		CanvasTree.SelectedNode = 0;
+		Canvas.setSelectedItem(0);
 		return;
 	}
 	Canvas.setSelectedItem((GGUIItem*)e.Node);

@@ -112,7 +112,16 @@ public:
 	void setSelectedItem(GGUIItem* item)
 	{
 		SelectedItem = item;
-		Resizer.ResizingObject = item->Object;
+		
+		if (SelectedItem == 0)
+		{
+			Resizer.Visible = false;
+			Resizer.ResizingObject = 0;
+		}
+		else
+		{
+			Resizer.ResizingObject = item->Object;
+		}
 	}
 
 	GGUIItem* getSelectedItem()
