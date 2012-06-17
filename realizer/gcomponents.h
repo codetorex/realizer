@@ -20,5 +20,6 @@
 #include "gsplitcontainer.h"
 #include "gsystembutton.h"
 #include "gtreeview.h"
+#include "gpropertypage.h"
 
 #endif

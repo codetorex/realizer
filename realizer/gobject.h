@@ -47,6 +47,7 @@ public:
 		TextAlign = CA_TopLeft;
 		Dock = DCK_NODOCK;
 		Layouter = &GLayout::Instance;
+		Initialized = false;
 	}
 
 	/*TRegion DrawRegion;
@@ -75,6 +76,8 @@ public:
 	virtual void OnKeyPress(ui32 keyID) {};
 	virtual void OnKeyDown(ui32 keyID) {};
 	virtual void OnKeyUp(ui32 keyID) {};
+
+	bool	Initialized;
 
 	bool	Focused;
 	bool	Enabled;
@@ -206,7 +209,12 @@ public:
 			Font = newParent->Font;
 			ForeColor = newParent->ForeColor;
 		}
-		Initialize();
+
+		if (!Initialized)
+		{
+			Initialize();
+			Initialized = true;
+		}
 	}
 
 	inline void AddChild(GObject* obj)

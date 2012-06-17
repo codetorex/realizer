@@ -8,6 +8,7 @@
 #include "gsplitcontainer.h"
 #include "gtoolstrip.h"
 #include "gtreeview.h"
+#include "gpropertypage.h"
 
 class GGUICanvas;
 
@@ -198,6 +199,8 @@ public:
 	GToolStrip Tools;
 
 	GTreeView CanvasTree;
+
+	GPropertyPage PropertyView;
 
 	void DocumentChanged();
 

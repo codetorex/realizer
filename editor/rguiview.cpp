@@ -189,10 +189,25 @@ void GObjectResizer::OnMouseDown( int x,int y, int button )
 		nPos += *this;
 
 		GGUIItem* item = canvas->GetItemAt(x,y);
-		if (ResizingObject != item->Object)
+		
+		if (item)
 		{
-			canvas->OnMouseDown(nPos.X,nPos.Y,button);
+			if (ResizingObject != item->Object)
+			{
+				canvas->OnMouseDown(nPos.X,nPos.Y,button);
+			}
 		}
+		else
+		{
+			if (ResizingObject != 0)
+			{
+				canvas->OnMouseDown(nPos.X,nPos.Y,button);
+			}
+		}
+		
+		
+
+		
 
 		//canvas->OnMouseDown(nPos.X,nPos.Y,button);
 		
@@ -389,6 +404,7 @@ RGUIView::RGUIView()
 	Tools.Dock = DCK_TOP;
 	CanvasTree.Dock = DCK_FILL;
 	ToolProperty.Orientation = GO_HORIZONTAL;
+	PropertyView.Dock = DCK_FILL;
 
 	CanvasTree.ShowLines = true;
 	CanvasTree.ShowPlusMinus = true;
@@ -407,6 +423,10 @@ void RGUIView::Layout()
 		ToolProperty.Panel1.AddChild(&Tools);
 		ToolProperty.Panel1.AddChild(&CanvasTree);
 
+		ToolProperty.Panel2.AddChild(&PropertyView);
+
+		PropertyView.SetPropertyObject(Engine.GUI.Fonts.Cache.Entries[0], &GFontEntry::MemberInfo);
+
 		GObject* p = (GObject*)Parent;
 		ViewTool.SplitterDistance = (int)((float)p->Width * 0.80f);
 		ToolProperty.SplitterDistance = p->Height / 2;
@@ -424,6 +444,7 @@ void RGUIView::Layout()
 		Tools.Layout();
 
 		CanvasTree.AfterSelect += GetHandler(this, &RGUIView::ItemSelected);
+
 	}
 
 	this->GObject::Layout();
