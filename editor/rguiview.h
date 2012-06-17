@@ -51,7 +51,7 @@ protected:
 	int GripSize;
 	IPosition DragPos;
 	IPosition DragObjectPos;
-	bool Draging;
+	
 
 public:
 	GObjectResizer();
@@ -71,6 +71,23 @@ public:
 
 	/// The object getting resized
 	GObject* ResizingObject;
+
+	bool Draging;
+
+	/*void setResizingObject(GObject* rObj)
+	{
+		ResizingObject = rObj;
+		if (rObj)
+		{
+			Visible = true;
+			Layout();
+		}
+		else
+		{
+			Visible = false;
+			// set visible to false?
+		}
+	}*/
 
 	/// Wraps selected item of canvas
 	void WrapItem();
@@ -113,16 +130,22 @@ public:
 	{
 		SelectedItem = item;
 		
-		if (SelectedItem == 0)
+		if (SelectedItem && SelectedItem->Object)
+		{
+			Resizer.ResizingObject = item->Object;	
+		}
+		else
 		{
 			Resizer.Visible = false;
 			Resizer.ResizingObject = 0;
 		}
-		else
-		{
-			Resizer.ResizingObject = item->Object;
-		}
 	}
+
+	bool SelectItemByClick;
+
+	void OnMouseDown(int x,int y, int button);
+
+	GGUIItem* GetItemAt(int x, int y);
 
 	GGUIItem* getSelectedItem()
 	{

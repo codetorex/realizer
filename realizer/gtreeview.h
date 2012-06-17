@@ -100,6 +100,8 @@ public:
 
 	void SetTreeViewForAllChilds();
 
+	void Select();
+
 
 	inline GTreeNode* NextNode()
 	{

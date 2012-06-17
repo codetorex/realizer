@@ -16,3 +16,24 @@ void RGUIDocument::InitializeEmptyDocument()
 	Name = "untitled-gui";
 	InitializeRoot();
 }
+
+GGUIItem* GGUIItem::FindObject( GObject* obj )
+{
+	if (obj == Object)
+	{
+		return this;
+	}
+
+	TArrayEnumerator< GTreeNode* > ae(Nodes);
+	while(ae.MoveNext())
+	{
+		GGUIItem* gitem = (GGUIItem*)ae.Current;
+		GGUIItem* found = gitem->FindObject(obj);
+		if (found)
+		{
+			return found;
+		}
+	}
+
+	return 0;
+}

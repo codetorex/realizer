@@ -180,6 +180,28 @@ void GObjectResizer::setGripSize( int newGripSize )
 
 void GObjectResizer::OnMouseDown( int x,int y, int button )
 {
+	GGUICanvas* canvas = (GGUICanvas*)Parent;
+
+	if (canvas->SelectItemByClick)
+	{
+		GObject* oldObj = ResizingObject ;
+		IPosition nPos(x,y);
+		nPos += *this;
+
+		GGUIItem* item = canvas->GetItemAt(x,y);
+		if (ResizingObject != item->Object)
+		{
+			canvas->OnMouseDown(nPos.X,nPos.Y,button);
+		}
+
+		//canvas->OnMouseDown(nPos.X,nPos.Y,button);
+		
+		/*if ( oldObj != ResizingObject) // its changed
+		{
+			throw Exception("IT WORKS");
+		}*/
+	}
+
 	if (ResizingObject)
 	{
 		DragObjectPos.SetVector(*ResizingObject);
@@ -268,22 +290,22 @@ void GGUICanvas::Render()
 	}
 	
 	this->GObject::Render();
-
-	
 }
 
 GGUICanvas::GGUICanvas()
 {
 	RootNode = 0;
 	SelectedItem = 0;
+	SelectItemByClick= true;
 }
 
 void GGUICanvas::Update()
 {
 	this->GObject::Update();
 
-	if (SelectedItem)
+	if (SelectedItem && SelectedItem->Object)
 	{
+		Resizer.ResizingObject = SelectedItem->Object;
 		Resizer.Visible = true;
 		Resizer.WrapItem();
 	}
@@ -300,6 +322,58 @@ void GGUICanvas::Update()
 			GGUIItem* curItem = (GGUIItem*)(ne.Current);
 			OwnObject(curItem->Object);
 			curItem->Object->Update();
+		}
+	}
+}
+
+GGUIItem* GGUICanvas::GetItemAt( int x, int y )
+{
+	if(!RootNode)
+		return 0;
+
+	GObject* found = 0;
+
+	TArrayEnumerator< GTreeNode* > ne(RootNode->Nodes);
+	while(ne.MoveNext())
+	{
+		GGUIItem* curItem = (GGUIItem*)(ne.Current);
+		GObject* obj = curItem->Object;
+		found = obj->FindObject();
+
+		if (found)
+		{
+			return RootNode->FindObject(found);
+		}
+	}
+
+	return 0;
+}
+
+void GGUICanvas::OnMouseDown( int x,int y, int button )
+{
+	if (SelectItemByClick)
+	{
+		if (!RootNode)
+			return;
+
+		GGUIItem* item = GetItemAt(x,y);
+		if (!item)
+		{
+			item = RootNode;
+			Resizer.ResizingObject = 0;
+			Resizer.Visible = false;
+		}
+
+		item->Select(); // so event fires and this will set again
+
+		GObject* obj = item->Object;
+		if (obj)
+		{
+			IPosition mp(x,y);
+			mp -= *obj;
+
+			Resizer.SetFocus();
+			Resizer.OnMouseDown(mp.X,mp.Y,button);
 		}
 	}
 }
@@ -371,12 +445,6 @@ void RGUIView::DocumentChanged()
 
 void RGUIView::ItemSelected( void* sender, TreeViewEventArgs& e )
 {
-	if (e.Node == CanvasTree.RootNode)
-	{
-		CanvasTree.SelectedNode = 0;
-		Canvas.setSelectedItem(0);
-		return;
-	}
 	Canvas.setSelectedItem((GGUIItem*)e.Node);
 }
 

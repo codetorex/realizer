@@ -11,6 +11,8 @@ class GGUIItem: public GTreeNode
 public:
 	/// The object associated with the node
 	GObject* Object;
+
+	GGUIItem* FindObject(GObject* obj);
 };
 
 /**

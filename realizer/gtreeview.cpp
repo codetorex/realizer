@@ -352,3 +352,14 @@ void GTreeNode::SetTreeViewForAllChilds()
 		Nodes[i]->SetTreeViewForAllChilds();
 	}
 }
+
+void GTreeNode::Select()
+{
+	if (!TreeView)
+		throw 0; // TODO: make exception types like INVALID_OPERATION as in openGL and use it on release
+
+	TreeView->SelectedNode = this;
+	TreeViewEventArgs e;
+	e.Node = this;
+	TreeView->AfterSelect.call(TreeView, e);
+}
