@@ -276,6 +276,87 @@ void GObjectResizer::WrapItem()
 	Layout();
 }
 
+void GObjectResizer::OnKeyDown( ui32 keyID )
+{
+	if (!ResizingObject)
+		return;
+
+	if (keyID == Keys::Ctrl)
+	{
+		Ctrl = true;
+		return;
+	}
+
+	if (keyID == Keys::Shift)
+	{
+		Shift = true;
+		return;
+	}
+
+	/// TODO: 
+	/// TODO: if shift then it should 1 else it should be big as grid size?
+	int scale = Shift ? 5 : 1;
+
+	if (Ctrl)
+	{
+		switch (keyID)
+		{
+		case Keys::Up:
+			ResizingObject->Height -= scale;
+			break;
+
+		case Keys::Down:
+			ResizingObject->Height += scale;
+			break;
+
+		case Keys::Left:
+			ResizingObject->Width -= scale;
+			break;
+
+		case Keys::Right:
+			ResizingObject->Width += scale;
+			break;
+		}
+	}
+	else
+	{
+		switch (keyID)
+		{
+		case Keys::Up:
+			ResizingObject->Y -= scale;
+			break;
+
+		case Keys::Down:
+			ResizingObject->Y += scale;
+			break;
+
+		case Keys::Left:
+			ResizingObject->X -= scale;
+			break;
+
+		case Keys::Right:
+			ResizingObject->X += scale;
+			break;
+		}
+	}
+
+	ResizingObject->GObject::Update();
+	ResizingObject->Layout();
+	WrapItem();
+}
+
+void GObjectResizer::OnKeyUp( ui32 keyID )
+{
+	if (keyID == Keys::Ctrl)
+	{
+		Ctrl = false;
+	}
+
+	if (keyID == Keys::Shift)
+	{
+		Shift = false;
+	}
+}
 void GGUICanvas::Layout()
 {
 	if (!Resizer.Parent)

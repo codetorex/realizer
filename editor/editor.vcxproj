@@ -90,6 +90,8 @@
     <ClInclude Include="rprojectsource.h" />
     <ClInclude Include="rstartpage.h" />
     <ClInclude Include="rstartpagebutton.h" />
+    <ClInclude Include="rterraindocument.h" />
+    <ClInclude Include="rterrainview.h" />
     <ClInclude Include="rtextdocument.h" />
     <ClInclude Include="rtextview.h" />
     <ClInclude Include="rpageview.h" />
@@ -109,6 +111,8 @@
     <ClCompile Include="reditor.cpp" />
     <ClCompile Include="rproject.cpp" />
     <ClCompile Include="rstartpage.cpp" />
+    <ClCompile Include="rterraindocument.cpp" />
+    <ClCompile Include="rterrainview.cpp" />
     <ClCompile Include="rtextdocument.cpp" />
     <ClCompile Include="rtextview.cpp" />
     <ClCompile Include="rpageview.cpp" />

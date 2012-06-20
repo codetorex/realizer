@@ -76,6 +76,9 @@
     <Filter Include="Source Files\Tools\Content">
       <UniqueIdentifier>{596d26ca-8f26-4f3d-8213-2fe65d95787b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{570b42fb-2d99-4da1-b2a6-efa6becdb8ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -357,6 +360,18 @@
     <ClInclude Include="gpropertypage.h">
       <Filter>Source Files\Visual\GUI\Components</Filter>
     </ClInclude>
+    <ClInclude Include="vshader.h">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClInclude>
+    <ClInclude Include="vshadermanager.h">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClInclude>
+    <ClInclude Include="vmaterial.h">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClInclude>
+    <ClInclude Include="vmaterialmanager.h">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -547,6 +562,12 @@
     </ClCompile>
     <ClCompile Include="gpropertypage.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="vshadermanager.cpp">
+      <Filter>Source Files\Visual\Material System</Filter>
+    </ClCompile>
+    <ClCompile Include="vmaterialmanager.cpp">
+      <Filter>Source Files\Visual\Material System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

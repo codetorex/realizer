@@ -52,6 +52,8 @@ protected:
 	int GripSize;
 	IPosition DragPos;
 	IPosition DragObjectPos;
+	bool Ctrl;
+	bool Shift;
 	
 
 public:
@@ -69,6 +71,9 @@ public:
 	{
 		return GripSize;
 	}
+
+	void OnKeyDown(ui32 keyID);
+	void OnKeyUp(ui32 keyID);
 
 	/// The object getting resized
 	GObject* ResizingObject;

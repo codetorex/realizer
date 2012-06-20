@@ -106,6 +106,10 @@ public:
 		return Parent->LastItem == this;
 	}
 
+	/**
+	 * Called only once after this object became child of other object.
+	 * ( which is the time its skin, master and other information were set )
+	 */
 	inline virtual void Initialize() 
 	{ 
 		Layout(); 

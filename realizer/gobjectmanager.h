@@ -7,6 +7,7 @@
 #include "texception.h"
 
 class GObject;
+class TType;
 
 class GTypeExtension
 {
@@ -68,6 +69,8 @@ public:
 	}
 
 	virtual GObject* CreateObject() = 0;
+
+	virtual TType* GetType();
 };
 
 class GObjectManager

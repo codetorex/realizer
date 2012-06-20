@@ -151,6 +151,8 @@
     <ClInclude Include="vanimationbuilder.h" />
     <ClInclude Include="vanimationmulti.h" />
     <ClInclude Include="vanimationsimple.h" />
+    <ClInclude Include="vmaterial.h" />
+    <ClInclude Include="vmaterialmanager.h" />
     <ClInclude Include="vnodeterrain.h" />
     <ClInclude Include="vplantgenerator.h" />
     <ClInclude Include="vscenelayered.h" />
@@ -168,6 +170,8 @@
     <ClInclude Include="gskinmanager.h" />
     <ClInclude Include="vscenerender.h" />
     <ClInclude Include="vheightmapgenerator.h" />
+    <ClInclude Include="vshader.h" />
+    <ClInclude Include="vshadermanager.h" />
     <ClInclude Include="vtexture.h" />
     <ClInclude Include="vtextureformats.h" />
     <ClInclude Include="vtexturemanager.h" />
@@ -239,10 +243,12 @@
     <ClCompile Include="vanimation.cpp" />
     <ClCompile Include="vdraw.cpp" />
     <ClCompile Include="vgui.cpp" />
+    <ClCompile Include="vmaterialmanager.cpp" />
     <ClCompile Include="vnodeanimation.cpp" />
     <ClCompile Include="vnodecanvas.cpp" />
     <ClCompile Include="vrendererdx9.cpp" />
     <ClCompile Include="vscenerender.cpp" />
+    <ClCompile Include="vshadermanager.cpp" />
     <ClCompile Include="vtexture.cpp" />
     <ClCompile Include="vtextureconverters.cpp" />
     <ClCompile Include="vtextureformats.cpp" />

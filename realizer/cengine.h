@@ -13,6 +13,8 @@
 #include "ccommand.h"
 #include "cresourcemanager.h"
 #include "cextension.h"
+#include "vshadermanager.h"
+#include "vmaterialmanager.h"
 
 
 /**
@@ -30,25 +32,26 @@ public:
 
 	VRenderer			Renderer;
 	VTextureManager		Textures;
+	VShaderManager		Shaders;
+	VMaterialManager	Materials;
 	CInputManager		Inputs;
 	VSceneManager		Scenes;
 	TFileSystem			FileSystem;
 	CTiming				Time;
-	VDraw				Draw; // a vbo for rendering 2d, makes less creation of VBO's for small renderings.
+	VDraw				Draw; // a dynamic vbo for rendering 2d, makes less creation of VBO's for small renderings.
 	VGUI				GUI;
 	CCommandManager		Command;
 	CResourceManager	Resources;
 	CExtensionManager	Extensions;
+	
 
 	//CMemoryManager	Memory; // for managing memory easily.
-	//TResourceManager	Resources; // GOOD FOR DELAYED LOADING OF ITEMS AND KEEP TRACKING WHAT LOADED WHAT UNLOADED
-	//TPluginManager	Plugins;
 	//NNetworkManager	Network;
 	//CHookManager		Hooks;
 	//CAudioManager		Audio;
 	//CDiagnostics		Diagnostics; // will collect speed data of application runtime  Profiling lookup for baseprofile.cs of runuo
 
-	//Mesh, model, shader, material managers?
+	//Mesh, model
 
 	void Initialize(int width,int height, const TString& title, bool fullscreen = false,int bits = 24);
 	void Run();

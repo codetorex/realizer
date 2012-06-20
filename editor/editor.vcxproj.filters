@@ -34,6 +34,9 @@
     <Filter Include="Dialogs">
       <UniqueIdentifier>{fc096844-be56-4382-8030-3dcee573ef05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editors\Terrain Editor">
+      <UniqueIdentifier>{2635406e-8116-4670-8b8e-b40a58551554}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="reditor.h">
@@ -87,6 +90,12 @@
     <ClInclude Include="rguidocument.h">
       <Filter>Editors\GUI Editor</Filter>
     </ClInclude>
+    <ClInclude Include="rterrainview.h">
+      <Filter>Editors\Terrain Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="rterraindocument.h">
+      <Filter>Editors\Terrain Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -139,6 +148,12 @@
     </ClCompile>
     <ClCompile Include="rguidocument.cpp">
       <Filter>Editors\GUI Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="rterrainview.cpp">
+      <Filter>Editors\Terrain Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="rterraindocument.cpp">
+      <Filter>Editors\Terrain Editor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
