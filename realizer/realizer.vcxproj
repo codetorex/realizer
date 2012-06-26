@@ -151,8 +151,11 @@
     <ClInclude Include="vanimationbuilder.h" />
     <ClInclude Include="vanimationmulti.h" />
     <ClInclude Include="vanimationsimple.h" />
+    <ClInclude Include="vcamera.h" />
     <ClInclude Include="vmaterial.h" />
     <ClInclude Include="vmaterialmanager.h" />
+    <ClInclude Include="vmesh.h" />
+    <ClInclude Include="vnodecamera.h" />
     <ClInclude Include="vnodeterrain.h" />
     <ClInclude Include="vplantgenerator.h" />
     <ClInclude Include="vscenelayered.h" />

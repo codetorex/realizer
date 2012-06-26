@@ -23,10 +23,23 @@ public:
 		Cells = 0;
 	}
 
+	TArray2D(int nWidth, int nHeight)
+	{
+		Cells = 0;
+		Allocate(nWidth,nHeight);
+	}
+
 	void Allocate(int newWidth, int newHeight)
 	{
+		if (Cells)
+		{
+			delete [] Cells;
+		}
+
 		int cellsNeeded = newWidth * newHeight;
 		Cells = new T [cellsNeeded];
+		Width = newWidth;
+		Height = newHeight;
 	}
 
 	inline T& GetCell(int x,int y)

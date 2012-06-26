@@ -372,6 +372,15 @@
     <ClInclude Include="vmaterialmanager.h">
       <Filter>Source Files\Visual\Material System</Filter>
     </ClInclude>
+    <ClInclude Include="vnodecamera.h">
+      <Filter>Source Files\Visual\Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="vcamera.h">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="vmesh.h">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

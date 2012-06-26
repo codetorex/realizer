@@ -37,6 +37,12 @@
     <Filter Include="Editors\Terrain Editor">
       <UniqueIdentifier>{2635406e-8116-4670-8b8e-b40a58551554}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editors\Scene Editor">
+      <UniqueIdentifier>{99bc0912-d57d-4b23-9fd7-ac86cc03acaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors\Animation Editor">
+      <UniqueIdentifier>{14b93d7e-cdd1-4b8a-a1bd-f28df84743d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="reditor.h">
