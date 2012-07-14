@@ -4,7 +4,7 @@
 
 
 
-void VVertexStream::Flush()
+void VVertexBuilder::Flush()
 {
 	if (Used > 0)
 	{

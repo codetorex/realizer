@@ -105,7 +105,7 @@ public:
 		D3DDevice->DrawPrimitive((D3DPRIMITIVETYPE)buffer->MeshType,0,buffer->PrimitiveCount);
 	}
 
-	inline void CreateVertexBuffer(VVertexBuffer* buffer, int capacity)
+	inline rvbf CreateVertexBuffer(VVertexBuffer* buffer, int capacity)
 	{
 		VVertexBufferFormat* bfmt = ((VVertexBufferFormat*)(buffer->BufferFormat));
 		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = NULL;

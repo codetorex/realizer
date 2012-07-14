@@ -1,8 +1,8 @@
 #ifndef VVERTEXBUFFER_H
 #define VVERTEXBUFFER_H
 
-#include "vvertexbufferformat.h"
 #include "realizertypes.h"
+#include "tcomposition.h"
 
 // TODO: make these guys enum
 
@@ -13,17 +13,38 @@
  * and use structs as template parameter?
  * so we can vertices.Add(new VertexPositionColor(new Vector3(x, y, 0),Color.Green));
  */
-class VVertexBuffer: public TCompositeBuffer
+
+class VVertexBuffer
 {
 public:
+	/// True when buffer is locked ( able to be written )
 	bool	Locked;
+
+	/// Buffer object pointer
 	rvbf	BufferObject;
-	int		MeshType;
-	ui32	PrimitiveCount;
+
+	/// Byte capacity of buffer
+	ui32	Capacity;
+
+	/// Byte count of buffer used
+	ui32	Length;
+
+	/// Pointer to data
+	void*	Data;
+
+	/// Length of a single item
+	ui32	ItemLength;
+
+	/// Not necessary but useful
+	TBufferFormat* BufferFormat;
 
 	VVertexBuffer()
 	{
-
+		Data = 0;
+		Length = 0;
+		Capacity = 0;
+		BufferObject = 0;
+		Locked = false;
 	}
 
 	~VVertexBuffer()
@@ -34,77 +55,81 @@ public:
 			{
 				UnlockBuffer();
 			}
-			DeleteVertexBuffer();
+			DeleteBuffer();
 			Data = 0;
 		}
 	}
 
-	VVertexBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType,bool makeitReady = false)
+	inline ui32 GetItemCount()
 	{
-		InitializeBuffer(_format,_capacity,_meshType,makeitReady);
-	}
-
-	void InitializeBuffer(VVertexBufferFormat* _format, int _capacity,int _meshType,bool makeitReady = false)
-	{
-		CapacityItem = _capacity;
-		BufferFormat = _format;
-		Capacity = BufferFormat->BytesPerItem * CapacityItem;
-		MeshType = _meshType;
-		PrimitiveCount = 0;
-
-		BufferObject = 0;
-		Locked = false;
-
-		if (makeitReady)
-		{
-			CreateVertexBuffer(CapacityItem);
-			LockBuffer();
-		}
+		return (Length / ItemLength);
 	}
 
 	/**
-	* Allocates memory on GPU.
-	*/
-	void CreateVertexBuffer(int cap);
+	 * Allocates memory on GPU (Vertex Buffer Object)
+	 * @param newCapacity
+	 */
+	void CreateBuffer(ui32 newCapacity);
 
 	/**
-	* Deallocates memory on GPU.
-	*/
-	void DeleteVertexBuffer();
+	 * Deallocates memory on GPU
+	 */
+	void DeleteBuffer();
 
 	/**
-	* Makes GPU memory writable.
-	*/
+	 * Makes GPU memory writable
+	 */
 	void LockBuffer(int offset,int length);
 	
 	inline void LockBuffer()
 	{
-		LockBuffer(0,CapacityItem);
+		LockBuffer(0,Capacity);
 	}
-	
-
-	void Render();
 
 	/**
-	* Commits writes and unlocks buffer makes it usable for rendering.
-	*/
+	 * Commits writes and unlocks buffer makes it usable for rendering.
+	 */
 	void UnlockBuffer();
-
-	inline int GetPrimCount() // todo: move this to correct stuff
-	{
-		switch (MeshType)
-		{
-		case RL_TRIANGLELIST: return Used/3;
-		case RL_TRIANGLESTRIP: return Used-2;
-		case RL_POINTLIST: return Used;
-		case RL_LINELIST: return Used/2;
-		case RL_LINESTRIP: return Used-1;
-		case RL_TRIANGLEFAN: return Used-2;
-		}
-		return -1;
-	}
-
 };
 
+
+/**
+ * This class is for defined vertex data
+ */
+template <class T>
+class VVertexBufferDefined: public VVertexBuffer
+{
+public:
+	VVertexBufferDefined()
+	{
+		BufferFormat = 0;
+		ItemLength = sizeof(T);
+	}
+
+	/**
+	 * Returns byte length for defined object count
+	 */
+	inline ui32 GetByteLength( ui32 objCount)
+	{
+		return objCount * sizeof(T);
+	}
+
+	/**
+	 * Calculates bytes necessary for definition and creates buffer accordingly
+	 */
+	inline void CreateDefinedBuffer(ui32 objCapacity)
+	{
+		ui32 byteCap = GetByteLength(objCapacity);
+		CreateBuffer(byteCap);
+	}
+
+	inline void Add(const T& value)
+	{
+		void* dst = &Data[Length];
+		int typeLength = sizeof(T);
+		MemoryDriver::Copy(dst,&value,typeLength);
+		Length += typeLength;
+	}
+};
 
 #endif

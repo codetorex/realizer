@@ -72,7 +72,7 @@ public:
 	VTexture* TestTexture;
 	VTexture* TestTGATexture;
 
-	VVertexStream* TestMesh;
+	VVertexBuilder* TestMesh;
 
 	GSchemedSkin* SkinTest;
 	GFont* FontTest;

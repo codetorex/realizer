@@ -1,69 +1,69 @@
-#ifndef VVERTEXSTREAM_H
-#define VVERTEXSTREAM_H
+#ifndef VVERTEXBUILDER_H
+#define VVERTEXBUILDER_H
 
 #include <mvector3.h>
 #include <tcolor.h>
 #include "vvertexbuffer.h"
 #include "cresource.h"
+#include "tmemorywriter.h"
 
-class VVertexStream: public VVertexBuffer
+/**
+ * Builds vertexes on a buffer
+ */
+class VVertexBuilder: public TMemoryWriter
 {
 public:
+	VVertexBuffer* Buffer;
+
 	Vector3 PreTranslation;
 	TColor32 DefaultDiffuse;
 
-	VVertexStream()
+	inline VVertexBuilder()
 	{
 		DefaultDiffuse = TColors::White; // default to white color
 	}
 
-	VVertexStream(VVertexBufferFormat* _format, int _capacity,int _meshType, bool makeitReady = false): VVertexBuffer(_format,_capacity,_meshType,makeitReady)
+	inline VVertexBuilder(VVertexBuffer* buf)
 	{
 		DefaultDiffuse = TColors::White; // default to white color
+		Buffer = buf;
+		InitializeMemoryWriter((byte*)buf->Data);
 	}
 
-	void Flush();
-
-	inline void ChangeMeshType(int mType)
-	{
-		if (MeshType != mType)
-		{
-			Flush();
-			MeshType = mType;
-		}
-	}
-
-	void PreTranslate(float x,float y,float z)
+	inline void PreTranslate(float x,float y,float z)
 	{
 		PreTranslation.set(x,y,z);
 	}
 
-	void ResetTranslation()
+	inline void ResetTranslation()
 	{
 		PreTranslation.set(0.0f,0.0f,0.0f);
 	}
 
-	void AddTranslatedVector3(float x,float y,float z)
+	/**
+	 * Writes a vector with pre translation.
+	 */
+	inline void WriteTranslatedVector3(float x,float y,float z)
 	{
-		float* fp = (float*)(Data + Index);
-		fp[0] = x + PreTranslation.x;
-		fp[1] = y + PreTranslation.y;
-		fp[2] = z + PreTranslation.z;
-		Index += 3 * 4;
+		WriteFloat(x + PreTranslation.x);
+		WriteFloat(y + PreTranslation.y);
+		WriteFloat(z + PreTranslation.z);
 	}
 
-
-	void AddVector3(float x,float y,float z)
+	/**
+	 * Writes a vector without pre translation.
+	 */
+	inline void WriteVector3(float x,float y,float z)
 	{
-		AddFloat(x);
-		AddFloat(y);
-		AddFloat(z);
+		WriteFloat(x);
+		WriteFloat(y);
+		WriteFloat(z);
 	}
 
-	void AddVector2(float x,float y)
+	inline void WriteVector2(float x,float y)
 	{
-		AddFloat(x);
-		AddFloat(y);
+		WriteFloat(x);
+		WriteFloat(y);
 	}
 
 	// TODO: make this function better suited.
@@ -85,27 +85,25 @@ public:
 
 	void Add2DVertex1Tex(float x,float y,float u,float v)
 	{
-		float* fp = (float*)(Data + Index);
+		float* fp = (float*)Data;
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;
 		fp[3] = u;
 		fp[4] = v;
-		Index += 5 * sizeof(float);
-		Used++;
+		Data += 5 * sizeof(float);
 	}
 
 	void Add2DVertexColor1Tex(float x,float y,float u,float v, const TColor32& color)
 	{
-		float* fp = (float*)(Data + Index);
+		float* fp = (float*)Data;
 		fp[0] = x+PreTranslation.x;
 		fp[1] = y+PreTranslation.y;
 		fp[2] = 0.0f;
 		*(ui32*)(&fp[3]) = TransformColorToEngineColor(color);
 		fp[4] = u;
 		fp[5] = v;
-		Index += 6 * sizeof(float);
-		Used++;
+		Data += 6 * sizeof(float);
 	}
 
 

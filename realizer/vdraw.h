@@ -1,6 +1,7 @@
 #ifndef VDRAW_H
 #define VDRAW_H
 
+#include "vvertexbuffer.h"
 #include "vvertexstream.h"
 #include "mregion2.h"
 
@@ -11,9 +12,10 @@ class VTexture;
 * Uses preallocated space for easy rendering.
 * Should allow rendering on 3d space via world matrix modifications.
 */
-class VDraw: public VVertexStream
+class VDraw
 {
 public:
+	VVertexBufferDefined<VDrawVertex> VertexBuffer;
 	VTexture* CurrentTexture;
 
 	/**
@@ -21,9 +23,11 @@ public:
 	*/
 	inline void Initialize()
 	{
-		InitializeBuffer(VertexBufferFormats->ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
+		VertexBuffer.CreateDefinedBuffer(4096);
+
+		/*CreateBuffer(VertexBufferFormats->ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
 		CreateVertexBuffer(CapacityItem);
-		LockBuffer();
+		LockBuffer();*/
 	}
 
 	void SetTexture(VTexture* NewTexture);

@@ -49,4 +49,14 @@ typedef RendererFont rfnt;  // must defined in every renderer!
 typedef LPDIRECT3DVERTEXBUFFER9 RendererVertexBuffer;
 typedef RendererVertexBuffer rvbf;  // must defined in every renderer!
 
+class VVertexDXPosColorTex
+{
+public:
+	Vector3		Pos;
+	ui32		Clr;
+	Vector2		Tex;
+};
+
+typedef VVertexDXPosColorTex VDrawVertex;
+
 #endif

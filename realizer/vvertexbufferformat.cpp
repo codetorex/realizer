@@ -34,5 +34,5 @@ void VVertexBufferFormats::InitializeVertexFormats()
 	SetCompositePrimitive(TexCoord4,"Texture 4 Coords", "T4","TUTV");
 	SetCompositePrimitive(TexCoord5,"Texture 5 Coords", "T5","TUTV");
 	SetCompositePrimitive(TexCoord6,"Texture 6 Coords", "T6","TUTV");
-	SetCompositePrimitive(Color,"Color", "CLR","A8R8G8B8");
+	SetCompositePrimitive(Color,"Color", "CLR","B8G8R8A8");
 }
