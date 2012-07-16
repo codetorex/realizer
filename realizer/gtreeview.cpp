@@ -27,7 +27,7 @@ void GTreeView::Render()
 {
 	Skin->RenderSunkEdge(this);
 
-	Engine.Draw.PreTranslate( (float)DrawRegion.X(), (float)DrawRegion.Y(), 0.0f );
+	Engine.Draw.Translate( (float)DrawRegion.X(), (float)DrawRegion.Y(), 0.0f );
 
 	IRectangle clipRect (Content);
 	clipRect += DrawRegion;
@@ -51,7 +51,7 @@ void GTreeView::Render()
 	}	
 
 
-	Engine.Draw.ResetTranslation();
+	Engine.Draw.ResetTransform();
 
 	this->GObject::Render();
 

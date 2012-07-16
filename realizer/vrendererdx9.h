@@ -7,8 +7,10 @@
 #include "cwindows.h" // this renderer is windows only
 #include "vvertexstream.h"
 #include "mmatrix.h"
+#include "vmesh.h"
+#include "vvertexbufferformat.h"
 
-class RDLL VRendererDX9: public CWin32RenderWindow
+class RDLL VRendererDX9: public CRendererWindow
 {
 public:
 	LPDIRECT3DDEVICE9	D3DDevice; // D3D_Device
@@ -98,11 +100,16 @@ public:
 		D3DDevice->SetTextureStageState(stage, D3DTSS_COLOROP, D3DTOP_DISABLE);
 	}
 
+	inline void RenderMesh(VMesh* mesh)
+	{
+		D3DDevice->SetStreamSource(0,mesh->Vertices->BufferObject,0,mesh->Vertices->BufferFormat->BytesPerItem);
+		D3DDevice->SetFVF(((VVertexBufferFormat*)(mesh->Vertices->BufferFormat))->FormatDescriptor);
+		D3DDevice->DrawPrimitive((D3DPRIMITIVETYPE)mesh->MeshType,0,mesh->PrimitiveCount);
+	}
+
 	inline void RenderVertexBuffer(VVertexBuffer* buffer)
 	{
-		D3DDevice->SetStreamSource(0,buffer->BufferObject,0,buffer->BufferFormat->BytesPerItem);
-		D3DDevice->SetFVF(((VVertexBufferFormat*)buffer->BufferFormat)->FormatDescriptor);
-		D3DDevice->DrawPrimitive((D3DPRIMITIVETYPE)buffer->MeshType,0,buffer->PrimitiveCount);
+		
 	}
 
 	inline rvbf CreateVertexBuffer(VVertexBuffer* buffer, int capacity)
@@ -111,6 +118,7 @@ public:
 		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = NULL;
 		D3DDevice->CreateVertexBuffer(capacity,0,bfmt->FormatDescriptor,D3DPOOL_DEFAULT,&g_pVertexBuffer, NULL);
 		buffer->BufferObject = g_pVertexBuffer;
+		return g_pVertexBuffer;
 	}
 
 	inline void DeleteVertexBuffer(VVertexBuffer* buffer)

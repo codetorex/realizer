@@ -30,14 +30,14 @@ void DrawRectangleSize(int x,int y,int w,int h, ui32 color)
 
 void GEditableLine::Render( int x,int y )
 {
-	Engine.Draw.PreTranslate((float)x,(float)y,0.0f);
+	Engine.Draw.Translate((float)x,(float)y);
 	InternalRender();
-	Engine.Draw.ResetTranslation();
+	Engine.Draw.ResetTransform();
 }
 
 void GEditableLine::RenderWithSelection( int x,int y, int caret )
 {
-	Engine.Draw.PreTranslate((float)x,(float)y,0.0f);
+	Engine.Draw.Translate((float)x,(float)y);
 
 	if (Characters.Count > 0)
 	{
@@ -95,7 +95,7 @@ void GEditableLine::RenderWithSelection( int x,int y, int caret )
 		DrawRectangleSize(drawPos,0,1,15,DefaultColor.color);
 	}
 
-	Engine.Draw.ResetTranslation();
+	Engine.Draw.ResetTransform();
 }
 
 void GEditableLine::InternalRender()

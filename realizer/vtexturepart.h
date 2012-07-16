@@ -59,27 +59,27 @@ public:
 
 	inline void Draw(float x,float y, const TColor32& color)
 	{
-		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Width,y+Height,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
+		Engine.Draw.DrawQuad(x,y,x+Width,y+Height,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
 	}
 
 	inline void Draw90DegRotated(float x,float y, const TColor32& color)
 	{
-		Engine.Draw.Add2DQuadColor1Tex(x,y,x+Height,y+Width,BottomRightCoord.X,TopLeftCoord.Y,TopLeftCoord.X,BottomRightCoord.Y,color);
+		Engine.Draw.DrawQuad(x,y,x+Height,y+Width,BottomRightCoord.X,TopLeftCoord.Y,TopLeftCoord.X,BottomRightCoord.Y,color);
 	}
 	
 	inline void Draw(float x,float y)
 	{
-		Draw(x,y,Engine.Draw.DefaultDiffuse);
+		Draw(x,y,TColors::White);
 	}
 
 	inline void DrawScaled(float x,float y, float w, float h,  const TColor32& color)
 	{
-		Engine.Draw.Add2DQuadColor1Tex(x,y,x+w,y+h,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
+		Engine.Draw.DrawQuad(x,y,x+w,y+h,TopLeftCoord.X,TopLeftCoord.Y,BottomRightCoord.X,BottomRightCoord.Y,color);
 	}
 
 	inline void DrawScaled(float x,float y, float w, float h)
 	{
-		DrawScaled(x,y,w,h,Engine.Draw.DefaultDiffuse);
+		DrawScaled(x,y,w,h,TColors::White);
 	}
 
 
@@ -90,7 +90,7 @@ public:
 
 	inline void DrawCropped(float x,float y, float w,float h)
 	{
-		DrawCropped(x,y,w,h,Engine.Draw.DefaultDiffuse);
+		DrawCropped(x,y,w,h,TColors::White);
 	}
 
 
@@ -101,7 +101,7 @@ public:
 
 	inline void DrawTiled(float x,float y, float w,float h)
 	{
-		DrawTiled(x,y,w,h,Engine.Draw.DefaultDiffuse);
+		DrawTiled(x,y,w,h,TColors::White);
 	}
 };
 
@@ -162,7 +162,7 @@ public:
 
 	inline void DrawPart(float x,float y,float w,float h)
 	{
-		DrawPart(x,y,w,h,Engine.Draw.DefaultDiffuse);
+		DrawPart(x,y,w,h,TColors::White);
 	}
 };
 

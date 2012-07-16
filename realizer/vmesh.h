@@ -30,6 +30,17 @@ public:
 		Index = 0;
 	}
 
+	inline void SetMeshType(int meshType)
+	{
+		this->MeshType = meshType;
+		UpdatePrimitiveCount();
+	}
+
+	inline int GetMeshType()
+	{
+		return MeshType;
+	}
+
 	/**
 	 * Call this after you changed buffers
 	 */

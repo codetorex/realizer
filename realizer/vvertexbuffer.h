@@ -123,6 +123,12 @@ public:
 		CreateBuffer(byteCap);
 	}
 
+	inline void CreateDefinedBuffer(ui32 objCapacity, TBufferFormat* format)
+	{
+		BufferFormat = format;
+		CreateDefinedBuffer(objCapacity);
+	}
+
 	inline void Add(const T& value)
 	{
 		void* dst = &Data[Length];

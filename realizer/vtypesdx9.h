@@ -1,6 +1,7 @@
 #ifndef VTYPESDX9_H
 #define VTYPESDX9_H
 
+#include "raisetypes.h"
 
 #define RL_POINTLIST		D3DPT_POINTLIST
 #define RL_LINELIST			D3DPT_LINELIST
@@ -49,12 +50,23 @@ typedef RendererFont rfnt;  // must defined in every renderer!
 typedef LPDIRECT3DVERTEXBUFFER9 RendererVertexBuffer;
 typedef RendererVertexBuffer rvbf;  // must defined in every renderer!
 
+#include "mvector2.h"
+#include "mvector3.h"
+#include "tcolor.h"
+
 class VVertexDXPosColorTex
 {
 public:
-	Vector3		Pos;
-	ui32		Clr;
-	Vector2		Tex;
+	Vector3			Pos;
+	TColor32BGRA	Clr;
+	Vector2			Tex;
+
+	inline void Set(float pX,float pY, float pZ, ui32 pClr, float u, float v)
+	{
+		Pos.set(pX,pY,pZ);
+		Clr = TColor32(pClr);
+		Tex.SetVector(u,v);
+	}
 };
 
 typedef VVertexDXPosColorTex VDrawVertex;

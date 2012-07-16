@@ -13,7 +13,7 @@ public:
 
 	MMatrix4x4 View;
 
-	void UpdateMatrix();
+	void CalculateViewMatrix();
 	void SetRenderer();
 };
 

@@ -79,6 +79,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{570b42fb-2d99-4da1-b2a6-efa6becdb8ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Visual\RendererGL">
+      <UniqueIdentifier>{1ee14248-d1c2-4582-9a65-a27f3cc3cb84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -380,6 +383,9 @@
     </ClInclude>
     <ClInclude Include="vmesh.h">
       <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="vrenderergl.h">
+      <Filter>Source Files\Visual\RendererGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

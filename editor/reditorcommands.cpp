@@ -60,11 +60,13 @@ void REditorCommands::ImportFolder()
 	if (!pn)
 	{
 		TWinTools::ShowMessage("No node selected for import folder");
+		return;
 	}
 
 	if (pn->Type != RProjectNode::RS_FOLDER && pn->Type != RProjectNode::RS_PROJECT)
 	{
 		TWinTools::ShowMessage("Selected project node is not appropriate for importing live folder");
+		return;
 	}
 
 	TString result;

@@ -21,13 +21,39 @@ public:
 	inline VVertexBuilder()
 	{
 		DefaultDiffuse = TColors::White; // default to white color
+		Buffer = 0;
 	}
 
 	inline VVertexBuilder(VVertexBuffer* buf)
 	{
+		BeginBuild(buf);
+	}
+
+
+	/**
+	 * Setups memoryWriter, and if vertexBuffer is not locked it will be locked
+	 */
+	inline void BeginBuild( VVertexBuffer* buf )
+	{
 		DefaultDiffuse = TColors::White; // default to white color
 		Buffer = buf;
+		if (!buf->Locked)
+		{
+			buf->LockBuffer();
+		}
 		InitializeMemoryWriter((byte*)buf->Data);
+	}
+
+	inline ui32 GetWrittenVertexCount()
+	{
+		ui32 bytesWritten = GetWrittenByteCount();
+		return (bytesWritten / Buffer->ItemLength);
+	}
+
+	inline void EndBuild()
+	{
+		Buffer->Length = GetWrittenByteCount();
+		Buffer->UnlockBuffer();
 	}
 
 	inline void PreTranslate(float x,float y,float z)
@@ -66,6 +92,13 @@ public:
 		WriteFloat(y);
 	}
 
+	inline void WriteColor(const TColor32& clr)
+	{
+		ui32* p = (ui32*)Data;
+		*p = TransformColorToEngineColor(clr);
+		Data += sizeof(ui32);
+	}
+
 	// TODO: make this function better suited.
 	// TODO: consider openGL version of this will use floats?
 	inline ui32 TransformColorToEngineColor(const TColor32& color)
@@ -83,6 +116,8 @@ public:
 		
 	}
 
+	//// THESE FUNCTIONS GOING TO BE OBSOLOTE!
+
 	void Add2DVertex1Tex(float x,float y,float u,float v)
 	{
 		float* fp = (float*)Data;
@@ -96,14 +131,9 @@ public:
 
 	void Add2DVertexColor1Tex(float x,float y,float u,float v, const TColor32& color)
 	{
-		float* fp = (float*)Data;
-		fp[0] = x+PreTranslation.x;
-		fp[1] = y+PreTranslation.y;
-		fp[2] = 0.0f;
-		*(ui32*)(&fp[3]) = TransformColorToEngineColor(color);
-		fp[4] = u;
-		fp[5] = v;
-		Data += 6 * sizeof(float);
+		WriteTranslatedVector3(x,y,0.0f);
+		WriteColor(color);
+		WriteVector2(u,v);
 	}
 
 
@@ -129,9 +159,11 @@ public:
 		Add2DVertexColor1Tex(x1,y1,tu1,tv1,color);
 	}
 
-	inline void Add2DQuadColor1Tex(float x0,float y0,float x1,float y1, float tu0,float tv0,float tu1,float tv1)
+	template <class T>
+	inline void AddVertex(T& pVertex)
 	{
-		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1, DefaultDiffuse );
+		MemoryDriver::ShortCopy(Data,&pVertex,sizeof(T));
+		Data += sizeof(T);
 	}
 };
 

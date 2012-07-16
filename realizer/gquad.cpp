@@ -84,38 +84,38 @@ void GScalableQuad::Render( const IRectangle& rect )
 		return;
 	}
 
-	Engine.Draw.PreTranslate((float)rect.X,(float)rect.Y,0.0f);
+	Engine.Draw.Translate((float)rect.X,(float)rect.Y);
 
 	float q1,q2;
 	q1 = (float)(rect.Width - Right);
 	q2 = (float)(rect.Height - Bottom);
 
-	Engine.Draw.Add2DQuadColor1Tex(0,0,(float)Left,(float)Top,TextureCoords[0],TextureCoords[7],TextureCoords[1],TextureCoords[4]); // sol ust
-	Engine.Draw.Add2DQuadColor1Tex((float)Left,0,q1,(float)Top,TextureCoords[1],TextureCoords[7],TextureCoords[2],TextureCoords[4]); // ust orta
-	Engine.Draw.Add2DQuadColor1Tex(q1,0,(float)rect.Width,(float)Top,TextureCoords[2],TextureCoords[7],TextureCoords[3],TextureCoords[4]); // sag ust
+	Engine.Draw.DrawQuad(0,0,(float)Left,(float)Top,TextureCoords[0],TextureCoords[7],TextureCoords[1],TextureCoords[4],TColors::White); // sol ust
+	Engine.Draw.DrawQuad((float)Left,0,q1,(float)Top,TextureCoords[1],TextureCoords[7],TextureCoords[2],TextureCoords[4],TColors::White); // ust orta
+	Engine.Draw.DrawQuad(q1,0,(float)rect.Width,(float)Top,TextureCoords[2],TextureCoords[7],TextureCoords[3],TextureCoords[4],TColors::White); // sag ust
 
-	Engine.Draw.Add2DQuadColor1Tex(0,(float)Top,(float)Left,q2,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5]); // sol
-	Engine.Draw.Add2DQuadColor1Tex((float)Left,(float)Top,q1,q2,TextureCoords[1],TextureCoords[4],TextureCoords[2],TextureCoords[5]);// orta
-	Engine.Draw.Add2DQuadColor1Tex(q1,(float)Top,(float)rect.Width,q2,TextureCoords[2],TextureCoords[4],TextureCoords[3],TextureCoords[5]); // sag
+	Engine.Draw.DrawQuad(0,(float)Top,(float)Left,q2,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5],TColors::White); // sol
+	Engine.Draw.DrawQuad((float)Left,(float)Top,q1,q2,TextureCoords[1],TextureCoords[4],TextureCoords[2],TextureCoords[5],TColors::White);// orta
+	Engine.Draw.DrawQuad(q1,(float)Top,(float)rect.Width,q2,TextureCoords[2],TextureCoords[4],TextureCoords[3],TextureCoords[5],TColors::White); // sag
 
-	Engine.Draw.Add2DQuadColor1Tex(0,q2,(float)Left,(float)rect.Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6]); // sol alt
-	Engine.Draw.Add2DQuadColor1Tex((float)Left,q2,q1,(float)rect.Height,TextureCoords[1],TextureCoords[5],TextureCoords[2],TextureCoords[6]); // orta alt
-	Engine.Draw.Add2DQuadColor1Tex(q1,q2,(float)rect.Width,(float)rect.Height,TextureCoords[2],TextureCoords[5],TextureCoords[3],TextureCoords[6]); // sag alt
+	Engine.Draw.DrawQuad(0,q2,(float)Left,(float)rect.Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6],TColors::White); // sol alt
+	Engine.Draw.DrawQuad((float)Left,q2,q1,(float)rect.Height,TextureCoords[1],TextureCoords[5],TextureCoords[2],TextureCoords[6],TColors::White); // orta alt
+	Engine.Draw.DrawQuad(q1,q2,(float)rect.Width,(float)rect.Height,TextureCoords[2],TextureCoords[5],TextureCoords[3],TextureCoords[6],TColors::White); // sag alt
 
-	Engine.Draw.ResetTranslation();
+	Engine.Draw.ResetTransform();
 	Engine.Draw.Flush();
 }
 
 void GScalableQuad::RenderLeftOnly( const IRectangle& rect )
 {
-	Engine.Draw.PreTranslate((float)rect.X,(float)rect.Y,0.0f);
+	Engine.Draw.Translate((float)rect.X,(float)rect.Y);
 	float q = (float)(rect.Height - Bottom);
 
-	Engine.Draw.Add2DQuadColor1Tex(0,0,(float)Left,(float)Top,TextureCoords[0],TextureCoords[7],TextureCoords[1],TextureCoords[4]); // sol ust
-	Engine.Draw.Add2DQuadColor1Tex(0,(float)Top,(float)Left,q,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5]); // sol
-	Engine.Draw.Add2DQuadColor1Tex(0,q,(float)Left,(float)rect.Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6]); // sol alt
+	Engine.Draw.DrawQuad(0,0,(float)Left,(float)Top,TextureCoords[0],TextureCoords[7],TextureCoords[1],TextureCoords[4],TColors::White); // sol ust
+	Engine.Draw.DrawQuad(0,(float)Top,(float)Left,q,TextureCoords[0],TextureCoords[4],TextureCoords[1],TextureCoords[5],TColors::White); // sol
+	Engine.Draw.DrawQuad(0,q,(float)Left,(float)rect.Height,TextureCoords[0],TextureCoords[5],TextureCoords[1],TextureCoords[6],TColors::White); // sol alt
 
-	Engine.Draw.ResetTranslation();
+	Engine.Draw.ResetTransform();
 	Engine.Draw.Flush();
 }
 

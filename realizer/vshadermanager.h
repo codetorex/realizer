@@ -4,10 +4,11 @@
 #include "realizertypes.h"
 #include "tstring.h"
 #include "tarray.h"
+#include "vshader.h"
 
-class VShader;
 class VPixelShader;
 class VVertexShader;
+class VShaderPipeline;
 
 class VShaderManager: public TArray< VShader* >
 {

@@ -158,6 +158,7 @@
     <ClInclude Include="vnodecamera.h" />
     <ClInclude Include="vnodeterrain.h" />
     <ClInclude Include="vplantgenerator.h" />
+    <ClInclude Include="vrenderergl.h" />
     <ClInclude Include="vscenelayered.h" />
     <ClInclude Include="vnodeanimation.h" />
     <ClInclude Include="vnodecanvas.h" />

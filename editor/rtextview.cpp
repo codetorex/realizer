@@ -27,7 +27,7 @@ void RTextView::Render()
 	IRectangle realContent;
 	realContent.SetRectangle(DrawRegion.X()+Content.X,DrawRegion.Y() + Content.Y,Content.Width,Content.Height);
 
-	Engine.Draw.PreTranslate((float)realContent.X,(float)realContent.Y,0.0f);
+	Engine.Draw.Translate(realContent.X,realContent.Y);
 
 	Engine.Draw.NoTexture();
 	Engine.Draw.FillRectangle(0,0,(float)Content.Width,(float)Content.Height, Style->Text.BackColor);
@@ -110,7 +110,7 @@ void RTextView::Render()
 
 	
 
-	Engine.Draw.ResetTranslation();
+	Engine.Draw.ResetTransform();
 
 	GObject::Render();
 }

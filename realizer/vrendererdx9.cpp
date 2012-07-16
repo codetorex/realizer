@@ -105,15 +105,15 @@ bool VRendererDX9::InitializeDirect3D()
 	if(FAILED(D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,VertexProcessing,&Present_Parameters, &D3DDevice)))
 	//if(FAILED(D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_REF, hWnd,VertexProcessing,&Present_Parameters, &D3DDevice)))
 	{
-	//	MessageBox(NULL, "CreateDevice() failed!  Make sure you have DirectX 9.","Error!", MB_OK);
-		return false;
+	//	MessageBox(NULL, "","Error!", MB_OK);
+		throw Exception("CreateDevice() failed!  Make sure you have DirectX 9.");
 	}
 
 	// One last check to be sure.
 	if(D3DDevice == NULL)
 	{
 		//MessageBox(NULL, "D3D_Device is equal to NULL!?!", "Error!", MB_OK);
-		return false;
+		throw Exception("D3D_Device is equal to NULL!?!");
 	}
 
 

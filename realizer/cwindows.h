@@ -34,7 +34,7 @@ public:
 	//virtual bool InitializeRenderer(int _width,int _height,ch16* _title,bool fullscr = false,int bits=24) = 0;
 };
 
-
+typedef CWin32RenderWindow CRendererWindow;
 
 
 

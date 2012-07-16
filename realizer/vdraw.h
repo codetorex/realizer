@@ -4,6 +4,8 @@
 #include "vvertexbuffer.h"
 #include "vvertexstream.h"
 #include "mregion2.h"
+#include "vmesh.h"
+#include "vvertexbufferformat.h"
 
 class VTexture;
 
@@ -14,20 +16,51 @@ class VTexture;
 */
 class VDraw
 {
+protected:
+	void ChangeMeshType(int newMeshType)
+	{
+		if (Mesh.MeshType != newMeshType)
+		{
+			Flush();
+		}
+
+		Mesh.SetMeshType(newMeshType);
+	}
+
 public:
 	VVertexBufferDefined<VDrawVertex> VertexBuffer;
+	VMesh Mesh;
+	VVertexBuilder Builder;
+
 	VTexture* CurrentTexture;
+
+	void Flush();
+
+	inline void Translate(int x, int y)
+	{
+		Builder.PreTranslate((float)x,(float)y,0.0f);
+	}
+
+	inline void Translate(float x, float y, float z)
+	{
+		Builder.PreTranslate(x,y,z);
+	}
+
+	void ResetTransform()
+	{
+		Builder.ResetTranslation();
+	}
 
 	/**
 	* Initializes and creates the VBO. Should be called after engine initialization.
 	*/
 	inline void Initialize()
 	{
-		VertexBuffer.CreateDefinedBuffer(4096);
-
-		/*CreateBuffer(VertexBufferFormats->ColoredTextured1, 3 * 1024,RL_TRIANGLELIST);
-		CreateVertexBuffer(CapacityItem);
-		LockBuffer();*/
+		VertexBuffer.CreateDefinedBuffer(4096,VertexBufferFormats->ColoredTextured1);
+		VertexBuffer.ItemLength = 24;
+		Mesh.Vertices = &VertexBuffer;
+		Mesh.SetMeshType(RL_TRIANGLELIST);
+		Builder.BeginBuild(&VertexBuffer);
 	}
 
 	void SetTexture(VTexture* NewTexture);
@@ -37,14 +70,24 @@ public:
 		SetTexture( 0 );
 	}
 
-	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1)
-	{
-		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,DefaultDiffuse);
-	}
-
 	inline void DrawQuad(float x0,float y0,float x1,float y1, float tu0,float tv0, float tu1,float tv1, const TColor32& color)
 	{
-		Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
+		Builder.Add2DQuadColor1Tex(x0,y0,x1,y1,tu0,tv0,tu1,tv1,color);
+
+		/*Builder.WriteTranslatedVector3(x0,y1,0.0f);
+		Builder.WriteColor(color);
+		Builder.WriteVector2(tu0,tv0);
+
+
+
+		VDrawVertex* vd = (VDrawVertex*)Builder.Data;
+		vd++->Set(x0,y1,0.0f,color,tu0,tv1);
+		vd++->Set(x0,y0,0.0f,color,tu0,tv0);
+		vd++->Set(x1,y1,0.0f,color,tu1,tv1);
+		vd++->Set(x0,y0,0.0f,color,tu0,tv0);
+		vd++->Set(x1,y0,0.0f,color,tu1,tv0);
+		vd++->Set(x1,y1,0.0f,color,tu1,tv1);
+		Builder.Data = (byte*)vd;*/
 	}
 
 	inline void DrawQuad(const IRegion& reg,const TColor32& color )
@@ -73,13 +116,16 @@ public:
 		ChangeMeshType(RL_LINELIST);
 
 		SetTexture(0);
-		Add2DVertexColor1Tex(x0,y0,0.0f,0.0f,color);
-		Add2DVertexColor1Tex(x1,y1,0.0f,0.0f,color);
+
+
+		// TODO: replace these
+		Builder.Add2DVertexColor1Tex(x0,y0,0.0f,0.0f,color);
+		Builder.Add2DVertexColor1Tex(x1,y1,0.0f,0.0f,color);
 	}
 
 	void DrawRectangle(float x,float y,float width,float height,const TColor32& color)
 	{
-		int mType = MeshType;
+		int mType = Mesh.MeshType;
 
 		float r = x + width;
 		float b = y + height;
