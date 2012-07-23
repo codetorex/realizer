@@ -90,6 +90,8 @@ public:
 
 	void ActivatePrevTest(bool value);
 
+	void ActivateLastTest();
+
 	void ActivateConsole(bool value);
 
 	void LoadResources();

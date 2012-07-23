@@ -21,6 +21,7 @@
 #include "test_texture.h"
 #include "test_enginecolor.h"
 #include "test_gui.h"
+#include "test_modelobj.h"
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
@@ -54,6 +55,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	TestSuite.AddTest(&TestTexture);
 	TestSuite.AddTest(&TestColor);
 	TestSuite.AddTest(&TestGUI);
+	TestSuite.AddTest(&TestModelObj);
+
+	
 
 	// Lets setup basic rendering pipeline/stack.
 	Engine.Scenes.SetupBasicStack();
@@ -64,6 +68,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	TString BGRComposition = TextureFormats->fBGR->ToString();
 	Engine.Command.Output->Write(BGRComposition);
+
+	TestSuite.ActivateLastTest();
 
 	/*TEventAction* consoleAction = Engine.Inputs.CreateAction("ActivateConsole",GetHandler(&dbgScene,&DebugScene::ActivateConsole));
 	Engine.Inputs.BindKey(Keys::Tilde, consoleAction);*/

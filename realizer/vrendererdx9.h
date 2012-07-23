@@ -73,6 +73,14 @@ public:
 		D3DDevice->SetSamplerState(stage,(D3DSAMPLERSTATETYPE)filterType,value);
 	}
 
+	/**
+	 * DirectX has different texture coordinate than OpenGL so we can use this to conver them?
+	 */
+	inline void ProcessTextureCoordinate(Vector3& input)
+	{
+		input.y = 1.0f - input.y;
+	}
+
 	/*inline void SetTextureState(int stage, int stateType, int value)
 	{
 
@@ -100,6 +108,9 @@ public:
 		D3DDevice->SetTextureStageState(stage, D3DTSS_COLOROP, D3DTOP_DISABLE);
 	}
 
+	/**
+	 * We should get rid of FVF ASAP!!!
+	 */
 	inline void RenderMesh(VMesh* mesh)
 	{
 		D3DDevice->SetStreamSource(0,mesh->Vertices->BufferObject,0,mesh->Vertices->BufferFormat->BytesPerItem);
@@ -140,6 +151,11 @@ public:
 	{
 		LPDIRECT3DVERTEXBUFFER9 g_pVertexBuffer = buffer->BufferObject;
 		g_pVertexBuffer->Unlock();
+	}
+
+	inline void SetView(const mat4& matrix)
+	{
+		D3DDevice->SetTransform(D3DTS_VIEW, (D3DXMATRIX*)&matrix);
 	}
 
 	inline void SetProjection(const mat4& matrix)

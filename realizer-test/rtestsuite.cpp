@@ -119,6 +119,11 @@ void RTestSuite::WriteTextLeft( TCharacterEnumerator schars )
 
 void RTestSuite::Render()
 {
+	if (CurrentTest)
+	{
+		TestSuite.CurrentTest->Render();
+	}
+
 	Engine.Renderer.Enter2D();
 
 	Engine.GUI.RenderDesktop(TestDesktop);
@@ -188,12 +193,6 @@ void RTestSuite::Render()
 
 	Engine.Draw.Flush();
 	Engine.Renderer.Exit2D();
-
-
-	if (CurrentTest)
-	{
-		TestSuite.CurrentTest->Render();
-	}
 }
 
 void RTestSuite::AddTest( RTestScene* test )
@@ -248,4 +247,9 @@ void RTestSuite::ActivateConsole(bool value)
 
 		DebugInputEnabled = false;
 	}
+}
+
+void RTestSuite::ActivateLastTest()
+{
+	ActivateTest(Tests.GetLast());
 }

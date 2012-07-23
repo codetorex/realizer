@@ -19,7 +19,7 @@ public:
 	/// Index buffered mesh
 	VIndexBuffer*	Index;
 
-	/// Main vertex buffer
+	/// Main vertex buffer, could be just a position or fused data
 	VVertexBuffer*	Vertices;
 
 	int				MeshType;

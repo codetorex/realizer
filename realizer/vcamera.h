@@ -13,8 +13,11 @@ public:
 
 	MMatrix4x4 View;
 
-	void CalculateViewMatrix();
-	void SetRenderer();
+	void CalculateViewMatrix()
+	{
+		MViewMatrix* vm = (MViewMatrix*)&View;
+		vm->LookAtR(Position,Look,Up);
+	}
 };
 
 #endif

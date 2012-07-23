@@ -82,6 +82,9 @@
     <Filter Include="Source Files\Visual\RendererGL">
       <UniqueIdentifier>{1ee14248-d1c2-4582-9a65-a27f3cc3cb84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Visual\Model\File Formats">
+      <UniqueIdentifier>{3c76e6ae-6441-4969-99cf-c348ad736de9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -387,6 +390,12 @@
     <ClInclude Include="vrenderergl.h">
       <Filter>Source Files\Visual\RendererGL</Filter>
     </ClInclude>
+    <ClInclude Include="vmodelobj.h">
+      <Filter>Source Files\Visual\Model\File Formats</Filter>
+    </ClInclude>
+    <ClInclude Include="vmodel.h">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -583,6 +592,9 @@
     </ClCompile>
     <ClCompile Include="vmaterialmanager.cpp">
       <Filter>Source Files\Visual\Material System</Filter>
+    </ClCompile>
+    <ClCompile Include="vmodelobj.cpp">
+      <Filter>Source Files\Visual\Model\File Formats</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

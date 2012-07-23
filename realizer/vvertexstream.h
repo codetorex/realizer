@@ -76,6 +76,13 @@ public:
 		WriteFloat(z + PreTranslation.z);
 	}
 
+	inline void WriteVector3(const Vector3& vec)
+	{
+		WriteFloat(vec.x);
+		WriteFloat(vec.y);
+		WriteFloat(vec.z);
+	}
+
 	/**
 	 * Writes a vector without pre translation.
 	 */
@@ -90,6 +97,15 @@ public:
 	{
 		WriteFloat(x);
 		WriteFloat(y);
+	}
+
+	/**
+	 * Writes x and y component of a Vector3
+	 */
+	inline void WriteVector2(const Vector3& vec)
+	{
+		WriteFloat(vec.x);
+		WriteFloat(vec.y);
 	}
 
 	inline void WriteColor(const TColor32& clr)
