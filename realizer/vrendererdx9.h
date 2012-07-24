@@ -179,7 +179,7 @@ public:
 	inline void Enter2D()
 	{
 		MProjectionMatrix mOrtho;
-		mOrtho.OrthoOffCenterR(0,(float)vWidth,0,(float)vHeight,0.0f,1.0f);
+		mOrtho.OrthoOffCenterR(0,(float)vWidth,(float)vHeight,0.0f,0.0f,1.0f);
 		SetProjection(mOrtho);
 		SetDepthTest(false);
 		// save old projection ,view and world matrices

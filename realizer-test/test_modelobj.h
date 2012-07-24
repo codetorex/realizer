@@ -6,6 +6,10 @@
 
 class VTexture;
 class VModel;
+class MMatrix4x4;
+class D3DXMATRIX;
+
+class TFileStream;
 
 class RTestModelObj: public RTestScene
 {
@@ -14,7 +18,13 @@ public:
 	{
 		SceneName = "OBJ Loading test";
 	}
+
+	void ExportMatrix(const TString& exportName, MMatrix4x4& mat );
+	void ExportMatrix(const TString& exportName, D3DXMATRIX& mat);
 	
+
+	TFileStream* fs;
+
 	VModel* LoadedObj;
 	VCamera Camera;
 	VTexture* TestTexture;
