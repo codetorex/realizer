@@ -14,7 +14,7 @@ public:
 	VSceneLayered()
 	{
 		Type = ST_LAYERED;
-		Flags += SF_RENDER | SF_UPDATE;
+		Flags.SetFlag( SF_RENDER | SF_UPDATE );
 	}
 
 	void Render()
@@ -22,7 +22,7 @@ public:
 		TLinkedListEnumerator<VScene*> scenes( this );
 		while(scenes.MoveNext())
 		{
-			if (scenes.Current->Flags == SF_RENDER)
+			if (scenes.Current->Flags.GetFlag(SF_RENDER))
 			{
 				scenes.Current->Render();
 			}
@@ -34,7 +34,7 @@ public:
 		TLinkedListEnumerator<VScene*> scenes( this );
 		while(scenes.MoveNext())
 		{
-			if (scenes.Current->Flags == SF_UPDATE)
+			if (scenes.Current->Flags.GetFlag(SF_UPDATE))
 			{
 				scenes.Current->Update();
 			}

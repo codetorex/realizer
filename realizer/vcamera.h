@@ -20,4 +20,31 @@ public:
 	}
 };
 
+/**
+ * Simple fps style fly cam
+ */
+class VCameraControllerFly
+{
+public:
+	VCameraControllerFly();
+	
+	VCamera* Camera;
+
+
+	void Forward(bool value);
+	void Backward(bool value);
+	void StrafeLeft(bool value);
+	void StrafeRight(bool value);
+	void Ascend(bool value);
+	void Descend(bool value);
+
+	void LookX(int value);
+	void LookY(int value);
+
+	/**
+	 * This must be called everyframe?
+	 */
+	void Update();
+};
+
 #endif

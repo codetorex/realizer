@@ -37,12 +37,12 @@ public:
 
 	inline void ActivateScene(VScene* scene)
 	{
-		scene->Flags += SF_ACTIVE;
+		scene->Flags.SetFlag(SF_ACTIVE);
 	}
 
 	inline void DeactivateScene(VScene* scene)
 	{
-		scene->Flags += SF_ACTIVE;
+		scene->Flags.SetFlag(SF_ACTIVE);
 	}
 
 	inline void ChangeScene(VScene* oldScene, VScene* newScene)

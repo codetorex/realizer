@@ -3,7 +3,7 @@
 
 #include "cresource.h"
 #include "tstring.h"
-#include "tflag.h"
+#include "tbinary.h"
 #include "tlinkedlist.h"
 
 enum VSceneFlags
@@ -40,11 +40,11 @@ public:
 
 	inline bool IsAlwaysOnTop()
 	{
-		return (Flags == SF_ALWAYSONTOP);
+		return (Flags.GetFlag(SF_ALWAYSONTOP));
 	}
 
-	virtual void Render()  { Flags -= SF_RENDER; };
-	virtual void Update()  { Flags -= SF_UPDATE; };
+	virtual void Render()  { Flags.UnsetFlag(SF_RENDER); };
+	virtual void Update()  { Flags.UnsetFlag(SF_UPDATE); };
 	virtual void Initialize() {};
 	virtual void Finalize() {};
 

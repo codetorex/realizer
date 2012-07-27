@@ -1,7 +1,7 @@
 #ifndef VMESH_H
 #define VMESH_H
 
-#include "tflag.h"
+#include "tbinary.h"
 #include "vrenderertypes.h"
 #include "vvertexbuffer.h"
 
