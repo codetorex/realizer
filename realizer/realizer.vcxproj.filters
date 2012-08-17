@@ -596,6 +596,9 @@
     <ClCompile Include="vmodelobj.cpp">
       <Filter>Source Files\Visual\Model\File Formats</Filter>
     </ClCompile>
+    <ClCompile Include="vcamera.cpp">
+      <Filter>Source Files\Visual\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vrenderertypes.h">

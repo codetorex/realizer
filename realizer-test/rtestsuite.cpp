@@ -191,6 +191,11 @@ void RTestSuite::Render()
 	sb.AppendPadded(ss,-8,' ');
 	WriteText(sb,RightRegion, CA_TopRight);
 
+	if (CurrentTest)
+	{
+		CurrentTest->DrawData();
+	}
+
 	Engine.Draw.Flush();
 	Engine.Renderer.Exit2D();
 }

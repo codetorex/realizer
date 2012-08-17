@@ -47,6 +47,8 @@ public:
 
 	void Initialize();
 
+	void DrawData();
+
 	void Render();
 
 	void OnActivated();

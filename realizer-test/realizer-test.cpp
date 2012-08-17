@@ -31,9 +31,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	Engine.Renderer.InitializeRenderer(1280,720,"Realizer Test",false,24);
 
-	TestSuite.Keyboard = Engine.Inputs.CreateMappedKeyboard();
-	TTriggerAction* exitAction = Engine.Inputs.CreateAction("ExitEngine",&Engine.Running);
-	Engine.Inputs.BindKey(Keys::Esc,exitAction);
+	CInputMode* baseMode = Engine.Inputs.CreateBaseInputMode();
+	TTriggerAction* exitAction = baseMode->CreateBoolAction("ExitEngine",&Engine.Running);
+	Engine.Inputs.BaseMode->BindKey(Keys::Esc,exitAction);
 
 	Engine.FileSystem.MountSystemFolder("../data/", TMount::Readable);
 	Engine.FileSystem.MountSystemFolder("../save/", TMount::Writeable | TMount::Readable);
@@ -41,14 +41,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	TLogStream textLog(Engine.FileSystem.Open("test-log.txt", fm_Write));
 	Log.RegisterOutput(&textLog);
 
-	TEventAction* nextTest = Engine.Inputs.CreateAction("NextTest",GetHandler(&TestSuite,&RTestSuite::ActivateNextTest));
-	Engine.Inputs.BindKey(Keys::PageDown,nextTest);
+	TTriggerAction* nextTest = baseMode->CreateEventAction("NextTest",GetHandler(&TestSuite,&RTestSuite::ActivateNextTest));
+	baseMode->BindKey(Keys::PageDown,nextTest);
 
-	TEventAction* prevTest = Engine.Inputs.CreateAction("PrevTest",GetHandler(&TestSuite,&RTestSuite::ActivatePrevTest));
-	Engine.Inputs.BindKey(Keys::PageUp,prevTest);
+	TTriggerAction* prevTest = baseMode->CreateEventAction("PrevTest",GetHandler(&TestSuite,&RTestSuite::ActivatePrevTest));
+	baseMode->BindKey(Keys::PageUp,prevTest);
 
-	TEventAction* consoleAction = Engine.Inputs.CreateAction("ActivateConsole",GetHandler(&TestSuite,&RTestSuite::ActivateConsole));
-	Engine.Inputs.BindKey(Keys::Tilde, consoleAction);
+	TTriggerAction* consoleAction = baseMode->CreateEventAction("ActivateConsole",GetHandler(&TestSuite,&RTestSuite::ActivateConsole));
+	baseMode->BindKey(Keys::Tilde, consoleAction);
 
 	TestSuite.LoadResources();
 	

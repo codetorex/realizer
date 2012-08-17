@@ -247,6 +247,7 @@
     <ClCompile Include="tfilesystem.cpp" />
     <ClCompile Include="tmount.cpp" />
     <ClCompile Include="vanimation.cpp" />
+    <ClCompile Include="vcamera.cpp" />
     <ClCompile Include="vdraw.cpp" />
     <ClCompile Include="vgui.cpp" />
     <ClCompile Include="vmaterialmanager.cpp" />

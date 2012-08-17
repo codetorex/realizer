@@ -11,7 +11,7 @@ class GSkin;
 class GFont;
 class VScene;
 class RTestScene;
-class TMappedKeyboard;
+class TKeyboardMapped;
 class GDesktop;
 
 class RTestScene: public VScene
@@ -21,7 +21,7 @@ public:
 
 	RTestScene()
 	{
-		Flags.Set( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
+		Flags.SetFlag( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
 		Initialized = false;
 		SceneName = "Unnamed Test";
 	}
@@ -29,6 +29,8 @@ public:
 	virtual void OnActivated() { }
 
 	virtual void OnDeactivated() { }
+
+	virtual void DrawData() { };
 
 	virtual void Render() { }
 	virtual void Update() { }
@@ -59,7 +61,7 @@ private:
 public:
 	RTestSuite()
 	{
-		Flags.Set( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
+		Flags.SetFlag( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
 		LastFrame = 0;
 		LastFPS = 0;
 		FrameCount = 0;
@@ -76,8 +78,6 @@ public:
 	GConsole* TestConsole;
 
 	TArray< RTestScene* > Tests;
-
-	TMappedKeyboard* Keyboard;
 
 	int CurrentTestIndex;
 	RTestScene* CurrentTest;

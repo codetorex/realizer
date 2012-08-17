@@ -280,17 +280,7 @@ void RTestGUI::Render()
 
 	Engine.GUI.Render();
 
-	int topCount = Engine.GUI.Desktop->OnTopObjects.Count;
-	
-	TStringBuilderStack<256> sb;
-	sb.Append("Top objects: ");
-	sb.Append(sfi(topCount,-8));
-	TestSuite.WriteTextRight(sb);
 
-	sb.Clear();
-	sb.Append("Focused: ");
-	sb.Append(sfx((ui32)Engine.GUI.Focused,-8));
-	TestSuite.WriteTextRight(sb);
 
 
 	Engine.Draw.Flush();
@@ -341,4 +331,19 @@ void RTestGUI::showPlus_CheckedChanged()
 void RTestGUI::showLines_CheckedChanged()
 {
 	tv->ShowLines = showLines->Checked;
+}
+
+void RTestGUI::DrawData()
+{
+	int topCount = Engine.GUI.Desktop->OnTopObjects.Count;
+
+	TStringBuilderStack<256> sb;
+	sb.Append("Top objects: ");
+	sb.Append(sfi(topCount,-8));
+	TestSuite.WriteTextRight(sb);
+
+	sb.Clear();
+	sb.Append("Focused: ");
+	sb.Append(sfx((ui32)Engine.GUI.Focused,-8));
+	TestSuite.WriteTextRight(sb);
 }

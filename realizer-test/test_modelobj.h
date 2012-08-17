@@ -3,6 +3,7 @@
 
 #include "rtestsuite.h"
 #include "vcamera.h"
+#include "mmatrix.h"
 
 class VTexture;
 class VModel;
@@ -19,6 +20,12 @@ public:
 	VModel* LoadedObj;
 	VCamera Camera;
 	VTexture* TestTexture;
+
+	MProjectionMatrix ProjMatrix;
+
+	VCameraControllerFly* Fly;
+
+	void DrawData();
 
 	void Initialize();
 
