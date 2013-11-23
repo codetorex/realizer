@@ -9,13 +9,16 @@ VCameraControllerFly::VCameraControllerFly()
 	StrafeLeft  = FlyCamMode->GetCreateTriggerAction("StrafeLeft" , Keys::A);
 	Backward    = FlyCamMode->GetCreateTriggerAction("Backward"   , Keys::S);
 	StrafeRight = FlyCamMode->GetCreateTriggerAction("StrafeRight", Keys::D);
+	Fast	    = FlyCamMode->GetCreateTriggerAction("Fast"		  , Keys::Shift);
 
 	FlyCamMode->GetMouseMoveAction(X,"XAxis", Y, "YAxis");
 
 	NormalSpeed = 10.0f;
+	FastSpeed = 25.0f;
 
 	lastX = 500;
 	lastY = 500;
+	SetCursorPos(500,500);
 }
 
 void VCameraControllerFly::Update()
@@ -51,6 +54,13 @@ void VCameraControllerFly::Update()
 	
 	
 	float curSpeed = NormalSpeed;
+
+	if (Fast->Value)
+	{
+		curSpeed = FastSpeed;
+	}
+	
+
 	float amount = curSpeed * Engine.Time.TimeDiff;
 	
 

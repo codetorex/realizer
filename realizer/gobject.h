@@ -163,11 +163,11 @@ public:
 
 	void LayoutChilds()
 	{
-		TLinkedListEnumerator< GObject* > c(this);
+		TLinkedListEnumerator< GObject* > CmdMgr(this);
 
-		while(c.MoveNext())
+		while(CmdMgr.MoveNext())
 		{
-			c.Current->Layout();
+			CmdMgr.Current->Layout();
 		}
 	}
 

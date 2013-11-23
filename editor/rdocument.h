@@ -50,12 +50,12 @@ public:
 	 */
 	virtual void LoadDocument()
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	virtual void SaveDocument() 
 	{ 
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	void LoadDocument(const TString& path)

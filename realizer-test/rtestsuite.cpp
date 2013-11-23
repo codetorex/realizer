@@ -47,7 +47,7 @@ void RTestSuite::LoadResources()
 		sb.AppendLine("Error when loading most basic stuff:");
 		sb.Append(e.Message);
 
-		TWinTools::ShowMessage(sb.ToString());
+		Platform.ShowMessageBox(sb.ToString());
 	}
 }
 

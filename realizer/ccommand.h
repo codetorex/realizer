@@ -2,7 +2,7 @@
 #define CCOMMAND_H
 
 
-#include "tconsoledriver.h"
+#include "tconsole.h"
 #include "tapplication.h"
 #include "tdictionary.h"
 
@@ -33,7 +33,7 @@ public:
 class CCommandManager
 {
 public:
-	TConsoleDriver* Output;
+	TConsole* Output;
 	
 	TDictionary<CCommand> Commands;
 
@@ -51,7 +51,7 @@ public:
 
 	void RunCmd(const TString& cmd);
 
-	void Start(TConsoleDriver* _output)
+	void Start(TConsole* _output)
 	{
 		Output = _output;
 

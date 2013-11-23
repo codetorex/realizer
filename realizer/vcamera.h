@@ -76,6 +76,7 @@ public:
 	TTriggerAction* StrafeRight;
 	TTriggerAction* Ascend;
 	TTriggerAction* Descend;
+	TTriggerAction* Fast;
 	TMoveAction* X;
 	TMoveAction* Y;
 

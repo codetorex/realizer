@@ -28,9 +28,9 @@ public:
 
 	inline void MeasureTime()
 	{
-		MeasureStart = TimeDriver::HighPrecision();
-		MeasureFreq = (double)TimeDriver::HighFrequency();
-		TickCount = TimeDriver::TickCount();
+		MeasureStart = Platform.HighPrecisionTime();
+		MeasureFreq = (double)Platform.HighPrecisionTimeFrequency();
+		TickCount = Platform.TickCount();
 	}
 
 	void Begining()
@@ -44,7 +44,7 @@ public:
 
 	void TimePassed()
 	{
-		double MeasureDiff = (double)(TimeDriver::HighPrecision() - MeasureStart);
+		double MeasureDiff = (double)(Platform.HighPrecisionTime() - MeasureStart);
 		float MeasureFrac = (float)(MeasureDiff / MeasureFreq);
 
 		RealDiff = MeasureFrac;

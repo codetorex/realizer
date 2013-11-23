@@ -76,7 +76,7 @@ void GButtonBase::Layout()
 					break;
 
 				default:
-					throw NotImplementedException();
+					throw NotImplementedException(__FILE__,__LINE__);
 				}
 			}
 		}

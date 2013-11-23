@@ -88,5 +88,5 @@ RProjectSourceTypeImage::RProjectSourceTypeImage()
 
 void RProjectSourceTypeImage::Open( RProjectSource* src )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }

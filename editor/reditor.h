@@ -90,7 +90,7 @@ private:
 public:
 	REditor()
 	{
-		Flags.Set( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
+		Flags.SetFlag( SF_UPDATE | SF_RENDER | SF_ACTIVE | SF_ALWAYSONTOP );
 		Project = 0;
 	}
 

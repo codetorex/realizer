@@ -42,7 +42,7 @@ bool CWin32RenderWindow::Create( int _width,int _height,const TString& _title,bo
 	if(!RegisterClassEx(&wc)) return false;
 
 	ch16 tmpTitle[1024];
-	TWinTools::SystemString16(_title,tmpTitle,1024);
+	Platform.RaiseToSystemString(_title,(byte*)tmpTitle,sizeof(tmpTitle));
 
 	// Create the window.
 	hWnd = CreateWindowEx(NULL,                                       // The extended style.

@@ -27,10 +27,10 @@ void GDropDown::Layout()
 	int reqWidth = 0;
 	int reqHeight = 0;
 
-	TLinkedListEnumerator< GObject* > c(this);
-	while(c.MoveNext())
+	TLinkedListEnumerator< GObject* > CmdMgr(this);
+	while(CmdMgr.MoveNext())
 	{
-		GObject* cur = c.Current;
+		GObject* cur = CmdMgr.Current;
 		OwnObject(cur); // update skin font etc
 		cur->Layout();
 		if (reqWidth < cur->Width)
@@ -42,10 +42,10 @@ void GDropDown::Layout()
 		reqHeight += cur->Height+2;
 	}
 
-	c.Reset();
-	while(c.MoveNext())
+	CmdMgr.Reset();
+	while(CmdMgr.MoveNext())
 	{
-		GObject* cur = c.Current;
+		GObject* cur = CmdMgr.Current;
 		cur->ChangeWidth(reqWidth);
 	}
 

@@ -36,6 +36,9 @@
     <ClInclude Include="test_modelobj.h">
       <Filter>Tests</Filter>
     </ClInclude>
+    <ClInclude Include="test_audio.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="realizer-test.cpp">
@@ -57,6 +60,9 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="test_modelobj.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="test_audio.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

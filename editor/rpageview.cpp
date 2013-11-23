@@ -153,7 +153,7 @@ RPage* RPageView::AddPage( RDocumentView* view, RDocument* doc , bool activate )
 
 void RPageView::MovePage( RPage* page, RPageView* newView )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void RPageView::ClosePage( RPage* page )

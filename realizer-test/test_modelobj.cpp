@@ -59,7 +59,7 @@ void RTestModelObj::Render()
 
 void RTestModelObj::DrawData()
 {
-	TStringBuilderStack<256> sb;
+	TStringBuilderStack<256> sb; // allocates space on stack
 	sb.Append("X Diff: ");
 	sb.Append(sfi(Fly->xdiff,-8));
 	TestSuite.WriteTextRight(sb);

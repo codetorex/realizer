@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -80,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="rtestsuite.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="test_audio.h" />
     <ClInclude Include="test_enginecolor.h" />
     <ClInclude Include="test_gui.h" />
     <ClInclude Include="test_modelobj.h" />
@@ -92,6 +95,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="test_audio.cpp" />
     <ClCompile Include="test_enginecolor.cpp" />
     <ClCompile Include="test_gui.cpp" />
     <ClCompile Include="test_modelobj.cpp" />

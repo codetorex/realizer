@@ -18,7 +18,7 @@ public:
 	VSceneGraph()
 	{
 		DebugMode = false;
-		Flags += SF_RENDER | SF_UPDATE;
+		Flags.SetFlag( SF_RENDER | SF_UPDATE );
 	}
 	
 	virtual void Update()

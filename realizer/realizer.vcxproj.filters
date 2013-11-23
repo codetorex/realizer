@@ -67,9 +67,6 @@
     <Filter Include="Source Files\Visual\Animation">
       <UniqueIdentifier>{1f79d5c8-e71d-4687-98f4-c023f88c2b58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Visual\Scene\Canvas">
-      <UniqueIdentifier>{f5479d8e-7472-46d6-999b-2e119e41c644}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Visual\Scene\Nodes">
       <UniqueIdentifier>{99ad0765-aff8-4772-92cf-cd63ed3ceb99}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,9 @@
     </Filter>
     <Filter Include="Source Files\Visual\Model\File Formats">
       <UniqueIdentifier>{3c76e6ae-6441-4969-99cf-c348ad736de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visual\RendererDX9\Canvas">
+      <UniqueIdentifier>{f5479d8e-7472-46d6-999b-2e119e41c644}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -256,10 +256,10 @@
       <Filter>Source Files\Visual\Animation</Filter>
     </ClInclude>
     <ClInclude Include="vnodecanvas.h">
-      <Filter>Source Files\Visual\Scene\Canvas</Filter>
+      <Filter>Source Files\Visual\RendererDX9\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="vnodecanvasimage.h">
-      <Filter>Source Files\Visual\Scene\Canvas</Filter>
+      <Filter>Source Files\Visual\RendererDX9\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="cloader.h">
       <Filter>Source Files\Core</Filter>
@@ -510,7 +510,7 @@
       <Filter>Source Files\Visual\Animation</Filter>
     </ClCompile>
     <ClCompile Include="vnodecanvas.cpp">
-      <Filter>Source Files\Visual\Scene\Canvas</Filter>
+      <Filter>Source Files\Visual\RendererDX9\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="gconsole.cpp">
       <Filter>Source Files\Visual\GUI\Components</Filter>

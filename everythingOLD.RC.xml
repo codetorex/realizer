@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<solution>
+	<xmlversion>2</xmlversion>
+	<settings>
+		<Host>192.168.2.4</Host>
+		<Username>kalem</Username>
+		<Password>xyzburak</Password>
+		<RemotePath>~/Desktop/Projects/realizer/</RemotePath>
+		<DeleteStuff>False</DeleteStuff>
+		<FilterExtension>aps,idb,ncp,obj,pch,sbr,tmp,pdb,bsc,ilk,res,ncb,opt,suo,manifest,dep,vcproj,vcxproj,user,filters</FilterExtension>
+		<FilterDirectory>Debug,Release</FilterDirectory>
+		<ScriptSource>C:\Library\Projects\RemoteCompiler\MakefileExampleScripts\testscript.rcs</ScriptSource>
+	</settings>
+	<projects>
+		<project name="realizer\realizer.vcxproj">
+			<EnableRemoteCompiler>False</EnableRemoteCompiler>
+			<CFlags>-m64 -fPIC</CFlags>
+			<HostPath>~/Desktop/Projects/realizer/realizer/</HostPath>
+			<ProjectPath>C:\Library\Projects\realizer\src\realizer\</ProjectPath>
+			<ScriptSource />
+			<configurations>
+				<configuration name="DebugStatic">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>librealizer.a</Target>
+					<CFlags>  -W  -O0 -fexceptions -g  -fno-inline  -DWIN32 -D_DEBUG -D_WINDOWS -D_USRDLL -DREALIZER_EXPORTS </CFlags>
+				</configuration>
+				<configuration name="Debug">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>realizer.dll</Target>
+					<CFlags>  -W  -O0 -fexceptions -g  -fno-inline  -DWIN32 -D_DEBUG -D_WINDOWS -D_USRDLL -DREALIZER_EXPORTS </CFlags>
+				</configuration>
+				<configuration name="Release">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>realizer.dll</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -DWIN32 -DNDEBUG -D_WINDOWS -D_USRDLL -DREALIZER_EXPORTS </CFlags>
+				</configuration>
+			</configurations>
+		</project>
+		<project name="..\..\raise\raise\raise.vcxproj">
+			<EnableRemoteCompiler>True</EnableRemoteCompiler>
+			<CFlags>-m64 -DM64 </CFlags>
+			<HostPath>~/Desktop/Projects/realizer/raise/</HostPath>
+			<ProjectPath>C:\Library\Projects\raise\raise\</ProjectPath>
+			<ScriptSource />
+			<configurations>
+				<configuration name="Debug">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>libraise.a</Target>
+					<CFlags>  -W  -O0 -fexceptions -g  -DLINUX -D_DEBUG -D_LIB </CFlags>
+				</configuration>
+				<configuration name="Release">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>libraise.a</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -DWIN32 -DNDEBUG -D_LIB </CFlags>
+				</configuration>
+				<configuration name="Template">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>raise.exe</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -D </CFlags>
+				</configuration>
+			</configurations>
+		</project>
+		<project name="examples\demo_realizer\demo_realizer.vcxproj">
+			<EnableRemoteCompiler>False</EnableRemoteCompiler>
+			<CFlags>-m64 -fPIC</CFlags>
+			<HostPath />
+			<ProjectPath>C:\Library\Projects\realizer\src\examples\demo_realizer\</ProjectPath>
+			<ScriptSource />
+			<configurations>
+				<configuration name="Debug">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>demo_realizer.exe</Target>
+					<CFlags>  -W  -O0 -fexceptions -g  -fno-inline  -DWIN32 -D_DEBUG -D_WINDOWS </CFlags>
+				</configuration>
+				<configuration name="Release">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>demo_realizer.exe</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -DWIN32 -DNDEBUG -D_WINDOWS </CFlags>
+				</configuration>
+			</configurations>
+		</project>
+		<project name="..\..\raise\test\test.vcxproj">
+			<EnableRemoteCompiler>True</EnableRemoteCompiler>
+			<CFlags>-m64  -DM64 </CFlags>
+			<HostPath>~/Desktop/Projects/realizer/raisetest/</HostPath>
+			<ProjectPath>C:\Library\Projects\raise\test\</ProjectPath>
+			<ScriptSource />
+			<configurations>
+				<configuration name="Debug">
+					<IncludeDirs>
+						<s>../raise/</s>
+					</IncludeDirs>
+					<LibDirs>
+						<s>../raise/</s>
+					</LibDirs>
+					<Libs>
+						<s>raise</s>
+					</Libs>
+					<Target>raise-test.exe</Target>
+					<CFlags>  -W  -O0 -fexceptions -g  -DLINUX -D_DEBUG -D_CONSOLE  -I ../raise/</CFlags>
+				</configuration>
+				<configuration name="Release">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>raise-test.exe</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -DWIN32 -DNDEBUG -D_CONSOLE  -I ../raise/</CFlags>
+				</configuration>
+				<configuration name="Template">
+					<IncludeDirs />
+					<LibDirs />
+					<Libs />
+					<Target>raise-test.exe</Target>
+					<CFlags>  -W  -O2 -fexceptions -g  -fno-inline  -D </CFlags>
+				</configuration>
+			</configurations>
+		</project>
+	</projects>
+</solution>

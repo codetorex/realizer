@@ -23,9 +23,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	Engine.Renderer.InitializeRenderer(1776,1000,"Realizer Editor",false,24);
 
-	Engine.Inputs.CreateMappedKeyboard();
-	TTriggerAction* exitAction = Engine.Inputs.CreateHandler("ExitEngine",&Engine.Running);
-	Engine.Inputs.BindKey(Keys::Esc,exitAction);
+	CInputMode* baseMode = Engine.Inputs.CreateBaseInputMode();
+	TTriggerAction* exitAction = baseMode->CreateBoolAction("ExitEngine",&Engine.Running);
+	Engine.Inputs.BaseMode->BindKey(Keys::Esc,exitAction);
 
 	Engine.FileSystem.MountSystemFolder("../data/", TMount::Readable);
 	Engine.FileSystem.MountSystemFolder("../save/", TMount::Writeable | TMount::Readable);
@@ -40,8 +40,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 
 	Engine.Scenes.LoadScaneBeforeEnd(&Editor);
 
-	TEventAction* consoleAction = Engine.Inputs.CreateHandler("ActivateConsole",GetHandler(&Editor,&REditor::ActivateConsole));
-	Engine.Inputs.BindKey(Keys::Tilde, consoleAction);
+	TTriggerAction* consoleAction = baseMode->CreateEventAction("ActivateConsole",GetHandler(&Editor,&REditor::ActivateConsole));
+	baseMode->BindKey(Keys::Tilde, consoleAction);
 
 	// run over this stack
 	Engine.Run();

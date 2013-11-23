@@ -252,7 +252,7 @@ void REditor::InitializeMainGui()
 
 	RTextView* tv = new RTextView();
 	RTextDocument* doc = new RTextDocument();
-	doc->FilePath = "C:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
+	doc->FilePath = "E:/Library/OldProjects/oldrealizercode/vbitmap.cpp";
 	doc->LoadDocument();
 
 	MainPages.AddPage(tv,doc,false);

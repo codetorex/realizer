@@ -99,7 +99,7 @@ public:
 
 	void TranslateClip(int x, int y)
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	void ResetClip();

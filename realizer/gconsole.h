@@ -2,7 +2,7 @@
 #define GCONSOLE_H
 
 #include "gobject.h"
-#include "tconsoledriver.h"
+#include "tconsole.h"
 #include "tlog.h"
 #include "tinputenum.h"
 
@@ -40,7 +40,7 @@ public:
 	}
 };
 
-class GConsoleBuffer: public TConsoleDriver
+class GConsoleBuffer: public TConsole
 {
 public:
 	ui32 BufferHeight;
@@ -244,6 +244,10 @@ public:
 		}
 	}
 
+	inline ch32 ReadKey()
+	{
+		throw NotImplementedException();
+	}
 
 	void BeginGetString(delegate1<void,const TString&>* callback)
 	{
@@ -257,7 +261,7 @@ public:
 class TConsoleInput
 {
 public:
-	TConsoleDriver* cinput;
+	TConsole* cinput;
 
 	TArray<ch32> Chars;
 	IPosition CursorStart;

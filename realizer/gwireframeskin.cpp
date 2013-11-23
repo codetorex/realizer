@@ -120,7 +120,7 @@ void GWireFrameSkin::LayoutScrollBar( GScrollBar* scrollbar )
 	LayoutScrollBarButton(scrollbar->UpButton);
 	LayoutScrollBarButton(scrollbar->DownButton);
 
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::LayoutSunkEdge( GObject* object )
@@ -136,40 +136,40 @@ void GWireFrameSkin::RenderHilight( int x,int y, int w,int h )
 
 void GWireFrameSkin::RenderTabControl( GTabControl* tabc )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::LayoutTabPage( GTabPage* tabp )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::RenderTabButton( GButtonBase* tabb, bool active )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::RenderSystemButton( GSystemButton* sysb )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::LayoutSystemButton( GSystemButton* sysb )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::DrawDottedHorizontalLine( int x,int y, int width )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::DrawDottedVerticalLine( int x, int y, int height )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }
 
 void GWireFrameSkin::RenderTreeNode( GTreeNode* n, int x, int y )
 {
-	throw NotImplementedException();
+	throw NotImplementedException(__FILE__,__LINE__);
 }

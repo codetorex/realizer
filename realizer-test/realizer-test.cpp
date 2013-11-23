@@ -22,6 +22,7 @@
 #include "test_enginecolor.h"
 #include "test_gui.h"
 #include "test_modelobj.h"
+#include "test_audio.h"
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
@@ -56,6 +57,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	TestSuite.AddTest(&TestColor);
 	TestSuite.AddTest(&TestGUI);
 	TestSuite.AddTest(&TestModelObj);
+	TestSuite.AddTest(&TestAudio);
 
 	
 
@@ -69,7 +71,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	TString BGRComposition = TextureFormats->fBGR->ToString();
 	Engine.Command.Output->Write(BGRComposition);
 
-	TestSuite.ActivateLastTest();
+	// TestSuite.ActivateLastTest();
 
 	/*TEventAction* consoleAction = Engine.Inputs.CreateAction("ActivateConsole",GetHandler(&dbgScene,&DebugScene::ActivateConsole));
 	Engine.Inputs.BindKey(Keys::Tilde, consoleAction);*/

@@ -19,17 +19,17 @@ public:
 
 	void RenderCheckBox( GCheckBox* checkbox ) 
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	void RenderRadioButton( GRadioButton* radiobutton ) 
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	void RenderProgressBar( GProgressBar* progressbar ) 
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	void RenderTextBox( GTextBox* textbox );

@@ -2,7 +2,7 @@
 #include "reditorcommands.h"
 #include "reditor.h"
 
-#include "twintools.h"
+#include "tplatform.h"
 
 void REditorCommands::AddNewItem()
 {
@@ -59,18 +59,18 @@ void REditorCommands::ImportFolder()
 	RProjectNode* pn = (RProjectNode*)Editor.ProjectView.SelectedNode;
 	if (!pn)
 	{
-		TWinTools::ShowMessage("No node selected for import folder");
+		Platform.ShowMessageBox("No node selected for import folder");
 		return;
 	}
 
 	if (pn->Type != RProjectNode::RS_FOLDER && pn->Type != RProjectNode::RS_PROJECT)
 	{
-		TWinTools::ShowMessage("Selected project node is not appropriate for importing live folder");
+		Platform.ShowMessageBox("Selected project node is not appropriate for importing live folder");
 		return;
 	}
 
 	TString result;
-	bool picked = TWinTools::BrowseFolder(Application.StartupPath,result);
+	bool picked = Platform.BrowseFolder(Application.StartupPath,result);
 	if (!picked)
 	{
 		return;

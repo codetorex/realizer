@@ -108,7 +108,7 @@ void VModelOBJ::ReadModel( VModel* mdl, Stream* src )
 
 	if (!ReadAsTriangleList)
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	

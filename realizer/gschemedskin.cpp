@@ -349,7 +349,7 @@ void GSchemedSkin::RenderSystemButton( GSystemButton* sysb )
 		return;
 
 	default:
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 }
 
@@ -362,7 +362,7 @@ void GSchemedSkin::LayoutSystemButton( GSystemButton* sysb )
 		return;
 
 	default:
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 }
 

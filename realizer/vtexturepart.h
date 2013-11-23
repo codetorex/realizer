@@ -85,7 +85,7 @@ public:
 
 	void DrawCropped(float x,float y, float w,float h,const TColor32& color)
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	inline void DrawCropped(float x,float y, float w,float h)
@@ -96,7 +96,7 @@ public:
 
 	void DrawTiled(float x,float y, float w,float h,const TColor32& color)
 	{
-		throw NotImplementedException();
+		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
 	inline void DrawTiled(float x,float y, float w,float h)
