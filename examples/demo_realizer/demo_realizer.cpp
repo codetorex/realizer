@@ -85,7 +85,7 @@ public:
 	int fps;
 	int lastOlcum;
 
-	string TestString;
+	String TestString;
 
 	GProgressBar* pb;
 	
@@ -211,7 +211,7 @@ public:
 
 	void Initialize()
 	{
-		TestString = TString(512);
+		TestString = String(512);
 
 		lastOlcum = 0;
 
@@ -375,9 +375,9 @@ public:
 	}
 };
 
-TString MatrixToString(mat4& src)
+String MatrixToString(mat4& src)
 {
-	TString result(1024);
+	String result(1024);
 /*	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._11,src._12,src._13,src._14);
 	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._21,src._22,src._23,src._24);
 	result += TString::FormatNew("%0.2f\t%0.2f\t%0.2f\t%0.2f\r\n",src._31,src._32,src._33,src._34);
@@ -385,9 +385,9 @@ TString MatrixToString(mat4& src)
 	return result;
 }
 
-string Totor(const TString& value)
+String Totor(const String& value)
 {
-	string result;
+	String result;
 	result += value;
 	result += " some more text";
 	return result;

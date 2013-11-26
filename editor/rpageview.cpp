@@ -165,7 +165,7 @@ void RPageView::ClosePage( RPage* page )
 	{
 		if (Pages.Count > 0)
 		{
-			ActivatePage(Pages.Item[0]);
+			ActivatePage(Pages.Items[0]);
 		}
 		else
 		{
@@ -251,7 +251,7 @@ void RPageButton::Layout()
 	TCharacterEnumerator ce(Text); // TODO: fix this
 	int stringWidth = Font->GetStringWidth(ce);
 	SetContentWidth(stringWidth + 4 + Closer.Width);
-	SetContentHeight( MathDriver::Max(Closer.Height,Font->Height) );
+	SetContentHeight( Math.Max(Closer.Height,Font->Height) );
 
 	UpdateContent();
 

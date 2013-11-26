@@ -24,7 +24,7 @@ private:
 public:
 
 	static void InitializeFormats();
-	bool InitializeRenderer(int _width,int _height,const TString& _title,bool fullscr,int bits);
+	bool InitializeRenderer(int _width,int _height,const String& _title,bool fullscr,int bits);
 
 	inline void Clear(ui32 flags, ui32 color)
 	{

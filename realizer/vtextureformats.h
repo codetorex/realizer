@@ -24,12 +24,12 @@ public:
 		FallbackFormat = fallback;
 	}
 
-	VTextureFormat(const TString& name, PrimitiveArray* primitives, const TString& components): TBufferFormat(name,primitives,components)
+	VTextureFormat(const String& name, PrimitiveArray* primitives, const String& components): TBufferFormat(name,primitives,components)
 	{
 		UnSupported(0);
 	}
 
-	VTextureFormat(const TString& longname,const TString& shortname, PrimitiveArray* primitives, const TString& components): TBufferFormat(longname,shortname,primitives,components)
+	VTextureFormat(const String& longname,const String& shortname, PrimitiveArray* primitives, const String& components): TBufferFormat(longname,shortname,primitives,components)
 	{
 		UnSupported(0);
 	}
@@ -97,12 +97,12 @@ class TCompositeFormatFactoryTexture: public TCompositeFormatFactory
 public:
 	static TCompositeFormatFactoryTexture Instance;
 
-	TBufferFormat* CreateFormat(const TString& name, PrimitiveArray* primitives, const TString& components)
+	TBufferFormat* CreateFormat(const String& name, PrimitiveArray* primitives, const String& components)
 	{ 
 		return new VTextureFormat(name,primitives,components);
 	}
 
-	TBufferFormat* CreateFormat(const TString& longname, const TString& shortname,PrimitiveArray* primitives, const TString& components) 
+	TBufferFormat* CreateFormat(const String& longname, const String& shortname,PrimitiveArray* primitives, const String& components) 
 	{
 		return new VTextureFormat(longname,shortname,primitives,components);
 	}

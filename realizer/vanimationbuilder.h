@@ -183,7 +183,7 @@ public:
 		{
 		case VT_MULTILINEAR:
 		case VT_MULTICOSINE:
-			((VAnimationMulti*)Animation)->Outputs.Item[outputPort]->ConnectMemory(outputMemPtr);
+			((VAnimationMulti*)Animation)->Outputs.Items[outputPort]->ConnectMemory(outputMemPtr);
 			break;
 		}
 	}
@@ -199,7 +199,7 @@ public:
 		{
 		case VT_MULTILINEAR:
 		case VT_MULTICOSINE:
-			((VAnimationMulti*)Animation)->Outputs.Item[outputPort]->ConnectMemoryConverting(targetPtr,targetType);
+			((VAnimationMulti*)Animation)->Outputs.Items[outputPort]->ConnectMemoryConverting(targetPtr,targetType);
 			return;
 		}
 	}

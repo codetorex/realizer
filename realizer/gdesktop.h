@@ -50,7 +50,7 @@ public:
 	 * Disappearing objects after use but should stay on top.
 	 * objects like menus, message boxes, combo box list things like that which is 
 	 */
-	TArray< GObject* > OnTopObjects;
+	Array< GObject* > OnTopObjects;
 
 	GObject* MouseOn;
 

@@ -54,7 +54,7 @@ TType GFontEntryMemberInfo()
 
 TType GFontEntry::MemberInfo = GFontEntryMemberInfo();
 
-const TString FontPath = "fonts/";
+const String FontPath = "fonts/";
 
 void GFontCache::CreateCache()
 {
@@ -63,11 +63,11 @@ void GFontCache::CreateCache()
 
 	while(FontFiles->MoveNext())
 	{
-		TString fileextension = FontFiles->Current->GetExtension();
+		String fileextension = FontFiles->Current->GetExtension();
 
 		if (fileextension == ".fnt")
 		{
-			TString fname = FontPath;
+			String fname = FontPath;
 			fname += FontFiles->Current->GetName();
 
 			GFont* LoadedFont = Engine.GUI.Fonts.LoadStaticFont(fname); // .FNT is a static font
@@ -99,14 +99,14 @@ void GFontCache::SaveCache( TStream* cacheStream )
 	}*/
 	for (ui32 i=0;i<Entries.Count;i++)
 	{
-		rmlWriter->SerializeObject( &GFontEntry::MemberInfo, Entries.Item[i] );
+		rmlWriter->SerializeObject( &GFontEntry::MemberInfo, Entries.Items[i] );
 	}
 
 
 	rmlWriter->WriteElementEnd();
 }
 
-GFontEntry* GFontCache::CreateFontEntry( const TString& fontname )
+GFontEntry* GFontCache::CreateFontEntry( const String& fontname )
 {
 	GFontEntry* entry = new GFontEntry();
 	entry->FontName = fontname;
@@ -116,14 +116,14 @@ GFontEntry* GFontCache::CreateFontEntry( const TString& fontname )
 	return entry;
 }
 
-GFontEntry* GFontCache::GetFontEntry( const TString& fontname,bool createIfNotExist /*= false*/ )
+GFontEntry* GFontCache::GetFontEntry( const String& fontname,bool createIfNotExist /*= false*/ )
 {
 	/*GFontEntry* entry = Entries.GetValueOrNull(fontname);
 	if (entry) return entry;*/
 
 	for (ui32 i=0;i<Entries.Count;i++)
 	{
-		GFontEntry* curEntry = Entries.Item[i];
+		GFontEntry* curEntry = Entries.Items[i];
 		if (curEntry->FontName == fontname)
 		{
 			return curEntry;
@@ -139,7 +139,7 @@ GFontEntry* GFontCache::GetFontEntry( const TString& fontname,bool createIfNotEx
 	return 0;
 }
 
-GFontEntry* GFontCache::FindFontEntry( const TString& fontname )
+GFontEntry* GFontCache::FindFontEntry( const String& fontname )
 {
 	/*GFontEntry* entry = Entries.GetValueOrNull(fontname);
 	if (entry) return entry;*/
@@ -147,11 +147,11 @@ GFontEntry* GFontCache::FindFontEntry( const TString& fontname )
 	if (entry) return entry;
 
 	// TODO: if this function becomes sluggish you may need to implement THybridMap which is merge of TArray and HashMap it finds fast, and can look sequentially fast
-	TString lowercase = fontname.ToLower();
+	String lowercase = fontname.ToLower();
 
 	for (ui32 i=0;i<Entries.Count;i++)
 	{
-		GFontEntry* curEntry = Entries.Item[i];
+		GFontEntry* curEntry = Entries.Items[i];
 		if (curEntry->CompareName.IndexOf(lowercase) != -1)
 		{
 			return curEntry;
@@ -171,7 +171,7 @@ GFontEntry* GFontCache::FindFontEntry( const TString& fontname )
 	return 0;
 }
 
-GFontFile* GFontEntry::AddFontFile( const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline )
+GFontFile* GFontEntry::AddFontFile( const String& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline )
 {
 	GFontFile* fileEntry = new GFontFile();
 	fileEntry->FileName = path;

@@ -32,7 +32,7 @@ void VNodeCanvas::Render()
 	int i=Items.Count;
 	while(i--)
 	{
-		Items.Item[i]->Render();
+		Items.Items[i]->Render();
 	}
 
 	Engine.Draw.Flush();

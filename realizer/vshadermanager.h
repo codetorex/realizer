@@ -10,21 +10,21 @@ class VPixelShader;
 class VVertexShader;
 class VShaderPipeline;
 
-class VShaderManager: public TArray< VShader* >
+class VShaderManager: public Array< VShader* >
 {
 public:
-	TArray<VShaderPipeline*> Pipelines;
+	Array<VShaderPipeline*> Pipelines;
 
-	VShader* GetShader(const TString& name, EShaderTypes Type);
+	VShader* GetShader(const String& name, EShaderTypes Type);
 
-	VVertexShader* GetVertexShader(const TString& name);
-	VPixelShader* GetPixelShader(const TString& name);
+	VVertexShader* GetVertexShader(const String& name);
+	VPixelShader* GetPixelShader(const String& name);
 
 	VShaderPipeline* GetPipeline(VPixelShader* ps, VVertexShader* vs, VGeometryShader* gs);
 	VShaderPipeline* GetPipeline(VPixelShader* ps, VVertexShader* vs);
-	VShaderPipeline* GetPipeline(const TString& name);
+	VShaderPipeline* GetPipeline(const String& name);
 
-	VShaderPipeline* CreatePipeline(const TString& name, VPixelShader* ps, VVertexShader* vs, VGeometryShader* gs = 0);
+	VShaderPipeline* CreatePipeline(const String& name, VPixelShader* ps, VVertexShader* vs, VGeometryShader* gs = 0);
 };
 
 #endif

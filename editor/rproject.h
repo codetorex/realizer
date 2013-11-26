@@ -32,18 +32,18 @@ class RProject: public RProjectNode
 public:
 	RProject();
 
-	TString FilePath;
-	TString ProjectName;
+	String FilePath;
+	String ProjectName;
 
-	void setProjectName(const TString& newProjectName)
+	void setProjectName(const String& newProjectName)
 	{
 		ProjectName = newProjectName;
 		UpdateText();
 	}
 	
-	void Load(const TString& projectPath);
+	void Load(const String& projectPath);
 
-	void SaveAs(const TString& projectPath);
+	void SaveAs(const String& projectPath);
 
 	/**
 	 * If loaded from a file you can call this
@@ -53,12 +53,12 @@ public:
 	/**
 	 * Imports project files from other sources like VS2010
 	 */
-	void ImportProject(const TString& projectPath);
+	void ImportProject(const String& projectPath);
 
 	/**
 	 * Synchronises this project files from other sources like VS2010 CodeBlocks etc.
 	 */
-	void SynchronizeProject(const TString& projectPath);
+	void SynchronizeProject(const String& projectPath);
 
 	void UpdateText();
 

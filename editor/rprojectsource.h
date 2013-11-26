@@ -9,16 +9,16 @@ class RProjectSourceType
 {
 public:
 	/// Holds associated extensions
-	TArray< TString* > Extensions;
+	Array< String* > Extensions;
 
-	TString Name;
+	String Name;
 	int Index;
 
 	GImage* Image;
 
-	void AddExtension(const TString& ext)
+	void AddExtension(const String& ext)
 	{
-		TString* nExt = new TString(ext);
+		String* nExt = new String(ext);
 		Extensions.Add(nExt);
 	}
 
@@ -41,7 +41,7 @@ class RProjectSourceTypeManager
 public:
 	RProjectSourceType Unknown;
 
-	TArray< RProjectSourceType* > Types;
+	Array< RProjectSourceType* > Types;
 
 	void InitializeDefaultTypes();
 
@@ -50,7 +50,7 @@ public:
 	/**
 	 * Retrieves source type from file extension
 	 */
-	RProjectSourceType* GetType(const TString& ext);
+	RProjectSourceType* GetType(const String& ext);
 
 	static RProjectSourceTypeManager Instance;
 };
@@ -59,9 +59,9 @@ public:
 class RProjectSource: public RProjectNode
 {
 public:
-	RProjectSource(const TString& path);
+	RProjectSource(const String& path);
 
-	TString FilePath;
+	String FilePath;
 	RProjectSourceType* SourceType;
 
 	/**

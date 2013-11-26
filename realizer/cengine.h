@@ -53,7 +53,7 @@ public:
 
 	//Mesh, model
 
-	void Initialize(int width,int height, const TString& title, bool fullscreen = false,int bits = 24);
+	void Initialize(int width,int height, const String& title, bool fullscreen = false,int bits = 24);
 	void Run();
 };
 

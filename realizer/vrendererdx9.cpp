@@ -4,7 +4,7 @@
 #include "vvertexbuffer.h"
 
 
-bool VRendererDX9::InitializeRenderer( int _width,int _height,const TString& _title,bool fullscr,int bits )
+bool VRendererDX9::InitializeRenderer( int _width,int _height,const String& _title,bool fullscr,int bits )
 {
 	Create(_width,_height,_title,fullscr,bits);
 

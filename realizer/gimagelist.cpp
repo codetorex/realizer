@@ -44,7 +44,7 @@ GImage* GImageList::AddImage( TBitmap* bmp )
 	return r;
 }
 
-GImage* GImageList::AddImage( const TString& path )
+GImage* GImageList::AddImage( const String& path )
 {
 	TBitmap* bmp = Engine.Textures.LoadToBitmap(path);
 	GImage* result = AddImage(bmp);

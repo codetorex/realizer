@@ -42,7 +42,7 @@ enum ESourceLanguage
 class VShader
 {
 public:
-	TString SourcePath;
+	String SourcePath;
 	ESourceLanguage SourceLanguage;
 	EShaderTypes Type;
 	EShaderLevel Level;
@@ -51,8 +51,8 @@ public:
 	ui32 ComplexityScore;
 
 	/// These are not necessary but could be useful I guess
-	TArray< TFieldInfo* > Uniforms;
-	TArray< TFieldInfo* > Inputs;
+	Array< TFieldInfo* > Uniforms;
+	Array< TFieldInfo* > Inputs;
 
 	virtual void EnableShader() 
 	{
@@ -89,7 +89,7 @@ public:
 class VShaderPipeline
 {
 public:
-	TString Name;
+	String Name;
 
 	VVertexShader* VertexShader;
 	VPixelShader* PixelShader;

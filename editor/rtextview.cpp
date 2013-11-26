@@ -90,7 +90,7 @@ void RTextView::Render()
 			lineX += LineNumberPixelWidth;
 		}
 
-		TCharacterEnumerator ce(td->Lines.Item[i]->Line);
+		TCharacterEnumerator ce(td->Lines.Items[i]->Line);
 		
 		while(ce.MoveNext())
 		{
@@ -180,12 +180,12 @@ void RTextView::OnMouseWheel( int x,int y, int delta )
 
 RTextViewStyleVS2010Loader RTextViewStyleVS2010Loader::Instance;
 
-void RTextViewStyleVS2010Loader::GetColor( const TString& item, TColor32& fore, TColor32& back )
+void RTextViewStyleVS2010Loader::GetColor( const String& item, TColor32& fore, TColor32& back )
 {
 	TArrayEnumerator< TXMLNode* > ae(colorsNode->Nodes);
 	while(ae.MoveNext())
 	{
-		TString* attrib = ae.Current->Attributes["Name"];
+		String* attrib = ae.Current->Attributes["Name"];
 
 		if (attrib == 0)
 		{
@@ -194,8 +194,8 @@ void RTextViewStyleVS2010Loader::GetColor( const TString& item, TColor32& fore, 
 
 		if (*attrib == item)
 		{
-			TString* sfore = ae.Current->Attributes["Foreground"];
-			TString* sback = ae.Current->Attributes["Background"];
+			String* sfore = ae.Current->Attributes["Foreground"];
+			String* sback = ae.Current->Attributes["Background"];
 
 			fore = TConvert::ToUInt32Hex(*sfore);
 			back = TConvert::ToUInt32Hex(*sback);
@@ -227,7 +227,7 @@ void RTextViewStyleVS2010Loader::LoadStyle( RTextViewStyle* style,TStream* srcSt
 		throw Exception("something went wrong");
 	}
 
-	TString* aname = cnode->Attributes["name"];
+	String* aname = cnode->Attributes["name"];
 
 	if (*aname != "Environment_Group")
 	{

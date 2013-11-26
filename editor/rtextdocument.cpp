@@ -13,8 +13,8 @@ void RTextDocument::LoadDocument()
 
 	while(!sr->EndOfStream)
 	{
-		TString curLine = sr->ReadLine();
-		if (sr->EndOfStream && curLine.Length == 0)
+		String curLine = sr->ReadLine();
+		if (sr->EndOfStream && curLine.Length() == 0)
 		{
 			break;
 		}

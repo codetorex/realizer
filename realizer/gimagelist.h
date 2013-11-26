@@ -14,7 +14,7 @@ private:
 
 public:
 
-	TArray< GImage* > Images;
+	Array< GImage* > Images;
 
 	GImageList()
 	{
@@ -33,7 +33,7 @@ public:
 
 	GImage* AddImage(TBitmap* bmp);
 
-	GImage* AddImage(const TString& path);
+	GImage* AddImage(const String& path);
 
 	GImage& GetImage(int index)
 	{

@@ -4,7 +4,7 @@
 #include "tstring.h"
 #include "genums.h"
 #include "tarray.h"
-#include "texception.h"
+
 
 class GObject;
 class TType;
@@ -12,7 +12,7 @@ class TType;
 class GTypeExtension
 {
 public:
-	TString Name;
+	String Name;
 	void* ExtensionPtr;
 };
 
@@ -28,14 +28,14 @@ public:
 	GUIClassID ClassID;
 
 	/// This factory creates objects named as this
-	TString ObjectName;
+	String ObjectName;
 
 	/// Small description about
-	TString Description;
+	String Description;
 
-	TArray< GTypeExtension* > Extensions;
+	Array< GTypeExtension* > Extensions;
 
-	inline void* GetExtensionPtr(const TString& name)
+	inline void* GetExtensionPtr(const String& name)
 	{
 		GTypeExtension* ext = GetExtension(name);
 		if (ext)
@@ -45,7 +45,7 @@ public:
 		return 0;
 	}
 
-	inline GTypeExtension* GetExtension(const TString& name)
+	inline GTypeExtension* GetExtension(const String& name)
 	{
 		TArrayEnumerator< GTypeExtension* > ae(Extensions);
 		while(ae.MoveNext())
@@ -59,7 +59,7 @@ public:
 		return 0;
 	}
 
-	inline GTypeExtension* RegisterExtension( const TString& name, void* extensionPtr)
+	inline GTypeExtension* RegisterExtension( const String& name, void* extensionPtr)
 	{
 		GTypeExtension* newExt = new GTypeExtension();
 		newExt->Name = name;
@@ -82,7 +82,7 @@ public:
 	/// Singleton
 	static GObjectManager Instance;
 
-	TArray< GObjectType* > Factories;
+	Array< GObjectType* > Factories;
 
 	inline GObjectType* GetFactoryFromClassID(GUIClassID classID)
 	{
@@ -99,7 +99,7 @@ public:
 	}
 
 	/// TODO: We can use some indexing array stuff to fast lookup
-	inline GObject* CreateObject(const TString& objectName)
+	inline GObject* CreateObject(const String& objectName)
 	{
 		TArrayEnumerator< GObjectType* > ae (Factories);
 		while(ae.MoveNext())
@@ -124,7 +124,7 @@ public:
 		return 0;
 	}
 
-	inline TString GetObjectName(GUIClassID classID)
+	inline String GetObjectName(GUIClassID classID)
 	{
 		GObjectType* fac = GetFactoryFromClassID(classID);
 		if (fac)
@@ -133,7 +133,7 @@ public:
 		}
 
 		throw Exception("Object factory not found");
-		return TString::Empty;
+		return String::Empty;
 	}
 
 	inline void RegisterFactory(GObjectType* factory)

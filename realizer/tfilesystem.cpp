@@ -3,7 +3,7 @@
 #include "tfoldermount.h"
 #include "tmemorystream.h"
 
-IDirectory* TFileSystem::GetDirectory( const TString& path )
+IDirectory* TFileSystem::GetDirectory( const String& path )
 {
 	if (LastUsedMount != 0)
 	{
@@ -25,7 +25,7 @@ IDirectory* TFileSystem::GetDirectory( const TString& path )
 	return NULL;
 }
 
-TStream* TFileSystem::Open( const TString& path,FileMode mode )
+TStream* TFileSystem::Open( const String& path,FileMode mode )
 {
 	if (TMount::IsWritableRequired(mode))
 	{
@@ -58,7 +58,7 @@ TStream* TFileSystem::Open( const TString& path,FileMode mode )
 	return NULL;
 }
 
-TMount* TFileSystem::FindDirectoryInMounts( const TString& path )
+TMount* TFileSystem::FindDirectoryInMounts( const String& path )
 {
 	int i = Mounts.Count;
 	while(i--)
@@ -72,7 +72,7 @@ TMount* TFileSystem::FindDirectoryInMounts( const TString& path )
 	return NULL;
 }
 
-TMount* TFileSystem::FindFileInMounts( const TString& path )
+TMount* TFileSystem::FindFileInMounts( const String& path )
 {
 	int i = Mounts.Count;
 	while(i--)
@@ -86,14 +86,14 @@ TMount* TFileSystem::FindFileInMounts( const TString& path )
 	return NULL;
 }
 
-TMount* TFileSystem::MountSystemFolder( const TString& folderPath,ui32 permission )
+TMount* TFileSystem::MountSystemFolder( const String& folderPath,ui32 permission )
 {
 	TFolderMount* FMount = new TFolderMount(folderPath,permission);
 	Mount(FMount);
 	return FMount;
 }
 
-TBuffer* TFileSystem::Load( const TString& path )
+TBuffer* TFileSystem::Load( const String& path )
 {
 	TStream* file = Open(path,fm_Read);
 	int length = file->Length();
@@ -103,7 +103,7 @@ TBuffer* TFileSystem::Load( const TString& path )
 	return result;
 }
 
-TMemoryStream* TFileSystem::LoadOpen( const TString& path )
+TMemoryStream* TFileSystem::LoadOpen( const String& path )
 {
 	TBuffer* file = Load(path);
 	TMemoryStream* result = new TMemoryStream(file);

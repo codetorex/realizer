@@ -22,8 +22,8 @@ public:
 		KnownFile = false;
 	}
 
-	TString Name;
-	TString FilePath;
+	String Name;
+	String FilePath;
 
 	RDocumentTypes DocumentType;
 
@@ -58,7 +58,7 @@ public:
 		throw NotImplementedException(__FILE__,__LINE__);
 	}
 
-	void LoadDocument(const TString& path)
+	void LoadDocument(const String& path)
 	{
 		FilePath = path;
 		LoadDocument();

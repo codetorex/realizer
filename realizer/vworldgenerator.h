@@ -19,9 +19,9 @@ public:
 	/// Defines center of mass and radius
 	Circle2 Mass;
 
-	TArray < Vector2 > OuterPoints;
+	Array < Vector2 > OuterPoints;
 
-	TArray < Line > OuterLines;
+	Array < Line > OuterLines;
 
 	/// Pangaea all continents are single continent
 
@@ -95,7 +95,7 @@ public:
 class VMap
 {
 public:
-	TArray< VLand* > Lands;
+	Array< VLand* > Lands;
 };
 
 /**

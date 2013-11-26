@@ -4,7 +4,7 @@
 
 REngine Engine;
 
-void REngine::Initialize( int width,int height, const TString& title, bool fullscreen /*= false*/,int bits /*= 24*/ )
+void REngine::Initialize( int width,int height, const String& title, bool fullscreen /*= false*/,int bits /*= 24*/ )
 {
 	Renderer.InitializeRenderer(width,height,title,fullscreen,bits);
 	Running = false;

@@ -17,10 +17,10 @@ public:
 	HWND		hWnd;
 	HINSTANCE	hInstance;
 
-	bool Create(int _width,int _height,const TString& _title,bool fullscr = false,int bits=24);
+	bool Create(int _width,int _height,const String& _title,bool fullscr = false,int bits=24);
 	void Destroy();
 
-	void ChangeTitle(const TString& newtitle) {};
+	void ChangeTitle(const String& newtitle) {};
 	bool DoEvents();
 
 	void ShowMouseCursor(bool visible){};

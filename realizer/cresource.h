@@ -28,7 +28,7 @@ public:
 	ResourceTypes	ResourceType;
 
 	/// Sub resources related/required with this resource. Like you can load a model but its texture associate with it will be its child resource.
-	TArray<Resource*>	Nodes;
+	Array<Resource*>	Nodes;
 
 	/**
 	 * Frees resource and all resources related with it, if they not reference by other resources.

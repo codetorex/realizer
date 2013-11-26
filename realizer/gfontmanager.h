@@ -3,7 +3,7 @@
 
 #include "gfontcache.h"
 
-class GFontManager: public TArray< GFont* >
+class GFontManager: public Array< GFont* >
 {
 public:
 	GFontCache Cache;
@@ -12,7 +12,7 @@ public:
 	 * Gets font from cache if available, if not then it will load the font. If font not found will return 0.
 	 * Use this whenever you need a font!
 	 */
-	GFont* GetFont(const TString& fontName, int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);
+	GFont* GetFont(const String& fontName, int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);
 
 	void ReleaseFont(GFont* font);
 
@@ -25,12 +25,12 @@ public:
 	 * Note: The formate used Angelcode bitmap font generator is renamed to BMF to not collide with regulat FNT.
 	 * But other formats can supported with extensions.
 	 */
-	GFont* LoadFont(const TString& path, int size, FontWeight weight, FontQuality quality,int outlineWidth, bool italic);
+	GFont* LoadFont(const String& path, int size, FontWeight weight, FontQuality quality,int outlineWidth, bool italic);
 
 	/**
 	 * Static fonts have their own properties baked with them. So you cant change their size weight or quality. They will just get loaded.
 	 */
-	GFont* LoadStaticFont(const TString& path);
+	GFont* LoadStaticFont(const String& path);
 };
 
 

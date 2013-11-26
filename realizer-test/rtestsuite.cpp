@@ -132,7 +132,7 @@ void RTestSuite::Render()
 	RightRegion.SetRegion(10,10,Engine.Renderer.vWidth-20,10);
 
 	WriteText(Application.IdentifyText,LeftRegion);
-	WriteText(Application.Modules.Item[0]->IdentifyText,RightRegion,CA_TopRight);
+	WriteText(Application.Modules.Items[0]->IdentifyText,RightRegion,CA_TopRight);
 
 	sb.Clear();
 	sb.Append("Current test: ");

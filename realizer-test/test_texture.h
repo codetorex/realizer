@@ -15,8 +15,8 @@ class VTextureTest
 {
 public:
 	VTexture* Texture;
-	TString	PixelFormat;
-	TString BufferFormat;
+	String	PixelFormat;
+	String BufferFormat;
 	ui32 EngineId;
 	TBufferFormat* Fallback;
 };
@@ -35,7 +35,7 @@ public:
 		SceneName = "Texture loading test";
 	}
 
-	TArray< VTextureTest* > Tests;
+	Array< VTextureTest* > Tests;
 
 	void AddTest( VTexture* tex );
 

@@ -77,7 +77,7 @@ public:
 	GDesktop* TestDesktop;
 	GConsole* TestConsole;
 
-	TArray< RTestScene* > Tests;
+	Array< RTestScene* > Tests;
 
 	int CurrentTestIndex;
 	RTestScene* CurrentTest;

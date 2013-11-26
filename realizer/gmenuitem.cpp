@@ -211,7 +211,7 @@ void GMenuItem::AddSubMenu( GMenuItem* item )
 	SubItems.AddChild(item);
 }
 
-GMenuItem* GMenuItem::AddSubMenu( const TString& menuItem, NoArgEvent* onClick )
+GMenuItem* GMenuItem::AddSubMenu( const String& menuItem, NoArgEvent* onClick )
 {
 	GMenuItem* newItem = new GMenuItem();
 	newItem->SetRectangle(0,0,10,20);
@@ -224,7 +224,7 @@ GMenuItem* GMenuItem::AddSubMenu( const TString& menuItem, NoArgEvent* onClick )
 	return newItem;
 }
 
-GMenuItem* GMenuItem::AddSubMenu( const TString& menuItem, GImage& img, NoArgEvent* onClick )
+GMenuItem* GMenuItem::AddSubMenu( const String& menuItem, GImage& img, NoArgEvent* onClick )
 {
 	GMenuItem* newItem = AddSubMenu(menuItem,onClick);
 	newItem->Image.SetImage(img);

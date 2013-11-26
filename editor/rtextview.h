@@ -37,9 +37,9 @@ public:
 	static RTextViewStyleVS2010Loader Instance;
 
 	TXMLNode* colorsNode;
-	void GetColor(const TString& item, TColor32& fore, TColor32& back);
+	void GetColor(const String& item, TColor32& fore, TColor32& back);
 
-	void GetColor(const TString& item, RTextViewStyleColor& clr)
+	void GetColor(const String& item, RTextViewStyleColor& clr)
 	{
 		GetColor(item,clr.ForeColor,clr.BackColor);
 	}

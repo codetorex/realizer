@@ -56,11 +56,11 @@ public:
 
 	GTabAlignment Alignment;
 
-	TArray< GTabPage* > TabPages;
+	Array< GTabPage* > TabPages;
 
 	GTabPage* CurrentPage;
 
-	GTabPage* AddPage(const TString& pageName);
+	GTabPage* AddPage(const String& pageName);
 	void RemovePage(GTabPage* page);
 
 	void SelectPage(int index);

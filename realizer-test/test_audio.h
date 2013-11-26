@@ -10,7 +10,7 @@ class GSchemedSkin;
 class RWaveformWindow: public GObject
 {
 private:
-	TArray<Point2> Lines;
+	Array<Point2> Lines;
 
 public:	
 	raise::Sound::Sampler* Sampler;

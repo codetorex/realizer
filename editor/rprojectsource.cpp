@@ -12,7 +12,7 @@ void RProjectSource::Serialize( TXMLWriter& xw )
 	xw.WriteEndElement();
 }
 
-RProjectSource::RProjectSource( const TString& path )
+RProjectSource::RProjectSource( const String& path )
 {
 	FilePath = path;
 	UpdateType();
@@ -20,7 +20,7 @@ RProjectSource::RProjectSource( const TString& path )
 
 void RProjectSource::UpdateType()
 {
-	TString ext = TPath::GetExtension(FilePath);
+	String ext = TPath::GetExtension(FilePath);
 	ext.ToLowerInplace();
 	SourceType = RProjectSourceTypeManager::Instance.GetType(ext);
 	Image = SourceType->Image;
@@ -46,14 +46,14 @@ void RProjectSourceTypeManager::AddType( RProjectSourceType* typ )
 	Types.Add(typ);
 }
 
-RProjectSourceType* RProjectSourceTypeManager::GetType( const TString& ext )
+RProjectSourceType* RProjectSourceTypeManager::GetType( const String& ext )
 {
 	RProjectSourceType* result = 0;
 
 	TArrayEnumerator< RProjectSourceType* > ae(Types);
 	while(ae.MoveNext())
 	{
-		TArrayEnumerator< TString* > exts(ae.Current->Extensions);
+		TArrayEnumerator< String* > exts(ae.Current->Extensions);
 		while(exts.MoveNext())
 		{
 			if (*exts.Current == ext)

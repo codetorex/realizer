@@ -34,7 +34,7 @@ public:
 		ButtonGraphic = graphic;
 	}
 
-	virtual void setText(const TString& newText);
+	virtual void setText(const String& newText);
 
 	void Layout();
 	void Update();

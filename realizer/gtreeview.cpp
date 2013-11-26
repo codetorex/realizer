@@ -215,7 +215,7 @@ void GTreeNode::AddNode( GTreeNode* node )
 	node->Level = Level + 1;
 }
 
-GTreeNode* GTreeNode::AddNode( const TString& nodeText, ui32 image, ui32 selectedImage )
+GTreeNode* GTreeNode::AddNode( const String& nodeText, ui32 image, ui32 selectedImage )
 {
 	GTreeNode* newNode = new GTreeNode();
 	newNode->Text = nodeText;
@@ -230,7 +230,7 @@ GTreeNode* GTreeNode::AddNode( const TString& nodeText, ui32 image, ui32 selecte
 	return newNode;
 }
 
-GTreeNode* GTreeNode::AddNode( const TString& nodeText )
+GTreeNode* GTreeNode::AddNode( const String& nodeText )
 {
 	return AddNode(nodeText, TreeView->ImageIndex, TreeView->ImageIndex);
 }

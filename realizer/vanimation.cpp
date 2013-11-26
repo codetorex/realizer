@@ -21,7 +21,7 @@ void VAnimationAlgorithmLinear::AdvanceAnimation( VAnimation& animation )
 		float y1 = curKeyFrame->Value[i];
 		float y2 = nextKeyFrame->Value[i];
 
-		resultKeyFrame->Value[i] = MathInterpolate::LinearInterpolate(y1,y2,mu);
+		resultKeyFrame->Value[i] = Math.Interpolate.LinearInterpolate(y1,y2,mu);
 	}
 }
 
@@ -40,7 +40,7 @@ void VAnimationAlgorithmCosine::AdvanceAnimation( VAnimation& animation )
 		float y1 = curKeyFrame->Value[i];
 		float y2 = nextKeyFrame->Value[i];
 
-		resultKeyFrame->Value[i] = MathInterpolate::CosineInterpolate(y1,y2,mu);
+		resultKeyFrame->Value[i] = Math.Interpolate.CosineInterpolate(y1,y2,mu);
 	}
 }
 

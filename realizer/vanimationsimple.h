@@ -50,7 +50,7 @@ public:
 
 		float y1 = *(float*)&curKeyFrame->Value[0];
 		float y2 = nextKeyFrame->Value[0];
-		float result = MathInterpolate::LinearInterpolate(y1,y2,mu);
+		float result = Math.Interpolate.Linear(y1,y2,mu);
 
 		Output.Set(result);
 	}

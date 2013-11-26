@@ -29,7 +29,7 @@ void GPropertyPage::Render()
 		
 		if (cur->Field->FieldType == Types.ST_String)
 		{
-			TString* str = (TString*)cur->Value;
+			String* str = (String*)cur->Value;
 			Font->Render(*str,drect.X + halfX + 2,drect.Y, ForeColor);
 		}
 		

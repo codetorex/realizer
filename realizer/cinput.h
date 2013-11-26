@@ -8,7 +8,7 @@
 
 #include "tmousemapped.h"
 #include "tkeyboardmapped.h"
-#include "texception.h"
+
 
 
 
@@ -58,7 +58,7 @@ public:
 	/**
 	 * Gets a trigger action, if it not exists it will be created and attached to default key
 	 */
-	TTriggerAction* GetCreateTriggerAction(const TString& name, int defaultKey)
+	TTriggerAction* GetCreateTriggerAction(const String& name, int defaultKey)
 	{
 		TTriggerAction* trigger = GetTriggerAction(name);
 		if (trigger == 0)
@@ -70,7 +70,7 @@ public:
 		return trigger;
 	}
 
-	void GetMouseMoveAction(TMoveAction*& xMove, const TString& xName, TMoveAction*& yMove, const TString& yName)
+	void GetMouseMoveAction(TMoveAction*& xMove, const String& xName, TMoveAction*& yMove, const String& yName)
 	{
 		xMove = GetMoveAction(xName);
 		yMove = GetMoveAction(yName);
@@ -93,7 +93,7 @@ public:
 class CKeyboardRelay: public IKeyboardObserver
 {
 public:
-	TArray<CInputMode*>* Chain;
+	Array<CInputMode*>* Chain;
 
 	void KeyDown(int keyID)
 	{
@@ -101,7 +101,7 @@ public:
 
 		while(i--)
 		{
-			CInputMode* curMode = Chain->Item[i];
+			CInputMode* curMode = Chain->Items[i];
 			if ( curMode->KeyboardMap.Keys[keyID].Down() )
 			{
 				return;
@@ -115,7 +115,7 @@ public:
 
 		while(i--)
 		{
-			CInputMode* curMode = Chain->Item[i];
+			CInputMode* curMode = Chain->Items[i];
 			if ( curMode->KeyboardMap.Keys[keyID].Up() )
 			{
 				return;
@@ -132,7 +132,7 @@ public:
 class CMouseRelay: public IMouseObserver
 {
 public:
-	TArray<CInputMode*>* Chain;
+	Array<CInputMode*>* Chain;
 
 	void MouseMove(int x,int y)
 	{
@@ -146,7 +146,7 @@ public:
 
 		while(i--)
 		{
-			CInputMode* curMode = Chain->Item[i];
+			CInputMode* curMode = Chain->Items[i];
 			if ( curMode->MouseMap.Buttons[button].Down() )
 			{
 				return;
@@ -160,7 +160,7 @@ public:
 
 		while(i--)
 		{
-			CInputMode* curMode = Chain->Item[i];
+			CInputMode* curMode = Chain->Items[i];
 			if ( curMode->MouseMap.Buttons[button].Up() )
 			{
 				return;
@@ -187,9 +187,9 @@ public:
 	//TTouchPad					Pad; // we should not forget about this shit
 
 	THashMap<TInputAction*>		Actions; // maybe use dictionary in future.
-	TArray<CInputMode*>			Modes;
+	Array<CInputMode*>			Modes;
 
-	TArray<CInputMode*>			Chain; // chain of responsibility
+	Array<CInputMode*>			Chain; // chain of responsibility
 
 	CInputMode*					BaseMode;
 
@@ -218,7 +218,7 @@ public:
 	}
 
 
-	CInputMode* CreateMode(const TString& name)
+	CInputMode* CreateMode(const String& name)
 	{
 		CInputMode* newMode = new CInputMode();
 		newMode->Name = name;
@@ -230,7 +230,7 @@ public:
 	 * Gets a mode by name if it is exists.
 	 * It will be created if it not exists.
 	 */
-	CInputMode* GetCreateMode(const TString& name)
+	CInputMode* GetCreateMode(const String& name)
 	{
 		TArrayEnumerator<CInputMode*> e(Modes);
 		while(e.MoveNext())

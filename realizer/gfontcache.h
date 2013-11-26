@@ -31,7 +31,7 @@ class GFont;
 class GFontFile
 {
 public:
-	TString FileName;
+	String FileName;
 
 	int SizeMin;
 	int SizeMax;
@@ -77,17 +77,17 @@ public:
 class GFontEntry
 {
 public:
-	TString FontName;
-	TString CompareName;
+	String FontName;
+	String CompareName;
 
-	TArray< GFontFile* > Files;
+	Array< GFontFile* > Files;
 
 	/// TODO: Rename all MemberInfo to TypeInfo
 	static TType MemberInfo;
 
 	GFont* GetFont(int fontSize = 12, FontWeight fontWeight = RW_NORMAL , int outlineWidth = 0, bool italic = false);
 
-	GFontFile* AddFontFile(const TString& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline);
+	GFontFile* AddFontFile(const String& path, int sizeMin, int sizeMax, int weightMin,int weightMax, bool italic, int outline, bool canOutline);
 };
 
 class TStream;
@@ -95,7 +95,7 @@ class TStream;
 class GFontCache
 {
 public:
-	TArray< GFontEntry* > Entries;
+	Array< GFontEntry* > Entries;
 
 	/**
 	* Loads cache from file.
@@ -115,14 +115,14 @@ public:
 	/**
 	 * Gets font entry by name from entries array. If not found creates if told like so or returns null.
 	 */
-	GFontEntry* GetFontEntry(const TString& fontname,bool createIfNotExist = false);
+	GFontEntry* GetFontEntry(const String& fontname,bool createIfNotExist = false);
 
-	GFontEntry* FindFontEntry( const TString& fontname );
+	GFontEntry* FindFontEntry( const String& fontname );
 
 	/**
 	 * Creates a font entry and adds it to entries array.
 	 */
-	GFontEntry* CreateFontEntry(const TString& fontname);
+	GFontEntry* CreateFontEntry(const String& fontname);
 };
 
 #endif

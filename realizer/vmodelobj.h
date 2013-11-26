@@ -39,14 +39,14 @@ public:
 class VModelOBJ: public VModelReader
 {
 protected:
-	TArray<Vector3> Vertices;
-	TArray<Vector3> Normals;
-	TArray<Vector3> TextureCoords;
+	Array<Vector3> Vertices;
+	Array<Vector3> Normals;
+	Array<Vector3> TextureCoords;
 
-	void Seperate(const TString& input, int& cmdLength, int& prmStart);
-	void ParseVector3(const TString& input, int start, Vector3& vec);
-	void ParseFace(const TString& input, int start, VOBJFace& face);
-	void ParseFaceVertex(const TString& input, VOBJVertex& faceVertex);
+	void Seperate(const String& input, int& cmdLength, int& prmStart);
+	void ParseVector3(const String& input, int start, Vector3& vec);
+	void ParseFace(const String& input, int start, VOBJFace& face);
+	void ParseFaceVertex(const String& input, VOBJVertex& faceVertex);
 
 public:
 	VModelOBJ()

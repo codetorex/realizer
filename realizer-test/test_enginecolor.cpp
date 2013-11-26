@@ -10,7 +10,7 @@
 
 RTestColor TestColor;
 
-void RTestColor::AddTest( const TColor32& ColorValue, const TString& COlorName )
+void RTestColor::AddTest( const TColor32& ColorValue, const String& COlorName )
 {
 	VColorTest* nTest = new VColorTest();
 	nTest->ColorName = COlorName;

@@ -10,13 +10,13 @@ class VTexture;
 class TBitmap;
 class TStream;
 
-class RDLL VTextureManager: public TArray<VTexture*>
+class RDLL VTextureManager: public Array<VTexture*>
 {
 public:
-	TBitmap* LoadToBitmap(const TString& path);
+	TBitmap* LoadToBitmap(const String& path);
 	TBitmap* LoadToBitmap(TStream* srcStream,bool closestream = true);
 
-	VTexture* LoadTexture(const TString& path, bool keepBitmap = false);
+	VTexture* LoadTexture(const String& path, bool keepBitmap = false);
 	VTexture* LoadTexture(TStream* srcStream,bool closestream = true);
 
 	VTexture* CreateTexture(TBitmap* source);

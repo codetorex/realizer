@@ -11,8 +11,8 @@
 class CCommand
 {
 public:
-	TString Command;
-	TString CommandLineParameters;
+	String Command;
+	String CommandLineParameters;
 
 
 
@@ -22,7 +22,7 @@ public:
 class CVariable
 {
 public:
-	TString Variable;
+	String Variable;
 	void* Target;
 
 };
@@ -47,9 +47,9 @@ public:
 	/**
 	 * A command input.
 	 */
-	void Input(ch32 chr);
+	void Input(ui32 chr);
 
-	void RunCmd(const TString& cmd);
+	void RunCmd(const String& cmd);
 
 	void Start(TConsole* _output)
 	{

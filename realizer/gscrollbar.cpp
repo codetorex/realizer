@@ -157,7 +157,7 @@ void GScrollBar::SetValueFromDragPos()
 void GScrollBar::setValue( int newValue )
 {
 	int oldVal = Value;
-	Value = MathDriver::Clamp<int>(MinValue,MaxValue - LargeChange,newValue);
+	Value = Math.Clamp<int>(MinValue,MaxValue - LargeChange,newValue);
 	if (Value != oldVal)
 	{
 		Layout();

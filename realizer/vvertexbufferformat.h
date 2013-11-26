@@ -7,12 +7,12 @@ class VVertexBufferFormat: public TBufferFormat
 {
 public:
 
-	VVertexBufferFormat(const TString& name, PrimitiveArray* primitives, const TString& components): TBufferFormat(name,primitives,components)
+	VVertexBufferFormat(const String& name, PrimitiveArray* primitives, const String& components): TBufferFormat(name,primitives,components)
 	{
 
 	}
 
-	VVertexBufferFormat(const TString& longname,const TString& shortname, PrimitiveArray* primitives, const TString& components): TBufferFormat(longname,shortname,primitives,components)
+	VVertexBufferFormat(const String& longname,const String& shortname, PrimitiveArray* primitives, const String& components): TBufferFormat(longname,shortname,primitives,components)
 	{
 		// TODO: TFlexibleFormatBuilder
 	}
@@ -53,7 +53,7 @@ public:
 
 	void InitializeVertexFormats();
 
-	inline VVertexBufferFormat* CreateVertexFormat(const TString& name, const TString& components,ui32 desc)
+	inline VVertexBufferFormat* CreateVertexFormat(const String& name, const String& components,ui32 desc)
 	{
 		VVertexBufferFormat* result = (VVertexBufferFormat*)Factory->CreateFormat(name, &Primitives,components);
 		AddFormat(result);
@@ -74,12 +74,12 @@ class TCompositeFormatFactoryVertex: public TCompositeFormatFactory
 public:
 	static TCompositeFormatFactoryVertex Instance;
 
-	TBufferFormat* CreateFormat(const TString& name, PrimitiveArray* primitives, const TString& components)
+	TBufferFormat* CreateFormat(const String& name, PrimitiveArray* primitives, const String& components)
 	{ 
 		return new VVertexBufferFormat(name,primitives,components);
 	}
 
-	TBufferFormat* CreateFormat(const TString& longname, const TString& shortname,PrimitiveArray* primitives, const TString& components) 
+	TBufferFormat* CreateFormat(const String& longname, const String& shortname,PrimitiveArray* primitives, const String& components) 
 	{
 		return new VVertexBufferFormat(longname,shortname,primitives,components);
 	}

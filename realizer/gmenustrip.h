@@ -12,9 +12,9 @@ public:
 
 	GMenuStrip();
 
-	GMenuItem* AddItem(const TString& menuName, NoArgEvent* event);
+	GMenuItem* AddItem(const String& menuName, NoArgEvent* event);
 
-	GMenuItem* AddItem(const TString& menuItem);
+	GMenuItem* AddItem(const String& menuItem);
 
 	GMenuItem* AddSeperator();
 

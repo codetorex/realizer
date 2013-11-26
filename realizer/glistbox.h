@@ -14,9 +14,9 @@ public:
 
 	void OnMouseDown(int x,int y, int button);
 
-	TArray< TString* > Items;
+	Array< String* > Items;
 
-	void AddItem( TString& value );
+	void AddItem( String& value );
 
 	void OnMouseWheel(int x,int y, int delta);
 

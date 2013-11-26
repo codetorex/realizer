@@ -6,7 +6,7 @@
 #include "tbitmapreader.h"
 #include "mmathcolor.h"
 
-TBitmap* VTextureManager::LoadToBitmap(const TString& path)
+TBitmap* VTextureManager::LoadToBitmap(const String& path)
 {
 	TStream* fs = Engine.FileSystem.Open(path,fm_Read);
 	if (fs == NULL)
@@ -34,7 +34,7 @@ TBitmap* VTextureManager::LoadToBitmap(const TString& path)
 }
 
 
-VTexture* VTextureManager::LoadTexture(const TString& path, bool keepBitmap )
+VTexture* VTextureManager::LoadTexture(const String& path, bool keepBitmap )
 {
 	TBitmap* Loader = LoadToBitmap(path);
 

@@ -19,7 +19,7 @@ class RProjectLiveFolder: public RProjectNode
 public:
 	RProjectLiveFolder();
 
-	TString FolderPath;
+	String FolderPath;
 
 	void Serialize(TXMLWriter& xw);
 

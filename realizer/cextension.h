@@ -7,7 +7,7 @@ public:
 	/**
 	 * Return the extension name.
 	 */
-	virtual TString*	GetExtensionName() = 0;
+	virtual String*	GetExtensionName() = 0;
 	
 	/**
 	 * Type of extension.
@@ -18,10 +18,10 @@ public:
 	virtual void		Finalize() = 0;
 };
 
-class CExtensionManager: public TArray< CExtension* >
+class CExtensionManager: public Array< CExtension* >
 {
 public:
-	TArray< CExtension* > Extensions;
+	Array< CExtension* > Extensions;
 
 
 };

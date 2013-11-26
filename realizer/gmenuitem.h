@@ -74,8 +74,8 @@ public:
 	GImage Image;
 
 	void AddSubMenu(GMenuItem* item);
-	GMenuItem* AddSubMenu(const TString& menuItem, NoArgEvent* onClick = 0);
-	GMenuItem* AddSubMenu(const TString& menuItem, GImage& img, NoArgEvent* onClick = 0);
+	GMenuItem* AddSubMenu(const String& menuItem, NoArgEvent* onClick = 0);
+	GMenuItem* AddSubMenu(const String& menuItem, GImage& img, NoArgEvent* onClick = 0);
 
 
 	inline void set_Seperator( bool _seperator )

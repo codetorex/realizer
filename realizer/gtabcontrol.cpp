@@ -65,7 +65,7 @@ void GTabControl::Layout()
 
 	for (int i=0;i<TabPages.Count;i++)
 	{
-		GTabPage* curPage = TabPages.Item[i];
+		GTabPage* curPage = TabPages.Items[i];
 		GButtonBase* pageButton = &(curPage->TabButton);
 		TabPageButtons.AddChild(pageButton);
 		TCharacterEnumerator sb(pageButton->Text);
@@ -88,7 +88,7 @@ void GTabControl::Layout()
 
 	for (int i=0;i< TabPages.Count;i++)
 	{
-		GTabPage* curPage = TabPages.Item[i];
+		GTabPage* curPage = TabPages.Items[i];
 		curPage->SetRectangle(PageArea.X,PageArea.Y,PageArea.Width,PageArea.Height);
 		this->OwnObject(curPage);
 		curPage->Content.Shrink(3); // 3 px padding TODO: make this changable
@@ -96,7 +96,7 @@ void GTabControl::Layout()
 	}
 }
 
-GTabPage* GTabControl::AddPage( const TString& pageName )
+GTabPage* GTabControl::AddPage( const String& pageName )
 {
 	GTabPage* page = new GTabPage();
 	page->Text = pageName;
@@ -133,8 +133,8 @@ void GTabControl::SelectPage( int index )
 		CurrentPage = 0;
 		return;
 	}
-	index = MathDriver::Clamp<int>(0,TabPages.Count-1,index);
-	SelectPage(TabPages.Item[index]);
+	index = Math.Clamp<int>(0,TabPages.Count-1,index);
+	SelectPage(TabPages.Items[index]);
 }
 
 void GTabControl::SelectPage( GTabPage* page )

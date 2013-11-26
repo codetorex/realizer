@@ -20,7 +20,7 @@ public:
 
 	ui32 ClassID;
 
-	string NodeName;
+	String NodeName;
 
 	virtual void Render() {};
 	virtual void RenderDebug() {};

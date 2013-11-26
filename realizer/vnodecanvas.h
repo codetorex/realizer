@@ -13,7 +13,7 @@
 class VNodeCanvasItem
 {
 public:
-	TString		ItemName;
+	String		ItemName;
 	
 	Vector3		Position;
 	Vector3		Rotation;
@@ -32,7 +32,7 @@ class VNodeCanvas: public VNode
 {
 public:
 	
-	TArray< VNodeCanvasItem* > Items;
+	Array< VNodeCanvasItem* > Items;
 
 	VNodeCanvas()
 	{
@@ -49,7 +49,7 @@ public:
 		int i=Items.Count;
 		while(i--)
 		{
-			Items.Item[i]->Update();
+			Items.Items[i]->Update();
 		}
 	}
 

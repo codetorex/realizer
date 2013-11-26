@@ -7,7 +7,7 @@
 class TFolderMount: public TMount
 {
 private:
-	inline void GetRelativePath(TString& tmpStr, const TString& path)
+	inline void GetRelativePath(String& tmpStr, const String& path)
 	{
 		tmpStr += FullPath;
 		//tmpStr += TPath::DirectorySeprator;
@@ -15,9 +15,9 @@ private:
 	}
 
 public:
-	TString FullPath; // should always end with directory seprator
+	String FullPath; // should always end with directory seprator
 
-	TFolderMount(const TString& path,ui32 permission)
+	TFolderMount(const String& path,ui32 permission)
 	{
 		TDirectoryInfo* td = new TDirectoryInfo(path);
 		MountRoot = td;
@@ -31,69 +31,69 @@ public:
 		delete MountRoot;
 	}
 
-	TStream* Open(const TString& path, FileMode mode)
+	TStream* Open(const String& path, FileMode mode)
 	{
-		TString tmpStr(1024); // TODO: write a better string allocation and dealloction algrotihms to make these temporary stuff better.
+		String tmpStr(1024); // TODO: write a better string allocation and dealloction algrotihms to make these temporary stuff better.
 		GetRelativePath(tmpStr,path);
 		TStream* result = File::Open(tmpStr,mode);
 		return result;
 	}
 
-	TStream* Create(const TString& path)
+	TStream* Create(const String& path)
 	{
 		return Open(path,fm_Write);
 	}
 
-	bool Delete(const TString& path)
+	bool Delete(const String& path)
 	{
 
 		return false;
 	}
 
-	bool Move(const TString& srcpath,const TString& dstpath)
+	bool Move(const String& srcpath,const String& dstpath)
 	{
 		return false;
 	}
 
-	bool Exists(const TString& path)
+	bool Exists(const String& path)
 	{
-		TString tmpStr(1024);
+		String tmpStr(1024);
 		GetRelativePath(tmpStr,path);
 		return TFileInfo::Exists(tmpStr);
 	}
 
-	bool CreateDir(const TString& path)
+	bool CreateDir(const String& path)
 	{
 
 		return false;
 	}
 
-	bool DeleteDir(const TString& path)
+	bool DeleteDir(const String& path)
 	{
 		return false;
 	}
 
-	bool MoveDir(const TString& srcDir,const TString& dstDir)
+	bool MoveDir(const String& srcDir,const String& dstDir)
 	{
 		return false;
 	}
 
-	bool ExistsDir(const TString& path)
+	bool ExistsDir(const String& path)
 	{
-		TString tmpStr(1024);
+		String tmpStr(1024);
 		GetRelativePath(tmpStr,path);
 		return TDirectoryInfo::Exists(tmpStr);
 	}
 
-	IFile* GetFile(const TString& path)
+	IFile* GetFile(const String& path)
 	{
 		TFileInfo* file = new TFileInfo(path);
 		return file;
 	}
 
-	IDirectory*	GetDirectory(const TString& path)
+	IDirectory*	GetDirectory(const String& path)
 	{
-		TString tmpStr(1024);
+		String tmpStr(1024);
 		GetRelativePath(tmpStr,path);
 		TDirectoryInfo* DirectoryInterface = new TDirectoryInfo(tmpStr);
 		return DirectoryInterface;

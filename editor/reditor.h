@@ -56,7 +56,7 @@ public:
 
 
 	void SetToolboxIcon(GUIClassID clsID, GImage* img);
-	GImage* Fugue(const TString& fugueName);
+	GImage* Fugue(const String& fugueName);
 
 	void Initialize();
 };

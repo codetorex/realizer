@@ -69,7 +69,7 @@ public:
 	RPageView();
 
 	GObject				PageButtons;
-	TArray< RPage* >	Pages;
+	Array< RPage* >	Pages;
 	IRectangle			ViewRectangle;
 	RPage*				ActivePage;
 

@@ -5,10 +5,10 @@
 
 class VMaterial;
 
-class VMaterialManager: TArray< VMaterial* >
+class VMaterialManager: Array< VMaterial* >
 {
 public:
-	VMaterial* GetMaterial(const TString& name);
+	VMaterial* GetMaterial(const String& name);
 };
 
 #endif

@@ -34,7 +34,7 @@ void RProject::UpdateText()
 	Text = sb.ToString();
 }
 
-void RProject::SaveAs( const TString& projectPath )
+void RProject::SaveAs( const String& projectPath )
 {
 	TFileStream* fs = File::OpenWrite(projectPath);
 	TXMLWriter xw(fs);

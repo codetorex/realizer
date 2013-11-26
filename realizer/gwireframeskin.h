@@ -2,7 +2,7 @@
 #define GWIREFRAMESKIN_H
 
 #include "gskin.h"
-#include "texception.h"
+
 
 class GWireFrameSkin: public GSkin
 {

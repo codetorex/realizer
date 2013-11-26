@@ -44,9 +44,9 @@ GSchemedSkin* GSchemedSkinBuilder::Finish()
 	// delete this?
 }
 
-int GSchemeClass::GetInt( const TString& key, int defaultValue = 0 )
+int GSchemeClass::GetInt( const String& key, int defaultValue = 0 )
 {
-	THashKeyValue<TString*>* kp = Variables.Get(key);
+	THashKeyValue<String*>* kp = Variables.Get(key);
 	if (kp == 0)
 	{
 		return defaultValue;
@@ -54,19 +54,19 @@ int GSchemeClass::GetInt( const TString& key, int defaultValue = 0 )
 	return Convert::ToInt32(*kp->Value);
 }
 
-TString* GSchemeClass::GetValue(const TString& key)
+String* GSchemeClass::GetValue(const String& key)
 {
-	TString* rv = Variables.GetValue(key);
+	String* rv = Variables.GetValue(key);
 	if (rv == NULL)
 	{
-		return &TString::Empty;
+		return &String::Empty;
 	}
 	return rv;
 }
 
-TString* GSchemeClass::GetMustValue( const TString& key )
+String* GSchemeClass::GetMustValue( const String& key )
 {
-	TString* rv = Variables.GetValue(key);
+	String* rv = Variables.GetValue(key);
 	if (rv == NULL)
 	{
 		throw Exception("Value not found");
@@ -74,9 +74,9 @@ TString* GSchemeClass::GetMustValue( const TString& key )
 	return rv;
 }
 
-TColor32 GSchemeClass::GetColor( const TString& key )
+TColor32 GSchemeClass::GetColor( const String& key )
 {
-	TString* val = GetValueOrNull(key);
+	String* val = GetValueOrNull(key);
 	if (val == NULL)
 	{
 		return TColor32(255,255,255);
@@ -105,7 +105,7 @@ TColor32 GSchemeClass::GetColor( const TString& key )
 	return TColor32(cRed,cGreen,cBlue);
 }
 
-GSchemeClass* GSchemeFile::GetSchemeClass( const TString& className )
+GSchemeClass* GSchemeFile::GetSchemeClass( const String& className )
 {
 	TINIClass* inicls = GetClass(className);
 	return (GSchemeClass*)inicls;
@@ -163,7 +163,7 @@ void GSchemeText::LoadTextLayer( GSchemeClass* cls )
 	ContentBottom = cls->GetInt("contentbottom",0);
 }
 
-GSchemeLayer GSchemeFile::GetLayer( const TString& className )
+GSchemeLayer GSchemeFile::GetLayer( const String& className )
 {
 	GSchemeLayer lyr;
 	GSchemeClass* cls = GetSchemeClass(className);
@@ -175,7 +175,7 @@ GSchemeLayer GSchemeFile::GetLayer( const TString& className )
 	return lyr;
 }
 
-GSchemeText GSchemeFile::GetTextLayer( const TString& className )
+GSchemeText GSchemeFile::GetTextLayer( const String& className )
 {
 	GSchemeText lyr;
 	GSchemeClass* cls = GetSchemeClass(className);
@@ -544,7 +544,7 @@ void GSchemedSkinBuilder::LoadButtons( const GSchemeText& buttonData )
 	}*/
 }
 
-VTexturePart* GSchemedSkinBuilder::LoadInsertImage( const TString& path )
+VTexturePart* GSchemedSkinBuilder::LoadInsertImage( const String& path )
 {
 	TBitmap* image = Engine.Textures.LoadToBitmap(path);
 	VTexturePart* tp = InsertImage(image);
@@ -576,10 +576,10 @@ VTexturePart* GSchemedSkinBuilder::InsertImage( TBitmap* bmp )
 GSchemeFont* GSchemedSkinBuilder::GetNumberedFont( int fontID, FontKinds fontKind )
 {
 	
-	TArray<GSchemeFont*>& fontArray = fontKind == FK_CUSTOMFONTS ? NumberedFonts : NumberedSystemFonts;
+	Array<GSchemeFont*>& fontArray = fontKind == FK_CUSTOMFONTS ? NumberedFonts : NumberedSystemFonts;
 	for (ui32 i=0;i<fontArray.Count;i++)
 	{
-		GSchemeFont* curFont = fontArray.Item[i];
+		GSchemeFont* curFont = fontArray.Items[i];
 
 		if (curFont->FontID == fontID)
 		{

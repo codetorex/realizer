@@ -69,7 +69,7 @@ void REditorCommands::ImportFolder()
 		return;
 	}
 
-	TString result;
+	String result;
 	bool picked = Platform.BrowseFolder(Application.StartupPath,result);
 	if (!picked)
 	{

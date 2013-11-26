@@ -50,19 +50,19 @@ void GEditableLine::RenderWithSelection( int x,int y, int caret )
 				SelectionStart = tmp;
 			}
 
-			GCharacterBox& selStart = Characters.Item[SelectionStart];
+			GCharacterBox& selStart = Characters.Items[SelectionStart];
 			int startX = selStart.X;
 			int endX;
 
 
 			if (SelectionEnd >= Characters.Count)
 			{
-				GCharacterBox& selEnd = Characters.Item[Characters.Count-1];
+				GCharacterBox& selEnd = Characters.Items[Characters.Count-1];
 				endX = selEnd.CharEndPx();
 			}
 			else
 			{
-				GCharacterBox& selEnd = Characters.Item[SelectionEnd];
+				GCharacterBox& selEnd = Characters.Items[SelectionEnd];
 				endX = selEnd.X;
 			}
 
@@ -81,13 +81,13 @@ void GEditableLine::RenderWithSelection( int x,int y, int caret )
 		{
 			if (Characters.Count != 0)
 			{
-				GCharacterBox& lastChr = Characters.Item[Characters.Count-1];
+				GCharacterBox& lastChr = Characters.Items[Characters.Count-1];
 				drawPos = lastChr.X + lastChr.FontCharacter->XAdvance;
 			}
 		}
 		else if (caret != 0)
 		{
-			GCharacterBox& caretChr = Characters.Item[caret];
+			GCharacterBox& caretChr = Characters.Items[caret];
 			drawPos = caretChr.X;
 		}
 		
@@ -103,11 +103,11 @@ void GEditableLine::InternalRender()
 	DefaultFont->BeginCustomRendering();
 	for (int i=0;i<Characters.Count;i++)
 	{
-		Characters.Item[i].Render();
+		Characters.Items[i].Render();
 	}
 }
 
-void GEditableLine::SetText( const TString& value )
+void GEditableLine::SetText( const String& value )
 {
 	Clear();
 
@@ -285,12 +285,12 @@ void GTextBoxBase::Update()
 	}*/
 }
 
-TString GTextBoxBase::get_Text()
+String GTextBoxBase::get_Text()
 {
 	TStringBuilderStack<1024> sb;
 	for (ui32 i=0;i<Line.Characters.Count;i++)
 	{
-		GCharacterBox& cb = Line.Characters.Item[i];
+		GCharacterBox& cb = Line.Characters.Items[i];
 		sb.AppendUnicode(cb.Character);
 	}
 	return sb.ToString();
@@ -302,7 +302,7 @@ void GTextBoxBase::Clear()
 	CaretPosition = 0;
 }
 
-void GTextBoxBase::set_Text( const TString& value )
+void GTextBoxBase::set_Text( const String& value )
 {
 	Line.SetText(value);
 	CaretPosition = value.Length;

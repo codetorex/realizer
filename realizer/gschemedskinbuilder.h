@@ -16,29 +16,29 @@ public:
 	/**
 	* Returns default value if key not found.
 	*/
-	int GetInt(const TString& key, int defaultValue);
+	int GetInt(const String& key, int defaultValue);
 	
 	/**
 	* Returns TString::Empty if key not found.
 	*/
-	TString* GetValue(const TString& key);
+	String* GetValue(const String& key);
 
 	
-	inline TString* GetValueOrNull(const TString& key)
+	inline String* GetValueOrNull(const String& key)
 	{
-		TString* rv = Variables.GetValueOrNull(key);
+		String* rv = Variables.GetValueOrNull(key);
 		return rv;
 	}
 
 	/**
 	* Throws exception if key not found.
 	*/
-	TString* GetMustValue(const TString& key);
+	String* GetMustValue(const String& key);
 
 	/**
 	* Returns color, if not found, returns white.
 	*/
-	TColor32 GetColor(const TString& key);
+	TColor32 GetColor(const String& key);
 };
 
 class GSchemeColor
@@ -60,7 +60,7 @@ public:
 
 	int FontID;
 
-	TString FntName;
+	String FntName;
 	int FntHeight;
 	int FntWeight;
 
@@ -104,13 +104,13 @@ public:
 	GSchemePaintStyle PaintStyle;
 	GSchemeTile Tiling;
 
-	TString* ImagePath;
+	String* ImagePath;
 	int LeftMargin;
 	int RightMargin;
 	int TopMargin;
 	int BottomMargin;
 
-	TString* GlyphImage;
+	String* GlyphImage;
 	int GlyphTransMode;
 	int FrameCount;
 
@@ -244,9 +244,9 @@ public:
 class GSchemeFile: public TINIParser
 {
 public:
-	GSchemeClass* GetSchemeClass(const TString& className);
-	GSchemeLayer GetLayer(const TString& className);
-	GSchemeText GetTextLayer(const TString& className);
+	GSchemeClass* GetSchemeClass(const String& className);
+	GSchemeLayer GetLayer(const String& className);
+	GSchemeText GetTextLayer(const String& className);
 };
 
 
@@ -263,9 +263,9 @@ public:
 	GSchemeFile* Scheme;
 	//GSchemeColors Colors;
 
-	TArray< GSchemeColor* > NumberedColors;
-	TArray< GSchemeFont* > NumberedFonts;
-	TArray< GSchemeFont* > NumberedSystemFonts;
+	Array< GSchemeColor* > NumberedColors;
+	Array< GSchemeFont* > NumberedFonts;
+	Array< GSchemeFont* > NumberedSystemFonts;
 
 public:
 
@@ -293,7 +293,7 @@ public:
 
 	GSchemedSkin* Finish();
 
-	VTexturePart* LoadInsertImage(const TString& path);
+	VTexturePart* LoadInsertImage(const String& path);
 	VTexturePart* InsertImage(TBitmap* bmp);
 
 	void LoadWindowTop          (const GSchemeText& borderData, bool corners);

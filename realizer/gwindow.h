@@ -13,7 +13,7 @@ public:
 
 	GWindow();
 
-	string Text;
+	String Text;
 
 	void CenterToScreen();
 

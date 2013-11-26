@@ -16,7 +16,7 @@ protected:
 public:
 	RDocumentView();
 
-	TString Name;
+	String Name;
 
 	virtual void DocumentChanged() { };
 

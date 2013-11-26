@@ -89,7 +89,7 @@ void GSchemedSkin::RenderProgressBar( GProgressBar* progressbar )
 	
 	if (progressbar->ShowPercent)
 	{
-		TString* pbstr = &progressbar->Text;
+		String* pbstr = &progressbar->Text;
 		pbstr->Clear();
 		TConvert::AppendToString(progressbar->GetPercentage(),*pbstr);
 		pbstr->AppendASCIIFast(' ');

@@ -41,12 +41,12 @@ public:
 	/**
 	 * Creates a button with name and image then returns it.
 	 */
-	GToolStripButton* AddButton( const TString& buttonName, GImage& image, NoArgEvent* event, bool imageOnly = true);
+	GToolStripButton* AddButton( const String& buttonName, GImage& image, NoArgEvent* event, bool imageOnly = true);
 
 	/**
 	 * Creates a text only button then returns it.
 	 */
-	GToolStripButton* AddButton( const TString& buttonName, NoArgEvent* event );
+	GToolStripButton* AddButton( const String& buttonName, NoArgEvent* event );
 
 	void AddSeperator();
 

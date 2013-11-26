@@ -15,12 +15,12 @@ public:
 
 	};
 
-	GCharacterBox(ch32 chr)
+	GCharacterBox(ui32 chr)
 	{
 		Character = chr;
 	}
 
-	GCharacterBox(ch32 chr, GFont* fnt,  const TColor32& clr)
+	GCharacterBox(ui32 chr, GFont* fnt,  const TColor32& clr)
 	{
 		Character = chr;
 		SetFont(fnt);
@@ -29,7 +29,7 @@ public:
 
 	/// Every character can be different font with different size... Maybe even a smiley?
 	GCharacter* FontCharacter;
-	ch32 Character;
+	ui32 Character;
 
 	/// Every character can have different color
 	TColor32 Color;
@@ -65,7 +65,7 @@ public:
 		DefaultColor.color = 0xFF;
 	}
 
-	TArray< GCharacterBox > Characters;
+	Array< GCharacterBox > Characters;
 	int SelectionStart;
 	int SelectionEnd;
 	int TotalPixelLength;
@@ -81,8 +81,8 @@ public:
 		int rx = 0,ry = 0;
 		if (startPos > 0)
 		{
-			rx = Characters.Item[startPos-1].X + Characters.Item[startPos-1].FontCharacter->XAdvance;
-			ry = Characters.Item[startPos-1].Y;
+			rx = Characters.Items[startPos-1].X + Characters.Items[startPos-1].FontCharacter->XAdvance;
+			ry = Characters.Items[startPos-1].Y;
 		}
 
 		if (endPos > Characters.Count)
@@ -92,7 +92,7 @@ public:
 
 		for (int i=startPos;i<endPos;i++)
 		{
-			GCharacterBox& curChar = Characters.Item[i];
+			GCharacterBox& curChar = Characters.Items[i];
 			curChar.X = rx;
 			curChar.Y = ry;
 			curChar.MidPoint = rx + curChar.FontCharacter->XAdvance / 2;
@@ -107,7 +107,7 @@ public:
 	{
 		for (int i=0;i<Characters.Count;i++)
 		{
-			Characters.Item[i].SetFont(font);
+			Characters.Items[i].SetFont(font);
 		}
 	}
 	
@@ -116,7 +116,7 @@ public:
 		UpdateCharacter(startPos,Characters.Count);
 	}
 
-	void InsertCharacter(ch32 chr, int pos)
+	void InsertCharacter(ui32 chr, int pos)
 	{
 		GCharacterBox cbox(chr,DefaultFont,DefaultColor);
 		Characters.Insert(cbox,pos);
@@ -141,7 +141,7 @@ public:
 		RemoveCharacter(SelectionStart,SelectionEnd);
 	}
 
-	void ReplaceSelection(ch32 chr)
+	void ReplaceSelection(ui32 chr)
 	{
 		RemoveSelection();
 		InsertCharacter(chr,SelectionStart);
@@ -164,14 +164,14 @@ public:
 			return 0;
 		}
 
-		if (x < Characters.Item[0].MidPoint)
+		if (x < Characters.Items[0].MidPoint)
 		{
 			return 0;
 		}
 
 		for (int i=0;i<Characters.Count;i++)
 		{
-			GCharacterBox& curChar = Characters.Item[i];
+			GCharacterBox& curChar = Characters.Items[i];
 
 			if ( x < curChar.MidPoint )
 			{
@@ -189,7 +189,7 @@ public:
 		Characters.Clear();
 	}
 
-	void SetText(const TString& value);
+	void SetText(const String& value);
 
 	void InternalRender();
 	void Render(int x,int y);
@@ -238,10 +238,10 @@ public:
 	Alignment TextAlign;
 	TColor32 SelectionBackGroundColor;
 
-	TString get_Text();
-	void set_Text(const TString& value);
+	String get_Text();
+	void set_Text(const String& value);
 
-	TString get_SelectedText();
+	String get_SelectedText();
 
 	void SetSelection(int start, int length);
 

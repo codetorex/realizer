@@ -2,7 +2,7 @@
 #include "vmaterialmanager.h"
 
 
-VMaterial* VMaterialManager::GetMaterial( const TString& name )
+VMaterial* VMaterialManager::GetMaterial( const String& name )
 {
 	throw 0;
 }

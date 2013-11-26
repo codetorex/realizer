@@ -158,7 +158,7 @@ void REditorResources::Initialize()
 	
 }
 
-GImage* REditorResources::Fugue( const TString& fugueName )
+GImage* REditorResources::Fugue( const String& fugueName )
 {
 	return EditorImages->AddImage("icons/fugue/" + fugueName);
 }

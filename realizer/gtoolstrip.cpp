@@ -58,7 +58,7 @@ void GToolStripButton::Layout()
 
 	case GDS_IMAGETEXT:
 		reqWidth = Image.Width + textWidth;
-		reqHeight = MathDriver::Max(Image.Height, Font->Size);
+		reqHeight = Math.Max(Image.Height, Font->Size);
 		Image.Move(0,(Content.Height - Image.Height) / 2);
 		Image.SetParent(this);
 		TextPosition.X = Image.Right() + 4;
@@ -121,7 +121,7 @@ void GToolStrip::Layout()
 	Layouter->Layout(this,false);
 }
 
-GToolStripButton* GToolStrip::AddButton( const TString& buttonName, GImage& image, NoArgEvent* event, bool imageOnly /*= true*/ )
+GToolStripButton* GToolStrip::AddButton( const String& buttonName, GImage& image, NoArgEvent* event, bool imageOnly /*= true*/ )
 {
 	GToolStripButton* nb = new GToolStripButton();
 	nb->SetRectangle(0,0,16,16);
@@ -142,7 +142,7 @@ GToolStripButton* GToolStrip::AddButton( const TString& buttonName, GImage& imag
 	return nb;
 }
 
-GToolStripButton* GToolStrip::AddButton( const TString& buttonName, NoArgEvent* event )
+GToolStripButton* GToolStrip::AddButton( const String& buttonName, NoArgEvent* event )
 {
 	GToolStripButton* nb = new GToolStripButton();
 	nb->SetRectangle(0,0,16,16);

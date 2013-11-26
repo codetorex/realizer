@@ -25,24 +25,24 @@ public:
 class VOBJMaterial
 {
 public:
-	TString Name;
+	String Name;
 	Vector3 Ka;
 	Vector3 Kd;
 	Vector3 Ks;
 	float d;
 	float illum;
 
-	TString map_Ka;
-	TString map_Kd;
+	String map_Ka;
+	String map_Kd;
 
-	TString map_Ks;
-	TString map_Ns;
-	TString map_d;
-	TString map_bump;
+	String map_Ks;
+	String map_Ns;
+	String map_d;
+	String map_bump;
 
-	TString bump;
-	TString disp;
-	TString decal;
+	String bump;
+	String disp;
+	String decal;
 };
 
 void VModelOBJ::ReadModel( VModel* mdl, Stream* src )
@@ -53,11 +53,11 @@ void VModelOBJ::ReadModel( VModel* mdl, Stream* src )
 	Normals.Allocate(512);
 	TextureCoords.Allocate(512);
 
-	TArray<VOBJFace*> Faces(512);
+	Array<VOBJFace*> Faces(512);
 
 	while(!sr->EndOfStream)
 	{
-		TString curLine = sr->ReadLine();
+		String curLine = sr->ReadLine();
 
 		if (sr->EndOfStream)
 		{
@@ -143,7 +143,7 @@ void VModelOBJ::ReadModel( VModel* mdl, Stream* src )
 	mdl->BaseMesh.UpdatePrimitiveCount();
 }
 
-void VModelOBJ::Seperate( const TString& input, int& cmdLength, int& prmStart )
+void VModelOBJ::Seperate( const String& input, int& cmdLength, int& prmStart )
 {
 	bool mode = true;
 
@@ -169,16 +169,16 @@ void VModelOBJ::Seperate( const TString& input, int& cmdLength, int& prmStart )
 	}
 }
 
-void VModelOBJ::ParseVector3( const TString& input, int start, Vector3& vec )
+void VModelOBJ::ParseVector3( const String& input, int start, Vector3& vec )
 {
 	// TODO: replace this shit
 	sscanf_s(((char*)input.Data) + start,"%f %f %f", &(vec.x), &(vec.y), &(vec.z));
 }
 
-void VModelOBJ::ParseFace( const TString& input, int start, VOBJFace& face )
+void VModelOBJ::ParseFace( const String& input, int start, VOBJFace& face )
 {
 		
-	TArray<TString*> strArray = input.Split(' ', true);
+	Array<String*> strArray = input.Split(' ', true);
 	// TODO: implement read interrupted like thing for string? like TStringReader ?
 	// TODO: or make it a TString function...
 
@@ -194,7 +194,7 @@ void VModelOBJ::ParseFace( const TString& input, int start, VOBJFace& face )
 	strArray.DeletePointers();
 }
 
-void VModelOBJ::ParseFaceVertex( const TString& input, VOBJVertex& faceVertex )
+void VModelOBJ::ParseFaceVertex( const String& input, VOBJVertex& faceVertex )
 {
 	TArrayStack<int,32> indexes;
 
@@ -204,18 +204,18 @@ void VModelOBJ::ParseFaceVertex( const TString& input, VOBJVertex& faceVertex )
 
 	if (indexes.Count > 0)
 	{
-		faceVertex.Vertex = &Vertices.Item[indexes[0]-1];
+		faceVertex.Vertex = &Vertices.Items[indexes[0]-1];
 	}
 	
 	if (TextureCoords.Count > 0)
 	{
 		normIndex = 2;
-		faceVertex.TexCoord = &TextureCoords.Item[indexes[1]-1];
+		faceVertex.TexCoord = &TextureCoords.Items[indexes[1]-1];
 	}
 
 	if (Normals.Count > 0)
 	{
-		faceVertex.Normal = &Normals.Item[ indexes[normIndex]-1 ];
+		faceVertex.Normal = &Normals.Items[ indexes[normIndex]-1 ];
 	}
 
 	//Log.Output(LG_INF,input);

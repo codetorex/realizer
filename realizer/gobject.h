@@ -90,11 +90,11 @@ public:
 	VGUI*	Master;
 	GSkin*	Skin;
 	GFont*	Font;
-	TString	Tooltip;
+	String	Tooltip;
 	GUIClassID	ClassID;
 	DockType Dock;
 
-	TString	Text;
+	String	Text;
 	Alignment TextAlign;
 	int	TextPixelWidth;
 	TColor32 ForeColor;

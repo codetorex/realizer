@@ -49,7 +49,7 @@ void GSplitContainer::Update()
 			MaxSplitterDistance = (Height - Panel2MinSize) - SplitterWidth;
 		}
 
-		SplitterDistance = MathDriver::Clamp<int>(Panel1MinSize,MaxSplitterDistance,SplitterDistance);
+		SplitterDistance = Math.Clamp<int>(Panel1MinSize,MaxSplitterDistance,SplitterDistance);
 
 		if (AlwaysLayout)
 		{

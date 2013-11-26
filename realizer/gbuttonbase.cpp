@@ -85,7 +85,7 @@ void GButtonBase::Layout()
 	TextPosition = textRect;
 }
 
-void GButtonBase::setText( const TString& newText )
+void GButtonBase::setText( const String& newText )
 {
 	Text = newText;
 	Layout();

@@ -211,7 +211,7 @@ private:
 class RDLL GEvent
 {
 public:
-	TArray<GDispatch*> dispatchers;
+	Array<GDispatch*> dispatchers;
 
 	GEvent& operator += (GDispatch& evnt)
 	{

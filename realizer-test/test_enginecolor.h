@@ -13,7 +13,7 @@ class VColorTest
 {
 public:
 	TColor32 ColorValue;
-	TString ColorName;
+	String ColorName;
 };
 
 class RTestColor: public RTestScene
@@ -30,11 +30,11 @@ public:
 		SceneName = "Engine color test";
 	}
 
-	TArray< VColorTest* > Tests;
+	Array< VColorTest* > Tests;
 
 	//void AddTest( VColorTest* tex );
 
-	void AddTest( const TColor32& ColorValue, const TString& COlorName);
+	void AddTest( const TColor32& ColorValue, const String& COlorName);
 
 	void Initialize();
 

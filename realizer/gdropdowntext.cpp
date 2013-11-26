@@ -50,7 +50,7 @@ void GDropDownText::Clear()
 	EditBox.Clear();
 }
 
-void GDropDownText::SetText( const TString& value )
+void GDropDownText::SetText( const String& value )
 {
 	EditBox.set_Text(value);
 }

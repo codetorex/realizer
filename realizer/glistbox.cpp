@@ -72,7 +72,7 @@ void GListBox::Render()
 			Skin->RenderHilight(drawX-2,drawY,HilightWidth,ItemHeight);
 		}
 
-		Font->Render(*Items.Item[i],drawX,drawY, TColors::Black);
+		Font->Render(*Items.Items[i],drawX,drawY, TColors::Black);
 		drawY += ItemHeight;
 		// TODO: move font rendering to TGraphics and move these rendering stuff to graphics
 	}
@@ -84,9 +84,9 @@ void GListBox::Render()
 	//this->GObject::Render(); // render kids (scrollbar)
 }
 
-void GListBox::AddItem( TString& value )
+void GListBox::AddItem( String& value )
 {
-	TString* str = new TString(value);
+	String* str = new String(value);
 	Items.Add( str );
 	if (Items.Count > VScrollBar.LargeChange)
 	{
@@ -102,7 +102,7 @@ void GListBox::OnMouseDown( int x,int y, int button )
 {
 	int pickedItem = (y - Content.Y) / ItemHeight;
 	int realIndex = pickedItem + VScrollBar.Value;
-	SelectedIndex = MathDriver::Clamp<int>(0,Items.Count-1,realIndex);
+	SelectedIndex = Math.Clamp<int>(0,Items.Count-1,realIndex);
 }
 
 void GListBox::OnMouseWheel( int x,int y, int delta )

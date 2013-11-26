@@ -19,7 +19,7 @@ private:
 	void* PropertyObject;
 	TType* ObjType;
 
-	TArray<GPropertyRow*> Properties;
+	Array<GPropertyRow*> Properties;
 
 	void LoadClass(void* obj, TType* typ);
 

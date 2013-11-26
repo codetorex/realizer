@@ -14,7 +14,7 @@ class RDLL VTexture: public Resource, public ISize
 {
 public:
 	ui32		pathHash;
-	TString		path;
+	String		path;
 
 	TBitmap*	bitmap;
 	rtex		texID;

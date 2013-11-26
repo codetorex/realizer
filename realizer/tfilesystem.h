@@ -18,10 +18,10 @@ public:
 		LastUsedMount = 0;
 	}
 
-	TArray<TMount*> Mounts;
+	Array<TMount*> Mounts;
 
-	TMount* MountSystemFolder(const TString& folderPath,ui32 permission);
-	TMount* MountPackage(const TString& packagePath,ui32 permission);
+	TMount* MountSystemFolder(const String& folderPath,ui32 permission);
+	TMount* MountPackage(const String& packagePath,ui32 permission);
 
 	TMount*	DefaultSaveMount;
 
@@ -43,37 +43,37 @@ public:
 	/**
 	* Opens file as a stream.
 	*/
-	TStream*		Open(const TString& path,FileMode mode);
+	TStream*		Open(const String& path,FileMode mode);
 
 	/**
 	* Loads file to memory and returns buffer object.
 	*/
-	TBuffer*		Load(const TString& path);
+	TBuffer*		Load(const String& path);
 
 	/**
 	* This stream is fully memory cached.
 	*/
-	TMemoryStream*	LoadOpen(const TString& path);
+	TMemoryStream*	LoadOpen(const String& path);
 
 	/**
 	* Gets file entry record.
 	*/
-	IFile*			GetFile(const TString& path);
+	IFile*			GetFile(const String& path);
 
 	/**
 	* Gets directory entry record.
 	*/
-	IDirectory*		GetDirectory(const TString& path);
+	IDirectory*		GetDirectory(const String& path);
 
 	/**
 	* Finds file in mounts, and returns mount which contains the file.
 	*/
-	TMount*			FindFileInMounts(const TString& path);
+	TMount*			FindFileInMounts(const String& path);
 
 	/**
 	 * Finds directory in mounts, and returns mount which contains the directory.
 	 */
-	TMount*			FindDirectoryInMounts(const TString& path);
+	TMount*			FindDirectoryInMounts(const String& path);
 };
 
 

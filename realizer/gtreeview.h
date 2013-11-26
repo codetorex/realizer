@@ -19,7 +19,7 @@ public:
 	}
 
 	GTreeNode* Node;
-	TString Label;
+	String Label;
 	bool CancelEdit;
 };
 
@@ -59,15 +59,15 @@ public:
 
 	void AddNode(GTreeNode* node);
 
-	GTreeNode* AddNode(const TString& nodeText, ui32 image, ui32 selectedImage);
+	GTreeNode* AddNode(const String& nodeText, ui32 image, ui32 selectedImage);
 
-	GTreeNode* AddNode(const TString& nodeText);
+	GTreeNode* AddNode(const String& nodeText);
 
 	virtual void Clicked() { };
 
 	GTreeNode* Parent;
-	TString Text;
-	TArray< GTreeNode* > Nodes;
+	String Text;
+	Array< GTreeNode* > Nodes;
 	bool Expanded;
 	bool MouseOver;
 
@@ -142,7 +142,7 @@ private:
 
 	GTreeNode* EditingNode;
 
-	TArray< GTreeNode* > RenderNodes;
+	Array< GTreeNode* > RenderNodes;
 
 	
 	ui32 ScreenSpace;

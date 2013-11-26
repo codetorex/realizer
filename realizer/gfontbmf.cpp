@@ -6,9 +6,9 @@ class BMFLoader : GFontLoader
 {
 public:
 	TStream* bmf;
-	TString texturePath;
+	String texturePath;
 
-	BMFLoader(GFont* target,const TString& _texturePath,TStream* src):GFontLoader(target)
+	BMFLoader(GFont* target,const String& _texturePath,TStream* src):GFontLoader(target)
 	{
 		bmf = src;
 		texturePath = _texturePath;
@@ -167,7 +167,7 @@ public:
 
 		// actually, pagename is relative to fnt file, but we using stream, so how do we know where is this shit? (old note)
 		// yeah that is going to be problem so I implemented texturePath to know where to look hmm (05.09.2011)
-		TString relativePath = texturePath;
+		String relativePath = texturePath;
 		relativePath += pagename;
 
 		font->FontTexture = Engine.Textures.LoadTexture( relativePath );
@@ -246,7 +246,7 @@ public:
 	}
 };
 
-void GFont::LoadBMF( TStream* bmfstream, const TString& texturePath, bool closestream )
+void GFont::LoadBMF( TStream* bmfstream, const String& texturePath, bool closestream )
 {
 	BMFLoader loader(this,texturePath,bmfstream);
 	loader.Load();

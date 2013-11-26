@@ -251,8 +251,8 @@ public:
 
 	VTexturePart TreeViewPlusMinus[4];
 
-	void SaveSkin(const TString& path);
-	void LoadSkin(const TString& path);
+	void SaveSkin(const String& path);
+	void LoadSkin(const String& path);
 
 public:
 

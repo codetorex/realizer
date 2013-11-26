@@ -22,7 +22,7 @@ public:
 	TColor32 BackColor;
 	TColor32 ForeColor;
 	ui32	 Attributes;
-	ch32	 Character;
+	ui32	 Character;
 
 	enum GConsoleAttribute
 	{
@@ -60,7 +60,7 @@ public:
 
 	void DumpBuffer()
 	{
-		TString b( Size.Width *4 );
+		String b( Size.Width *4 );
 		for (int y=0;y<BufferHeight;y++)
 		{
 			GConsoleCell* currentLine = &Cells[ y * Size.Width ];
@@ -217,7 +217,7 @@ public:
 		UpdateCurrentCellAddr();
 	}
 
-	inline void WriteChar(ch32 chr)
+	inline void WriteChar(ui32 chr)
 	{
 		if (chr == '\n')
 		{
@@ -244,12 +244,12 @@ public:
 		}
 	}
 
-	inline ch32 ReadKey()
+	inline ui32 ReadKey()
 	{
 		throw NotImplementedException();
 	}
 
-	void BeginGetString(delegate1<void,const TString&>* callback)
+	void BeginGetString(delegate1<void,const String&>* callback)
 	{
 
 	}
@@ -263,7 +263,7 @@ class TConsoleInput
 public:
 	TConsole* cinput;
 
-	TArray<ch32> Chars;
+	Array<ui32> Chars;
 	IPosition CursorStart;
 	int Cursor;
 
@@ -288,7 +288,7 @@ public:
 		cinput->Write(Chars);
 	}
 
-	void Input(ch32 chr)
+	void Input(ui32 chr)
 	{
 		if (chr == Keys::Left)
 		{

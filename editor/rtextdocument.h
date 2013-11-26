@@ -7,9 +7,9 @@
 class RTextLine
 {
 public:
-	TString Line;
+	String Line;
 
-	operator TString&  ()
+	operator String&  ()
 	{
 		return Line;
 	}
@@ -25,7 +25,7 @@ public:
 		KnownFile = false;
 	}
 
-	TArray<RTextLine*> Lines;
+	Array<RTextLine*> Lines;
 
 	void LoadDocument();
 };

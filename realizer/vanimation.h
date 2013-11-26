@@ -320,14 +320,14 @@ public:
 class VAnimationManager
 {
 public:
-	TArray< VAnimation* > Animations;
+	Array< VAnimation* > Animations;
 
 	void AdvanceTime( float time )
 	{
 		int i = Animations.Count;
 		while(i--)
 		{
-			Animations.Item[i]->AdvanceTime(time);
+			Animations.Items[i]->AdvanceTime(time);
 		}
 	}
 };

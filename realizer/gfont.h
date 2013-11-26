@@ -76,8 +76,8 @@ public:
 class GFont
 {
 public:
-	TString Name;
-	TString DevName; // engine name? or dev name
+	String Name;
+	String DevName; // engine name? or dev name
 
 	VTexture* FontTexture;
 	GCharacter* Characters[256]; // TODO: Implement TIndex and use it here for supporting astral planes
@@ -136,7 +136,7 @@ public:
 		Engine.Draw.SetTexture(FontTexture);
 	}
 
-	int GetStringIndexAt(const TString& value, int x)
+	int GetStringIndexAt(const String& value, int x)
 	{
 		throw 0;
 	}
@@ -179,7 +179,7 @@ public:
 		RenderText(text,(float)textRect.X,(float)textRect.Y,color.color);
 	}
 
-	inline void Render(const TString& text, const IRegion& screenRegion, Alignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
+	inline void Render(const String& text, const IRegion& screenRegion, Alignment align, const TColor32& color, int xOffset = 0, int yOffset = 0, int stringPixelWidth = -1)
 	{
 		TCharacterEnumerator schars(text);
 		Render(schars,screenRegion,align,color,xOffset,yOffset,stringPixelWidth);
@@ -211,7 +211,7 @@ public:
 		RenderText(schars,x,y,color.color);
 	}
 
-	inline void Render(const TString& text,float x,float y, const TColor32& color)
+	inline void Render(const String& text,float x,float y, const TColor32& color)
 	{
 		TCharacterEnumerator schars(text);
 		RenderText(schars,x,y,color.color);
@@ -240,7 +240,7 @@ public:
 		return result;
 	}
 
-	void LoadBMF(TStream* bmfstream, const TString& texturePath, bool closestream = true);
+	void LoadBMF(TStream* bmfstream, const String& texturePath, bool closestream = true);
 	void LoadRMF(TStream* rmfstream, bool closestream = true);
 };
 

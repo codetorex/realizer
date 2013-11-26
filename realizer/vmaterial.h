@@ -7,7 +7,7 @@
 class VMaterial
 {
 public:
-	TString Name;
+	String Name;
 
 	VPixelShader* MaterialShader;
 

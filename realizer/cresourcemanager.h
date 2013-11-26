@@ -5,7 +5,7 @@
 #include "tqueue.h"
 #include "cresource.h"
 
-class TString;
+class String;
 
 class VTexture;
 
@@ -35,7 +35,7 @@ public:
 	{
 		struct TextureParameters
 		{
-			TString* Path;
+			String* Path;
 		};
 	};
 };
@@ -45,7 +45,7 @@ public:
  * Loads resources in its thread so rendering wont stops?
  * Good for tracking resources.
  */
-class CResourceManager: TArray< Resource* >
+class CResourceManager: Array< Resource* >
 {
 public:
 	ui32 TotalLoaded;
@@ -59,7 +59,7 @@ public:
 	/// Queue holds the pending loading operations
 	TQueue< CResourceCommand* > ResourceQueue;
 
-	void LoadTexture( const TString& path, VTexture*& targetPtr, Resource* parent = 0 );
+	void LoadTexture( const String& path, VTexture*& targetPtr, Resource* parent = 0 );
 
 	inline void QueueLoad(CResourceCommand* cmd)
 	{

@@ -29,7 +29,7 @@ class VScene: public Resource, public TListNode<VScene*>
 {
 public:
 	ui32		ID; // index/identification number for scene
-	string		SceneName;
+	String		SceneName;
 	TFlag32		Flags;
 	ui32		Type;
 

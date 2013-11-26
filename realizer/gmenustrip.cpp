@@ -23,7 +23,7 @@ void GMenuStrip::Layout()
 	Layouter->Layout(this,false);
 }
 
-GMenuItem* GMenuStrip::AddItem( const TString& menuItem )
+GMenuItem* GMenuStrip::AddItem( const String& menuItem )
 {
 	GMenuItem* r = new GMenuItem();
 	r->SetRectangle(0,0,20,10);
@@ -32,7 +32,7 @@ GMenuItem* GMenuStrip::AddItem( const TString& menuItem )
 	return r;
 }
 
-GMenuItem* GMenuStrip::AddItem( const TString& menuName, NoArgEvent* event )
+GMenuItem* GMenuStrip::AddItem( const String& menuName, NoArgEvent* event )
 {
 	GMenuItem* r = AddItem(menuName);
 	if (event)

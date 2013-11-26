@@ -68,7 +68,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	Engine.Scenes.ActivateScene(&TestSuite);
 
 
-	TString BGRComposition = TextureFormats->fBGR->ToString();
+	String BGRComposition = TextureFormats->fBGR->ToString();
 	Engine.Command.Output->Write(BGRComposition);
 
 	// TestSuite.ActivateLastTest();

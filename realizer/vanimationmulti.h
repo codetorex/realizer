@@ -11,7 +11,7 @@ private:
 
 public:
 	ui32 ValueCount;
-	TArray< TDiagramOutput<float>* > Outputs;
+	Array< TDiagramOutput<float>* > Outputs;
 
 	typedef delegate1<void,VAnimationMulti*> AnimationEvent;
 	event< AnimationEvent > Updated;
@@ -48,7 +48,7 @@ public:
 
 	inline float GetValue(int outputPort)
 	{
-		return Outputs.Item[outputPort]->Value;
+		return Outputs.Items[outputPort]->Value;
 	}
 };
 
@@ -74,7 +74,7 @@ public:
 			float y1 = curKeyFrame->GetFloatValue(i);
 			float y2 = nextKeyFrame->GetFloatValue(i);
 
-			Outputs[i]->Set( MathInterpolate::LinearInterpolate(y1,y2,mu) );
+			Outputs[i]->Set( Math.Interpolate.Linear(y1,y2,mu) );
 		}
 	}
 };
@@ -100,7 +100,7 @@ public:
 			float y1 = curKeyFrame->GetFloatValue(i);
 			float y2 = nextKeyFrame->GetFloatValue(i);
 
-			Outputs[i]->Set( MathInterpolate::CosineInterpolate(y1,y2,mu) );
+			Outputs[i]->Set( Math.Interpolate.Cosine(y1,y2,mu) );
 		}
 	}
 };

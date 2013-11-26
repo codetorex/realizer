@@ -7,7 +7,7 @@
 
 #ifdef WIN32
 #include <WindowsX.h>
-bool CWin32RenderWindow::Create( int _width,int _height,const TString& _title,bool fullscr,int bits )
+bool CWin32RenderWindow::Create( int _width,int _height,const String& _title,bool fullscr,int bits )
 {
 	SetViewportSize(_width,_height);
 

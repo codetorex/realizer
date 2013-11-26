@@ -23,7 +23,7 @@ public:
 
 	void SelectAll();
 
-	void SetText(const TString& value);
+	void SetText(const String& value);
 
 	/**
 	 * Clears edit box
